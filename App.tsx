@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, Transition } from 'framer-motion';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -30,27 +30,33 @@ import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 
 const pageVariants = {
-  initial: { opacity: 0, scale: 0.98 },
-  in: { opacity: 1, scale: 1 },
-  out: { opacity: 0, scale: 1.02 },
+  initial: { opacity: 0, scale: 0.99, y: 10 },
+  in: { opacity: 1, scale: 1, y: 0 },
+  out: { opacity: 0, scale: 1.01, y: -10 },
 };
 
 const pageTransition: Transition = {
   duration: 0.8,
-  ease: [0.19, 1, 0.22, 1],
+  ease: [0.19, 1, 0.22, 1], // Expo out for kinetic feel
 };
 
 const App: React.FC = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  
+  // Check session storage to see if the user has already visited in this session
+  const [loading, setLoading] = useState(() => {
+    const hasVisited = sessionStorage.getItem('coolo_visited');
+    return !hasVisited;
+  });
   
   React.useEffect(() => {
+    // Reset scroll position instantly on route change so animation plays cleanly
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
   const handleEnter = () => {
-    navigate('/');
+    // Mark session as visited
+    sessionStorage.setItem('coolo_visited', 'true');
     setLoading(false);
   };
 
@@ -66,7 +72,7 @@ const App: React.FC = () => {
           <motion.div
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
-             transition={{ duration: 1 }}
+             transition={{ duration: 1, ease: "easeOut" }}
              className="flex flex-col min-h-screen"
           >
               <Header />
@@ -79,7 +85,7 @@ const App: React.FC = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}
-                    className="w-full"
+                    className="w-full will-change-transform"
                   >
                     <Routes location={location}>
                       <Route path="/" element={<HomePage />} />

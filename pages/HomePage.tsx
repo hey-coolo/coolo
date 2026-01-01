@@ -26,11 +26,11 @@ const TandemHero: React.FC = () => {
                 <div className="mb-12">
                     {/* Removed mix-blend-multiply for sharper contrast */}
                     <motion.h1 style={{ y: y1 }} className="text-[18vw] md:text-[15.5vw] font-black uppercase leading-[0.85] tracking-tight text-brand-navy">
-                        BRAND STRATEGY
+                        STRATEGY
                     </motion.h1>
                     <div className="flex justify-between items-center overflow-hidden">
                         <motion.h1 style={{ y: y2 }} className="text-[18vw] md:text-[15.5vw] font-black uppercase leading-[0.85] tracking-tight text-brand-navy text-right ml-auto">
-                           DESIGN EXECUTION
+                            EXECUTION
                         </motion.h1>
                     </div>
                 </div>
