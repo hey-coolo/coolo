@@ -13,20 +13,29 @@ const AboutPage: React.FC = () => {
         {/* Header / Origin Story */}
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-6xl relative">
-            <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-6 block">Origin & Entropy</span>
+            <div className="flex items-center gap-4 mb-6">
+                <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black block">Origin & Entropy</span>
+                <div className="px-3 py-1 bg-brand-navy/5 border border-brand-navy/20 rounded-full flex items-center gap-2">
+                    <svg className="w-3 h-3 text-brand-purple" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
+                    <span className="font-mono text-[9px] uppercase tracking-widest font-bold text-brand-navy/60">System Locked</span>
+                </div>
+            </div>
             <h1 className="text-brand-navy text-8xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.9] mt-8">
               The System<br/><span className="text-brand-purple italic">Is The Solution.</span>
             </h1>
           </header>
         </AnimatedSection>
 
-        {/* Playbook Link */}
+        {/* Playbook Link - Locked State */}
         <section className="py-12 border-t border-brand-navy/10">
             <AnimatedSection>
                 <Link to="/playbook" className="group block border-2 border-brand-navy p-12 bg-white hover:bg-brand-navy transition-all duration-500">
                     <div className="flex justify-between items-center">
                         <div>
-                            <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold mb-2 block">Internal Resources</span>
+                            <div className="flex items-center gap-2 mb-2">
+                                <svg className="w-4 h-4 text-brand-purple group-hover:text-brand-yellow transition-colors" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
+                                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">Internal Resources / Restricted</span>
+                            </div>
                             <h3 className="text-4xl font-black uppercase tracking-tight text-brand-navy group-hover:text-brand-offwhite">Access Agency Playbook &rarr;</h3>
                         </div>
                         <div className="hidden md:block w-32 h-32 border-l border-brand-navy/10 group-hover:border-brand-offwhite/10 relative">
@@ -103,7 +112,7 @@ const AboutPage: React.FC = () => {
                 {/* Dynamically generating team cards from CMS constants */}
                 {Object.entries(TEAM_MEMBERS).map(([slug, member], index) => (
                     <AnimatedSection key={slug} delay={index * 150}>
-                        <Link to={`/team/${slug}`} className="group relative block aspect-[3/4] overflow-hidden bg-brand-navy border border-brand-navy/10">
+                        <Link to={`/team/${slug}`} className="group relative block aspect-[3/4] overflow-hidden bg-brand-navy border-2 border-brand-navy">
                             <motion.img 
                                 initial={{ scale: 1.1 }}
                                 whileHover={{ scale: 1.05 }}
@@ -137,7 +146,7 @@ const AboutPage: React.FC = () => {
                 
                 {/* Recruitment Card / Empty State */}
                 <AnimatedSection delay={300}>
-                    <Link to="/contact" className="group relative block aspect-[3/4] overflow-hidden bg-brand-offwhite border-2 border-dashed border-brand-navy/20 hover:border-brand-purple hover:bg-brand-purple/5 transition-all duration-300 flex flex-col items-center justify-center text-center p-12">
+                    <Link to="/contact" className="group relative block aspect-[3/4] overflow-hidden bg-brand-offwhite border-2 border-brand-navy hover:border-brand-purple hover:bg-brand-purple/5 transition-all duration-300 flex flex-col items-center justify-center text-center p-12">
                          <div className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-brand-navy/40 mb-4 group-hover:text-brand-purple">Open Slot</div>
                          <h3 className="text-5xl font-black uppercase tracking-tight text-brand-navy/20 group-hover:text-brand-purple transition-colors">
                              Strategic<br/>Partner
