@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import BrandLogo from './BrandLogo';
+import BrandLogo from './assets/logos/logo.svg';
 
 const Footer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
