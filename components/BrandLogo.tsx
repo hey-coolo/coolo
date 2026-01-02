@@ -3,7 +3,7 @@ import React from 'react';
 
 // Use a static path relative to index.html to avoid module resolution errors
 // when a bundler is not configured to handle .svg imports.
-const logoSrc = './assets/logos/logo.svg';
+const logoSrc = 'assets/logos/logo.svg';
 
 interface BrandLogoProps {
   className?: string;
@@ -22,7 +22,7 @@ const BrandLogo: React.FC<BrandLogoProps> = ({ className = "w-32", color = "#0F0
     <div className={`${className} flex items-center justify-center`}>
       <img 
         src={logoSrc} 
-        alt="COOLO Logo"
+        alt="coolo_full logo"
         className="w-full h-full object-contain transition-all duration-300"
         style={{
             // If the requested color is light, invert the dark logo to make it white.
