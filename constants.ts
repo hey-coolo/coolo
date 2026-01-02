@@ -18,7 +18,7 @@ const RAW_IMG_3D_VIZ = 'https://images.unsplash.com/photo-1633167606207-d840b507
 const RAW_IMG_OOH = 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200';
 const RAW_IMG_BRANDING = 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1200';
 const RAW_IMG_PACKAGING = 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6?auto=format&fit=crop&q=80&w=1200';
-const RAW_IMG_FRANCO = 'import heroFranco from './assets/images/franco.webp';
+const RAW_IMG_FRANCO = 'import from '.../assets/images/franco.webp';
 const RAW_IMG_ARIANA = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800';
 
 export const ASSETS = {
@@ -399,7 +399,7 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
   franco: {
     name: 'Franco',
     title: 'Creative Director',
-    imageUrl: ASSETS.team.franco,
+    imageUrl: ASSETS.images.franco,
     instagram: 'what.the.franco',
     bio: [
       "The Brains. Franco specializes in Strategy, Art Direction, and 3D Vision.",
@@ -411,7 +411,7 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
   ariana: {
     name: 'Ariana',
     title: 'Operations Manager',
-    imageUrl: ASSETS.team.ariana,
+    imageUrl: ASSETS.images.ariana,
     instagram: 'ariarmndo',
     bio: [
       "The Engine. Ariana manages execution, logistics, and client sanity.",
