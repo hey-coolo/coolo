@@ -18,7 +18,7 @@ const RAW_IMG_3D_VIZ = 'https://images.unsplash.com/photo-1633167606207-d840b507
 const RAW_IMG_OOH = 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200';
 const RAW_IMG_BRANDING = 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1200';
 const RAW_IMG_PACKAGING = 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6?auto=format&fit=crop&q=80&w=1200';
-const RAW_IMG_FRANCO = 'import from '.../assets/images/franco.webp';
+const RAW_IMG_FRANCO = 'import heroFranco from '.../assets/images/franco.webp';
 const RAW_IMG_ARIANA = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800';
 
 export const ASSETS = {
@@ -64,13 +64,13 @@ export const SERVICE_LEGS: ServiceLeg[] = [
     imageUrl: ASSETS.services.clarity
   },
   {
-    id: 'firepower',
-    title: 'I Need Firepower',
+    id: 'designpower',
+    title: 'I Need Design Power',
     subtitle: 'The Creative Method™',
-    hoverText: 'Identity, 3D Viz, & Webflow Builds.',
-    visual: 'High-End Execution',
-    path: '/firepower',
-    imageUrl: ASSETS.services.firepower
+    hoverText: 'Identity, 3D Product Viz, & Website Builds.',
+    visual: 'High-End Design Execution',
+    path: '/designpower',
+    imageUrl: ASSETS.services.designpower
   },
   {
     id: 'partner',
@@ -147,11 +147,11 @@ export const CLARITY_TIERS: ClarityTier[] = [
     }
 ];
 
-export const FIREPOWER_TIERS: FirepowerTier[] = [
+export const DESIGNPOWER_TIERS: DesignpowerTier[] = [
     {
         slug: "starter",
         name: "Starter",
-        focus: "Identity Core",
+        focus: "Core Identity",
         desc: "Logo suite, palette, type styles, and a 10–12 page style guide PDF. For early-stage brands needing a sharp start.",
         deliverables: ["Logo Suite", "Color Palette", "Typography Guidelines", "Mini-Style Guide"],
         timeline: "2 Weeks",
@@ -165,9 +165,9 @@ export const FIREPOWER_TIERS: FirepowerTier[] = [
     {
         slug: "builder",
         name: "Builder",
-        focus: "Story + Design",
-        desc: "Identity core plus brand storytelling kit and campaign concepts. Translating strategy into copy and visuals.",
-        deliverables: ["Identity Core", "Messaging-to-Visuals", "Campaign Concepts (3)", "Storytelling Kit"],
+        focus: "Story & Design",
+        desc: "Core Identity plus brand storytelling kit and campaign concepts. Translating strategy into copy and visuals.",
+        deliverables: ["Core Identity", "Messaging-to-Visuals", "Campaign Concepts (3)", "Storytelling Kit"],
         timeline: "4 Weeks",
         idealFor: "Brands ready to go to market with a voice.",
         faqs: [
@@ -399,7 +399,7 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
   franco: {
     name: 'Franco',
     title: 'Creative Director',
-    imageUrl: ASSETS.images.franco,
+    imageUrl: 'ASSETS.images.franco',
     instagram: 'what.the.franco',
     bio: [
       "The Brains. Franco specializes in Strategy, Art Direction, and 3D Vision.",
