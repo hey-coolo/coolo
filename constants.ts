@@ -32,11 +32,11 @@ export const PROJECTS: Project[] = [
     client: 'Internal Project',
     role: 'Strategy, logo & mark system, type system, colour palette, texture & pattern language, apparel branding, art direction.',
     detailImages: [
-        'img src= hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/detail-1.webp',
+        'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/detail-1.webp?token=GHSAT0AAAAAADSX62VIHTSPDP2MAMFZTL7K2LAHVCQ',
         'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/detail-2.webp?token=GHSAT0AAAAAADSX62VJWDKANEL7CODP5RPA2LAHS6A',
-        'https://github.com/hey-coolo/COOLO/blob/750e88e3cd8dc5e57476af0db02f01e1257c4929/assets/cases/unmplynmt/detail-3.webp',
-        'https://github.com/hey-coolo/COOLO/blob/750e88e3cd8dc5e57476af0db02f01e1257c4929/assets/cases/unmplynmt/detail-5.webp',
-        'https://github.com/hey-coolo/COOLO/blob/750e88e3cd8dc5e57476af0db02f01e1257c4929/assets/cases/unmplynmt/process-2.webp'
+        'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/detail-3.webp?token=GHSAT0AAAAAADSX62VIGQTZHHYOYT7AUFYK2LAHVIA',
+        'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/detail-7.webp?token=GHSAT0AAAAAADSX62VJO7BQZHXAJMQ5WMOG2LAHWAQ',
+        'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/detail-5.webp?token=GHSAT0AAAAAADSX62VIL6HLDSS4HWOZB6U22LAHWFQ'
     ],
     story: {
         goal: "UNMPLYNMT began as a belief: that clothing can be more than fashion — it can be a banner for identity, rebellion, and community. We asked a simple, strategic question: What does freedom look like when it isn’t selling anything?",
@@ -44,9 +44,10 @@ export const PROJECTS: Project[] = [
         gamble: "We developed a visual voice that mirrors that attitude: Typographic Brutality, Colour Energy, and Texture as Attitude. A flexible system built to scale across campaigns without diluting its raw power.",
         gain: "Identity done right doesn’t whisper. It moves people. We gave them a visual language that behaves like culture: adaptable, self-aware, and unmistakable. Community turned into culture.",
         processImages: [
-            'https://github.com/hey-coolo/COOLO/blob/750e88e3cd8dc5e57476af0db02f01e1257c4929/assets/cases/unmplynmt/process-1.webp', 
-            'https://github.com/hey-coolo/COOLO/blob/750e88e3cd8dc5e57476af0db02f01e1257c4929/assets/cases/unmplynmt/process-3.webp',
-            'https://github.com/hey-coolo/COOLO/blob/750e88e3cd8dc5e57476af0db02f01e1257c4929/assets/cases/unmplynmt/detail-4.webp'
+            'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/process-1.webp?token=GHSAT0AAAAAADSX62VJP3LGYM22MA5GU46E2LAHWLA', 
+            'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/process-2.webp?token=GHSAT0AAAAAADSX62VJ2Y2PFTAK4IBO6EGW2LAHWQA',
+            'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/process-3.webp?token=GHSAT0AAAAAADSX62VIZ64C55NVZCMRYABS2LAHWVA',
+            'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/process-5.webp?token=GHSAT0AAAAAADSX62VJ7CGRKT66JC2DRA3E2LAHW6Q'
         ]
     }
   },
