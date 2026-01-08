@@ -32,7 +32,7 @@ export const PROJECTS: Project[] = [
     client: 'Internal Project',
     role: 'Strategy, logo & mark system, type system, colour palette, texture & pattern language, apparel branding, art direction.',
     detailImages: [
-        'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800',
+        'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/detail-1.webp?token=GHSAT0AAAAAADSX62VILXRORDBGFCKIR2EY2LAGA7A',
         'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=800',
         'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=800',
         'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800'
