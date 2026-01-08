@@ -1,4 +1,3 @@
-
 export interface Project {
   id: number;
   title: string;
@@ -15,15 +14,14 @@ export interface Project {
   outcome?: string;
   detailImages?: string[];
   story?: {
-      goal: string; // The Mission / Call to Adventure
-      gap: string;  // The Struggle / Process
-      gamble: string; // The Solution / Climax
-      gain: string; // The Result / New Normal
-      processImages: string[]; // Raw sketches, wireframes, messy middle
+      goal: string;
+      gap: string;
+      gamble: string;
+      gain: string;
+      processImages: string[];
   };
 }
 
-// Added 'Strategy' to resolve type error in constants.ts
 export type ProjectCategory = 'All' | 'Featured' | '3D Design' | 'Brand Identity' | 'Web Design' | 'Campaign' | 'Fashion' | 'Packaging' | 'Motion Design' | 'Digital Art' | 'Strategy';
 
 export interface ServiceTier {
@@ -35,7 +33,7 @@ export interface ServiceTier {
   comingSoon?: boolean;
 }
 
-export interface FirepowerTier {
+export interface DesignPowerTier {
     slug: string;
     name: string;
     focus: string;
@@ -50,7 +48,7 @@ export interface FirepowerTier {
 export interface ClarityTier {
     slug: string;
     name: string;
-    price: string;
+    price?: string; // Made optional
     subtitle: string;
     desc: string;
     features: string[];
@@ -72,7 +70,7 @@ export interface PartnershipModel {
 }
 
 export interface ServiceLeg {
-  id: 'clarity' | 'firepower' | 'partner';
+  id: 'clarity' | 'design-power' | 'partner';
   title: string;
   subtitle: string;
   hoverText: string;

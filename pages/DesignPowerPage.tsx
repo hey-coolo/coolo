@@ -1,21 +1,18 @@
-
 import React from 'react';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
-// Fixed: Changed FIREPOWER_TIERS to DESIGN_POWER_TIERS as FIREPOWER_TIERS is not exported from constants.ts
 import { PROJECTS, DESIGN_POWER_TIERS } from '../constants';
 import { Link } from 'react-router-dom';
 
-const FirepowerPage: React.FC = () => {
+const DesignPowerPage: React.FC = () => {
   return (
     <div className="bg-brand-offwhite text-brand-navy min-h-screen pt-32 relative overflow-hidden">
-       {/* Heavy side border for structure */}
-      <div className="absolute top-0 right-0 w-[2px] h-full bg-brand-navy pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-[2px] h-full bg-brand-navy pointer-events-none opacity-10"></div>
       
       <div className="container mx-auto px-8">
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-6xl">
-            <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black block mb-6">Service Leg 02 / Firepower</span>
+            <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black block mb-6">Service Leg 02 / Design Power</span>
             <h1 className="text-8xl md:text-[15vw] font-black uppercase tracking-tight leading-[0.9] mt-8 text-brand-navy">
               The Creative<br/><span className="text-brand-purple italic">Method™</span>
             </h1>
@@ -26,12 +23,10 @@ const FirepowerPage: React.FC = () => {
         </AnimatedSection>
 
         <section className="py-32 border-t-2 border-brand-navy">
-            <h2 className="font-mono text-brand-navy uppercase tracking-[0.3em] text-xs font-black mb-16">Scope Levels & Tiers</h2>
+            <h2 className="font-mono text-brand-navy uppercase tracking-[0.3em] text-xs font-black mb-16">Engagement Tiers</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-l-2 border-brand-navy">
-                {/* Fixed: Replaced FIREPOWER_TIERS with DESIGN_POWER_TIERS */}
                 {DESIGN_POWER_TIERS.map((tier, i) => (
                     <AnimatedSection key={tier.name} delay={i * 100} className="h-full">
-                        {/* Fixed: Updated link to /design-power/ as /firepower/ route does not exist */}
                         <Link to={`/design-power/${tier.slug}`} className="group relative border-r-2 border-b-2 border-brand-navy p-12 h-full hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-500 flex flex-col justify-between block">
                             <div>
                                 <span className="font-mono text-xs uppercase text-brand-purple group-hover:text-brand-yellow font-black tracking-widest mb-4 block">{tier.name}</span>
@@ -69,7 +64,7 @@ const FirepowerPage: React.FC = () => {
              <div className="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
                  <div className="lg:col-span-4">
                      <h2 className="font-mono text-brand-navy uppercase tracking-[0.3em] text-xs font-black mb-8">Internal Playbook</h2>
-                     <h3 className="text-5xl font-black uppercase tracking-tight leading-none">How We<br/>Run It.</h3>
+                     <h3 className="text-5xl font-black uppercase tracking-tight leading-none">The Craft<br/>Protocol.</h3>
                  </div>
                  <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12">
                      {[
@@ -105,7 +100,7 @@ const FirepowerPage: React.FC = () => {
          <div className="flex animate-marquee whitespace-nowrap">
             {[1, 2, 3, 4, 5].map(i => (
                 <span key={i} className="text-[10vw] font-black uppercase tracking-tight text-brand-navy/10 mx-16">
-                    MAKE IT IRRESISTIBLE &bull; EXECUTION MATCHES INSIGHT &bull; 
+                    DESIGN POWER ON TAP &bull; SENIOR ONLY EXECUTION &bull; 
                 </span>
             ))}
          </div>
@@ -114,4 +109,4 @@ const FirepowerPage: React.FC = () => {
   );
 };
 
-export default FirepowerPage;
+export default DesignPowerPage;

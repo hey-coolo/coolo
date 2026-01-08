@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { CLARITY_TIERS } from '../constants';
@@ -44,11 +43,18 @@ const ClarityTierPage: React.FC = () => {
             
             {/* Sidebar Meta */}
             <div className="lg:col-span-4 space-y-12">
-                {tier.timeline && (
                 <AnimatedSection delay={100}>
                     <div className="p-8 bg-brand-navy text-brand-offwhite">
-                        <span className="font-mono text-xs uppercase tracking-widest text-brand-yellow font-bold mb-2 block">Est. Timeline</span>
-                        <h3 className="text-4xl font-black uppercase tracking-tight">{tier.timeline}</h3>
+                        <span className="font-mono text-xs uppercase tracking-widest text-brand-yellow font-bold mb-2 block">Investment</span>
+                        <h3 className="text-4xl font-black uppercase tracking-tight">Bespoke Quote</h3>
+                    </div>
+                </AnimatedSection>
+
+                {tier.timeline && (
+                <AnimatedSection delay={150}>
+                    <div className="p-8 border border-brand-navy/10">
+                        <span className="font-mono text-xs uppercase tracking-widest text-brand-purple font-bold mb-2 block">Est. Timeline</span>
+                        <h3 className="text-3xl font-black uppercase tracking-tight">{tier.timeline}</h3>
                     </div>
                 </AnimatedSection>
                 )}
@@ -73,7 +79,7 @@ const ClarityTierPage: React.FC = () => {
 
             {/* Main Scope List */}
             <div className="lg:col-span-8">
-                <h3 className="text-5xl font-black uppercase tracking-tight text-brand-navy mb-12">Included Features</h3>
+                <h3 className="text-5xl font-black uppercase tracking-tight text-brand-navy mb-12">Scope Breakdown</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
                     {tier.features.map((item, index) => (
                         <AnimatedSection key={index} delay={index * 50}>
@@ -103,9 +109,9 @@ const ClarityTierPage: React.FC = () => {
                 )}
                 
                 <div className="mt-24 p-12 border border-brand-navy/10 bg-brand-navy/5">
-                    <h4 className="font-mono text-xs uppercase tracking-widest text-brand-navy font-bold mb-4">No Magic Formula™</h4>
+                    <h4 className="font-mono text-xs uppercase tracking-widest text-brand-navy font-bold mb-4">The Senior Unit Standard</h4>
                     <p className="font-body text-lg text-brand-navy/70 leading-relaxed max-w-2xl">
-                        This isn't a shortcut. It's a system. We provide the frameworks and logic; you provide the raw inputs and decisions. Clarity comes from doing the work.
+                        This isn't a automated report. It's high-resolution strategy from the senior unit. We provide the frameworks and logic; you provide the raw inputs and decisions. Clarity comes from doing the work.
                     </p>
                 </div>
             </div>
@@ -115,10 +121,10 @@ const ClarityTierPage: React.FC = () => {
       {/* Footer Nav - Kinetic Yellow Hover */}
       <section className="py-48 group bg-brand-navy hover:bg-brand-yellow transition-colors duration-500 flex flex-col items-center justify-center overflow-hidden">
          <Link to="/clarity" className="block relative z-10 text-center w-full">
-            <span className="font-mono text-brand-offwhite/50 group-hover:text-brand-navy uppercase tracking-[0.5em] text-xs font-black transition-colors duration-300">Module Complete</span>
+            <span className="font-mono text-brand-offwhite/50 group-hover:text-brand-navy uppercase tracking-[0.5em] text-xs font-black transition-colors duration-300">Strategy Section</span>
             <div className="overflow-hidden mt-12">
                 <h3 className="text-6xl md:text-[8vw] font-black uppercase tracking-tight text-brand-offwhite group-hover:text-brand-navy transform transition-transform duration-500 group-hover:scale-105">
-                    Return to Clarity &larr;
+                    Return to Grid &larr;
                 </h3>
             </div>
         </Link>

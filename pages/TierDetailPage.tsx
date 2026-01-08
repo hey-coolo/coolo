@@ -1,20 +1,19 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FIREPOWER_TIERS } from '../constants';
+import { DESIGN_POWER_TIERS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import Accordion from '../components/Accordion';
 
 const TierDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const tier = FIREPOWER_TIERS.find(t => t.slug === slug);
+  const tier = DESIGN_POWER_TIERS.find(t => t.slug === slug);
 
   if (!tier) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-brand-offwhite">
         <div className="text-center">
             <h1 className="text-6xl font-black uppercase text-brand-navy tracking-tight">Scope_Error</h1>
-            <Link to="/firepower" className="font-mono uppercase underline mt-8 block text-brand-purple tracking-widest text-xs">Return to Grid</Link>
+            <Link to="/design-power" className="font-mono uppercase underline mt-8 block text-brand-purple tracking-widest text-xs">Return to Grid</Link>
         </div>
       </div>
     );
@@ -23,11 +22,9 @@ const TierDetailPage: React.FC = () => {
   return (
     <div className="bg-brand-offwhite min-h-screen pt-32">
       <div className="container mx-auto px-8 pb-32">
-        
-        {/* Header */}
         <AnimatedSection>
           <header className="py-24 max-w-5xl">
-            <Link to="/firepower" className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-8 block hover:text-brand-navy transition-colors">
+            <Link to="/design-power" className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-8 block hover:text-brand-navy transition-colors">
               &larr; Service Leg 02 / {tier.name}
             </Link>
             <h1 className="text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] text-brand-navy">
@@ -39,10 +36,7 @@ const TierDetailPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
-        {/* Breakdown Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-16 py-24 border-t-2 border-brand-navy">
-            
-            {/* Sidebar Meta */}
             <div className="lg:col-span-4 space-y-12">
                 <AnimatedSection delay={100}>
                     <div className="p-8 bg-brand-navy text-brand-offwhite">
@@ -67,7 +61,6 @@ const TierDetailPage: React.FC = () => {
                 </AnimatedSection>
             </div>
 
-            {/* Main Scope List & FAQs */}
             <div className="lg:col-span-8">
                 <div className="mb-24">
                     <h3 className="text-5xl font-black uppercase tracking-tight text-brand-navy mb-12">Scope Breakdown</h3>
@@ -101,22 +94,21 @@ const TierDetailPage: React.FC = () => {
                 )}
                 
                 <div className="mt-24 p-12 border border-brand-navy/10 bg-brand-navy/5">
-                    <h4 className="font-mono text-xs uppercase tracking-widest text-brand-navy font-bold mb-4">The COOLO Guarantee</h4>
+                    <h4 className="font-mono text-xs uppercase tracking-widest text-brand-navy font-bold mb-4">The Senior Standard</h4>
                     <p className="font-body text-lg text-brand-navy/70 leading-relaxed max-w-2xl">
-                        This isn't a hand-off. It's a partnership. All scopes include direct access to Franco & Ariana, weekly Loom updates, and final asset handoff via our structured Notion portal. No ghosting. No surprises.
+                        Every pixel and frame is handled by Franco and Ariana. No juniors. No outsourcing. High-resolution design power delivered directly into your brand engine.
                     </p>
                 </div>
             </div>
         </section>
       </div>
 
-      {/* Footer Nav - Solid Color Kinetic Hover */}
       <section className="py-48 group bg-brand-navy hover:bg-brand-purple transition-colors duration-500 flex flex-col items-center justify-center overflow-hidden">
-         <Link to="/firepower" className="block relative z-10 text-center w-full">
-            <span className="font-mono text-brand-offwhite/50 group-hover:text-brand-offwhite uppercase tracking-[0.5em] text-xs font-black transition-colors duration-500">Scope Defined</span>
+         <Link to="/design-power" className="block relative z-10 text-center w-full">
+            <span className="font-mono text-brand-offwhite/50 group-hover:text-brand-offwhite uppercase tracking-[0.5em] text-xs font-black transition-colors duration-500">Design Power Unit</span>
             <div className="overflow-hidden mt-12">
                 <h3 className="text-6xl md:text-[8vw] font-black uppercase tracking-tight text-brand-offwhite transform transition-transform duration-700 group-hover:scale-105">
-                    Return to Firepower &larr;
+                    Return to Grid &larr;
                 </h3>
             </div>
         </Link>

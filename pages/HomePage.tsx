@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
@@ -6,61 +5,104 @@ import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
 
-// --- 1. Structural Grid Hero ---
-const TandemHero: React.FC = () => {
-    const { scrollY } = useScroll();
-    // Adjusted parallax: move apart slightly to avoid overlap
-    const y1 = useTransform(scrollY, [0, 500], [0, -50]); 
-    const y2 = useTransform(scrollY, [0, 500], [0, 50]);
+const BrandHero: React.FC = () => {
+    // Keeping mouse tracking only for the subtle light background, removing from title
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    const springX = useSpring(mouseX, { stiffness: 60, damping: 25 });
+    const springY = useSpring(mouseY, { stiffness: 60, damping: 25 });
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        const { innerWidth, innerHeight } = window;
+        mouseX.set((e.clientX / innerWidth) - 0.5);
+        mouseY.set((e.clientY / innerHeight) - 0.5);
+    };
 
     return (
-        <section className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden">
-            {/* Background Grid Lines */}
-            <div className="absolute inset-0 w-full h-full pointer-events-none">
-                <div className="container mx-auto h-full border-x border-brand-navy/10 relative">
-                    <div className="absolute left-1/3 top-0 bottom-0 w-[1px] bg-brand-navy/10 hidden md:block"></div>
-                    <div className="absolute left-2/3 top-0 bottom-0 w-[1px] bg-brand-navy/10 hidden md:block"></div>
-                </div>
-            </div>
+        <section 
+            onMouseMove={handleMouseMove}
+            className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden"
+        >
+            {/* Structural Studio Grid Background */}
+            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03]"></div>
+            
+            {/* Interactive Light/Depth follow (Subtle Background Only) */}
+            <motion.div 
+                style={{ 
+                    x: useTransform(springX, [-0.5, 0.5], [100, -100]), 
+                    y: useTransform(springY, [-0.5, 0.5], [100, -100]) 
+                }}
+                className="absolute inset-0 z-0 pointer-events-none opacity-20"
+            >
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brand-purple/5 blur-[120px] rounded-full" />
+            </motion.div>
 
+            {/* Typography Overlay - Static (No mouse interaction) */}
             <div className="container mx-auto px-4 md:px-8 relative z-10 flex-grow flex flex-col justify-center">
-                <div className="mb-16 md:mb-24 relative">
-                    {/* Top Line */}
-                    <motion.h1 
-                        style={{ y: y1 }} 
-                        className="text-[11vw] md:text-[10.5vw] font-black uppercase leading-[0.95] tracking-tight text-brand-navy mb-2 md:mb-4"
-                    >
-                        BRAND STRATEGY
-                    </motion.h1>
-                    
-                    {/* Bottom Line */}
-                    <div className="flex justify-end overflow-hidden">
+                <div className="relative select-none mb-32">
+                    <div>
                         <motion.h1 
-                            style={{ y: y2 }} 
-                            className="text-[11vw] md:text-[10.5vw] font-black uppercase leading-[0.95] tracking-tight text-brand-navy text-right"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+                            className="text-[12.5vw] font-black uppercase leading-[0.8] tracking-tight text-brand-navy"
                         >
-                            <span className="text-brand-purple font-serif italic font-light px-2">&</span> DESIGN EXECUTION
+                            BRAND STRATEGY
                         </motion.h1>
                     </div>
+                    
+                    <div className="flex justify-start items-baseline mt-4 ml-[24vw] relative">
+                        <motion.span 
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1.4, delay: 0.4, ease: "easeOut" }}
+                            className="text-brand-purple font-serif italic font-light text-[11vw] leading-none absolute -left-[1.1em] top-[-0.05em] pointer-events-none"
+                        >
+                            &
+                        </motion.span>
+                        <div>
+                            <motion.h1 
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
+                                className="text-[12.5vw] font-black uppercase leading-[0.8] tracking-tight text-brand-navy"
+                            >
+                                DESIGN POWER
+                            </motion.h1>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 border-t-2 border-brand-navy pt-8">
-                    <div className="hidden md:block">
-                        <span className="font-mono text-xs uppercase tracking-[0.2em] font-bold block mb-2 text-brand-purple">Est. 2024</span>
-                        <p className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/80">Mount Maunganui<br/>New Zealand</p>
-                    </div>
-                    <div className="md:text-center">
-                         <span className="font-mono text-xs uppercase tracking-[0.2em] font-bold block mb-2 text-brand-purple">The Senior Unit</span>
-                         <p className="font-body text-sm max-w-xs mx-auto text-brand-navy/90 font-medium">
-                            We replace agency bloat with surgical precision. Two experts. One system.
-                         </p>
-                    </div>
-                    <div className="md:text-right">
-                        <span className="font-mono text-xs uppercase tracking-[0.2em] font-bold block mb-2 text-brand-purple">Status</span>
-                         <div className="flex items-center justify-end gap-2">
-                             <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse"></span>
-                             <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/80">Accepting Partners</span>
-                         </div>
+                {/* Meta Footer Section */}
+                <div className="mt-auto">
+                    <div className="w-full h-[1.5px] bg-brand-navy/80 mb-10"></div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start text-brand-navy">
+                        {/* Location */}
+                        <div className="font-mono">
+                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-4">Est. 2024</span>
+                            <div className="text-[10px] uppercase tracking-widest leading-loose font-bold opacity-70">
+                                MOUNT MAUNGANUI<br/>NEW ZEALAND
+                            </div>
+                        </div>
+
+                        {/* One-Liner Description - Partner Focused */}
+                        <div className="md:text-center px-4 font-mono">
+                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-4">The Senior Unit</span>
+                             <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
+                                A specialized senior unit for ambitious founders and agencies. Two experts. One system.
+                             </p>
+                        </div>
+
+                        {/* Status */}
+                        <div className="md:text-right font-mono">
+                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-4">Status</span>
+                             <div className="flex items-center md:justify-end gap-3">
+                                 <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
+                                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70">Accepting Partners</span>
+                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,20 +110,17 @@ const TandemHero: React.FC = () => {
     );
 }
 
-// --- 2. Split Screen Manifesto ---
 const SplitManifesto: React.FC = () => {
     return (
         <section className="border-t-2 border-brand-navy bg-brand-offwhite relative z-20">
             <div className="container mx-auto border-x border-brand-navy/10">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
-                    
-                    {/* Left: Sticky Header */}
                     <div className="lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] p-8 md:p-16 border-b lg:border-b-0 lg:border-r border-brand-navy/10 flex flex-col justify-between">
                         <div>
                             <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-8 block">01 / The Thesis</span>
                             <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tight leading-[0.95] text-brand-navy">
                                 No Magic.<br/>
-                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>Just Logic.</span>
+                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '1.5px #0F0328' }}>High-Res Logic.</span>
                             </h2>
                         </div>
                         <div className="hidden lg:block">
@@ -91,23 +130,22 @@ const SplitManifesto: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Right: Scrolling Narrative */}
                     <div className="p-8 md:p-16 space-y-32">
                         <AnimatedSection>
                             <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy">
-                                Most agencies sell you <span className="bg-brand-yellow px-2 font-bold text-brand-navy">mystery</span>. They hide behind jargon and "proprietary processes" to justify the billable hours.
+                                Great taste is a discipline. We help ambitious organizations strip away the noise to uncover their <span className="text-brand-purple font-bold">soul</span> and express it with absolute precision.
                             </p>
                         </AnimatedSection>
                         
                         <AnimatedSection>
                             <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy">
-                                We sell <span className="text-brand-purple font-bold">clarity</span>. We believe that if you can't explain your strategy on a napkin, you don't have one.
+                                We sell <span className="text-brand-purple font-bold">clarity</span>. We believe that if you can't explain your strategy on a napkin, you don't have one worth executing.
                             </p>
                         </AnimatedSection>
 
                         <AnimatedSection>
                             <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy">
-                                We are the <span className="border-b-4 border-brand-navy font-bold">Operators</span>. We don't just design the car; we build the engine and hand you the keys.
+                                We provide the <span className="text-brand-purple font-bold">Design Power</span>. We don't just design the car; we build the engine and hand you the keys to drive it.
                             </p>
                         </AnimatedSection>
 
@@ -117,20 +155,17 @@ const SplitManifesto: React.FC = () => {
                              </Link>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
     );
 }
 
-// --- 3. Service Legs (Restored) ---
 const ServiceRouter: React.FC = () => {
     return (
         <section className="bg-brand-offwhite border-b-2 border-brand-navy relative z-20">
              <div className="grid grid-cols-1 lg:grid-cols-3">
                 {SERVICE_LEGS.map((leg, index) => {
-                    // Logic to split "I Need" from the rest of the title
                     const titleParts = leg.title.match(/^(I Need)\s+(.*)$/i);
                     const prefix = titleParts ? titleParts[1] : 'I Need';
                     const mainTitle = titleParts ? titleParts[2] : leg.title;
@@ -151,21 +186,16 @@ const ServiceRouter: React.FC = () => {
                                     </span>
                                 </div>
                                 
-                                {/* Title Block with Split Hierarchy */}
                                 <div className="mb-8 relative">
-                                    {/* "I Need" - Small, Purple (Yellow on Hover) */}
                                     <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors block mb-2">
                                         {prefix}
                                     </span>
-                                    
-                                    {/* Main Word - Big, Navy (White on Hover) */}
                                     <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tight leading-[0.9] text-brand-navy group-hover:text-brand-offwhite transition-colors break-words">
                                         {mainTitle}
                                         <span className="text-brand-purple group-hover:text-brand-yellow transition-colors">.</span>
                                     </h2>
                                 </div>
                                 
-                                {/* Subtitle turns white for contrast against lavender */}
                                 <p className="font-body text-xl md:text-2xl text-brand-navy/60 group-hover:text-brand-offwhite/90 transition-colors max-w-sm leading-relaxed">
                                     {leg.subtitle}
                                 </p>
@@ -187,7 +217,6 @@ const ServiceRouter: React.FC = () => {
     )
 }
 
-// --- 4. Capability List (Editorial Style) ---
 const CapabilityList: React.FC = () => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const mouseX = useMotionValue(0);
@@ -206,21 +235,21 @@ const CapabilityList: React.FC = () => {
             title: 'Identity', 
             desc: 'Visual Systems, Logos, & Typography', 
             img: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800',
-            link: '/firepower'
+            link: '/design-power'
         },
         { 
             id: '03', 
             title: 'Digital', 
             desc: 'Webflow Development & UI/UX', 
             img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
-            link: '/firepower'
+            link: '/design-power'
         },
         { 
             id: '04', 
             title: 'Motion', 
             desc: '3D Visualization & Kinetic Type', 
-            img: 'https://images.unsplash.com/photo-1633167606207-d840b5070fc2?auto=format&fit=crop&q=80&w=800',
-            link: '/firepower'
+            img: 'https://images.unsplash.com/photo-1633167606207-d840b5070fc2?auto=format&fit=crop&q=80&w=1200',
+            link: '/design-power'
         }
     ];
 
@@ -260,7 +289,6 @@ const CapabilityList: React.FC = () => {
                                 </h3>
                             </div>
                             <div className="mt-4 md:mt-0 pl-[calc(2rem+14px)] md:pl-0">
-                                {/* Increased opacity for better readability against dark bg */}
                                 <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-brand-offwhite">
                                     {cap.desc}
                                 </span>
@@ -270,7 +298,6 @@ const CapabilityList: React.FC = () => {
                 </div>
             </div>
 
-            {/* Floating Image Reveal */}
             <motion.div
                 className="pointer-events-none fixed top-0 left-0 w-[300px] h-[400px] z-50 hidden md:block overflow-hidden bg-brand-yellow mix-blend-normal"
                 style={{
@@ -298,7 +325,6 @@ const CapabilityList: React.FC = () => {
     );
 }
 
-// --- 5. Showcase (Clean Grid) ---
 const ShowcaseGrid: React.FC = () => {
     return (
         <section className="bg-brand-offwhite px-4 md:px-8 py-32 relative z-10 border-b-2 border-brand-navy">
@@ -331,7 +357,6 @@ const ShowcaseGrid: React.FC = () => {
     )
 }
 
-// --- 6. Journal / Latest Intel ---
 const LatestIntel: React.FC = () => {
     return (
         <section className="py-24 relative z-20 bg-brand-offwhite">
@@ -360,7 +385,7 @@ const LatestIntel: React.FC = () => {
 const HomePage: React.FC = () => {
   return (
     <div className="bg-brand-offwhite">
-      <TandemHero />
+      <BrandHero />
       <SplitManifesto />
       <ServiceRouter />
       <CapabilityList />

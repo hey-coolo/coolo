@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, Transition } from 'framer-motion';
@@ -9,7 +8,7 @@ import ClarityPage from './pages/ClarityPage';
 import FreeResourcesPage from './pages/clarity/FreeResourcesPage';
 import WorkbookPage from './pages/clarity/WorkbookPage';
 import CoursePage from './pages/clarity/CoursePage';
-import FirepowerPage from './pages/FirepowerPage';
+import DesignPowerPage from './pages/DesignPowerPage';
 import PartnershipPage from './pages/PartnershipPage';
 import WorkPage from './pages/WorkPage';
 import TeamPage from './pages/TeamPage';
@@ -37,25 +36,21 @@ const pageVariants = {
 
 const pageTransition: Transition = {
   duration: 0.8,
-  ease: [0.19, 1, 0.22, 1], // Expo out for kinetic feel
+  ease: [0.19, 1, 0.22, 1],
 };
 
 const App: React.FC = () => {
   const location = useLocation();
-  
-  // Check session storage to see if the user has already visited in this session
   const [loading, setLoading] = useState(() => {
     const hasVisited = sessionStorage.getItem('coolo_visited');
     return !hasVisited;
   });
   
   React.useEffect(() => {
-    // Reset scroll position instantly on route change so animation plays cleanly
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
   const handleEnter = () => {
-    // Mark session as visited
     sessionStorage.setItem('coolo_visited', 'true');
     setLoading(false);
   };
@@ -96,8 +91,8 @@ const App: React.FC = () => {
                       <Route path="/clarity/workbook" element={<WorkbookPage />} />
                       <Route path="/clarity/course" element={<CoursePage />} />
                       <Route path="/clarity/:slug" element={<ClarityTierPage />} />
-                      <Route path="/firepower" element={<FirepowerPage />} />
-                      <Route path="/firepower/:slug" element={<TierDetailPage />} />
+                      <Route path="/design-power" element={<DesignPowerPage />} />
+                      <Route path="/design-power/:slug" element={<TierDetailPage />} />
                       <Route path="/partnership" element={<PartnershipPage />} />
                       <Route path="/partnership/:slug" element={<PartnershipDetail />} />
                       <Route path="/work" element={<WorkPage />} />

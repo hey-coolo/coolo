@@ -1,12 +1,5 @@
-import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, FirepowerTier, ClarityTier, Script, Resource, Workbook, CourseModule, PartnershipModel } from './types';
 
-// ==========================================
-// ASSET REGISTRY
-// ==========================================
-// INSTRUCTIONS:
-// 1. Upload your real images to the 'assets/images' folder in GitHub.
-// 2. Update these paths below to match your real filenames.
-// ==========================================
+import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, DesignPowerTier, ClarityTier, Script, Resource, Workbook, CourseModule, PartnershipModel } from './types';
 
 const PLACEHOLDER_IMG = 'https://images.unsplash.com/photo-1633167606207-d840b5070fc2?auto=format&fit=crop&q=80&w=1200';
 
@@ -17,12 +10,12 @@ export const ASSETS = {
   },
   services: {
     clarity: 'https://images.unsplash.com/photo-1470075801209-17f9ec0cada6?auto=format&fit=crop&q=80&w=1200',
-    firepower: 'https://images.unsplash.com/photo-1516937941348-c09e554b9631?auto=format&fit=crop&q=80&w=1200',
+    designPower: 'https://images.unsplash.com/photo-1516937941348-c09e554b9631?auto=format&fit=crop&q=80&w=1200',
     partnership: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?auto=format&fit=crop&q=80&w=1200'
   },
   team: {
-    franco: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800',
-    ariana: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800'
+    franco: './assets/images/franco.webp',
+    ariana: './assets/images/ariana.webp'
   }
 };
 
@@ -51,21 +44,67 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 2,
-    title: 'Senior Unit Sprint',
-    slug: 'senior-unit-sprint',
-    description: 'The strategy behind the Senior-Only model.',
+    title: 'Aura Wellness',
+    slug: 'aura-wellness',
+    description: 'Strategic repositioning for a luxury supplement line.',
     category: 'Brand Identity',
-    tags: ['Positioning', 'Messaging', 'Operations'],
+    tags: ['Positioning', 'Packaging', 'Strategy'],
     year: 2024,
-    imageUrl: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200',
+    imageUrl: 'https://images.unsplash.com/photo-1556229167-7313023e3547?auto=format&fit=crop&q=80&w=1200',
     featured: true,
-    client: 'COOLO Studio',
-    challenge: 'Communicate high-end strategy without the agency fluff.',
+    client: 'Aura Collective',
+    challenge: 'Move away from generic wellness aesthetics into high-fashion technical performance.',
+    role: 'Lead Strategist & Art Director',
+    outcome: 'Successful launch into 12 high-end boutique retailers in NYC and LA.',
     story: {
-        goal: "Replace the 15-person agency team with 2 specialized senior operators.",
-        gap: "Standard agency hand-offs lead to 40% loss in clarity during execution.",
-        gamble: "Removing account managers entirely. Clients only talk to the people doing the work.",
-        gain: "300% faster delivery cycles and zero strategic drift.",
+        goal: "Redefine wellness as an aesthetic ritual rather than a medical chore.",
+        gap: "The market was saturated with minimalist white bottles. We went deep navy and gold-foil.",
+        gamble: "Using 100% 3D renders for the initial launch campaign instead of physical photography.",
+        gain: "40% lower production costs and a hyper-real aesthetic that competitors couldn't replicate.",
+        processImages: [PLACEHOLDER_IMG, PLACEHOLDER_IMG]
+    }
+  },
+  {
+    id: 3,
+    title: 'Nexus Capital',
+    slug: 'nexus-capital',
+    description: 'Modernizing a private equity firm for a new generation of founders.',
+    category: 'Web Design',
+    tags: ['Webflow', 'UX/UI', 'Corporate Identity'],
+    year: 2023,
+    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200',
+    featured: false,
+    client: 'Nexus Partners',
+    challenge: 'Break the stale, blue-and-gray mold of traditional finance.',
+    role: 'Full Digital Build',
+    outcome: 'A technical, high-speed interface that increased founder inquiries by 85%.',
+    story: {
+        goal: "Translate financial security into digital velocity.",
+        gap: "Corporate sites are slow. We used kinetic typography and custom Webflow interactions to evoke precision.",
+        gamble: "Removing all stock imagery of 'people in suits' and replacing it with abstract geometric art.",
+        gain: "Immediate differentiation from Tier-1 competitors and a massive spike in mobile engagement.",
+        processImages: [PLACEHOLDER_IMG, PLACEHOLDER_IMG]
+    }
+  },
+  {
+    id: 4,
+    title: 'Kinetic Labs',
+    slug: 'kinetic-labs',
+    description: 'Motion identity for a specialized biomechanics startup.',
+    category: 'Motion Design',
+    tags: ['Motion', 'Logo Design', 'Video'],
+    year: 2023,
+    imageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200',
+    featured: true,
+    client: 'Kinetic Performance',
+    challenge: 'Represent human motion using purely digital geometric data.',
+    role: 'Motion Director',
+    outcome: 'A dynamic logo system that changes state based on live biometric inputs.',
+    story: {
+        goal: "Design a living brand system.",
+        gap: "Static logos don't represent a company built on movement.",
+        gamble: "A logo that never looks the same twice, driven by a generative algorithm.",
+        gain: "Recognition as a technical pioneer in the bio-tech space.",
         processImages: [PLACEHOLDER_IMG, PLACEHOLDER_IMG]
     }
   }
@@ -74,7 +113,7 @@ export const PROJECTS: Project[] = [
 export const NAV_LINKS = [
   { name: 'Studio', path: '/about' }, 
   { name: 'Clarity', path: '/clarity' },
-  { name: 'Firepower', path: '/firepower' },
+  { name: 'Design Power', path: '/design-power' },
   { name: 'Partnership', path: '/partnership' },
   { name: 'Work', path: '/work' },
   { name: 'Journal', path: '/journal' },
@@ -92,13 +131,13 @@ export const SERVICE_LEGS: ServiceLeg[] = [
     imageUrl: ASSETS.services.clarity
   },
   {
-    id: 'firepower',
-    title: 'I Need Firepower',
+    id: 'design-power',
+    title: 'I Need Design Power',
     subtitle: 'The Creative Method™',
     hoverText: 'Identity, 3D, and Webflow builds.',
     visual: 'High-End Execution',
-    path: '/firepower',
-    imageUrl: ASSETS.services.firepower
+    path: '/design-power',
+    imageUrl: ASSETS.services.designPower
   },
   {
     id: 'partner',
@@ -113,27 +152,83 @@ export const SERVICE_LEGS: ServiceLeg[] = [
 
 export const CLARITY_TIERS: ClarityTier[] = [
     { 
+        slug: 'clarity-audit',
+        name: 'Clarity Audit', 
+        subtitle: 'The Diagnostic Phase',
+        desc: "A surgical audit of your current brand positioning. We find the leaks in your narrative.", 
+        cta: "Book Audit", 
+        features: ["Narrative Audit", "Competitor Matrix", "Friction Report", "Immediate Fixes"],
+        timeline: "1 Week",
+        idealFor: "Founders sensing a plateau but unsure why."
+    },
+    { 
         slug: 'consulting',
         name: 'Consulting Sprint', 
-        price: '$4,000', 
         subtitle: 'The No Magic Formula™',
         desc: "2–4 week strategy sprint. We diagnose the friction and build the brand OS.", 
         cta: "Inquire Now", 
         features: ["Positioning One-Pager", "Audience Map", "Messaging Matrix", "90-Day Roadmap"],
         timeline: "4 Weeks",
-        idealFor: "Funded Startups and Scale-ups."
+        idealFor: "Funded Startups and Scale-ups needing alignment."
+    },
+    { 
+        slug: 'brand-os',
+        name: 'Brand OS', 
+        subtitle: 'The Full Protocol',
+        desc: "Comprehensive brand strategy and systems design. This is your company's operating manual.", 
+        cta: "Secure OS", 
+        features: ["Positioning Strategy", "Verbal Identity", "Brand Story Spine", "Campaign Pillars", "9-Month Roadmap"],
+        timeline: "8 Weeks",
+        idealFor: "Companies preparing for Series A/B or major pivots."
+    },
+    { 
+        slug: 'fractional-strategy',
+        name: 'Fractional Strategy', 
+        subtitle: 'Senior Guidance',
+        desc: "Ongoing strategic partnership. We join your executive team as the 'Strategic Brain'.", 
+        cta: "Apply for Retainer", 
+        features: ["Monthly Advisory", "Campaign Oversight", "Hiring Assistance", "Board Presentation Prep"],
+        timeline: "Retainer",
+        idealFor: "Established brands needing senior CD leadership."
     }
 ];
 
-export const FIREPOWER_TIERS: FirepowerTier[] = [
+export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
+    {
+        slug: "foundations",
+        name: "Foundations",
+        focus: "Visual Identity System",
+        desc: "The core aesthetic engine. We build the visual rules that make your brand unmistakable.",
+        deliverables: ["Primary & Secondary Logos", "Typography System", "Color Palette", "Basic Brand Guidelines"],
+        timeline: "4-6 Weeks",
+        idealFor: "Startups needing a professional baseline."
+    },
     {
         slug: "flagship",
         name: "Flagship",
         focus: "Full Creative Method™",
-        desc: "Complete visual identity, 3D product visuals, and a custom Webflow build.",
-        deliverables: ["Identity System", "3D Renders", "Campaign Logic", "Webflow Site"],
-        timeline: "10 Weeks",
-        idealFor: "Brands needing market dominance visuals."
+        desc: "The complete studio experience. Identity, Custom Webflow build, and signature 3D visuals.",
+        deliverables: ["Identity System", "High-End 3D Renders", "Custom Webflow Site", "Motion Guidelines"],
+        timeline: "10-12 Weeks",
+        idealFor: "Brands ready for market dominance."
+    },
+    {
+        slug: "viz-plus-motion",
+        name: "Viz + Motion",
+        focus: "Technical Visualization",
+        desc: "Surgical 3D visualization and kinetic typography for product-led brands.",
+        deliverables: ["4K Product Renders", "Kinetic Type System", "Social Motion Templates", "3D Material Library"],
+        timeline: "6-8 Weeks",
+        idealFor: "CPG and Tech Hardware brands."
+    },
+    {
+        slug: "retained-power",
+        name: "Retained Power",
+        focus: "Monthly Senior Unit",
+        desc: "Ongoing high-output design partnership. No junior designers, just senior firepower on tap.",
+        deliverables: ["Dedicated Design Sprints", "Ongoing Campaign Creative", "Web Maintenance", "Weekly Loom Syncs"],
+        timeline: "Monthly",
+        idealFor: "Growing companies needing a reliable design partner."
     }
 ];
 
@@ -143,10 +238,40 @@ export const PARTNERSHIP_MODELS: PartnershipModel[] = [
         title: 'Scale Partnership',
         description: 'Elite white-label unit for senior agencies.',
         priceLabel: 'Flat Fee',
-        details: "We plug into your agency process as the 'Design Firepower' unit. You handle account management; we handle the craft.",
+        details: "We plug into your agency process as the 'Design Power' unit. You handle account management; we handle the craft.",
         idealFor: "Agencies needing high-end 3D and Webflow expertise.",
         deliverables: ["3D Visuals", "UI/UX Design", "Webflow Dev"],
         commitment: "Project-based"
+    },
+    {
+        slug: 'fractional-cd',
+        title: 'Fractional CD',
+        description: 'Executive creative leadership for in-house teams.',
+        priceLabel: 'Monthly',
+        details: "We act as your Creative Director, managing your internal team and external vendors to ensure zero visual drift.",
+        idealFor: "Scale-ups with junior designers needing senior direction.",
+        deliverables: ["Creative Direction", "Review Protocols", "Hiring Specs"],
+        commitment: "3 Months Min."
+    },
+    {
+        slug: 'project-spike',
+        title: 'Project Spike',
+        description: 'Short-term high-intensity creative sprints.',
+        priceLabel: 'Project-based',
+        details: "A surgical creative strike. We solve one specific complex problem in a high-speed sprint.",
+        idealFor: "Brands needing a specific high-impact campaign or launch site.",
+        deliverables: ["Sprinted Asset Pack", "Technical Build"],
+        commitment: "2-4 Weeks"
+    },
+    {
+        slug: 'equity',
+        title: 'Venture Unit',
+        description: 'High-risk, high-reward strategic partnership.',
+        priceLabel: 'Equity + Fee',
+        details: "We invest our design power into early-stage ventures with massive technical or market potential.",
+        idealFor: "Pre-seed/Seed founders with world-class products and zero design.",
+        deliverables: ["Full Brand Launch", "Product Design", "Pitch Deck V1"],
+        commitment: "Long-term"
     }
 ];
 
@@ -190,7 +315,64 @@ export const JOURNAL_POSTS: JournalPost[] = [
     readTime: "4 min read",
     author: "Franco",
     content: "Micromanagement happens when trust is broken or never built. We build trust through a rigid strategy process that makes subjective arguments impossible."
+  },
+  {
+    slug: "3d-as-strategic-asset",
+    title: "3D as a Strategic Asset",
+    date: "2024.10.05",
+    imageUrl: 'https://images.unsplash.com/photo-1633167606207-d840b5070fc2?auto=format&fit=crop&q=80&w=1200',
+    excerpt: "Moving 3D from 'cool render' to 'conversion tool'.",
+    tags: ["3D", "E-commerce", "Strategy"],
+    readTime: "6 min read",
+    author: "Franco",
+    content: "3D visualization isn't just about eye candy. For product-led brands, it's about control. Lighting, materials, and angles that are impossible in physical shoots become repeatable, modular assets."
+  },
+  {
+    slug: "no-magic-formula-logic",
+    title: "The Logic of No Magic",
+    date: "2024.09.20",
+    imageUrl: 'https://images.unsplash.com/photo-1470075801209-17f9ec0cada6?auto=format&fit=crop&q=80&w=1200',
+    excerpt: "Why we killed the 'Creative Guru' trope to save our clients' money.",
+    tags: ["Business", "Operations", "Fluff"],
+    readTime: "5 min read",
+    author: "Franco",
+    content: "The 'Creative Guru' model is dangerous. It relies on inspiration, which is fickle. We rely on logic, which is defensible. If your strategy can't survive a stress test of 'Why?', it's just decoration."
+  },
+  {
+    slug: "remote-mount-strategy",
+    title: "Remote Firepower",
+    date: "2024.08.15",
+    imageUrl: 'https://images.unsplash.com/photo-1516937941348-c09e554b9631?auto=format&fit=crop&q=80&w=1200',
+    excerpt: "Operating a high-end global studio from Mount Maunganui, NZ.",
+    tags: ["Lifestyle", "Studio Ops", "NZ"],
+    readTime: "4 min read",
+    author: "Ariana",
+    content: "The best talent doesn't live in a cubicle in Shoreditch anymore. By operating from the Mount, we maintain the sanity required to do high-level deep work for global partners."
   }
+];
+
+export const FREE_RESOURCES: Resource[] = [
+    {
+        id: '01',
+        title: 'The Clarity Audit',
+        format: 'PDF',
+        desc: 'A 15-point checklist to identify narrative leaks in your current brand.',
+        link: '#'
+    },
+    {
+        id: '02',
+        title: 'No Magic Questionnaire',
+        format: 'Notion',
+        desc: 'The exact intake form we use to deconstruct high-growth brands.',
+        link: '#'
+    },
+    {
+        id: '03',
+        title: 'Positioning One-Pager',
+        format: 'Template',
+        desc: 'A minimalist template to define your core value prop on a single page.',
+        link: '#'
+    }
 ];
 
 export const PROCESS_STEPS = [
@@ -202,13 +384,121 @@ export const PROCESS_STEPS = [
 
 export const FAQ_DATA = [
   {
-    category: 'Economics',
+    category: 'The Unit',
+    questions: [
+      {
+          q: 'What exactly is a "Senior Unit"?',
+          a: "It's a high-output, low-overhead model. You work directly with the experts (Franco and Ariana). No account managers, no junior designers learning on your dime. Just senior design power delivered with surgical precision."
+      },
+      {
+          q: 'Who am I actually working with?',
+          a: "You work directly with Franco (Strategy & Design) and Ariana (Ops & Execution). We do not have juniors or interns. When you hire COOLO, you hire us."
+      },
+      {
+          q: 'Where are you based?',
+          a: "Mount Maunganui, New Zealand. We operate globally from a place that preserves our sanity and fuels our deep work. We are a remote-first studio that values clarity over geography."
+      },
+      {
+          q: 'Do you work with agencies?',
+          a: "Yes. We act as an elite white-label 'Design Power' unit for agencies that need to scale their creative output without adding full-time senior headcount."
+      },
+      {
+          q: 'Are you a full-service agency?',
+          a: "No. We are a specialized unit. We do Strategy, Identity, 3D, and Webflow. We don't do SEO, PPC, or social media management. We build the engine; you (or your marketing team) drive it."
+      }
+    ]
+  },
+  {
+    category: 'Economics & Value',
     questions: [
       { 
           q: 'Why is the investment higher than a freelancer?', 
-          a: "A freelancer executes tasks. We execute outcomes. You're paying for the strategic seniority that prevents costly re-designs in 6 months." 
+          a: "A freelancer executes tasks. We execute outcomes. You're paying for the strategic seniority that prevents costly re-designs and narrative pivots in 6 months. We build systems, not just assets." 
+      },
+      {
+          q: 'Do you offer fixed pricing?',
+          a: "Our core tiers (Clarity Audit, Brand OS, Flagship) have base starting points, but every project is quoted bespoke based on the complexity of your problem. We don't believe in one-size-fits-all pricing for high-end strategy."
+      },
+      {
+          q: 'What is your typical project lead time?',
+          a: "Most strategic audits take 1-2 weeks. Full Brand OS builds take 8 weeks. Website and 3D flagship builds are typically 10-12 weeks. Quality requires a certain velocity of logic."
+      },
+      {
+          q: 'Do you offer payment plans?',
+          a: "For our larger builds, we typically structure payments in 2-3 milestones. We are a business partner, and we want the terms to reflect a mutual commitment to excellence."
+      },
+      {
+          q: 'Can I pay for just a logo?',
+          a: "Generally, no. A logo without a strategy is just decoration. We only take on identity projects that include at least a foundational strategy phase to ensure the visuals actually work for your business."
       }
     ]
+  },
+  {
+      category: 'The Process',
+      questions: [
+          {
+              q: 'Can we skip strategy and go straight to design?',
+              a: "No. Design without strategy is guesswork. We won't risk your capital or our reputation on it. If you don't have a clear narrative, we build it first."
+          },
+          {
+              q: 'What is the "No Magic Formula™"?',
+              a: "It is our belief that there is no secret sauce—only rigorous logic and deep empathy for the audience. We deconstruct the brand to its soul and rebuild it with high-res precision."
+          },
+          {
+              q: 'How many concepts do we get?',
+              a: "We don't 'throw concepts at a wall'. We iterate internally and present the strongest, most logical solution that meets the strategy. We work together to refine that solution until it is perfect."
+          },
+          {
+              q: 'How do we communicate?',
+              a: "We use Slack for daily syncs and asynchronous communication. We use Loom for deep-dive walkthroughs of creative work. We keep meetings to a minimum so we can focus on deep work."
+          },
+          {
+              q: 'What happens if I don\'t like the design?',
+              a: "By following our 'Logic Locked' strategy process, we align on the 'Why' before we ever touch the 'What'. This almost entirely eliminates the risk of a design mismatch."
+          }
+      ]
+  },
+  {
+      category: 'Technical & Tools',
+      questions: [
+          {
+              q: 'Why Webflow?',
+              a: "Webflow gives us the power of a custom build with the security and speed of a managed platform. It allows for high-end kinetic typography and interactions that standard templates can't handle."
+          },
+          {
+              q: 'What tools do you use for 3D?',
+              a: "We use Cinema4D and Redshift for high-end product and environment visualizations. This allows us to create 'impossible' lighting and materials that are repeatable and modular for your brand OS."
+          },
+          {
+              q: 'Do you handle web hosting?',
+              a: "We build on Webflow, and hosting is handled through their platform. We help you set everything up and hand over the 'keys' (admin access) once the project is live."
+          },
+          {
+              q: 'Do you provide source files?',
+              a: "Yes. Upon final payment, you own all the assets we created. We provide clean, organized source files so you (or your future team) can maintain the system."
+          }
+      ]
+  },
+  {
+      category: 'Partnership & Scale',
+      questions: [
+          {
+              q: 'Do you work with other creative agencies?',
+              a: "Yes. We act as an elite white-label design power unit for senior agencies who need high-res 3D or Webflow execution without adding permanent headcount."
+          },
+          {
+              q: 'What is a Fractional CD?',
+              a: "We join your executive team for a set amount of time (usually 3-6 months) to provide senior creative direction. We manage your internal teams, audit your outputs, and ensure zero visual drift."
+          },
+          {
+              q: 'Do you take equity?',
+              a: "In very specific cases for early-stage startups where we see massive potential and a perfect strategic fit, we may consider a mix of fee and equity."
+          },
+          {
+              q: 'How do I know if we are a good fit?',
+              a: "If you value logic over fluff, speed over bureaucracy, and direct access over agency layers, we will likely work well together."
+          }
+      ]
   }
 ];
 
@@ -225,6 +515,5 @@ export const SCRIPTS_DATA: Script[] = [
         overlay: "Strategy is the filter for subjective noise."
     }
 ];
-export const FREE_RESOURCES: Resource[] = [];
 export const WORKBOOKS: Workbook[] = [];
 export const COURSE_MODULES: CourseModule[] = [];
