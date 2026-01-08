@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, AnimatePresence } from 'framer-motion';
 
@@ -10,12 +11,14 @@ const CustomCursor: React.FC = () => {
   const [isPointer, setIsPointer] = useState(false);
 
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
+    // Switching to pointermove for stylus/tablet/touch support
+    const moveCursor = (e: PointerEvent) => {
       // Direct updates for instant response
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
       
       const target = e.target as HTMLElement;
+      if (!target) return;
       
       // Check for interactive elements
       const isInteractive = target.closest('a, button, [role="button"], input, textarea, .cursor-pointer');
@@ -26,9 +29,16 @@ const CustomCursor: React.FC = () => {
       setCursorText(textAttr || "");
     };
 
-    window.addEventListener('mousemove', moveCursor);
+    /**
+     * CRITICAL: We use { capture: true } to ensure the cursor tracks the pointer
+     * even when the sketching canvas has 'setPointerCapture' active.
+     */
+    window.addEventListener('pointermove', moveCursor, { capture: true });
+    window.addEventListener('pointerdown', moveCursor, { capture: true });
+
     return () => {
-      window.removeEventListener('mousemove', moveCursor);
+      window.removeEventListener('pointermove', moveCursor, { capture: true });
+      window.removeEventListener('pointerdown', moveCursor, { capture: true });
     };
   }, [cursorX, cursorY]);
 
