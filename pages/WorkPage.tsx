@@ -64,7 +64,7 @@ const WorkPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Fixed Grid Logic: Simple 2-column layout to prevent collapse shown in screenshot */}
+          {/* Simple 2-column grid to ensure items never collapse into strips */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {filteredProjects.map((project) => (
               <div key={project.id}>

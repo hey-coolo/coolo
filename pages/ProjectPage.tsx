@@ -43,7 +43,7 @@ const IndividualDraggable: React.FC<{ img: string; initialPos: { top: string; le
                 opacity: 0 
             }}
             animate={{ 
-                opacity: 0.75, 
+                opacity: 0.8, 
                 transition: { duration: 1, delay: Math.random() * 0.5 } 
             }}
             whileHover={{ 
@@ -70,7 +70,8 @@ const IndividualDraggable: React.FC<{ img: string; initialPos: { top: string; le
 
 const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
     const baseImages = project.detailImages || [project.imageUrl];
-    const images = [...baseImages, ...baseImages].slice(0, 12); 
+    // Create a dense cloud of images
+    const images = [...baseImages, ...baseImages, ...baseImages].slice(0, 18); 
 
     const positions = [
         { top: '8%', left: '4%', rotate: -4, s: 0.9 },
@@ -85,6 +86,12 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
         { top: '82%', left: '6%', rotate: -4, s: 1.0 },
         { top: '12%', left: '-5%', rotate: 1, s: 0.9 },
         { top: '62%', left: '92%', rotate: -3, s: 1.05 },
+        { top: '-5%', left: '15%', rotate: 8, s: 1.1 },
+        { top: '25%', left: '45%', rotate: -6, s: 0.95 },
+        { top: '90%', left: '35%', rotate: 4, s: 1.2 },
+        { top: '45%', left: '90%', rotate: -2, s: 1.0 },
+        { top: '10%', left: '85%', rotate: 5, s: 0.85 },
+        { top: '75%', left: '50%', rotate: -7, s: 1.1 },
     ];
 
     return (

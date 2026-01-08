@@ -50,7 +50,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className = '' }) =>
       className={`group relative block overflow-hidden bg-brand-navy/5 border border-brand-navy/5 ${className} cursor-none transition-shadow hover:shadow-2xl`}
     >
       <motion.div 
-        className="h-full w-full"
+        className="h-full w-full bg-brand-navy/10"
         style={{ x: moveX, y: moveY, scale: 1.05 }}
         whileHover={{ scale: 1.1 }}
         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
