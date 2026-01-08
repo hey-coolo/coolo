@@ -24,7 +24,7 @@ export const PROJECTS: Project[] = [
     title: 'UNMPLYNMT',
     slug: 'unmplynmt',
     description: 'A Brand Built Like Culture, Not a Logo. Brutalist identity system exploring the friction of labor and identity.',
-    category: ['Concept & Strategy ', 'Naming ', 'Brand Identity ', 'Content Creation '],
+    category: ['Concept & Strategy - ', 'Naming - ', 'Brand Identity - ', 'Content Creation - '],
     tags: ['Brutalism', 'Typography', 'Strategy'],
     year: 2025,
     imageUrl: 'https://github.com/hey-coolo/COOLO/blob/main/assets/cases/unmplymnt/Hero.webp?raw=true',
