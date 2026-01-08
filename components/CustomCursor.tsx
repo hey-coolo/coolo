@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, AnimatePresence } from 'framer-motion';
 
@@ -35,7 +34,7 @@ const CustomCursor: React.FC = () => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center overflow-hidden mix-blend-difference"
+      className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:flex items-center justify-center overflow-hidden mix-blend-difference"
       style={{
         x: cursorX,
         y: cursorY,

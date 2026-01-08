@@ -23,7 +23,8 @@ export interface Project {
   };
 }
 
-export type ProjectCategory = 'All' | 'Featured' | '3D Design' | 'Brand Identity' | 'Web Design' | 'Campaign' | 'Fashion' | 'Packaging' | 'Motion Design' | 'Digital Art';
+// Added 'Strategy' to resolve type error in constants.ts
+export type ProjectCategory = 'All' | 'Featured' | '3D Design' | 'Brand Identity' | 'Web Design' | 'Campaign' | 'Fashion' | 'Packaging' | 'Motion Design' | 'Digital Art' | 'Strategy';
 
 export interface ServiceTier {
   title: string;

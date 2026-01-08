@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { NAV_LINKS } from '../constants';
-import BrandLogo from './assets/logos/logo.svg';
+import BrandLogo from './BrandLogo';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);

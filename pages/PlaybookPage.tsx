@@ -1,12 +1,72 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
 import { SCRIPTS_DATA, PROCESS_STEPS } from '../constants';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const PlaybookPage: React.FC = () => {
+  const [password, setPassword] = useState('');
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleUnlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === '1990') {
+      setIsUnlocked(true);
+      setError(false);
+    } else {
+      setError(true);
+      setPassword('');
+      // Shake effect or feedback
+      setTimeout(() => setError(false), 500);
+    }
+  };
+
+  if (!isUnlocked) {
+    return (
+      <div className="bg-brand-offwhite min-h-screen flex items-center justify-center pt-32 px-8">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md w-full bg-white border-2 border-brand-navy p-12 shadow-2xl"
+        >
+          <div className="flex items-center gap-2 mb-8">
+            <svg className="w-5 h-5 text-brand-purple" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold">Restricted Access // Protocol 1990</span>
+          </div>
+          
+          <h1 className="text-4xl font-black uppercase tracking-tight text-brand-navy mb-8 leading-none">
+            Enter<br/>Access Code.
+          </h1>
+
+          <form onSubmit={handleUnlock} className="space-y-6">
+            <input 
+              autoFocus
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="****"
+              className={`w-full bg-brand-navy/5 border-b-4 ${error ? 'border-red-500 animate-pulse' : 'border-brand-purple'} p-4 font-mono text-2xl focus:outline-none transition-all`}
+            />
+            {error && <p className="font-mono text-[10px] text-red-500 uppercase font-bold">Invalid Authorization Key.</p>}
+            <button 
+              type="submit"
+              className="w-full bg-brand-navy text-brand-offwhite font-mono font-bold uppercase py-4 tracking-widest hover:bg-brand-purple transition-colors"
+            >
+              Verify Identity
+            </button>
+          </form>
+          
+          <Link to="/about" className="block mt-8 text-center font-mono text-[10px] uppercase text-brand-navy/40 hover:text-brand-navy transition-colors">
+            Return to Studio Origin
+          </Link>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-brand-offwhite min-h-screen pt-32 pb-48">
+    <div className="bg-brand-offwhite min-h-screen pt-32 pb-48 animate-in fade-in duration-700">
       <div className="container mx-auto px-8">
         
         <AnimatedSection>
