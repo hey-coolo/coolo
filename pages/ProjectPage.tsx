@@ -5,89 +5,138 @@ import { PROJECTS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
-const ScrollIndicatorDots: React.FC<{ className?: string }> = ({ className = "" }) => (
-  <div className={`flex flex-col items-center gap-2 ${className}`}>
-    {[0, 1, 2].map((i) => (
-      <motion.div
-        key={i}
-        animate={{
-          opacity: [0.2, 1, 0.2],
-          scale: [0.7, 1, 0.7],
-          y: [0, 5, 0]
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          delay: i * 0.4,
-          ease: "easeInOut"
-        }}
-        className="w-1 h-1 rounded-full bg-current"
-      />
-    ))}
-  </div>
+const DownArrow: React.FC<{ className?: string; size?: number }> = ({ className = "", size = 42 }) => (
+    <motion.div 
+        animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        className={className}
+    >
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+        </svg>
+    </motion.div>
 );
 
-const DraggableHero: React.FC<{ project: any }> = ({ project }) => {
+const IndividualDraggable: React.FC<{ img: string; initialPos: { top: string; left: string; rotate: number; s: number } }> = ({ img, initialPos }) => {
+    const [zIndex, setZIndex] = useState(10);
+    
+    return (
+        <motion.div 
+            drag
+            dragMomentum={true}
+            dragTransition={{ power: 0.2, timeConstant: 200 }}
+            onDragStart={(e) => {
+                e.stopPropagation(); 
+                setZIndex(100);
+            }}
+            onDragEnd={() => setZIndex(10 + Math.floor(Math.random() * 5))}
+            className="absolute w-[220px] md:w-[380px] aspect-[4/5] shadow-2xl cursor-grab active:cursor-grabbing group overflow-hidden border border-brand-navy/5 bg-white"
+            style={{ 
+                top: initialPos.top, 
+                left: initialPos.left, 
+                zIndex: zIndex
+            }}
+            initial={{ 
+                rotate: initialPos.rotate, 
+                scale: initialPos.s, 
+                opacity: 0 
+            }}
+            animate={{ 
+                opacity: 0.75, 
+                transition: { duration: 1, delay: Math.random() * 0.5 } 
+            }}
+            whileHover={{ 
+                opacity: 1, 
+                scale: initialPos.s * 1.02, 
+                zIndex: 110,
+                transition: { duration: 0.2 }
+            }}
+            whileDrag={{ 
+                scale: initialPos.s * 1.05, 
+                rotate: 0, 
+                opacity: 1,
+                boxShadow: "0 40px 80px rgba(15,3,40,0.2)"
+            }}
+        >
+            <img 
+                src={img} 
+                className="w-full h-full object-cover pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-700" 
+                alt="" 
+            />
+        </motion.div>
+    );
+};
+
+const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
     const baseImages = project.detailImages || [project.imageUrl];
-    const images = [...baseImages, ...baseImages, ...baseImages].slice(0, 16); 
+    const images = [...baseImages, ...baseImages].slice(0, 12); 
 
     const positions = [
-        { top: '5%', left: '5%', rotate: -5, z: 1 },
-        { top: '10%', left: '55%', rotate: 5, z: 2 },
-        { top: '45%', left: '15%', rotate: -2, z: 3 },
-        { top: '40%', left: '65%', rotate: 8, z: 1 },
-        { top: '75%', left: '25%', rotate: -6, z: 2 },
-        { top: '70%', left: '85%', rotate: 4, z: 3 },
-        { top: '0%', left: '30%', rotate: 3, z: 0 },
-        { top: '55%', left: '45%', rotate: -3, z: 1 },
-        { top: '25%', left: '80%', rotate: 6, z: 2 },
-        { top: '85%', left: '5%', rotate: -4, z: 1 },
-        { top: '15%', left: '-10%', rotate: 2, z: 0 },
-        { top: '65%', left: '95%', rotate: -5, z: 2 },
-        { top: '35%', left: '35%', rotate: 4, z: 3 },
-        { top: '90%', left: '60%', rotate: -2, z: 1 },
-        { top: '-10%', left: '70%', rotate: 5, z: 0 },
-        { top: '50%', left: '-5%', rotate: -3, z: 1 },
+        { top: '8%', left: '4%', rotate: -4, s: 0.9 },
+        { top: '15%', left: '58%', rotate: 6, s: 1.1 },
+        { top: '48%', left: '12%', rotate: -2, s: 1.0 },
+        { top: '35%', left: '72%', rotate: 7, s: 0.85 },
+        { top: '72%', left: '18%', rotate: -5, s: 1.15 },
+        { top: '68%', left: '82%', rotate: 3, s: 0.95 },
+        { top: '2%', left: '32%', rotate: 2, s: 1.0 },
+        { top: '52%', left: '42%', rotate: -3, s: 0.85 },
+        { top: '22%', left: '78%', rotate: 5, s: 1.1 },
+        { top: '82%', left: '6%', rotate: -4, s: 1.0 },
+        { top: '12%', left: '-5%', rotate: 1, s: 0.9 },
+        { top: '62%', left: '92%', rotate: -3, s: 1.05 },
     ];
 
     return (
-        <div className="relative h-screen w-full overflow-hidden bg-brand-offwhite cursor-move">
+        <div className="relative h-screen w-full overflow-hidden bg-brand-offwhite">
             <motion.div 
-                className="absolute w-[200vw] h-[200vh] top-[-50vh] left-[-50vw]"
+                className="absolute w-[300vw] h-[300vh] top-[-100vh] left-[-100vw] cursor-move z-10"
                 drag
-                dragConstraints={{ left: -1500, right: 500, top: -1500, bottom: 500 }}
-                dragElastic={0.1}
-                dragTransition={{ power: 0.1, timeConstant: 200 }}
+                dragConstraints={{ left: -1800, right: 900, top: -1800, bottom: 900 }}
+                dragElastic={0.05}
             >
-                {images.map((img: string, i: number) => (
-                    <div 
-                        key={i}
-                        className="absolute w-[250px] md:w-[300px] aspect-[4/5] shadow-2xl pointer-events-none bg-gray-200"
-                        style={{ 
-                            top: positions[i]?.top || `${Math.random() * 80}%`, 
-                            left: positions[i]?.left || `${Math.random() * 80}%`, 
-                            transform: `rotate(${positions[i]?.rotate || 0}deg)`,
-                            zIndex: positions[i]?.z || 1
-                        }}
-                    >
-                        <img src={img} className="w-full h-full object-cover" alt="" />
-                    </div>
+                <div className="absolute inset-0 bg-transparent z-0" />
+                {images.map((img, i) => (
+                    <IndividualDraggable 
+                        key={i} 
+                        img={img} 
+                        initialPos={positions[i] || { top: '50%', left: '50%', rotate: 0, s: 1 }} 
+                    />
                 ))}
             </motion.div>
 
-            <div className="absolute inset-0 pointer-events-none flex flex-col justify-center items-center z-50 mix-blend-difference text-brand-offwhite p-6">
-                <span className="font-mono uppercase tracking-[0.5em] text-xs font-bold mb-4">Case Study {project.id.toString().padStart(2, '0')}</span>
-                <h1 className="text-[16vw] md:text-[12vw] leading-[0.9] font-black uppercase tracking-tighter text-center break-words max-w-full">
-                    {project.title}
-                </h1>
-                <div className="mt-8 flex flex-wrap justify-center gap-4 md:gap-8 font-mono text-[10px] md:text-sm uppercase tracking-widest">
-                    <span>{project.year}</span>
-                    <span className="hidden md:inline">//</span>
-                    <span>{project.category}</span>
+            <div className="absolute inset-0 pointer-events-none flex flex-col justify-center items-center z-50 p-6">
+                <div className="text-center">
+                    <motion.span 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="font-mono uppercase tracking-[0.5em] text-[10px] md:text-xs font-bold mb-6 block text-brand-purple"
+                    >
+                        Case Study {project.id.toString().padStart(2, '0')}
+                    </motion.span>
+                    
+                    <div className="pointer-events-auto inline-block">
+                        <motion.h1 
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+                            className="text-[16vw] md:text-[12vw] leading-[0.8] font-black uppercase tracking-tighter text-brand-navy break-words max-w-[95vw] select-all"
+                        >
+                            {project.title}
+                        </motion.h1>
+                    </div>
+
+                    <div className="mt-12 flex flex-wrap justify-center gap-4 md:gap-8 font-mono text-[10px] md:text-sm uppercase tracking-widest text-brand-navy/40 font-bold">
+                        <span>{project.year}</span>
+                        <span className="opacity-20">//</span>
+                        <span>{project.category}</span>
+                    </div>
                 </div>
-                <div className="absolute bottom-12 flex flex-col items-center gap-4">
-                    <span className="font-mono text-[10px] uppercase tracking-widest">[ Drag to Explore ]</span>
-                    <ScrollIndicatorDots className="text-brand-offwhite" />
+
+                <div className="absolute bottom-12 flex flex-col items-center gap-4 pointer-events-none">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-brand-navy/30 font-bold bg-white/50 backdrop-blur-sm px-4 py-2">
+                        [ TOSS IMAGES TO EXPLORE ]
+                    </span>
                 </div>
             </div>
         </div>
@@ -112,12 +161,17 @@ const NarrativeSection: React.FC<{
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                     <div className="lg:col-span-4 lg:sticky lg:top-32 lg:h-max">
                         <motion.div style={{ opacity, y }}>
-                            <span className={`font-mono text-[10px] uppercase tracking-[0.3em] font-bold block mb-4 ${isDark ? 'text-brand-purple' : 'text-brand-purple'}`}>
+                            <span className={`font-mono text-[10px] uppercase tracking-[0.3em] font-bold block mb-4 text-brand-purple`}>
                                 {step}
                             </span>
-                            <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8 break-words">
+                            <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-12 break-words">
                                 {title}
                             </h2>
+                            {step.includes("01") && (
+                                <div className="mt-8">
+                                    <DownArrow className="text-brand-purple" />
+                                </div>
+                            )}
                         </motion.div>
                     </div>
                     <div className="lg:col-span-8">
@@ -131,8 +185,8 @@ const NarrativeSection: React.FC<{
                         {images && (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {images.map((img, i) => (
-                                    <div key={i} className={`overflow-hidden ${i % 2 === 1 ? 'md:mt-16' : ''}`}>
-                                        <img src={img} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="" />
+                                    <div key={i} className={`overflow-hidden shadow-2xl ${i % 2 === 1 ? 'md:mt-16' : ''} bg-brand-navy/5`}>
+                                        <img src={img} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="" />
                                     </div>
                                 ))}
                             </div>
@@ -155,7 +209,6 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
     
     const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
 
-    // Close on escape
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
             if (e.key === 'Escape') setSelectedImage(null);
@@ -165,7 +218,7 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
     }, []);
 
     return (
-        <section ref={scrollRef} className="h-[300vh] relative bg-brand-offwhite overflow-hidden">
+        <section ref={scrollRef} className="h-[300vh] relative bg-brand-offwhite overflow-hidden border-y border-brand-navy/10">
             <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
                 <div className="container mx-auto px-6 md:px-8 mb-12">
                     <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-4 block">Visual Audit // Raw Process</span>
@@ -173,24 +226,13 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
                 </div>
                 <div className="w-full overflow-hidden">
                     <motion.div style={{ x }} className="flex gap-4 md:gap-8 px-6 md:px-8 w-max">
-                        {images.map((img, i) => (
+                        {images.concat(images).map((img, i) => (
                             <motion.div 
                                 key={i} 
                                 onClick={() => setSelectedImage(img)}
                                 data-cursor-text="VIEW"
                                 whileHover={{ scale: 0.98 }}
-                                className="w-[300px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0 cursor-pointer overflow-hidden group"
-                            >
-                                <img src={img} className="w-full h-full object-cover mix-blend-multiply grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Process" />
-                            </motion.div>
-                        ))}
-                        {images.map((img, i) => (
-                            <motion.div 
-                                key={`dup-${i}`} 
-                                onClick={() => setSelectedImage(img)}
-                                data-cursor-text="VIEW"
-                                whileHover={{ scale: 0.98 }}
-                                className="w-[300px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0 cursor-pointer overflow-hidden group"
+                                className="w-[300px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0 cursor-pointer overflow-hidden group shadow-xl"
                             >
                                 <img src={img} className="w-full h-full object-cover mix-blend-multiply grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Process" />
                             </motion.div>
@@ -199,7 +241,6 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
                 </div>
             </div>
 
-            {/* Lightbox Modal */}
             <AnimatePresence>
                 {selectedImage && (
                     <motion.div 
@@ -207,7 +248,7 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setSelectedImage(null)}
-                        className="fixed inset-0 z-[100] bg-brand-navy/90 backdrop-blur-xl flex items-center justify-center p-6 md:p-24 cursor-zoom-out"
+                        className="fixed inset-0 z-[100] bg-brand-navy/95 backdrop-blur-xl flex items-center justify-center p-6 md:p-24 cursor-zoom-out"
                     >
                         <motion.div 
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -219,7 +260,7 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
                         >
                             <img 
                                 src={selectedImage} 
-                                className="w-auto h-auto max-w-full max-h-[80vh] shadow-[0_40px_100px_rgba(0,0,0,0.5)] border border-white/10" 
+                                className="w-auto h-auto max-w-full max-h-[85vh] shadow-[0_40px_100px_rgba(0,0,0,0.5)] border border-white/10" 
                                 alt="Expanded Detail" 
                             />
                             <div className="absolute top-full left-0 mt-8 w-full flex justify-between items-start">
@@ -269,7 +310,7 @@ const ProjectPage: React.FC = () => {
 
   return (
     <div className="bg-brand-offwhite text-brand-navy min-h-screen">
-      <DraggableHero project={project} />
+      <ProjectHero project={project} />
 
       <NarrativeSection 
         step="01 The Goal"
@@ -305,7 +346,7 @@ const ProjectPage: React.FC = () => {
               <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-4 gap-8 border-t border-brand-navy/10 pt-12">
                   <div className="text-center">
                       <div className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2">Role</div>
-                      <div className="font-bold text-lg md:text-xl">{project.role}</div>
+                      <div className="font-bold text-lg md:text-xl uppercase">{project.role}</div>
                   </div>
                   <div className="text-center">
                       <div className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2">Year</div>
@@ -313,8 +354,8 @@ const ProjectPage: React.FC = () => {
                   </div>
                   <div className="text-center md:col-span-2">
                       <div className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2">Stack</div>
-                      <div className="font-bold text-lg md:text-xl flex flex-wrap justify-center gap-2">
-                          {project.tags.map(t => <span key={t}>{t}</span>)}
+                      <div className="font-bold text-lg md:text-xl flex flex-wrap justify-center gap-4">
+                          {project.tags.map(t => <span key={t} className="uppercase tracking-widest">{t}</span>)}
                       </div>
                   </div>
               </div>

@@ -27,7 +27,6 @@ const WorkPage: React.FC = () => {
               Where high-end strategy meets technical precision. Exploring the outer limits of digital and physical brand storytelling.
             </p>
             
-            {/* System Marker */}
             <div className="absolute top-24 right-0 hidden lg:block text-right">
                 <div className="font-mono text-[10px] uppercase font-bold text-brand-purple/40 tracking-[0.3em]">Status: Global Reach</div>
                 <div className="font-mono text-[10px] uppercase font-bold text-brand-purple/40 tracking-[0.3em] mt-1">Ref: {filteredProjects.length} Entries Found</div>
@@ -35,7 +34,6 @@ const WorkPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
-        {/* Build Disclosure Bar */}
         <div className="mb-16 border-y border-brand-navy/10 py-4 overflow-hidden relative group">
             <div className="flex animate-marquee whitespace-nowrap">
                 {[1, 2, 3, 4, 5, 6].map(i => (
@@ -66,15 +64,19 @@ const WorkPage: React.FC = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
-            {filteredProjects.map((project, index) => (
-              <AnimatedSection 
-                key={project.id} 
-                className={index % 3 === 0 ? 'lg:col-span-8' : 'lg:col-span-4'}
-                delay={index * 50}
-              >
-                  <ProjectCard project={project} className="aspect-video lg:aspect-auto h-full" />
-              </AnimatedSection>
+          {/* Fixed Grid Logic: Simple 2-column layout to prevent collapse shown in screenshot */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            {filteredProjects.map((project) => (
+              <div key={project.id}>
+                  <ProjectCard project={project} className="aspect-[16/10] w-full" />
+                  <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
+                      <div>
+                          <h3 className="text-3xl font-black uppercase tracking-tight leading-none text-brand-navy">{project.title}</h3>
+                          <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
+                      </div>
+                      <span className="font-mono text-[10px] uppercase font-bold opacity-40 text-brand-navy">{project.year}</span>
+                  </div>
+              </div>
             ))}
           </div>
         </section>
