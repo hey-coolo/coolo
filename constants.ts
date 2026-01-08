@@ -45,7 +45,7 @@ export const PROJECTS: Project[] = [
         processImages: [
             'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/process-1.webp?token=GHSAT0AAAAAADSX62VJX7ZEZDHEJ3JG5LEA2LAGKYA', 
             'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/process-2.webp?token=GHSAT0AAAAAADSX62VITSNW66ZEI2TUBMXQ2LAGLAA',
-            'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/process-3.webp?token=GHSAT0AAAAAADSX62VJXT5GSUGTYRQVSKJ42LAGLGQ',
+            'https://raw.githubusercontent.com/hey-coolo/COOLO/refs/heads/main/assets/cases/unmplymnt/process-3.webp?token=GHSAT0AAAAAADSX62VJXT5GSUGTYRQVSKJ42LAGLGQ'
         ]
     }
   },
