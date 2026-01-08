@@ -35,6 +35,17 @@ const WorkPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
+        {/* Build Disclosure Bar */}
+        <div className="mb-16 border-y border-brand-navy/10 py-4 overflow-hidden relative group">
+            <div className="flex animate-marquee whitespace-nowrap">
+                {[1, 2, 3, 4, 5, 6].map(i => (
+                    <span key={i} className="font-mono text-[9px] uppercase tracking-[0.3em] font-bold text-brand-purple/40 mx-12">
+                        Build Note: Case files and imagery currently in beta // Full technical calibration in progress &bull;
+                    </span>
+                ))}
+            </div>
+        </div>
+
         <section className="pb-48">
           <div className="flex flex-wrap gap-x-12 gap-y-6 mb-32 border-b border-brand-navy/10 pb-8">
             {PROJECT_CATEGORIES.map((category) => (

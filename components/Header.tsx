@@ -9,14 +9,11 @@ const Header: React.FC = () => {
   const location = useLocation();
   const isHome = location.pathname === '/';
 
-  // Logic: On Home, hide logo until scrolled. On other pages, always show.
   const showLogo = !isHome || isScrolled;
-  
-  // Logic: On Home at top, text is white (over image). When scrolled (or other pages), text is navy.
   const isLightText = isHome && !isScrolled;
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20); // Lower threshold for quicker switch
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -52,9 +49,14 @@ const Header: React.FC = () => {
               )}
             </NavLink>
           ))}
-          <Link to="/contact" className={`font-mono text-[10px] uppercase tracking-[0.2em] px-8 py-3 transition-all duration-500 font-bold border ${isLightText ? 'border-brand-offwhite text-brand-offwhite hover:bg-brand-offwhite hover:text-brand-navy drop-shadow-sm' : 'bg-brand-purple text-brand-offwhite border-brand-purple hover:bg-brand-yellow hover:text-brand-navy hover:border-brand-yellow shadow-xl'}`}>
-            Inquire
-          </Link>
+          <div className="flex items-center space-x-4">
+              <span className={`font-mono text-[8px] uppercase tracking-tighter opacity-40 px-2 py-1 border border-current rounded ${isLightText ? 'text-brand-offwhite' : 'text-brand-navy'}`}>
+                  V2.0_ALPHA
+              </span>
+              <Link to="/contact" className={`font-mono text-[10px] uppercase tracking-[0.2em] px-8 py-3 transition-all duration-500 font-bold border ${isLightText ? 'border-brand-offwhite text-brand-offwhite hover:bg-brand-offwhite hover:text-brand-navy drop-shadow-sm' : 'bg-brand-purple text-brand-offwhite border-brand-purple hover:bg-brand-yellow hover:text-brand-navy hover:border-brand-yellow shadow-xl'}`}>
+                Inquire
+              </Link>
+          </div>
         </nav>
 
         <Link to="/contact" className={`md:hidden font-mono text-[10px] uppercase px-4 py-2 font-bold tracking-widest ${isLightText ? 'bg-brand-offwhite text-brand-navy shadow-lg' : 'bg-brand-navy text-brand-offwhite'}`}>

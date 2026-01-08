@@ -1,4 +1,5 @@
 
+// Added React import to define the React namespace used in React.FC
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -12,7 +13,6 @@ const Footer: React.FC = () => {
   });
 
   // Skew from 0deg (normal) to -20deg (italic) as the footer enters the viewport.
-  // Starts vertical, leans into the grind as you scroll down.
   const skewX = useTransform(scrollYProgress, [0, 1], ["0deg", "-20deg"]);
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]); 
   const opacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
@@ -38,6 +38,25 @@ const Footer: React.FC = () => {
             hey@coolo.co.nz
           </a>
         </motion.div>
+
+        {/* Technical Disclosure / Alpha Status */}
+        <div className="mt-32 max-w-4xl mx-auto border-2 border-brand-purple/20 p-8 md:p-12 relative overflow-hidden bg-white/50 backdrop-blur-sm">
+            <div className="absolute top-0 left-0 w-2 h-full bg-brand-purple"></div>
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+                <div className="font-mono text-[10px] uppercase font-black text-brand-purple px-2 py-1 bg-brand-purple/5 border border-brand-purple/20 whitespace-nowrap">
+                    Protocol Status: 2.0_Alpha
+                </div>
+                <div className="space-y-4">
+                    <p className="font-mono text-[10px] uppercase tracking-widest leading-relaxed text-brand-navy/60 font-bold">
+                        This interface is currently live for testing and calibration purposes. 
+                        The case studies, technical imagery, and copy provided do not yet fully reflect the studio's real-world output or the final "Senior Unit" protocol. 
+                    </p>
+                    <p className="font-mono text-[10px] uppercase tracking-widest leading-relaxed text-brand-navy/40">
+                        We believe in continuous improvement and the logic of public builds. High-fidelity assets are currently undergoing final rendering and will replace these placeholders shortly.
+                    </p>
+                </div>
+            </div>
+        </div>
 
         {/* Footer Meta */}
         <div className="mt-24 pt-8 border-t border-brand-navy/10 flex flex-col md:flex-row justify-between items-center text-brand-navy/60 font-mono text-[10px] uppercase tracking-[0.2em] font-bold">
