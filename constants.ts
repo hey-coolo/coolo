@@ -539,6 +539,96 @@ export const SCRIPTS_DATA: Script[] = [
             { speaker: "You", text: "We can, but looking back at our 'Positioning Pillar 02', our goal was to feel technical and precise. A rounder font softens that edge. Does softening the brand help us win with the target audience?" }
         ],
         overlay: "Strategy is the filter for subjective noise."
+    },
+    {
+        id: 2,
+        title: "The Discount Trap",
+        category: "Pricing",
+        dialogue: [
+            { speaker: "Client", text: "We love your approach, but we only have 60% of the budget. Can you meet us halfway?" },
+            { speaker: "You", text: "I understand the constraint. To meet that number, we would have to remove the 'Audience Stress Test' and the 'Material Audit' from the scope. Are those steps you're comfortable losing, or should we wait until the full budget is unlocked?" }
+        ],
+        overlay: "Don't lower the price. Lower the scope."
+    },
+    {
+        id: 3,
+        title: "The 'I'll know it when I see it' Defense",
+        category: "Process",
+        dialogue: [
+            { speaker: "Client", text: "We don't want to do the strategy phase. Just show us some logos and we'll pick one." },
+            { speaker: "You", text: "Guessing is expensive. If we skip strategy, we're designing for your personal taste, not your business objective. We don't design to 'see if you like it'; we design to ensure it works." }
+        ],
+        overlay: "Subjectivity is the enemy of ROI."
+    },
+    {
+        id: 4,
+        title: "Scope Creep Guardrail",
+        category: "Project Management",
+        dialogue: [
+            { speaker: "Client", text: "While you're building the site, can you also just whip up a few social media templates?" },
+            { speaker: "You", text: "Absolutely. I'll add those to the 'Phase 02' wishlist. Once the core build is launched, I'll send over a separate scope for the social pack. Sound good?" }
+        ],
+        overlay: "Park the 'Just one more thing' in Phase 2."
+    },
+    {
+        id: 5,
+        title: "Value-Based Anchoring",
+        category: "Sales",
+        dialogue: [
+            { speaker: "Client", text: "Your Brand OS seems expensive for a 2-month project." },
+            { speaker: "You", text: "It's expensive for 8 weeks of work. It's an investment for 5 years of unmistakable presence and clear internal alignment. Are we solving for the next 2 months, or the next 5 years?" }
+        ],
+        overlay: "Charge for the solution, not the hours."
+    },
+    {
+        id: 6,
+        title: "The Revision Loop",
+        category: "Feedback",
+        dialogue: [
+            { speaker: "Client", text: "Our team has 14 different opinions on the color palette. Can you show us 5 more options?" },
+            { speaker: "You", text: "Too many options lead to decision fatigue. We presented Option A because it specifically targets the 'High-Res Logic' pillar we agreed on. Let's go back to that pillar. Which part of Option A isn't meeting that logic?" }
+        ],
+        overlay: "Consensus is a design killer. Revert to logic."
+    },
+    {
+        id: 7,
+        title: "The Ghosting Protocol",
+        category: "Sales",
+        dialogue: [
+            { speaker: "Client", text: "..." },
+            { speaker: "You", text: "It's been a week since we sent the proposal. I'm assuming the timing isn't right or priorities have shifted. I'll close this file for now. Feel free to re-open when you're ready to engage." }
+        ],
+        overlay: "Close the loop to reclaim your energy."
+    },
+    {
+        id: 8,
+        title: "The 'Simple' Change",
+        category: "Project Management",
+        dialogue: [
+            { speaker: "Client", text: "This should be a simple change, right?" },
+            { speaker: "You", text: "In design, 'simple' is often the result of complex logic. I'll evaluate how this change impacts the core system and get back to you with the updated timeline." }
+        ],
+        overlay: "Never agree to 'Simple' without an audit."
+    },
+    {
+        id: 9,
+        title: "The Portfolio Trap",
+        category: "Sales",
+        dialogue: [
+            { speaker: "Client", text: "Have you worked in our specific niche (e.g., dog grooming software) before?" },
+            { speaker: "You", text: "We specialize in the *process* of brand deconstruction, not the *niche*. An outside perspective often identifies the 'invisible' friction that industry insiders overlook." }
+        ],
+        overlay: "Process over Niche is where the value lives."
+    },
+    {
+        id: 10,
+        title: "Value Negotiation",
+        category: "Pricing",
+        dialogue: [
+            { speaker: "Client", text: "Why is your hourly rate so high?" },
+            { speaker: "You", text: "We don't sell hours; we sell outcomes. You're paying for the 10 years of experience that allows us to solve this problem in 10 hours instead of 100." }
+        ],
+        overlay: "The client pays for the solution, not the clock."
     }
 ];
 export const WORKBOOKS: Workbook[] = [];

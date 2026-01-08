@@ -111,8 +111,6 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Create a temporary canvas to add the background if desired, 
-    // or just export the transparency. Exporting transparency is "cooler".
     const link = document.createElement('a');
     link.download = `coolo-intel-capture-${Date.now()}.png`;
     link.href = canvas.toDataURL('image/png');
@@ -139,7 +137,7 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
         />
 
         {/* Layer 2: Decorative Frames & HUD (Z-20) */}
-        <div className="absolute inset-0 z-20 pointer-events-none p-8 md:p-12 flex flex-col justify-between select-none">
+        <div className="absolute inset-0 z-20 pointer-events-none p-6 md:p-12 flex flex-col justify-between select-none overflow-hidden">
             <div className="flex justify-between items-start">
                  {/* Top Left */}
                  <div className="w-8 h-8 border-l-2 border-t-2 border-brand-navy/20 relative">
@@ -149,57 +147,59 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                  <div className="w-8 h-8 border-r-2 border-t-2 border-brand-navy/20"></div>
             </div>
 
-            {/* Sketch Controls HUD */}
-            <div className="flex justify-between items-end">
-                 {/* Bottom Left */}
-                 <div className="w-8 h-8 border-l-2 border-b-2 border-brand-navy/20"></div>
-                 
-                 {/* HUD Controls - Interactive Layer */}
-                 <div className="pointer-events-auto flex items-center space-x-6 mr-12 mb-4">
-                    <button 
-                        onClick={clearCanvas}
-                        data-cursor-text="CLEAR"
-                        className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 hover:text-brand-purple transition-colors font-bold flex items-center gap-2 group"
-                    >
-                        <span className="w-4 h-[1px] bg-current opacity-20 group-hover:w-8 transition-all"></span>
-                        RESET_BUFFER
-                    </button>
-                    <button 
-                        onClick={downloadSketch}
-                        data-cursor-text="SAVE"
-                        className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 hover:text-brand-purple transition-colors font-bold flex items-center gap-2 group"
-                    >
-                        <span className="w-4 h-[1px] bg-current opacity-20 group-hover:w-8 transition-all"></span>
-                        CAPTURE_FRAME
-                    </button>
+            {/* Bottom HUD with Fix for mobile overlap */}
+            <div className="flex flex-col md:flex-row justify-between items-end gap-6 w-full">
+                 <div className="flex justify-between w-full md:w-auto items-end gap-4">
+                    {/* Bottom Left Decoration */}
+                    <div className="w-8 h-8 border-l-2 border-b-2 border-brand-navy/20 flex-shrink-0"></div>
+                    
+                    {/* Responsive HUD Controls */}
+                    <div className="pointer-events-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 mb-1">
+                        <button 
+                            onClick={clearCanvas}
+                            data-cursor-text="CLEAR"
+                            className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-brand-navy/40 hover:text-brand-purple transition-colors font-bold flex items-center gap-2 group whitespace-nowrap"
+                        >
+                            <span className="w-3 md:w-4 h-[1px] bg-current opacity-20 group-hover:w-8 transition-all"></span>
+                            RESET_BUFFER
+                        </button>
+                        <button 
+                            onClick={downloadSketch}
+                            data-cursor-text="SAVE"
+                            className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-brand-navy/40 hover:text-brand-purple transition-colors font-bold flex items-center gap-2 group whitespace-nowrap"
+                        >
+                            <span className="w-3 md:w-4 h-[1px] bg-current opacity-20 group-hover:w-8 transition-all"></span>
+                            CAPTURE_FRAME
+                        </button>
+                    </div>
                  </div>
 
                  {/* Bottom Right Decoration */}
-                 <div className="w-8 h-8 border-r-2 border-b-2 border-brand-navy/20 relative">
+                 <div className="w-8 h-8 border-r-2 border-b-2 border-brand-navy/20 relative hidden sm:block">
                      <span className="absolute bottom-4 right-4 font-mono text-[9px] uppercase tracking-widest opacity-40 whitespace-nowrap text-right font-bold">ready_to_engage</span>
                  </div>
             </div>
         </div>
         
         {/* Footer Info (Z-20) */}
-        <div className="absolute bottom-8 left-0 w-full text-center z-20 pointer-events-none">
-             <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/30 font-bold">
+        <div className="absolute bottom-4 sm:bottom-8 left-0 w-full text-center z-20 pointer-events-none">
+             <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-widest text-brand-navy/30 font-bold">
                  Est. 2024 &bull; Mount Maunganui
              </span>
         </div>
 
         {/* Layer 3: Main Content (Z-30) */}
-        <div className="relative z-30 flex flex-col items-center pointer-events-none select-none p-4">
+        <div className="relative z-30 flex flex-col items-center pointer-events-none select-none p-4 max-w-full">
             
             {/* SVG Logotype Animation */}
-            <div className="w-[80vw] md:w-[40vw] max-w-lg aspect-[3/1] relative mb-8">
+            <div className="w-[85vw] md:w-[40vw] max-w-lg aspect-[3/1] relative mb-6 md:mb-8">
                 <svg viewBox="0 0 300 100" className="w-full h-full">
                     <text
                         x="50%"
                         y="50%"
                         dominantBaseline="middle"
                         textAnchor="middle"
-                        className="font-sans font-black text-8xl tracking-tighter"
+                        className="font-sans font-black text-6xl sm:text-7xl md:text-8xl tracking-tighter"
                         fill="transparent"
                         stroke="#0F0328"
                         strokeWidth="1.5"
@@ -214,7 +214,7 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                          y="50%"
                          dominantBaseline="middle"
                          textAnchor="middle"
-                         className="font-sans font-black text-8xl tracking-tighter"
+                         className="font-sans font-black text-6xl sm:text-7xl md:text-8xl tracking-tighter"
                          fill="#0F0328"
                          stroke="none"
                          style={{ 
@@ -230,7 +230,7 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
             {/* Button Container */}
             <div className="flex flex-col items-center pointer-events-auto min-h-[80px]">
                 {!isReady ? (
-                    <div className="font-mono text-xs uppercase tracking-[0.3em] text-brand-navy/40 animate-pulse font-bold">
+                    <div className="font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.3em] text-brand-navy/40 animate-pulse font-bold">
                         System Loading... {progress}%
                     </div>
                 ) : (
@@ -238,7 +238,7 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         onClick={onEnter}
-                        className="font-mono text-sm uppercase tracking-[0.3em] font-bold bg-brand-navy text-brand-offwhite px-10 py-4 hover:bg-brand-purple hover:scale-105 transition-all duration-300 shadow-xl"
+                        className="font-mono text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.3em] font-bold bg-brand-navy text-brand-offwhite px-6 sm:px-8 md:px-10 py-4 hover:bg-brand-purple hover:scale-105 transition-all duration-300 shadow-xl whitespace-nowrap"
                     >
                         ENTER NOW
                     </motion.button>
@@ -251,7 +251,7 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 }}
-                    className="mt-6 font-mono text-[9px] uppercase tracking-widest text-brand-purple/50 font-bold"
+                    className="mt-6 font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-brand-purple/50 font-bold"
                 >
                     [ Use pen or cursor to sketch ]
                 </motion.div>

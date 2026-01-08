@@ -75,14 +75,14 @@ const DraggableHero: React.FC<{ project: any }> = ({ project }) => {
                 ))}
             </motion.div>
 
-            <div className="absolute inset-0 pointer-events-none flex flex-col justify-center items-center z-50 mix-blend-difference text-brand-offwhite">
+            <div className="absolute inset-0 pointer-events-none flex flex-col justify-center items-center z-50 mix-blend-difference text-brand-offwhite p-6">
                 <span className="font-mono uppercase tracking-[0.5em] text-xs font-bold mb-4">Case Study {project.id.toString().padStart(2, '0')}</span>
-                <h1 className="text-[12vw] leading-[0.9] font-black uppercase tracking-tight text-center">
+                <h1 className="text-[16vw] md:text-[12vw] leading-[0.9] font-black uppercase tracking-tighter text-center break-words max-w-full">
                     {project.title}
                 </h1>
-                <div className="mt-8 flex gap-8 font-mono text-sm uppercase tracking-widest">
+                <div className="mt-8 flex flex-wrap justify-center gap-4 md:gap-8 font-mono text-[10px] md:text-sm uppercase tracking-widest">
                     <span>{project.year}</span>
-                    <span>//</span>
+                    <span className="hidden md:inline">//</span>
                     <span>{project.category}</span>
                 </div>
                 <div className="absolute bottom-12 flex flex-col items-center gap-4">
@@ -107,15 +107,15 @@ const NarrativeSection: React.FC<{
     const y = useTransform(scrollYProgress, [0, 0.5], [100, 0]);
 
     return (
-        <section ref={ref} className={`py-32 md:py-48 ${isDark ? 'bg-brand-navy text-brand-offwhite' : 'bg-brand-offwhite text-brand-navy'}`}>
-            <div className="container mx-auto px-8">
+        <section ref={ref} className={`py-32 md:py-48 overflow-hidden ${isDark ? 'bg-brand-navy text-brand-offwhite' : 'bg-brand-offwhite text-brand-navy'}`}>
+            <div className="container mx-auto px-6 md:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-                    <div className="lg:col-span-4 sticky top-32 h-max">
+                    <div className="lg:col-span-4 lg:sticky lg:top-32 lg:h-max">
                         <motion.div style={{ opacity, y }}>
                             <span className={`font-mono text-[10px] uppercase tracking-[0.3em] font-bold block mb-4 ${isDark ? 'text-brand-purple' : 'text-brand-purple'}`}>
                                 {step}
                             </span>
-                            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tight leading-[0.9] mb-8">
+                            <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8 break-words">
                                 {title}
                             </h2>
                         </motion.div>
@@ -123,7 +123,7 @@ const NarrativeSection: React.FC<{
                     <div className="lg:col-span-8">
                         <motion.p 
                             style={{ opacity }}
-                            className={`font-body text-2xl md:text-4xl leading-tight font-light mb-16 ${isDark ? 'text-brand-offwhite/80' : 'text-brand-navy/80'}`}
+                            className={`font-body text-xl md:text-4xl leading-tight font-light mb-16 break-words ${isDark ? 'text-brand-offwhite/80' : 'text-brand-navy/80'}`}
                         >
                             {content}
                         </motion.p>
@@ -131,7 +131,7 @@ const NarrativeSection: React.FC<{
                         {images && (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {images.map((img, i) => (
-                                    <div key={i} className={`overflow-hidden ${i % 2 === 1 ? 'mt-16' : ''}`}>
+                                    <div key={i} className={`overflow-hidden ${i % 2 === 1 ? 'md:mt-16' : ''}`}>
                                         <img src={img} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="" />
                                     </div>
                                 ))}
@@ -165,21 +165,21 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
     }, []);
 
     return (
-        <section ref={scrollRef} className="h-[300vh] relative bg-brand-offwhite">
+        <section ref={scrollRef} className="h-[300vh] relative bg-brand-offwhite overflow-hidden">
             <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
-                <div className="container mx-auto px-8 mb-12">
+                <div className="container mx-auto px-6 md:px-8 mb-12">
                     <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-4 block">Visual Audit // Raw Process</span>
-                    <h2 className="text-4xl font-black uppercase tracking-tight text-brand-navy">The Messy Middle</h2>
+                    <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-brand-navy">The Messy Middle</h2>
                 </div>
                 <div className="w-full overflow-hidden">
-                    <motion.div style={{ x }} className="flex gap-8 px-8 w-max">
+                    <motion.div style={{ x }} className="flex gap-4 md:gap-8 px-6 md:px-8 w-max">
                         {images.map((img, i) => (
                             <motion.div 
                                 key={i} 
                                 onClick={() => setSelectedImage(img)}
                                 data-cursor-text="VIEW"
                                 whileHover={{ scale: 0.98 }}
-                                className="w-[400px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0 cursor-pointer overflow-hidden group"
+                                className="w-[300px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0 cursor-pointer overflow-hidden group"
                             >
                                 <img src={img} className="w-full h-full object-cover mix-blend-multiply grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Process" />
                             </motion.div>
@@ -190,7 +190,7 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
                                 onClick={() => setSelectedImage(img)}
                                 data-cursor-text="VIEW"
                                 whileHover={{ scale: 0.98 }}
-                                className="w-[400px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0 cursor-pointer overflow-hidden group"
+                                className="w-[300px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0 cursor-pointer overflow-hidden group"
                             >
                                 <img src={img} className="w-full h-full object-cover mix-blend-multiply grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Process" />
                             </motion.div>
@@ -207,7 +207,7 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setSelectedImage(null)}
-                        className="fixed inset-0 z-[100] bg-brand-navy/90 backdrop-blur-xl flex items-center justify-center p-8 md:p-24 cursor-zoom-out"
+                        className="fixed inset-0 z-[100] bg-brand-navy/90 backdrop-blur-xl flex items-center justify-center p-6 md:p-24 cursor-zoom-out"
                     >
                         <motion.div 
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -247,9 +247,9 @@ const ProjectPage: React.FC = () => {
 
   if (currentIndex === -1) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-brand-offwhite text-brand-navy">
-        <div className="text-center">
-            <h1 className="text-6xl font-black uppercase tracking-tight">Missing_Data</h1>
+      <div className="min-h-screen flex items-center justify-center bg-brand-offwhite text-brand-navy overflow-hidden">
+        <div className="text-center p-6">
+            <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight">Missing_Data</h1>
             <Link to="/work" className="font-mono uppercase text-brand-purple mt-8 block tracking-widest text-xs">Return to Archives &rarr;</Link>
         </div>
       </div>
@@ -295,25 +295,25 @@ const ProjectPage: React.FC = () => {
         isDark={false}
       />
 
-      <section className="py-48 bg-brand-yellow text-brand-navy">
-          <div className="container mx-auto px-8 text-center">
+      <section className="py-24 md:py-48 bg-brand-yellow text-brand-navy overflow-hidden">
+          <div className="container mx-auto px-6 md:px-8 text-center">
               <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold mb-8 block">04 The Gain / Impact</span>
-              <h2 className="text-4xl md:text-5xl lg:text-[4vw] font-black uppercase tracking-tight leading-[1.1] max-w-4xl mx-auto">
+              <h2 className="text-3xl md:text-5xl lg:text-[4vw] font-black uppercase tracking-tighter leading-[1.1] max-w-4xl mx-auto break-words">
                   {story.gain}
               </h2>
               
-              <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-brand-navy/10 pt-12">
+              <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-4 gap-8 border-t border-brand-navy/10 pt-12">
                   <div className="text-center">
                       <div className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2">Role</div>
-                      <div className="font-bold text-xl">{project.role}</div>
+                      <div className="font-bold text-lg md:text-xl">{project.role}</div>
                   </div>
                   <div className="text-center">
                       <div className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2">Year</div>
-                      <div className="font-bold text-xl">{project.year}</div>
+                      <div className="font-bold text-lg md:text-xl">{project.year}</div>
                   </div>
                   <div className="text-center md:col-span-2">
                       <div className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2">Stack</div>
-                      <div className="font-bold text-xl flex flex-wrap justify-center gap-2">
+                      <div className="font-bold text-lg md:text-xl flex flex-wrap justify-center gap-2">
                           {project.tags.map(t => <span key={t}>{t}</span>)}
                       </div>
                   </div>
@@ -321,10 +321,10 @@ const ProjectPage: React.FC = () => {
           </div>
       </section>
       
-      <section className="bg-brand-navy py-64 relative overflow-hidden group">
-        <Link to={`/work/${nextProject.slug}`} className="block relative z-10 text-center">
-            <span className="font-mono text-brand-offwhite/50 uppercase tracking-[0.5em] text-xs font-black">Next Case File</span>
-            <h3 className="text-6xl md:text-[8vw] font-black uppercase tracking-tight text-brand-offwhite mt-12 transition-transform duration-1000 group-hover:scale-95 group-hover:text-brand-purple">
+      <section className="bg-brand-navy py-48 md:py-64 relative overflow-hidden group">
+        <Link to={`/work/${nextProject.slug}`} className="block relative z-10 text-center p-6">
+            <span className="font-mono text-brand-offwhite/50 uppercase tracking-[0.5em] text-[10px] md:text-xs font-black">Next Case File</span>
+            <h3 className="text-5xl md:text-[8vw] font-black uppercase tracking-tighter text-brand-offwhite mt-8 md:mt-12 transition-transform duration-1000 group-hover:scale-95 group-hover:text-brand-purple break-words">
                 {nextProject.title} &rarr;
             </h3>
         </Link>
