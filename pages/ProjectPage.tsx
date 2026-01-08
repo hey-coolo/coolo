@@ -1,16 +1,36 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+
+const ScrollIndicatorDots: React.FC<{ className?: string }> = ({ className = "" }) => (
+  <div className={`flex flex-col items-center gap-2 ${className}`}>
+    {[0, 1, 2].map((i) => (
+      <motion.div
+        key={i}
+        animate={{
+          opacity: [0.2, 1, 0.2],
+          scale: [0.7, 1, 0.7],
+          y: [0, 5, 0]
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          delay: i * 0.4,
+          ease: "easeInOut"
+        }}
+        className="w-1 h-1 rounded-full bg-current"
+      />
+    ))}
+  </div>
+);
 
 const DraggableHero: React.FC<{ project: any }> = ({ project }) => {
-    // Ensure we have enough images for the infinite feel by repeating the gallery
     const baseImages = project.detailImages || [project.imageUrl];
     const images = [...baseImages, ...baseImages, ...baseImages].slice(0, 16); 
 
-    // Create a scattered layout for the infinite feel with more items
     const positions = [
         { top: '5%', left: '5%', rotate: -5, z: 1 },
         { top: '10%', left: '55%', rotate: 5, z: 2 },
@@ -32,7 +52,6 @@ const DraggableHero: React.FC<{ project: any }> = ({ project }) => {
 
     return (
         <div className="relative h-screen w-full overflow-hidden bg-brand-offwhite cursor-move">
-            {/* Draggable Canvas - Expanded size for 'infinite' feel */}
             <motion.div 
                 className="absolute w-[200vw] h-[200vh] top-[-50vh] left-[-50vw]"
                 drag
@@ -56,7 +75,6 @@ const DraggableHero: React.FC<{ project: any }> = ({ project }) => {
                 ))}
             </motion.div>
 
-            {/* Static Overlay UI */}
             <div className="absolute inset-0 pointer-events-none flex flex-col justify-center items-center z-50 mix-blend-difference text-brand-offwhite">
                 <span className="font-mono uppercase tracking-[0.5em] text-xs font-bold mb-4">Case Study {project.id.toString().padStart(2, '0')}</span>
                 <h1 className="text-[12vw] leading-[0.9] font-black uppercase tracking-tight text-center">
@@ -67,8 +85,9 @@ const DraggableHero: React.FC<{ project: any }> = ({ project }) => {
                     <span>//</span>
                     <span>{project.category}</span>
                 </div>
-                <div className="absolute bottom-12 animate-bounce font-mono text-[10px] uppercase tracking-widest">
-                    [ Drag to Explore ] &darr; Scroll for Story
+                <div className="absolute bottom-12 flex flex-col items-center gap-4">
+                    <span className="font-mono text-[10px] uppercase tracking-widest">[ Drag to Explore ]</span>
+                    <ScrollIndicatorDots className="text-brand-offwhite" />
                 </div>
             </div>
         </div>
@@ -127,14 +146,23 @@ const NarrativeSection: React.FC<{
 
 const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
     const scrollRef = useRef(null);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
     const { scrollYProgress } = useScroll({ 
         target: scrollRef,
         offset: ["start start", "end end"] 
     });
     
-    // Move from 0% to -X% where X is enough to show all images. 
-    // -75% usually covers a strip of 4-5 images in a 200vh scroll.
     const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
+
+    // Close on escape
+    useEffect(() => {
+        const handleEsc = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setSelectedImage(null);
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => window.removeEventListener('keydown', handleEsc);
+    }, []);
 
     return (
         <section ref={scrollRef} className="h-[300vh] relative bg-brand-offwhite">
@@ -146,19 +174,69 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
                 <div className="w-full overflow-hidden">
                     <motion.div style={{ x }} className="flex gap-8 px-8 w-max">
                         {images.map((img, i) => (
-                            <div key={i} className="w-[400px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0">
-                                <img src={img} className="w-full h-full object-cover mix-blend-multiply grayscale hover:grayscale-0 transition-all duration-500" alt="Process" />
-                            </div>
+                            <motion.div 
+                                key={i} 
+                                onClick={() => setSelectedImage(img)}
+                                data-cursor-text="VIEW"
+                                whileHover={{ scale: 0.98 }}
+                                className="w-[400px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0 cursor-pointer overflow-hidden group"
+                            >
+                                <img src={img} className="w-full h-full object-cover mix-blend-multiply grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Process" />
+                            </motion.div>
                         ))}
-                        {/* Duplicate for visual length if needed */}
                         {images.map((img, i) => (
-                            <div key={`dup-${i}`} className="w-[400px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0">
-                                <img src={img} className="w-full h-full object-cover mix-blend-multiply grayscale hover:grayscale-0 transition-all duration-500" alt="Process" />
-                            </div>
+                            <motion.div 
+                                key={`dup-${i}`} 
+                                onClick={() => setSelectedImage(img)}
+                                data-cursor-text="VIEW"
+                                whileHover={{ scale: 0.98 }}
+                                className="w-[400px] md:w-[600px] aspect-[4/3] bg-brand-navy/5 flex-shrink-0 cursor-pointer overflow-hidden group"
+                            >
+                                <img src={img} className="w-full h-full object-cover mix-blend-multiply grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="Process" />
+                            </motion.div>
                         ))}
                     </motion.div>
                 </div>
             </div>
+
+            {/* Lightbox Modal */}
+            <AnimatePresence>
+                {selectedImage && (
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setSelectedImage(null)}
+                        className="fixed inset-0 z-[100] bg-brand-navy/90 backdrop-blur-xl flex items-center justify-center p-8 md:p-24 cursor-zoom-out"
+                    >
+                        <motion.div 
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                            className="relative max-w-full max-h-full"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <img 
+                                src={selectedImage} 
+                                className="w-auto h-auto max-w-full max-h-[80vh] shadow-[0_40px_100px_rgba(0,0,0,0.5)] border border-white/10" 
+                                alt="Expanded Detail" 
+                            />
+                            <div className="absolute top-full left-0 mt-8 w-full flex justify-between items-start">
+                                <div className="font-mono text-[10px] uppercase tracking-widest text-brand-offwhite/50 font-bold">
+                                    Logic Inspection // High Resolution
+                                </div>
+                                <button 
+                                    onClick={() => setSelectedImage(null)}
+                                    className="font-mono text-[10px] uppercase tracking-widest text-brand-yellow font-bold border-b border-brand-yellow pb-1 hover:text-brand-offwhite hover:border-brand-offwhite transition-colors"
+                                >
+                                    CLOSE_VIEW
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
@@ -181,7 +259,6 @@ const ProjectPage: React.FC = () => {
   const project = PROJECTS[currentIndex];
   const nextProject = PROJECTS[(currentIndex + 1) % PROJECTS.length];
   
-  // Use story data or fallback text if missing (for legacy data compatibility)
   const story = project.story || {
       goal: project.challenge || "Define the mission.",
       gap: "The messy middle where strategy meets execution.",
@@ -192,11 +269,8 @@ const ProjectPage: React.FC = () => {
 
   return (
     <div className="bg-brand-offwhite text-brand-navy min-h-screen">
-      
-      {/* 1. Hero: Draggable Infinite Gallery */}
       <DraggableHero project={project} />
 
-      {/* 2. Story: The Goal (Mission) */}
       <NarrativeSection 
         step="01 The Goal"
         title="Call to Adventure"
@@ -204,8 +278,8 @@ const ProjectPage: React.FC = () => {
         isDark={false}
       />
 
-      {/* 3. Story: The Gap (Process) + Horizontal Scroll */}
       <ProcessGallery images={story.processImages} />
+      
       <NarrativeSection 
         step="02 The Gap"
         title="The Struggle"
@@ -213,7 +287,6 @@ const ProjectPage: React.FC = () => {
         isDark={true}
       />
 
-      {/* 4. Story: The Gamble (Solution) */}
       <NarrativeSection 
         step="03 The Gamble"
         title="The Pivot"
@@ -222,12 +295,9 @@ const ProjectPage: React.FC = () => {
         isDark={false}
       />
 
-      {/* 5. Story: The Gain (Impact) */}
       <section className="py-48 bg-brand-yellow text-brand-navy">
           <div className="container mx-auto px-8 text-center">
               <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold mb-8 block">04 The Gain / Impact</span>
-              
-              {/* Reduced font size for better readability as requested */}
               <h2 className="text-4xl md:text-5xl lg:text-[4vw] font-black uppercase tracking-tight leading-[1.1] max-w-4xl mx-auto">
                   {story.gain}
               </h2>
@@ -251,12 +321,9 @@ const ProjectPage: React.FC = () => {
           </div>
       </section>
       
-      {/* Footer: Next Case */}
       <section className="bg-brand-navy py-64 relative overflow-hidden group">
         <Link to={`/work/${nextProject.slug}`} className="block relative z-10 text-center">
             <span className="font-mono text-brand-offwhite/50 uppercase tracking-[0.5em] text-xs font-black">Next Case File</span>
-            
-            {/* Reduced next project title size */}
             <h3 className="text-6xl md:text-[8vw] font-black uppercase tracking-tight text-brand-offwhite mt-12 transition-transform duration-1000 group-hover:scale-95 group-hover:text-brand-purple">
                 {nextProject.title} &rarr;
             </h3>

@@ -1,9 +1,32 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
+
+const ScrollIndicatorDots: React.FC<{ className?: string }> = ({ className = "" }) => (
+  <div className={`flex flex-col items-center gap-2 ${className}`}>
+    {[0, 1, 2].map((i) => (
+      <motion.div
+        key={i}
+        animate={{
+          opacity: [0.2, 1, 0.2],
+          scale: [0.7, 1, 0.7],
+          y: [0, 5, 0]
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          delay: i * 0.4,
+          ease: "easeInOut"
+        }}
+        className="w-1 h-1 rounded-full bg-current"
+      />
+    ))}
+  </div>
+);
 
 const BrandHero: React.FC = () => {
     // Keeping mouse tracking only for the subtle light background, removing from title
@@ -37,6 +60,11 @@ const BrandHero: React.FC = () => {
             >
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brand-purple/5 blur-[120px] rounded-full" />
             </motion.div>
+
+            {/* Left Side Scroll Indicator (Ref user screenshot circle) */}
+            <div className="absolute left-8 top-1/2 -translate-y-1/2 hidden md:block z-20">
+                <ScrollIndicatorDots className="text-brand-navy/20" />
+            </div>
 
             {/* Typography Overlay - Static (No mouse interaction) */}
             <div className="container mx-auto px-4 md:px-8 relative z-10 flex-grow flex flex-col justify-center">
@@ -124,9 +152,7 @@ const SplitManifesto: React.FC = () => {
                             </h2>
                         </div>
                         <div className="hidden lg:block">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" className="animate-bounce text-brand-navy">
-                                <path d="M12 4V20M12 20L18 14M12 20L6 14" stroke="currentColor" strokeWidth="2" strokeLinecap="square"/>
-                            </svg>
+                            <ScrollIndicatorDots className="text-brand-navy w-max" />
                         </div>
                     </div>
 

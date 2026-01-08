@@ -1,18 +1,15 @@
 
 import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, DesignPowerTier, ClarityTier, Script, Resource, Workbook, CourseModule, PartnershipModel } from './types';
 
-// PRO TIP: Replace these strings with your direct image links (ending in .jpg, .png, or .webp)
-// If using GitHub: https://raw.githubusercontent.com/username/repo/main/assets/images/file.jpg
-
 export const ASSETS = {
   hero: {
-    viz: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200', 
-    ooh: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200'
+    viz: './assets/images/hero-viz.jpg', 
+    ooh: './assets/images/hero-ooh.jpg'
   },
   services: {
-    clarity: 'https://images.unsplash.com/photo-1470075801209-17f9ec0cada6?auto=format&fit=crop&q=80&w=1200',
-    designPower: 'https://images.unsplash.com/photo-1516937941348-c09e554b9631?auto=format&fit=crop&q=80&w=1200',
-    partnership: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?auto=format&fit=crop&q=80&w=1200'
+    clarity: './assets/images/service-clarity.jpg',
+    designPower: './assets/images/service-design.jpg',
+    partnership: './assets/images/service-partner.jpg'
   },
   team: {
     franco: './assets/images/franco.webp',
@@ -23,22 +20,31 @@ export const ASSETS = {
 export const PROJECTS: Project[] = [
   {
     id: 1,
-    title: 'unmplynmt garments',
+    title: 'UNMPLYNMT',
     slug: 'unmplynmt',
-    description: 'Brutalist identity system exploring the friction of labor and identity.',
+    description: 'A Brand Built Like Culture, Not a Logo. Brutalist identity system exploring the friction of labor and identity.',
     category: 'Brand Identity',
     tags: ['Brutalism', 'Typography', 'Strategy'],
     year: 2025,
-    imageUrl: 'https://github.com/hey-coolo/COOLO/blob/main/assets/images/Thumbnail_unp.webp', // REPLACE_WITH_UNMPLYNMT_IMG
+    imageUrl: './assets/cases/unmplynmt/hero.jpg',
     featured: true,
     client: 'Internal Project',
-    role: 'Art Direction & Design',
+    role: 'Strategy, logo & mark system, type system, colour palette, texture & pattern language, apparel branding, art direction.',
+    detailImages: [
+        './assets/cases/unmplynmt/detail-1.jpg',
+        './assets/cases/unmplynmt/detail-2.jpg',
+        './assets/cases/unmplynmt/detail-3.jpg',
+        './assets/cases/unmplynmt/detail-4.jpg'
+    ],
     story: {
-        goal: "Translate the social friction of unemployment into a premium, architectural visual language.",
-        gap: "Most protest-led branding feels 'cheap'. We needed to prove that raw social commentary could hold high-end design value.",
-        gamble: "Total elimination of secondary colors. We relied entirely on black, white, and extreme typographic scale.",
-        gain: "Establishment of the COOLO 'No Magic' baseline—Logic over decoration.",
-        processImages: ['https://images.unsplash.com/photo-1515462277126-2dd0c162007a?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800']
+        goal: "UNMPLYNMT began as a belief: that clothing can be more than fashion — it can be a banner for identity, rebellion, and community. We asked a simple, strategic question: What does freedom look like when it isn’t selling anything?",
+        gap: "Most streetwear brands dress their ambition in borrowed codes—collegiate fonts, heritage badges. UNMPLYNMT wasn’t about nostalgia or irony. It was about now, being heard without having to scream.",
+        gamble: "We developed a visual voice that mirrors that attitude: Typographic Brutality, Colour Energy, and Texture as Attitude. A flexible system built to scale across campaigns without diluting its raw power.",
+        gain: "Identity done right doesn’t whisper. It moves people. We gave them a visual language that behaves like culture: adaptable, self-aware, and unmistakable. Community turned into culture.",
+        processImages: [
+            './assets/cases/unmplynmt/process-1.jpg', 
+            './assets/cases/unmplynmt/process-2.jpg'
+        ]
     }
   },
   {
@@ -49,16 +55,24 @@ export const PROJECTS: Project[] = [
     category: 'Packaging',
     tags: ['Packaging', 'Industrial', 'Minimalism'],
     year: 2024,
-    imageUrl: 'https://images.unsplash.com/photo-1530519729491-acf5b58454ba?auto=format&fit=crop&q=95&w=1200', // REPLACE_WITH_JUSTBOXES_IMG
+    imageUrl: './assets/cases/just-boxes/hero.jpg',
     featured: true,
     client: 'Just Boxes',
     role: 'Creative Direction',
+    detailImages: [
+        './assets/cases/just-boxes/detail-1.jpg',
+        './assets/cases/just-boxes/detail-2.jpg',
+        './assets/cases/just-boxes/detail-3.jpg'
+    ],
     story: {
         goal: "Celebrate cardboard as a primary luxury material.",
         gap: "Sustainable packaging is often over-designed. We stripped it back to the absolute structural minimum.",
         gamble: "No plastic coatings. We used structural folding and high-contrast ink to create the 'Premium' feel.",
         gain: "A signature packaging system that is 100% recyclable and 100% unmistakable.",
-        processImages: ['https://images.unsplash.com/photo-1606206591513-adbf01ac2191?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=800']
+        processImages: [
+            './assets/cases/just-boxes/process-1.jpg', 
+            './assets/cases/just-boxes/process-2.jpg'
+        ]
     }
   },
   {
@@ -69,16 +83,24 @@ export const PROJECTS: Project[] = [
     category: '3D Design',
     tags: ['3D Viz', 'Technical', 'Surfacing'],
     year: 2022,
-    imageUrl: 'https://images.unsplash.com/photo-1528150177508-7cc0c36cda5c?auto=format&fit=crop&q=95&w=1200', // REPLACE_WITH_SURFBOARD_IMG
+    imageUrl: './assets/cases/surfboard-v001/hero.jpg',
     featured: true,
     client: 'Technical Study',
     role: '3D Artist',
+    detailImages: [
+        './assets/cases/surfboard-v001/render-1.jpg',
+        './assets/cases/surfboard-v001/render-2.jpg',
+        './assets/cases/surfboard-v001/render-3.jpg'
+    ],
     story: {
         goal: "Mimic the exact light refraction of hand-shaped surfboard resin in a digital environment.",
         gap: "Generic 3D surfboard renders lack the 'depth' of real glassing. We focused on the subsurface scattering of the material.",
         gamble: "A 2-week deep dive into a single material shader.",
         gain: "The creation of our 'Hydro-Logic' shader library, used in all current hardware client builds.",
-        processImages: ['https://images.unsplash.com/photo-1531315630201-bb152f135884?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800']
+        processImages: [
+            './assets/cases/surfboard-v001/process-1.jpg', 
+            './assets/cases/surfboard-v001/process-2.jpg'
+        ]
     }
   },
   {
@@ -89,16 +111,23 @@ export const PROJECTS: Project[] = [
     category: '3D Design',
     tags: ['Industrial', 'Hardware', 'Lighting'],
     year: 2021,
-    imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=95&w=1200', // REPLACE_WITH_CARTRIDGES_IMG
+    imageUrl: './assets/cases/the-cartridges/hero.jpg',
     featured: false,
     client: 'Modular Labs',
     role: 'Visualization Lead',
+    detailImages: [
+        './assets/cases/the-cartridges/detail-1.jpg',
+        './assets/cases/the-cartridges/detail-2.jpg'
+    ],
     story: {
         goal: "Represent complex modularity through simple, high-res geometric lighting.",
         gap: "Technical products are often shown in flat lighting. We treated these like luxury timepieces.",
         gamble: "Using pitch-black environments to force focus on material quality.",
         gain: "A set of high-converting visual assets for a seed-round pitch deck.",
-        processImages: ['https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800']
+        processImages: [
+            './assets/cases/the-cartridges/process-1.jpg', 
+            './assets/cases/the-cartridges/process-2.jpg'
+        ]
     }
   },
   {
@@ -109,16 +138,24 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     tags: ['Hospitality', 'Kinetic Type', 'Logo'],
     year: 2023,
-    imageUrl: 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&q=95&w=1200', // REPLACE_WITH_JONHEYS_IMG
+    imageUrl: './assets/cases/jonheys-dumpling-house/hero.jpg',
     featured: true,
     client: 'Jonhey’s',
     role: 'Lead Designer',
+    detailImages: [
+        './assets/cases/jonheys-dumpling-house/branding-1.jpg',
+        './assets/cases/jonheys-dumpling-house/branding-2.jpg',
+        './assets/cases/jonheys-dumpling-house/mockup-1.jpg'
+    ],
     story: {
         goal: "Break the 'red and gold' hospitality cliché for a younger, urban crowd.",
         gap: "Dumpling houses usually feel traditional. This one needed to feel like a high-speed streetwear drop.",
         gamble: "Using neon purple and heavy, distorted typography for a traditional product.",
         gain: "Immediate cult-status and a visual system that works perfectly on apparel.",
-        processImages: ['https://images.unsplash.com/photo-1547928576-a4a33237cea3?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&q=80&w=800']
+        processImages: [
+            './assets/cases/jonheys-dumpling-house/process-1.jpg', 
+            './assets/cases/jonheys-dumpling-house/process-2.jpg'
+        ]
     }
   },
   {
@@ -129,16 +166,23 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     tags: ['Editorial', 'Strategy', 'Nature'],
     year: 2023,
-    imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=95&w=1200', // REPLACE_WITH_FRANCA_IMG
+    imageUrl: './assets/cases/franca-austral/hero.jpg',
     featured: false,
     client: 'Franca Collective',
     role: 'Art Director',
+    detailImages: [
+        './assets/cases/franca-austral/editorial-1.jpg',
+        './assets/cases/franca-austral/editorial-2.jpg'
+    ],
     story: {
         goal: "Capture the vast silence of southern landscapes through typographic negative space.",
         gap: "Nature brands are often cluttered. We wanted it to feel as open as the land itself.",
         gamble: "A 60-page brand book with almost zero body copy—relying purely on scale and hierarchy.",
         gain: "A sophisticated, high-end presence that attracted luxury tourism partners.",
-        processImages: ['https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&q=80&w=800']
+        processImages: [
+            './assets/cases/franca-austral/process-1.jpg', 
+            './assets/cases/franca-austral/process-2.jpg'
+        ]
     }
   },
   {
@@ -149,16 +193,23 @@ export const PROJECTS: Project[] = [
     category: 'Strategy',
     tags: ['Positioning', 'Messaging', 'Narrative'],
     year: 2021,
-    imageUrl: 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?auto=format&fit=crop&q=95&w=1200', // REPLACE_WITH_TRAVELLER_IMG
+    imageUrl: './assets/cases/traveller-entrepreneur/hero.jpg',
     featured: true,
     client: 'Personal Brand',
     role: 'Lead Strategist',
+    detailImages: [
+        './assets/cases/traveller-entrepreneur/meta-1.jpg',
+        './assets/cases/traveller-entrepreneur/meta-2.jpg'
+    ],
     story: {
         goal: "Pivot an audience from 'lifestyle travel' to 'business technicality'.",
         gap: "The travel content was too casual. The brand needed to pivot to high-ticket consulting.",
         gamble: "Cutting 80% of existing content categories to focus on 'The Grind' as a technical discipline.",
         gain: "A 300% increase in inbound consulting leads within 90 days of repositioning.",
-        processImages: ['https://images.unsplash.com/photo-1454165833767-027ff33027b6?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=800']
+        processImages: [
+            './assets/cases/traveller-entrepreneur/process-1.jpg', 
+            './assets/cases/traveller-entrepreneur/process-2.jpg'
+        ]
     }
   }
 ];
@@ -362,7 +413,7 @@ export const JOURNAL_POSTS: JournalPost[] = [
     slug: "script-01-micromanagement",
     title: "Script 01: The Trust Cycle",
     date: "2024.11.12",
-    imageUrl: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200',
+    imageUrl: './assets/journal/script-01.jpg',
     excerpt: "Why micromanagement is actually a symptom of a failed strategy phase.",
     tags: ["Process", "Clients", "Intel"],
     readTime: "4 min read",
@@ -373,7 +424,7 @@ export const JOURNAL_POSTS: JournalPost[] = [
     slug: "3d-as-strategic-asset",
     title: "3D as a Strategic Asset",
     date: "2024.10.05",
-    imageUrl: 'https://images.unsplash.com/photo-1633167606207-d840b5070fc2?auto=format&fit=crop&q=80&w=1200',
+    imageUrl: './assets/journal/3d-asset.jpg',
     excerpt: "Moving 3D from 'cool render' to 'conversion tool'.",
     tags: ["3D", "E-commerce", "Strategy"],
     readTime: "6 min read",
@@ -384,7 +435,7 @@ export const JOURNAL_POSTS: JournalPost[] = [
     slug: "no-magic-formula-logic",
     title: "The Logic of No Magic",
     date: "2024.09.20",
-    imageUrl: 'https://images.unsplash.com/photo-1470075801209-17f9ec0cada6?auto=format&fit=crop&q=80&w=1200',
+    imageUrl: './assets/journal/no-magic.jpg',
     excerpt: "Why we killed the 'Creative Guru' trope to save our clients' money.",
     tags: ["Business", "Operations", "Fluff"],
     readTime: "5 min read",
@@ -474,73 +525,6 @@ export const FAQ_DATA = [
           a: "Generally, no. A logo without a strategy is just decoration. We only take on identity projects that include at least a foundational strategy phase to ensure the visuals actually work for your business."
       }
     ]
-  },
-  {
-      category: 'The Process',
-      questions: [
-          {
-              q: 'Can we skip strategy and go straight to design?',
-              a: "No. Design without strategy is guesswork. We won't risk your capital or our reputation on it. If you don't have a clear narrative, we build it first."
-          },
-          {
-              q: 'What is the "No Magic Formula™"?',
-              a: "It is our belief that there is no secret sauce—only rigorous logic and deep empathy for the audience. We deconstruct the brand to its soul and rebuild it with high-res precision."
-          },
-          {
-              q: 'How many concepts do we get?',
-              a: "We don't 'throw concepts at a wall'. We iterate internally and present the strongest, most logical solution that meets the strategy. We work together to refine that solution until it is perfect."
-          },
-          {
-              q: 'How do we communicate?',
-              a: "We use Slack for daily syncs and asynchronous communication. We use Loom for deep-dive walkthroughs of creative work. We keep meetings to a minimum so we can focus on deep work."
-          },
-          {
-              q: 'What happens if I don\'t like the design?',
-              a: "By following our 'Logic Locked' strategy process, we align on the 'Why' before we ever touch the 'What'. This almost entirely eliminates the risk of a design mismatch."
-          }
-      ]
-  },
-  {
-      category: 'Technical & Tools',
-      questions: [
-          {
-              q: 'Why Webflow?',
-              a: "Webflow gives us the power of a custom build with the security and speed of a managed platform. It allows for high-end kinetic typography and interactions that standard templates can't handle."
-          },
-          {
-              q: 'What tools do you use for 3D?',
-              a: "We use Cinema4D and Redshift for high-end product and environment visualizations. This allows us to create 'impossible' lighting and materials that are repeatable and modular for your brand OS."
-          },
-          {
-              q: 'Do you handle web hosting?',
-              a: "We build on Webflow, and hosting is handled through their platform. We help you set everything up and hand over the 'keys' (admin access) once the project is live."
-          },
-          {
-              q: 'Do you provide source files?',
-              a: "Yes. Upon final payment, you own all the assets we created. We provide clean, organized source files so you (or your future team) can maintain the system."
-          }
-      ]
-  },
-  {
-      category: 'Partnership & Scale',
-      questions: [
-          {
-              q: 'Do you work with other creative agencies?',
-              a: "Yes. We act as an elite white-label design power unit for senior agencies who need high-res 3D or Webflow execution without adding permanent headcount."
-          },
-          {
-              q: 'What is a Fractional CD?',
-              a: "We join your executive team for a set amount of time (usually 3-6 months) to provide senior creative direction. We manage your internal teams, audit your outputs, and ensure zero visual drift."
-          },
-          {
-              q: 'Do you take equity?',
-              a: "In very specific cases for early-stage startups where we see massive potential and a perfect strategic fit, we may consider a mix of fee and equity."
-          },
-          {
-              q: 'How do I know if we are a good fit?',
-              a: "If you value logic over fluff, speed over bureaucracy, and direct access over agency layers, we will likely work well together."
-          }
-      ]
   }
 ];
 

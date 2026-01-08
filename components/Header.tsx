@@ -43,14 +43,14 @@ const Header: React.FC = () => {
             >
               {({ isActive }) => (
                 <>
-                  {link.name}
+                  {link.name.toUpperCase()}
                   {!isActive && <span className={`absolute -bottom-1 left-0 w-0 h-[2px] bg-brand-yellow group-hover:w-full transition-all duration-300`}></span>}
                 </>
               )}
             </NavLink>
           ))}
           <div className="flex items-center space-x-4">
-              <span className={`font-mono text-[8px] uppercase tracking-tighter opacity-40 px-2 py-1 border border-current rounded ${isLightText ? 'text-brand-offwhite' : 'text-brand-navy'}`}>
+              <span className={`font-mono text-[9px] uppercase tracking-widest opacity-40 px-3 py-1.5 border border-current rounded-md font-bold transition-opacity hover:opacity-100 ${isLightText ? 'text-brand-offwhite border-brand-offwhite/30' : 'text-brand-navy border-brand-navy/10 bg-brand-navy/5'}`}>
                   V2.0_ALPHA
               </span>
               <Link to="/contact" className={`font-mono text-[10px] uppercase tracking-[0.2em] px-8 py-3 transition-all duration-500 font-bold border ${isLightText ? 'border-brand-offwhite text-brand-offwhite hover:bg-brand-offwhite hover:text-brand-navy drop-shadow-sm' : 'bg-brand-purple text-brand-offwhite border-brand-purple hover:bg-brand-yellow hover:text-brand-navy hover:border-brand-yellow shadow-xl'}`}>
