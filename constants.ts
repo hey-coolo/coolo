@@ -2,7 +2,7 @@ import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, De
 
 // CENTRAL CDN PATH
 // Change this string if you move your repo or change the branch
-const CDN_BASE='https://cdn.jsdelivr.net/gh/hey-coolo/COOLO-main/assets/...';
+const CDN_BASE='https://cdn.jsdelivr.net/gh/hey-coolo/COOLO/assets/...';
 
 export const ASSETS = {
   hero: {
@@ -16,7 +16,7 @@ export const ASSETS = {
   },
   team: {
     franco: '${CDN_BASE}/assets/team/franco.webp',
-    ariana: '${CDN_BASE}/assets/team/ariana.webp'
+    ariana: '${CDN_BASE}/assets/team/Ariana.webp'
   }
 };
 
@@ -29,7 +29,7 @@ export const PROJECTS: Project[] = [
     category: ['Concept & Strategy - ', 'Naming - ', 'Brand Identity - ', 'Content Creation - '],
     tags: ['Brutalism', 'Typography', 'Strategy'],
     year: 2025,
-    imageUrl: `${CDN_BASE}/assets/cases/unmplymnt/Hero.webp`, 
+    imageUrl: '${CDN_BASE}/assets/cases/unmplymnt/Hero.webp', 
     featured: true,
     client: 'Internal Project',
     role: 'Strategy, logo & mark system, type system, colour palette, texture & pattern language, apparel branding, art direction.',
