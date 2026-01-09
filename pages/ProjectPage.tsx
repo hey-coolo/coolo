@@ -73,8 +73,18 @@ const IndividualDraggable: React.FC<{ img: string; initialPos: { top: string; le
 };
 
 const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
-    const baseImages = project.detailImages || [project.imageUrl];
-    const images = [...baseImages, ...baseImages, ...baseImages, ...baseImages, ...baseImages].slice(0, 32); 
+    // 1. Aggregate ALL images from the project (Hero, Details, and Process)
+    const allProjectImages = [
+        project.imageUrl,                         // The Hero
+        ...(project.detailImages || []),          // The Details
+        ...(project.story?.processImages || [])   // The Process
+    ].filter(Boolean); // Remove any undefined/nulls
+
+    // 2. Create the "Endless" density.
+    // We repeat the *combined* list to ensure we have enough items (32) to fill the screen density.
+    // This creates the visual "mess" without limiting which images are shown.
+    const images = Array(5).fill(allProjectImages).flat().slice(0, 32);
+
     const positions = Array.from({ length: 32 }).map((_, i) => ({
         top: `${Math.random() * 100}%`,
         left: `${Math.random() * 100}%`,
@@ -108,9 +118,7 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
                         animate={{ opacity: 1, y: 0 }}
                         className="font-mono uppercase tracking-[0.5em] text-[10px] md:text-xs font-bold mb-6 block text-brand-purple"
                     >
-
                         Case Study {project.id.toString().padStart(2, '0')}
-
                     </motion.span>
                   
                     <div className="pointer-events-auto inline-block">
@@ -120,7 +128,6 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
                             className="text-[16vw] md:text-[12vw] leading-[0.8] font-black uppercase tracking-tighter text-brand-navy break-words max-w-[95vw] select-all"
                         >
-    
                             {project.title}
                         </motion.h1>
                     </div>
@@ -196,9 +203,6 @@ const NarrativeSection: React.FC<{
 }
 
 const ProcessGallery: React.FC<{ images: string[], onImageSelect: (img: string) => void }> = ({ images, onImageSelect }) => {
-    // Duplicate images for the "messy" volume feel
-    const displayImages = [...images, ...images].slice(0, 8); 
-
     return (
         <section className="py-32 md:py-48 bg-brand-offwhite relative z-10">
             <div className="container mx-auto px-6 md:px-8">
@@ -215,7 +219,8 @@ const ProcessGallery: React.FC<{ images: string[], onImageSelect: (img: string) 
 
                 {/* MASONRY LAYOUT */}
                 <div className="columns-1 md:columns-2 gap-8 md:gap-12 space-y-8 md:space-y-12">
-                    {displayImages.map((img, i) => (
+                    {/* Just map the images directly, no duplication */}
+                    {images.map((img, i) => (
                         <motion.div 
                             key={i}
                             initial={{ opacity: 0, y: 50 }}
@@ -225,18 +230,14 @@ const ProcessGallery: React.FC<{ images: string[], onImageSelect: (img: string) 
                             onClick={() => onImageSelect(img)}
                             className="relative break-inside-avoid cursor-pointer group mb-8 md:mb-12"
                         >
-                            {/* CHANGE: Removed 'bg-white', 'p-2', and 'md:p-4'.
-                                Added 'overflow-hidden' to keep corners sharp or clean.
-                            */}
                             <div className="shadow-2xl bg-brand-navy/5 overflow-hidden">
                                 <img 
                                     src={img} 
-                                    // 'w-full h-auto' ensures original ratio with NO cropping
                                     className="w-full h-auto block grayscale group-hover:grayscale-0 transition-all duration-700 ease-out" 
                                     alt="Process detail" 
                                 />
                                 
-                                {/* Overlay on hover */}
+                                {/* Overlay */}
                                 <div className="absolute inset-0 bg-brand-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
                             </div>
                             
@@ -255,7 +256,6 @@ const ProcessGallery: React.FC<{ images: string[], onImageSelect: (img: string) 
         </section>
     );
 }
-
 const ProjectPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
