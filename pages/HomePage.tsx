@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
+import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
 import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
@@ -18,105 +18,93 @@ const DownArrow: React.FC<{ className?: string; size?: number }> = ({ className 
     </motion.div>
 );
 
-const FloatingImage: React.FC<{ img: string; initialPos: { top: string; left: string; rotate: number; s: number }; index: number }> = ({ img, initialPos, index }) => {
-    const [isRevealed, setIsRevealed] = useState(false);
+// --- IMAGE TRAIL COMPONENT ---
+interface TrailItem {
+    id: number;
+    x: number;
+    y: number;
+    rotation: number;
+    scale: number;
+    img: string;
+}
 
-    return (
-        <motion.div 
-            className="absolute w-[180px] md:w-[320px] aspect-[4/5] shadow-2xl overflow-hidden pointer-events-auto bg-white"
-            style={{ 
-                top: initialPos.top, 
-                left: initialPos.left, 
-                rotate: initialPos.rotate,
-                scale: initialPos.s,
-                zIndex: 10,
-            }}
-            // Reveal color on hover
-            onMouseEnter={() => setIsRevealed(true)}
-            
-            // Hover effects: Pop up and straighten
-            whileHover={{
-                scale: initialPos.s * 1.15,
-                rotate: 0,
-                zIndex: 100,
-                transition: { duration: 0.3, type: "spring", stiffness: 300 }
-            }}
-            
-            // Ambient Float Animation
-            animate={{ 
-                y: [0, -15, 0],
-            }}
-            transition={{ 
-                duration: 4 + (index % 3), 
-                repeat: Infinity, 
-                ease: "easeInOut",
-                delay: index * 0.2 
-            }}
-        >
-            <img 
-                src={img} 
-                className={`w-full h-full object-cover transition-all duration-700 ease-out ${isRevealed ? 'grayscale-0 opacity-100 mix-blend-normal' : 'grayscale opacity-60 mix-blend-multiply'}`}
-                alt="Studio Output" 
-                draggable={false} // Prevent native drag ghosting
-            />
-            <div className={`absolute inset-0 border transition-colors duration-700 ${isRevealed ? 'border-transparent' : 'border-brand-navy/5'}`} />
-        </motion.div>
-    );
-};
+const ImageTrail: React.FC = () => {
+    const [trail, setTrail] = useState<TrailItem[]>([]);
+    const lastPos = useRef({ x: 0, y: 0 });
+    const imageIndex = useRef(0);
+    const trailCount = useRef(0);
 
-const HybridGallery: React.FC = () => {
-    const { scrollY } = useScroll();
-    
-    // Scroll Interactions: Zoom Out + Fade Out as user scrolls down
-    const scale = useTransform(scrollY, [0, 1000], [1, 0.8]);
-    const opacity = useTransform(scrollY, [0, 800], [1, 0]);
-    const y = useTransform(scrollY, [0, 1000], [0, 100]); // Slight parallax down
-
-    // Data Logic: Get all images and shuffle them
-    const randomImages = useMemo(() => {
+    // 1. Gather ALL images and shuffle once
+    const allImages = useMemo(() => {
         const all = PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).filter(Boolean);
         for (let i = all.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [all[i], all[j]] = [all[j], all[i]];
         }
-        return all.slice(0, 35); // Return a dense set of images
+        return all;
     }, []);
-    
+
+    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        const { clientX, clientY } = e;
+        
+        // Calculate distance from last drop point
+        const dist = Math.hypot(clientX - lastPos.current.x, clientY - lastPos.current.y);
+
+        // Threshold: Only drop an image every 100px of movement
+        if (dist > 100) {
+            const nextImage = allImages[imageIndex.current % allImages.length];
+            
+            const newItem: TrailItem = {
+                id: trailCount.current++,
+                x: clientX,
+                y: clientY,
+                rotation: Math.random() * 30 - 15, // Random tilt -15 to 15 deg
+                scale: 0.6 + Math.random() * 0.4,  // Random size
+                img: nextImage
+            };
+
+            setTrail(prev => {
+                // Keep only the last 15 images to prevent DOM overload
+                const newTrail = [...prev, newItem];
+                if (newTrail.length > 15) return newTrail.slice(newTrail.length - 15);
+                return newTrail;
+            });
+
+            lastPos.current = { x: clientX, y: clientY };
+            imageIndex.current++;
+        }
+    }, [allImages]);
+
     return (
-        <motion.div 
-            style={{ scale, opacity, y }}
-            className="absolute inset-0 z-0 will-change-transform"
+        <div 
+            onMouseMove={handleMouseMove}
+            className="absolute inset-0 z-20 w-full h-full cursor-crosshair overflow-hidden"
         >
-            <motion.div 
-                className="absolute w-[200vw] h-[200vh] -top-[50vh] -left-[50vw] cursor-grab active:cursor-grabbing"
-                drag
-                dragConstraints={{ left: -1000, right: 0, top: -1000, bottom: 0 }}
-                dragElastic={0.1}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.5 }}
-            >
-                {/* Global background touch surface */}
-                <div className="absolute inset-0 bg-transparent z-0" />
-
-                {randomImages.map((img, i) => {
-                    // Distribute images across the large canvas
-                    const top = `${Math.floor(Math.random() * 100)}%`;
-                    const left = `${Math.floor(Math.random() * 100)}%`;
-                    const rotate = Math.floor(Math.random() * 40 - 20);
-                    const s = 0.5 + Math.random() * 0.7; // Varied sizes for depth
-
-                    return (
-                        <FloatingImage 
-                            key={i} 
-                            img={img} 
-                            index={i}
-                            initialPos={{ top, left, rotate, s }} 
+            <AnimatePresence>
+                {trail.map((item) => (
+                    <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, scale: 0.5, rotate: item.rotation }}
+                        animate={{ opacity: 1, scale: item.scale, rotate: item.rotation }}
+                        exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        className="absolute w-[200px] md:w-[280px] aspect-[4/5] pointer-events-none shadow-2xl bg-white p-2"
+                        style={{
+                            left: item.x,
+                            top: item.y,
+                            x: "-50%", // Center on cursor
+                            y: "-50%" 
+                        }}
+                    >
+                        <img 
+                            src={item.img} 
+                            alt="" 
+                            className="w-full h-full object-cover grayscale contrast-125"
                         />
-                    );
-                })}
-            </motion.div>
-        </motion.div>
+                    </motion.div>
+                ))}
+            </AnimatePresence>
+        </div>
     );
 };
 
@@ -138,11 +126,14 @@ const BrandHero: React.FC = () => {
             onMouseMove={handleMouseMove}
             className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden"
         >
-            {/* Interactive Archive Layer */}
-            <HybridGallery />
+            {/* The Image Trail Layer - Sits on top of grid but behind text if possible, 
+                but since it tracks mouse, it needs to be high z-index to catch events.
+                We set it to z-20 to be above the grid. 
+            */}
+            <ImageTrail />
 
             {/* Studio Grid Overlay */}
-            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03] z-20"></div>
+            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03] z-10"></div>
             
             {/* Interactive Light */}
             <motion.div 
@@ -150,12 +141,12 @@ const BrandHero: React.FC = () => {
                     x: useTransform(springX, [-0.5, 0.5], [100, -100]), 
                     y: useTransform(springY, [-0.5, 0.5], [100, -100]) 
                 }}
-                className="absolute inset-0 z-21 pointer-events-none opacity-20"
+                className="absolute inset-0 z-10 pointer-events-none opacity-20"
             >
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brand-purple/5 blur-[120px] rounded-full" />
             </motion.div>
 
-            {/* Central Content */}
+            {/* Central Content - z-30 puts it ABOVE the trail so text is readable */}
             <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
                 <div className="relative mb-16 md:mb-32">
                     <div className="pointer-events-auto inline-block">
@@ -163,7 +154,7 @@ const BrandHero: React.FC = () => {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                            className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all"
+                            className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all mix-blend-difference text-white md:text-brand-navy md:mix-blend-normal"
                         >
                             BRAND STRATEGY
                         </motion.h1>
@@ -183,7 +174,7 @@ const BrandHero: React.FC = () => {
                                 initial={{ opacity: 0, x: 50 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-                                className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all"
+                                className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all mix-blend-difference text-white md:text-brand-navy md:mix-blend-normal"
                             >
                                 DESIGN POWER
                             </motion.h1>
@@ -195,7 +186,7 @@ const BrandHero: React.FC = () => {
                 <div className="mt-auto pointer-events-auto">
                     <div className="text-center mb-6">
                         <span className="font-mono text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold text-brand-navy">
-                            [ DRAG TO EXPLORE ]
+                            [ MOVE CURSOR TO REVEAL ]
                         </span>
                     </div>
 
