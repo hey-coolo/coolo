@@ -2,21 +2,21 @@ import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, De
 
 // CENTRAL CDN PATH
 // Change this string if you move your repo or change the branch
-const CDN_BASE='https://cdn.jsdelivr.net/gh/hey-coolo/COOLO/assets/...';
+const CDN_BASE = `https://cdn.jsdelivr.net/gh/hey-coolo/COOLO@main/COOLO-main`;
 
 export const ASSETS = {
   hero: {
-    viz: '${CDN_BASE}/assets/images/hero-viz.webp', 
-    ooh: '${CDN_BASE}/assets/images/hero-ooh.webp'
+    viz: `${CDN_BASE}/assets/images/hero-viz.webp`,
+    ooh: `${CDN_BASE}/assets/images/hero-ooh.webp`
   },
   services: {
-    clarity: '${CDN_BASE}/assets/services/clarity.webp',
-    designPower: '${CDN_BASE}/assets/services/design-power.webp',
-    partnership: '${CDN_BASE}/assets/services/partnership.webp'
+    clarity: `${CDN_BASE}/assets/services/clarity.webp`,
+    designPower: `${CDN_BASE}/assets/services/design-power.webp`,
+    partnership: `${CDN_BASE}/assets/services/partnership.webp`
   },
   team: {
-    franco: '${CDN_BASE}/assets/team/franco.webp',
-    ariana: '${CDN_BASE}/assets/team/Ariana.webp'
+    franco: `${CDN_BASE}/assets/team/franco.webp`,
+    ariana: `${CDN_BASE}/assets/team/ariana.webp`
   }
 };
 
@@ -29,16 +29,16 @@ export const PROJECTS: Project[] = [
     category: ['Concept & Strategy - ', 'Naming - ', 'Brand Identity - ', 'Content Creation - '],
     tags: ['Brutalism', 'Typography', 'Strategy'],
     year: 2025,
-    imageUrl: '${CDN_BASE}/assets/cases/unmplymnt/Hero.webp', 
+    hero: `${CDN_BASE}/assets/cases/unmplymnt/Hero.webp`, 
     featured: true,
     client: 'Internal Project',
     role: 'Strategy, logo & mark system, type system, colour palette, texture & pattern language, apparel branding, art direction.',
     detailImages: [
-        '${CDN_BASE}/assets/cases/unmplymnt/detail-1.webp',
-        '${CDN_BASE}/assets/cases/unmplymnt/detail-2.webp',
-        '${CDN_BASE}/assets/cases/unmplymnt/detail-3.webp',
-        '${CDN_BASE}/assets/cases/unmplymnt/detail-4.webp',
-        '${CDN_BASE}/assets/cases/unmplymnt/detail-5.webp'
+        `${CDN_BASE}/assets/cases/unmplymnt/detail-1.webp`,
+        `${CDN_BASE}/assets/cases/unmplymnt/detail-2.webp`,
+        `${CDN_BASE}/assets/cases/unmplymnt/detail-3.webp`,
+        `${CDN_BASE}/assets/cases/unmplymnt/detail-4.webp`,
+        `${CDN_BASE}/assets/cases/unmplymnt/detail-5.webp`
     ],
     story: {
         goal: "UNMPLYNMT began as a belief: that clothing can be more than fashion — it can be a banner for identity, rebellion, and community. We asked a simple, strategic question: What does freedom look like when it isn’t selling anything?",
@@ -46,10 +46,10 @@ export const PROJECTS: Project[] = [
         gamble: "We developed a visual voice that mirrors that attitude: Typographic Brutality, Colour Energy, and Texture as Attitude. A flexible system built to scale across campaigns without diluting its raw power.",
         gain: "Identity done right doesn’t whisper. It moves people. We gave them a visual language that behaves like culture: adaptable, self-aware, and unmistakable. Community turned into culture.",
         processImages: [
-            '${CDN_BASE}/assets/cases/unmplymnt/process-1.webp',
-            '${CDN_BASE}/assets/cases/unmplymnt/process-2.webp',
-            '${CDN_BASE}/assets/cases/unmplymnt/process-3.webp',
-            '${CDN_BASE}/assets/cases/unmplymnt/process-5.webp'
+            `${CDN_BASE}/assets/cases/unmplymnt/process-1.webp`,
+            `${CDN_BASE}/assets/cases/unmplymnt/process-2.webp`,
+            `${CDN_BASE}/assets/cases/unmplymnt/process-3.webp`,
+            `${CDN_BASE}/assets/cases/unmplymnt/process-5.webp`
         ]
     }
   },
@@ -61,14 +61,14 @@ export const PROJECTS: Project[] = [
     category: 'Packaging',
     tags: ['Packaging', 'Industrial', 'Minimalism'],
     year: 2024,
-    imageUrl: '${CDN_BASE}/assets/cases/just-boxes/Hero.webp',
+    hero: `${CDN_BASE}/assets/cases/just-boxes/Hero.webp`,
     featured: true,
     client: 'Just Boxes',
     role: 'Creative Direction',
     detailImages: [
-        '${CDN_BASE}/assets/cases/just-boxes/Hero.webp',
-        '${CDN_BASE}/assets/cases/just-boxes/detail-1.webp',
-        '${CDN_BASE}/assets/cases/just-boxes/detail-2.webp'
+        `${CDN_BASE}/assets/cases/just-boxes/Hero.webp`,
+        `${CDN_BASE}/assets/cases/just-boxes/detail-1.webp`,
+        `${CDN_BASE}/assets/cases/just-boxes/detail-2.webp`
     ],
     story: {
         goal: "Celebrate cardboard as a primary luxury material.",
@@ -76,8 +76,8 @@ export const PROJECTS: Project[] = [
         gamble: "No plastic coatings. We used structural folding and high-contrast ink to create the 'Premium' feel.",
         gain: "A signature packaging system that is 100% recyclable and 100% unmistakable.",
         processImages: [
-            '${CDN_BASE}/assets/cases/just-boxes/detail-1.webp', 
-            '${CDN_BASE}/assets/cases/just-boxes/detail-2.webp'
+            `${CDN_BASE}/assets/cases/just-boxes/detail-1.webp`, 
+            `${CDN_BASE}/assets/cases/just-boxes/detail-2.webp`
         ]
     }
   },
@@ -89,16 +89,16 @@ export const PROJECTS: Project[] = [
     category: '3D Design',
     tags: ['3D Viz', 'Technical', 'Surfacing'],
     year: 2022,
-    imageUrl: '${CDN_BASE}/assets/cases/surfboard-v001/Hero.webp',
+    hero: `${CDN_BASE}/assets/cases/surfboard-v001/Hero.webp`,
     featured: true,
     client: 'Technical Study',
     role: '3D Artist',
     detailImages: [
-        '${CDN_BASE}/assets/cases/surfboard-v001/detail-1.webp',
-        '${CDN_BASE}/assets/cases/surfboard-v001/detail-2.webp',
-        '${CDN_BASE}/assets/cases/surfboard-v001/detail-3.webp',
-        '${CDN_BASE}/assets/cases/surfboard-v001/detail-4.webp',
-        '${CDN_BASE}/assets/cases/surfboard-v001/detail-5.webp'
+        `${CDN_BASE}/assets/cases/surfboard-v001/detail-1.webp`,
+        `${CDN_BASE}/assets/cases/surfboard-v001/detail-2.webp`,
+        `${CDN_BASE}/assets/cases/surfboard-v001/detail-3.webp`,
+        `${CDN_BASE}/assets/cases/surfboard-v001/detail-4.webp`,
+        `${CDN_BASE}/assets/cases/surfboard-v001/detail-5.webp`
       
     ],
     story: {
