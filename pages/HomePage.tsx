@@ -18,41 +18,36 @@ const DownArrow: React.FC<{ className?: string; size?: number }> = ({ className 
     </motion.div>
 );
 
-// Replaced IndividualDraggable with FloatingImage
 const FloatingImage: React.FC<{ img: string; initialPos: { top: string; left: string; rotate: number; s: number }; index: number }> = ({ img, initialPos, index }) => {
-    const { scrollY } = useScroll();
     const [isRevealed, setIsRevealed] = useState(false);
 
-    // Parallax: Images move at different speeds based on their scale (simulating depth)
-    // Larger images (closer) move faster than smaller ones (further away)
-    const yParallax = useTransform(scrollY, [0, 1000], [0, -150 * initialPos.s]);
-    
     return (
         <motion.div 
-            className="absolute w-[180px] md:w-[320px] aspect-[4/5] shadow-2xl overflow-hidden pointer-events-auto cursor-crosshair bg-white"
+            className="absolute w-[180px] md:w-[320px] aspect-[4/5] shadow-2xl overflow-hidden pointer-events-auto bg-white"
             style={{ 
                 top: initialPos.top, 
                 left: initialPos.left, 
-                scale: initialPos.s,
                 rotate: initialPos.rotate,
-                zIndex: 10, // Behind the text (z-30)
-                y: yParallax
+                scale: initialPos.s,
+                zIndex: 10,
             }}
             // Reveal color on hover
             onMouseEnter={() => setIsRevealed(true)}
-            // Ambient floating animation that runs constantly
-            animate={{ 
-                y: [0, -20, 0],
-                rotate: [initialPos.rotate, initialPos.rotate + (index % 2 === 0 ? 2 : -2), initialPos.rotate]
-            }}
+            
+            // Hover effects: Pop up and straighten
             whileHover={{
-                scale: initialPos.s * 1.1,
+                scale: initialPos.s * 1.15,
                 rotate: 0,
-                zIndex: 50,
-                transition: { duration: 0.3, type: "spring", stiffness: 300, damping: 20 }
+                zIndex: 100,
+                transition: { duration: 0.3, type: "spring", stiffness: 300 }
+            }}
+            
+            // Ambient Float Animation
+            animate={{ 
+                y: [0, -15, 0],
             }}
             transition={{ 
-                duration: 5 + (index % 4), // Randomize duration slightly
+                duration: 4 + (index % 3), 
                 repeat: Infinity, 
                 ease: "easeInOut",
                 delay: index * 0.2 
@@ -62,6 +57,7 @@ const FloatingImage: React.FC<{ img: string; initialPos: { top: string; left: st
                 src={img} 
                 className={`w-full h-full object-cover transition-all duration-700 ease-out ${isRevealed ? 'grayscale-0 opacity-100 mix-blend-normal' : 'grayscale opacity-60 mix-blend-multiply'}`}
                 alt="Studio Output" 
+                draggable={false} // Prevent native drag ghosting
             />
             <div className={`absolute inset-0 border transition-colors duration-700 ${isRevealed ? 'border-transparent' : 'border-brand-navy/5'}`} />
         </motion.div>
@@ -69,43 +65,58 @@ const FloatingImage: React.FC<{ img: string; initialPos: { top: string; left: st
 };
 
 const HybridGallery: React.FC = () => {
-    // 1. Gather ALL images from ALL projects and Shuffle them
+    const { scrollY } = useScroll();
+    
+    // Scroll Interactions: Zoom Out + Fade Out as user scrolls down
+    const scale = useTransform(scrollY, [0, 1000], [1, 0.8]);
+    const opacity = useTransform(scrollY, [0, 800], [1, 0]);
+    const y = useTransform(scrollY, [0, 1000], [0, 100]); // Slight parallax down
+
+    // Data Logic: Get all images and shuffle them
     const randomImages = useMemo(() => {
         const all = PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).filter(Boolean);
-        
-        // Fisher-Yates Shuffle
         for (let i = all.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [all[i], all[j]] = [all[j], all[i]];
         }
-        
-        // Return top 18 images (reduced count slightly to prevent overcrowding the text)
-        return all.slice(0, 18);
+        return all.slice(0, 35); // Return a dense set of images
     }, []);
     
     return (
-        <div className="absolute inset-0 w-full h-[150vh] overflow-hidden pointer-events-none">
-            {/* Global background layer */}
-            <div className="absolute inset-0 bg-transparent z-0" />
+        <motion.div 
+            style={{ scale, opacity, y }}
+            className="absolute inset-0 z-0 will-change-transform"
+        >
+            <motion.div 
+                className="absolute w-[200vw] h-[200vh] -top-[50vh] -left-[50vw] cursor-grab active:cursor-grabbing"
+                drag
+                dragConstraints={{ left: -1000, right: 0, top: -1000, bottom: 0 }}
+                dragElastic={0.1}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5 }}
+            >
+                {/* Global background touch surface */}
+                <div className="absolute inset-0 bg-transparent z-0" />
 
-            {randomImages.map((img, i) => {
-                // Generate distributed positions
-                // We use a wider range (-20% to 120%) so images drift in from edges
-                const top = `${Math.floor(Math.random() * 120 - 10)}%`;
-                const left = `${Math.floor(Math.random() * 120 - 10)}%`;
-                const rotate = Math.floor(Math.random() * 30 - 15);
-                const s = 0.6 + Math.random() * 0.6; // Scale 0.6 to 1.2
+                {randomImages.map((img, i) => {
+                    // Distribute images across the large canvas
+                    const top = `${Math.floor(Math.random() * 100)}%`;
+                    const left = `${Math.floor(Math.random() * 100)}%`;
+                    const rotate = Math.floor(Math.random() * 40 - 20);
+                    const s = 0.5 + Math.random() * 0.7; // Varied sizes for depth
 
-                return (
-                    <FloatingImage 
-                        key={i} 
-                        img={img} 
-                        index={i}
-                        initialPos={{ top, left, rotate, s }} 
-                    />
-                );
-            })}
-        </div>
+                    return (
+                        <FloatingImage 
+                            key={i} 
+                            img={img} 
+                            index={i}
+                            initialPos={{ top, left, rotate, s }} 
+                        />
+                    );
+                })}
+            </motion.div>
+        </motion.div>
     );
 };
 
@@ -127,7 +138,7 @@ const BrandHero: React.FC = () => {
             onMouseMove={handleMouseMove}
             className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden"
         >
-            {/* Parallax Gallery Layer - Now strictly passive/visual */}
+            {/* Interactive Archive Layer */}
             <HybridGallery />
 
             {/* Studio Grid Overlay */}
@@ -182,10 +193,9 @@ const BrandHero: React.FC = () => {
 
                 {/* Meta Footer Section */}
                 <div className="mt-auto pointer-events-auto">
-                    {/* Changed hint to reflect new interaction model */}
                     <div className="text-center mb-6">
                         <span className="font-mono text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold text-brand-navy">
-                            [ SCROLL TO EXPLORE ]
+                            [ DRAG TO EXPLORE ]
                         </span>
                     </div>
 
