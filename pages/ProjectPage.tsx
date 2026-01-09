@@ -195,7 +195,7 @@ const NarrativeSection: React.FC<{
     )
 }
 
-                    const ProcessGallery: React.FC<{ images: string[], onImageSelect: (img: string) => void }> = ({ images, onImageSelect }) => {
+const ProcessGallery: React.FC<{ images: string[], onImageSelect: (img: string) => void }> = ({ images, onImageSelect }) => {
     // Duplicate images for the "messy" volume feel
     const displayImages = [...images, ...images].slice(0, 8); 
 
@@ -213,10 +213,7 @@ const NarrativeSection: React.FC<{
                     </h2>
                 </div>
 
-                {/* MASONRY LAYOUT (CSS Columns)
-                   This is the key change. 'columns-1 md:columns-2' creates vertical streams.
-                   It fits variable height images perfectly without gaps or cropping.
-                */}
+                {/* MASONRY LAYOUT */}
                 <div className="columns-1 md:columns-2 gap-8 md:gap-12 space-y-8 md:space-y-12">
                     {displayImages.map((img, i) => (
                         <motion.div 
@@ -226,19 +223,21 @@ const NarrativeSection: React.FC<{
                             viewport={{ once: true, margin: "-10%" }}
                             transition={{ duration: 0.8, delay: i % 2 === 0 ? 0 : 0.2 }}
                             onClick={() => onImageSelect(img)}
-                            // 'break-inside-avoid' prevents the image from being cut in half between columns
                             className="relative break-inside-avoid cursor-pointer group mb-8 md:mb-12"
                         >
-                            {/* Removed 'aspect-[...]' and 'h-full'.
-                                Added 'bg-white' and 'p-2' for a photo-print border look (optional).
+                            {/* CHANGE: Removed 'bg-white', 'p-2', and 'md:p-4'.
+                                Added 'overflow-hidden' to keep corners sharp or clean.
                             */}
-                            <div className="shadow-2xl bg-white p-2 md:p-4 border border-brand-navy/5">
+                            <div className="shadow-2xl bg-brand-navy/5 overflow-hidden">
                                 <img 
                                     src={img} 
-                                    // 'w-full h-auto' ensures the image respects its ORIGINAL Ratio
+                                    // 'w-full h-auto' ensures original ratio with NO cropping
                                     className="w-full h-auto block grayscale group-hover:grayscale-0 transition-all duration-700 ease-out" 
                                     alt="Process detail" 
                                 />
+                                
+                                {/* Overlay on hover */}
+                                <div className="absolute inset-0 bg-brand-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
                             </div>
                             
                             <div className="mt-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 px-1">
