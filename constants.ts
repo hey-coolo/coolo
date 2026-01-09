@@ -2,7 +2,7 @@ import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, De
 
 // CENTRAL CDN PATH
 // Change this string if you move your repo or change the branch
-const CDN_BASE = `https://cdn.jsdelivr.net/gh/hey-coolo/COOLO@main/COOLO-main`;
+const CDN_BASE = `https://cdn.jsdelivr.net/gh/hey-coolo/COOLO/`;
 
 export const ASSETS = {
   services: {
