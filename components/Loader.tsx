@@ -225,7 +225,17 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                     </text>
                 </svg>
             </div>
-
+       {/* Hint Text - Visible Earlier */}
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="mt-6 font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-brand-purple/50 font-bold"
+            >
+                [ Use pen or cursor to sketch ]
+            </motion.div>
+        </div>
+      
             {/* Button Container */}
             <div className="flex flex-col items-center pointer-events-auto min-h-[80px]">
                 {!isReady ? (
@@ -243,18 +253,7 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                     </motion.button>
                 )}
             </div>
-            
-             {/* Hint Text - Visible Earlier */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                className="mt-6 font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-brand-purple/50 font-bold"
-            >
-                [ Use pen or cursor to sketch ]
-            </motion.div>
-        </div>
-    </motion.div>
+      </motion.div>
   );
 };
 
