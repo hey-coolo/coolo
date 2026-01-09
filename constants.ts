@@ -1,20 +1,46 @@
 import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, DesignPowerTier, ClarityTier, Script, Resource, Workbook, CourseModule, PartnershipModel } from './types';
 
 // --- TEAM ASSETS ---
-// Importing local files instead of CDN links
 import francoImg from './assets/team/franco.webp';
-import arianaImg from './assets/team/Ariana.webp'; // Note: Capital 'A' matches your uploaded file
+import arianaImg from './assets/team/Ariana.webp';
 
-// --- PROJECT ASSETS ---
-// Ideally, move your 'assets' folder to the 'public' folder in Vite to avoid these long import lists.
-// But following your current pattern, we import the Heroes here:
+// --- PROJECT HERO ASSETS ---
 import unmplynmtHero from './assets/cases/unmplymnt/Hero.webp';
 import justBoxesHero from './assets/cases/just-boxes/Hero.webp';
 import surfboardHero from './assets/cases/surfboard-v001/Hero.webp';
-import cartridgesHero from './assets/cases/the-cartridges/Hero.webp'; // Verify this file exists locally
-import jonheysHero from './assets/cases/jonheys-dumpling-house/Hero.webp'; // Verify this file exists locally
-import francaHero from './assets/cases/franca-austral/Hero.webp'; // Verify this file exists locally
-import travellerHero from './assets/cases/traveller-entrepreneur/Hero.webp'; // Verify this file exists locally
+// These are placeholders/files not yet uploaded in the list, verify they exist locally:
+import cartridgesHero from './assets/cases/the-cartridges/Hero.webp'; 
+import jonheysHero from './assets/cases/jonheys-dumpling-house/Hero.webp'; 
+import francaHero from './assets/cases/franca-austral/Hero.webp'; 
+import travellerHero from './assets/cases/traveller-entrepreneur/Hero.webp'; 
+
+// --- DETAIL & PROCESS IMAGE IMPORTS ---
+// 1. UNMPLYNMT
+import unmpDetail1 from './assets/cases/unmplymnt/detail-1.webp';
+import unmpDetail2 from './assets/cases/unmplymnt/detail-2.webp';
+import unmpDetail3 from './assets/cases/unmplymnt/detail-3.webp';
+import unmpDetail4 from './assets/cases/unmplymnt/detail-4.webp';
+import unmpDetail5 from './assets/cases/unmplymnt/detail-5.webp';
+import unmpDetail6 from './assets/cases/unmplymnt/detail-6.webp';
+import unmpDetail7 from './assets/cases/unmplymnt/detail-7.webp';
+import unmpProcess1 from './assets/cases/unmplymnt/process-1.webp';
+import unmpProcess2 from './assets/cases/unmplymnt/process-2.webp';
+import unmpProcess3 from './assets/cases/unmplymnt/process-3.webp';
+import unmpProcess5 from './assets/cases/unmplymnt/process-5.webp';
+
+// 2. Just Boxes
+import jbDetail1 from './assets/cases/just-boxes/detail-1.webp';
+import jbDetail2 from './assets/cases/just-boxes/detail-2.webp';
+
+// 3. Surfboard
+import surfDetail1 from './assets/cases/surfboard-v001/detail-1.webp';
+import surfDetail2 from './assets/cases/surfboard-v001/detail-2.webp';
+import surfDetail3 from './assets/cases/surfboard-v001/detail-3.webp';
+import surfDetail4 from './assets/cases/surfboard-v001/detail-4.webp';
+import surfDetail5 from './assets/cases/surfboard-v001/detail-5.webp';
+import surfProcess1 from './assets/cases/surfboard-v001/process-1.webp';
+import surfProcess2 from './assets/cases/surfboard-v001/process-2.webp';
+
 
 export const ASSETS = {
   team: {
@@ -22,7 +48,8 @@ export const ASSETS = {
     ariana: arianaImg
   },
   services: {
-      clarity: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800", // Placeholder until you have service icons
+      // You can replace these with local imports later if you have them
+      clarity: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800", 
       designPower: "https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=800",
       partnership: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800"
   }
@@ -34,20 +61,35 @@ export const PROJECTS: Project[] = [
     title: 'UNMPLYNMT',
     slug: 'unmplynmt',
     description: 'A Brand Built Like Culture, Not a Logo. Brutalist identity system exploring the friction of labor and identity.',
-    category: 'Brand Identity', // Fixed type to match Union type
+    category: 'Brand Identity', 
     tags: ['Brutalism', 'Typography', 'Strategy'],
     year: 2025,
-    imageUrl: unmplynmtHero, // FIXED: Was 'imageURL' (typo)
+    imageUrl: unmplynmtHero, 
     featured: true,
     client: 'Internal Project',
     role: 'Strategy, logo & mark system, type system.',
-    detailImages: [], // Add your detail image imports here if needed
+    // HERE IS WHERE YOU ADD THEM:
+    detailImages: [
+        unmpDetail1, 
+        unmpDetail2, 
+        unmpDetail3, 
+        unmpDetail4, 
+        unmpDetail5,
+        unmpDetail6,
+        unmpDetail7
+    ],
     story: {
         goal: "UNMPLYNMT began as a belief: that clothing can be more than fashion — it can be a banner for identity.",
         gap: "Most streetwear brands dress their ambition in borrowed codes. UNMPLYNMT wasn’t about nostalgia.",
         gamble: "We developed a visual voice that mirrors that attitude: Typographic Brutality.",
         gain: "Identity done right doesn’t whisper. It moves people.",
-        processImages: []
+        // ADD PROCESS IMAGES HERE:
+        processImages: [
+            unmpProcess1,
+            unmpProcess2,
+            unmpProcess3,
+            unmpProcess5
+        ]
     }
   },
   {
@@ -58,17 +100,20 @@ export const PROJECTS: Project[] = [
     category: 'Packaging',
     tags: ['Packaging', 'Industrial', 'Minimalism'],
     year: 2024,
-    imageUrl: justBoxesHero, // FIXED: Was 'imageURL' (typo)
+    imageUrl: justBoxesHero, 
     featured: true,
     client: 'Just Boxes',
     role: 'Creative Direction',
-    detailImages: [],
+    detailImages: [
+        jbDetail1,
+        jbDetail2
+    ],
     story: {
         goal: "Celebrate cardboard as a primary luxury material.",
         gap: "Sustainable packaging is often over-designed.",
         gamble: "No plastic coatings. We used structural folding.",
         gain: "A signature packaging system that is 100% recyclable.",
-        processImages: []
+        processImages: [] 
     }
   },
   {
@@ -79,17 +124,26 @@ export const PROJECTS: Project[] = [
     category: '3D Design',
     tags: ['3D Viz', 'Technical', 'Surfacing'],
     year: 2022,
-    imageUrl: surfboardHero, // FIXED: Was 'imageURL' (typo)
+    imageUrl: surfboardHero,
     featured: true,
     client: 'Technical Study',
     role: '3D Artist',
-    detailImages: [],
+    detailImages: [
+        surfDetail1,
+        surfDetail2,
+        surfDetail3,
+        surfDetail4,
+        surfDetail5
+    ],
     story: {
         goal: "Mimic the exact light refraction of hand-shaped surfboard resin.",
         gap: "Generic 3D surfboard renders lack the 'depth' of real glassing.",
         gamble: "A 2-week deep dive into a single material shader.",
         gain: "The creation of our 'Hydro-Logic' shader library.",
-        processImages: []
+        processImages: [
+            surfProcess1,
+            surfProcess2
+        ]
     }
   },
   {
@@ -104,7 +158,7 @@ export const PROJECTS: Project[] = [
     featured: false,
     client: 'Modular Labs',
     role: 'Visualization Lead',
-    detailImages: [],
+    detailImages: [], // Leave empty until you upload these assets
     story: {
         goal: "Represent complex modularity through simple, high-res geometric lighting.",
         gap: "Technical products are often shown in flat lighting.",
@@ -178,11 +232,12 @@ export const PROJECTS: Project[] = [
   }
 ];
 
+// ... (KEEP THE REST OF THE FILE EXACTLY AS IT IS: TEAM_MEMBERS, NAV_LINKS, etc.)
 export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
   franco: {
     name: 'Franco',
     title: 'Creative Director',
-    imageUrl: ASSETS.team.franco, // Now using the imported image
+    imageUrl: ASSETS.team.franco, 
     instagram: 'what.the.franco',
     bio: [
       "The Brains. Franco specializes in Strategy, Art Direction, and 3D Vision.",
@@ -193,7 +248,7 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
   ariana: {
     name: 'Ariana',
     title: 'Operations Manager',
-    imageUrl: ASSETS.team.ariana, // Now using the imported image
+    imageUrl: ASSETS.team.ariana, 
     instagram: 'ariarmndo',
     bio: [
       "The Engine. Ariana manages execution, logistics, and client sanity.",
@@ -203,8 +258,7 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
   }
 };
 
-// ... Keep your NAV_LINKS, SERVICE_LEGS, CLARITY_TIERS, etc., as they were below ...
-// (I have truncated them here for brevity, but you should keep the rest of the file)
+// ... Rest of the file constants ...
 export const NAV_LINKS = [
   { name: 'Studio', path: '/about' }, 
   { name: 'Clarity', path: '/clarity' },
@@ -245,7 +299,6 @@ export const SERVICE_LEGS: ServiceLeg[] = [
   }
 ];
 
-// ... (Rest of your file constants like CLARITY_TIERS, DESIGN_POWER_TIERS, FAQ_DATA, etc.)
 export const CLARITY_TIERS: ClarityTier[] = [
     { 
         slug: 'clarity-audit',
