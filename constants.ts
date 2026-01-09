@@ -2,16 +2,12 @@ import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, De
 
 // CENTRAL CDN PATH
 // Change this string if you move your repo or change the branch
-const CDN_BASE = `https://cdn.jsdelivr.net/gh/hey-coolo/COOLO`;
+const CDN_BASE = 'https://cdn.jsdelivr.net/gh/hey-coolo/COOLO';
+const asset = (path: string) => `${CDN_BASE}/assets/${path}`;
 
 export const ASSETS = {
-  services: {
-    clarity: `${CDN_BASE}/assets/services/clarity.webp`,
-    designPower: `${CDN_BASE}/assets/services/design-power.webp`,
-    partnership: `${CDN_BASE}/assets/services/partnership.webp`
-  },
   team: {
-    franco: `${CDN_BASE}/assets/${path}`,
+    franco: asset('team/Hero.webp'),
     ariana: `${CDN_BASE}/assets/${path}`
   }
 };
@@ -25,16 +21,16 @@ export const PROJECTS: Project[] = [
     category: ['Concept & Strategy - ', 'Naming - ', 'Brand Identity - ', 'Content Creation - '],
     tags: ['Brutalism', 'Typography', 'Strategy'],
     year: 2025,
-    imageURL: `${CDN_BASE}/assets/cases/unmplymnt/Hero.webp`, 
+    imageURL: asset ('cases/unmplymnt/Hero.webp'), 
     featured: true,
     client: 'Internal Project',
     role: 'Strategy, logo & mark system, type system, colour palette, texture & pattern language, apparel branding, art direction.',
     detailImages: [
-        `${CDN_BASE}/assets/cases/unmplymnt/detail-1.webp`,
-        `${CDN_BASE}/assets/cases/unmplymnt/detail-2.webp`,
-        `${CDN_BASE}/assets/cases/unmplymnt/detail-3.webp`,
-        `${CDN_BASE}/assets/cases/unmplymnt/detail-4.webp`,
-        `${CDN_BASE}/assets/cases/unmplymnt/detail-5.webp`
+        asset ('cases/unmplymnt/detail-1.webp'),
+        asset ('cases/unmplymnt/detail-2.webp'),
+        asset ('cases/unmplymnt/detail-3.webp'),
+        asset ('cases/unmplymnt/detail-4.webp'),
+        asset ('cases/unmplymnt/detail-5.webp')
     ],
     story: {
         goal: "UNMPLYNMT began as a belief: that clothing can be more than fashion — it can be a banner for identity, rebellion, and community. We asked a simple, strategic question: What does freedom look like when it isn’t selling anything?",
@@ -42,10 +38,10 @@ export const PROJECTS: Project[] = [
         gamble: "We developed a visual voice that mirrors that attitude: Typographic Brutality, Colour Energy, and Texture as Attitude. A flexible system built to scale across campaigns without diluting its raw power.",
         gain: "Identity done right doesn’t whisper. It moves people. We gave them a visual language that behaves like culture: adaptable, self-aware, and unmistakable. Community turned into culture.",
         processImages: [
-            `${CDN_BASE}/assets/cases/unmplymnt/process-1.webp`,
-            `${CDN_BASE}/assets/cases/unmplymnt/process-2.webp`,
-            `${CDN_BASE}/assets/cases/unmplymnt/process-3.webp`,
-            `${CDN_BASE}/assets/cases/unmplymnt/process-5.webp`
+            asset ('cases/unmplymnt/process-1.webp'),
+            asset ('cases/unmplymnt/process-2.webp'),
+            asset ('cases/unmplymnt/process-3.webp'),
+           asset ('cases/unmplymnt/detail-6.webp')`
         ]
     }
   },
