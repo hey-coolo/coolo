@@ -44,14 +44,13 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
     }, []);
 
     useEffect(() => {
-        // Shared logic for both Mouse and Touch
+        // Shared function for both Mouse and Touch events
         const handleMove = (clientX: number, clientY: number) => {
-            // Only run if container exists
             if (!containerRef.current) return;
 
             const rect = containerRef.current.getBoundingClientRect();
 
-            // Check bounds (optional for touch since touchmove target is usually specific, but good safety)
+            // Safety check: Ensure we are inside bounds (mostly for mouse, touch is usually accurate to target)
             if (
                 clientX < rect.left || 
                 clientX > rect.right || 
@@ -69,7 +68,7 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
                 const nextImage = allImages[trailCount.current % allImages.length];
                 const id = trailCount.current++;
                 
-                // Calculate relative position
+                // Calculate position relative to the section
                 const relativeX = clientX - rect.left;
                 const relativeY = clientY - rect.top;
 
@@ -97,15 +96,14 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
         };
 
         const handleTouchMove = (e: TouchEvent) => {
-            // Prevent scrolling while painting (optional, might want to allow scroll if not hitting threshold)
-            // e.preventDefault(); 
+            // We do NOT prevent default here so user can still scroll the page
             const touch = e.touches[0];
             handleMove(touch.clientX, touch.clientY);
         };
 
-        // Attach to WINDOW to capture mouse even over "pointer-events-auto" titles
+        // Attach to WINDOW to ensure we catch events even if hovering over other elements
         window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('touchmove', handleTouchMove, { passive: false }); // Add touch listener
+        window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
@@ -127,14 +125,14 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
                         style={{
                             left: item.x,
                             top: item.y,
-                            x: "-50%", // Center on cursor
+                            x: "-50%", // Center on cursor/finger
                             y: "-50%" 
                         }}
                     >
                         <img 
                             src={item.img} 
                             alt="" 
-                            className="w-full h-full object-cover" // Full color
+                            className="w-full h-full object-cover" 
                         />
                     </motion.div>
                 ))}
@@ -144,7 +142,7 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
 };
 
 const BrandHero: React.FC = () => {
-    // Ref for the section to track bounds
+    // Ref for the section to track bounds for the Image Trail
     const sectionRef = useRef<HTMLElement>(null);
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
