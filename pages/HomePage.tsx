@@ -64,7 +64,7 @@ const IndividualDraggable: React.FC<{ img: string; initialPos: { top: string; le
                 className="w-full h-full object-cover pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-700" 
                 alt="Studio Output" 
             />
-            <div className="absolute inset-0 border border-white/10 pointer-events-none" />
+            <div className="absolute inset-0 pointer-events-none" />
         </motion.div>
     );
 };
