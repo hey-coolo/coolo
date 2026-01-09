@@ -1,9 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { CLARITY_TIERS, FREE_RESOURCES } from '../constants';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Resource } from '../types';
 
 const ClarityPage: React.FC = () => {
+  // State for the Resource Lock Modal
+  const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'processing' | 'sent'>('idle');
+
+  const handleOpenModal = (res: Resource) => {
+    setSelectedRes(res);
+    setStatus('idle');
+    setEmail('');
+  };
+
+  const handleCloseModal = () => {
+    setSelectedRes(null);
+  };
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus('processing');
+
+    // SIMULATION: Here you would normally send the email to Mailchimp/ConvertKit.
+    // For now, we simulate a 1.5s delay, then trigger the file download.
+    setTimeout(() => {
+        setStatus('sent');
+        
+        // Trigger the actual download
+        if (selectedRes?.link) {
+            const link = document.createElement('a');
+            link.href = selectedRes.link;
+            link.download = selectedRes.title; // Suggests the filename
+            link.target = "_blank";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }, 1500);
+  };
+
   return (
     <div className="bg-brand-offwhite min-h-screen pt-32">
       <div className="container mx-auto px-8">
@@ -26,21 +67,25 @@ const ClarityPage: React.FC = () => {
                     <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-4 block">Leg 0 / Starter Kit</span>
                     <h2 className="text-5xl font-black uppercase tracking-tight leading-none text-brand-navy">Free<br/>Intelligence.</h2>
                     <p className="mt-8 font-body text-xl text-brand-navy/60 leading-relaxed">
-                        Start with the system. We've declassified three of our core strategic tools for you to use right now.
+                        Start with the system. We've declassified three of our core strategic tools. Unlock the archives below.
                     </p>
                 </div>
                 <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                     {FREE_RESOURCES.map((res, i) => (
                         <AnimatedSection key={res.id} delay={i * 100} className="h-full">
-                            <a href={res.link} className="group block border border-brand-navy/10 p-8 h-full bg-white hover:bg-brand-navy transition-all duration-500">
+                            {/* Replaced <a> with <button> to trigger modal */}
+                            <button 
+                                onClick={() => handleOpenModal(res)}
+                                className="group w-full text-left border border-brand-navy/10 p-8 h-full bg-white hover:bg-brand-navy transition-all duration-500 flex flex-col"
+                            >
                                 <span className="font-mono text-xs uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold mb-4 block">Resource {res.id}</span>
-                                <h3 className="text-2xl font-black uppercase tracking-tight mb-4 group-hover:text-brand-offwhite">{res.title}</h3>
+                                <h3 className="text-2xl font-black uppercase tracking-tight mb-4 group-hover:text-brand-offwhite leading-none">{res.title}</h3>
                                 <p className="font-body text-sm text-brand-navy/60 group-hover:text-brand-offwhite/60 mb-8">{res.desc}</p>
-                                <div className="mt-auto flex items-center justify-between pt-4 border-t border-brand-navy/5 group-hover:border-brand-offwhite/10">
+                                <div className="mt-auto flex items-center justify-between pt-4 border-t border-brand-navy/5 w-full group-hover:border-brand-offwhite/10">
                                     <span className="font-mono text-[10px] uppercase font-bold text-brand-navy group-hover:text-brand-offwhite">{res.format}</span>
-                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-purple group-hover:text-brand-yellow">Download &rarr;</span>
+                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-purple group-hover:text-brand-yellow">Unlock Access &rarr;</span>
                                 </div>
-                            </a>
+                            </button>
                         </AnimatedSection>
                     ))}
                 </div>
@@ -109,6 +154,67 @@ const ClarityPage: React.FC = () => {
             </div>
         </section>
       </div>
+
+      {/* RESOURCE LOCK MODAL */}
+      <AnimatePresence>
+        {selectedRes && (
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] flex items-center justify-center bg-brand-navy/95 backdrop-blur-sm p-4"
+                onClick={handleCloseModal}
+            >
+                <motion.div 
+                    initial={{ scale: 0.9, y: 20 }}
+                    animate={{ scale: 1, y: 0 }}
+                    exit={{ scale: 0.9, y: 20 }}
+                    className="bg-brand-offwhite p-8 md:p-12 max-w-lg w-full relative border-2 border-brand-yellow"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <button onClick={handleCloseModal} className="absolute top-4 right-4 text-brand-navy/40 hover:text-brand-navy font-mono text-xl">&times;</button>
+                    
+                    <div className="mb-8">
+                        <span className="font-mono text-xs uppercase tracking-widest text-brand-purple font-bold block mb-2">Restricted Intel</span>
+                        <h3 className="text-4xl font-black uppercase tracking-tight text-brand-navy leading-none">Unlock<br/>{selectedRes.title}</h3>
+                    </div>
+
+                    {status === 'sent' ? (
+                        <div className="text-center py-8">
+                            <div className="w-16 h-16 bg-brand-yellow text-brand-navy rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">✓</div>
+                            <h4 className="text-2xl font-bold uppercase text-brand-navy mb-2">Access Granted</h4>
+                            <p className="font-body text-brand-navy/70">The file has been pushed to your device.</p>
+                            <button onClick={handleCloseModal} className="mt-8 font-mono text-xs uppercase tracking-widest border-b border-brand-navy pb-1">Close Terminal</button>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleSubscribe} className="space-y-6">
+                            <p className="font-body text-brand-navy/70 leading-relaxed">
+                                Enter your credentials to access this strategic resource.
+                            </p>
+                            <div>
+                                <input 
+                                    type="email" 
+                                    required
+                                    placeholder="ENTER EMAIL ADDRESS"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full bg-brand-navy/5 border-b-2 border-brand-navy/20 p-4 font-mono text-sm focus:outline-none focus:border-brand-purple transition-colors placeholder-brand-navy/30 text-brand-navy"
+                                />
+                            </div>
+                            <button 
+                                type="submit" 
+                                disabled={status === 'processing'}
+                                className="w-full bg-brand-navy text-brand-offwhite font-mono uppercase font-bold py-4 hover:bg-brand-purple transition-all disabled:opacity-50 disabled:cursor-wait"
+                            >
+                                {status === 'processing' ? 'Verifying...' : 'Authenticate & Download'}
+                            </button>
+                            <p className="text-center font-mono text-[9px] uppercase text-brand-navy/30">Secure Connection // No Spam Protocol</p>
+                        </form>
+                    )}
+                </motion.div>
+            </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
