@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
@@ -245,17 +244,15 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                 )}
             </div>
             
-             {/* Hint Text */}
-             {isReady && (
-                <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.1 }}
-                    className="mt-6 font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-brand-purple/50 font-bold"
-                >
-                    [ Use pen or cursor to sketch ]
-                </motion.div>
-             )}
+             {/* Hint Text - Visible Earlier */}
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="mt-6 font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-brand-purple/50 font-bold"
+            >
+                [ Use pen or cursor to sketch ]
+            </motion.div>
         </div>
     </motion.div>
   );
