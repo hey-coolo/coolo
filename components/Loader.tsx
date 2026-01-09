@@ -186,16 +186,7 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                  Est. 2024 &bull; Mount Maunganui
              </span>
         </div>
-       {/* Hint Text - Visible Earlier */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                className="mt-6 font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-brand-purple/50 font-bold"
-            >
-                [ Use pen or cursor to sketch ]
-            </motion.div>
-        </div>
+
         {/* Layer 3: Main Content (Z-30) */}
         <div className="relative z-30 flex flex-col items-center pointer-events-none select-none p-4 max-w-full">
             
@@ -234,8 +225,8 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                     </text>
                 </svg>
             </div>
-      
-      {/* Button Container */}
+
+            {/* Button Container */}
             <div className="flex flex-col items-center pointer-events-auto min-h-[80px]">
                 {!isReady ? (
                     <div className="font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.3em] text-brand-navy/40 animate-pulse font-bold">
@@ -252,7 +243,18 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                     </motion.button>
                 )}
             </div>
-      </motion.div>
+            
+             {/* Hint Text - Visible Earlier */}
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="mt-6 font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-brand-purple/50 font-bold"
+            >
+                [ Use pen or cursor to sketch ]
+            </motion.div>
+        </div>
+    </motion.div>
   );
 };
 
