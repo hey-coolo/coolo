@@ -1,6 +1,9 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Image as DreiImage, Environment, Float } from '@react-three/drei';
+import * as THREE from 'three';
 import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
@@ -18,102 +21,110 @@ const DownArrow: React.FC<{ className?: string; size?: number }> = ({ className 
     </motion.div>
 );
 
-// --- IMAGE TRAIL COMPONENT ---
-interface TrailItem {
-    id: number;
-    x: number;
-    y: number;
-    rotation: number;
-    scale: number;
-    img: string;
+// --- 3D COMPONENTS ---
+
+// Helper to generate random points on a sphere surface
+function getSpherePoint(radius: number) {
+    const u = Math.random();
+    const v = Math.random();
+    const theta = 2 * Math.PI * u;
+    const phi = Math.acos(2 * v - 1);
+    
+    // Convert spherical to cartesian
+    const x = radius * Math.sin(phi) * Math.cos(theta);
+    const y = radius * Math.sin(phi) * Math.sin(theta);
+    const z = radius * Math.cos(phi);
+    
+    return [x, y, z] as [number, number, number];
 }
 
-const ImageTrail: React.FC = () => {
-    const [trail, setTrail] = useState<TrailItem[]>([]);
-    const lastPos = useRef({ x: 0, y: 0 });
-    const imageIndex = useRef(0);
-    const trailCount = useRef(0);
+const FloatingImage3D = ({ img, position, rotation }: { img: string, position: [number, number, number], rotation: [number, number, number] }) => {
+    const meshRef = useRef<THREE.Group>(null);
+    const [hovered, setHover] = useState(false);
 
-    // 1. Gather ALL images and shuffle once
-    const allImages = useMemo(() => {
+    useFrame((state) => {
+        if (!meshRef.current) return;
+        // Subtle floating independent of the group rotation
+        meshRef.current.position.y += Math.sin(state.clock.elapsedTime + position[0]) * 0.002;
+    });
+
+    return (
+        <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
+            <group ref={meshRef} position={position} rotation={rotation}>
+                <DreiImage 
+                    url={img} 
+                    scale={hovered ? [4.5, 6] : [3, 4]} // Scale up on hover
+                    transparent 
+                    opacity={hovered ? 1 : 0.7}
+                    onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer'; }}
+                    onPointerOut={() => { setHover(false); document.body.style.cursor = 'auto'; }}
+                    side={THREE.DoubleSide}
+                />
+            </group>
+        </Float>
+    );
+};
+
+const ImageRing = () => {
+    const groupRef = useRef<THREE.Group>(null);
+
+    // 1. Gather and shuffle images
+    const images = useMemo(() => {
         const all = PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).filter(Boolean);
+        // Shuffle
         for (let i = all.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [all[i], all[j]] = [all[j], all[i]];
         }
-        return all;
+        return all.slice(0, 30); // Use top 30 images
     }, []);
 
-    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        const { clientX, clientY } = e;
-        
-        // Calculate distance from last drop point
-        const dist = Math.hypot(clientX - lastPos.current.x, clientY - lastPos.current.y);
-
-        // Threshold: Only drop an image every 100px of movement
-        if (dist > 100) {
-            const nextImage = allImages[imageIndex.current % allImages.length];
+    // 2. Generate positions on a sphere
+    const items = useMemo(() => {
+        return images.map((img) => {
+            const radius = 12 + Math.random() * 4; // Random radius between 12 and 16
+            const position = getSpherePoint(radius);
             
-            const newItem: TrailItem = {
-                id: trailCount.current++,
-                x: clientX,
-                y: clientY,
-                rotation: Math.random() * 30 - 15, // Random tilt -15 to 15 deg
-                scale: 0.6 + Math.random() * 0.4,  // Random size
-                img: nextImage
+            // Look at center (0,0,0) roughly
+            const dummy = new THREE.Vector3(...position);
+            const look = dummy.clone().normalize().multiplyScalar(radius + 1); // target slightly outside
+            const matrix = new THREE.Matrix4();
+            matrix.lookAt(dummy, new THREE.Vector3(0,0,0), new THREE.Vector3(0,1,0));
+            const euler = new THREE.Euler();
+            euler.setFromRotationMatrix(matrix);
+            
+            return {
+                img,
+                position,
+                rotation: [euler.x, euler.y, euler.z] as [number, number, number]
             };
+        });
+    }, [images]);
 
-            setTrail(prev => {
-                // Keep only the last 15 images to prevent DOM overload
-                const newTrail = [...prev, newItem];
-                if (newTrail.length > 15) return newTrail.slice(newTrail.length - 15);
-                return newTrail;
-            });
-
-            lastPos.current = { x: clientX, y: clientY };
-            imageIndex.current++;
+    useFrame(({ clock }) => {
+        if (groupRef.current) {
+            // Slow continuous rotation of the entire ring
+            groupRef.current.rotation.y = clock.getElapsedTime() * 0.05;
         }
-    }, [allImages]);
+    });
 
     return (
-        <div 
-            onMouseMove={handleMouseMove}
-            className="absolute inset-0 z-20 w-full h-full cursor-crosshair overflow-hidden"
-        >
-            <AnimatePresence>
-                {trail.map((item) => (
-                    <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0, scale: 0.5, rotate: item.rotation }}
-                        animate={{ opacity: 1, scale: item.scale, rotate: item.rotation }}
-                        exit={{ opacity: 0, scale: 0, transition: { duration: 0.5 } }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        className="absolute w-[200px] md:w-[280px] aspect-[4/5] pointer-events-none shadow-2xl bg-white p-2"
-                        style={{
-                            left: item.x,
-                            top: item.y,
-                            x: "-50%", // Center on cursor
-                            y: "-50%" 
-                        }}
-                    >
-                        <img 
-                            src={item.img} 
-                            alt="" 
-                            className="w-full h-full object-cover grayscale contrast-125"
-                        />
-                    </motion.div>
-                ))}
-            </AnimatePresence>
-        </div>
+        <group ref={groupRef}>
+            {items.map((item, i) => (
+                <FloatingImage3D 
+                    key={i} 
+                    img={item.img} 
+                    position={item.position} 
+                    rotation={item.rotation} 
+                />
+            ))}
+        </group>
     );
 };
 
 const BrandHero: React.FC = () => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
-
-    const springX = useSpring(mouseX, { stiffness: 60, damping: 25 });
-    const springY = useSpring(mouseY, { stiffness: 60, damping: 25 });
 
     const handleMouseMove = (e: React.MouseEvent) => {
         const { innerWidth, innerHeight } = window;
@@ -124,96 +135,81 @@ const BrandHero: React.FC = () => {
     return (
         <section 
             onMouseMove={handleMouseMove}
-            className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden"
+            className="relative h-screen flex flex-col bg-brand-offwhite text-brand-navy overflow-hidden"
         >
-            {/* The Image Trail Layer - Sits on top of grid but behind text if possible, 
-                but since it tracks mouse, it needs to be high z-index to catch events.
-                We set it to z-20 to be above the grid. 
-            */}
-            <ImageTrail />
+            {/* 3D Scene Layer */}
+            <div className="absolute inset-0 z-10">
+                <Canvas camera={{ position: [0, 0, 22], fov: 45 }} dpr={[1, 2]}>
+                    {/* Lighting */}
+                    <ambientLight intensity={0.8} />
+                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
+                    <pointLight position={[-10, -10, -10]} intensity={1} />
+                    
+                    {/* The Content */}
+                    <ImageRing />
+                    
+                    {/* Environment for better reflections/lighting */}
+                    <Environment preset="city" />
+                    
+                    {/* Controls: Auto-rotate OFF so user drag feels better, or keep auto-rotate on OrbitControls */}
+                    <OrbitControls 
+                        enablePan={false} 
+                        enableZoom={true} 
+                        minDistance={10} 
+                        maxDistance={40}
+                        zoomSpeed={0.5}
+                        rotateSpeed={0.5}
+                        dampingFactor={0.05}
+                    />
+                </Canvas>
+            </div>
 
             {/* Studio Grid Overlay */}
-            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03] z-10"></div>
+            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03] z-0"></div>
             
-            {/* Interactive Light */}
-            <motion.div 
-                style={{ 
-                    x: useTransform(springX, [-0.5, 0.5], [100, -100]), 
-                    y: useTransform(springY, [-0.5, 0.5], [100, -100]) 
-                }}
-                className="absolute inset-0 z-10 pointer-events-none opacity-20"
-            >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brand-purple/5 blur-[120px] rounded-full" />
-            </motion.div>
-
-            {/* Central Content - z-30 puts it ABOVE the trail so text is readable */}
-            <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
-                <div className="relative mb-16 md:mb-32">
-                    <div className="pointer-events-auto inline-block">
-                        <motion.h1 
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                            className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all mix-blend-difference text-white md:text-brand-navy md:mix-blend-normal"
-                        >
-                            BRAND STRATEGY
-                        </motion.h1>
-                    </div>
-                    
-                    <div className="flex justify-start items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
-                        <motion.span 
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1.4, delay: 0.4, ease: "easeOut" }}
-                            className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none absolute -left-[1em] top-[-0.05em] pointer-events-none"
-                        >
-                            &
-                        </motion.span>
-                        <div className="pointer-events-auto inline-block">
+            {/* Central Content (Overlay) - Needs pointer-events-none to allow drag on canvas */}
+            <div className="container mx-auto px-6 md:px-8 relative z-20 flex-grow flex flex-col justify-center pointer-events-none h-full">
+                <div className="relative flex flex-col justify-center h-full">
+                    {/* Top Content */}
+                    <div className="flex flex-col justify-center items-center mt-[-10vh]">
+                        <div className="pointer-events-auto inline-block mix-blend-multiply">
                             <motion.h1 
-                                initial={{ opacity: 0, x: 50 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-                                className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all mix-blend-difference text-white md:text-brand-navy md:mix-blend-normal"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+                                className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all text-center"
                             >
-                                DESIGN POWER
+                                BRAND STRATEGY
                             </motion.h1>
                         </div>
-                    </div>
-                </div>
-
-                {/* Meta Footer Section */}
-                <div className="mt-auto pointer-events-auto">
-                    <div className="text-center mb-6">
-                        <span className="font-mono text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold text-brand-navy">
-                            [ MOVE CURSOR TO REVEAL ]
-                        </span>
-                    </div>
-
-                    <div className="w-full h-[1.5px] bg-brand-navy/80 mb-8 md:mb-10"></div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start text-brand-navy">
-                        <div className="font-mono">
-                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Est. 2024</span>
-                            <div className="text-[10px] uppercase tracking-widest leading-loose font-bold opacity-70">
-                                MOUNT MAUNGANUI<br/>NEW ZEALAND
+                        
+                        <div className="flex justify-center items-baseline mt-2 md:mt-4 relative mix-blend-multiply">
+                            <motion.span 
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 1.4, delay: 0.4, ease: "easeOut" }}
+                                className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none mr-4 md:mr-8"
+                            >
+                                &
+                            </motion.span>
+                            <div className="pointer-events-auto inline-block">
+                                <motion.h1 
+                                    initial={{ opacity: 0, x: 50 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
+                                    className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all"
+                                >
+                                    DESIGN POWER
+                                </motion.h1>
                             </div>
                         </div>
+                    </div>
 
-                        <div className="md:text-center font-mono">
-                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
-                             <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
-                                A specialized senior unit for ambitious founders and agencies. Two experts. One system.
-                             </p>
-                        </div>
-
-                        <div className="md:text-right font-mono">
-                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Status</span>
-                             <div className="flex items-center md:justify-end gap-3">
-                                 <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
-                                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70">Accepting Partners</span>
-                             </div>
-                        </div>
+                    {/* Bottom Hint */}
+                    <div className="absolute bottom-12 left-0 right-0 text-center pointer-events-none">
+                        <span className="font-mono text-[9px] uppercase tracking-[0.5em] opacity-60 font-bold text-brand-navy bg-brand-offwhite/50 px-4 py-2 backdrop-blur-sm rounded-full">
+                            [ DRAG & ZOOM TO EXPLORE ]
+                        </span>
                     </div>
                 </div>
             </div>
