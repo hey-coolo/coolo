@@ -1,10 +1,5 @@
 import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, DesignPowerTier, ClarityTier, Script, Resource, Workbook, CourseModule, PartnershipModel } from './types';
 
-// CENTRAL CDN PATH
-// Change this string if you move your repo or change the branch
-const CDN_BASE = 'https://cdn.jsdelivr.net/gh/hey-coolo/COOLO';
-const asset = (path: string) => `${CDN_BASE}/assets/${path}`;
-
 export const ASSETS = {
   team: {
     franco: 'https://cdn.jsdelivr.net/gh/hey-coolo/COOLO/asset/team/franco.webp',
