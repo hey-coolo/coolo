@@ -7,8 +7,8 @@ const asset = (path: string) => `${CDN_BASE}/assets/${path}`;
 
 export const ASSETS = {
   team: {
-    franco: 'https://cdn.jsdelivr.net/gh/hey-coolo/COOLO/asset/team/franco.webp'),
-    ariana: 'https://cdn.jsdelivr.net/gh/hey-coolo/COOLO/asset/team/ariana.webp')
+    franco: 'https://cdn.jsdelivr.net/gh/hey-coolo/COOLO/asset/team/franco.webp',
+    ariana: 'https://cdn.jsdelivr.net/gh/hey-coolo/COOLO/asset/team/ariana.webp'
   }
 };
 
