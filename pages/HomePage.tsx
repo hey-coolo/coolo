@@ -1,5 +1,4 @@
-
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
@@ -71,31 +70,21 @@ const IndividualDraggable: React.FC<{ img: string; initialPos: { top: string; le
 };
 
 const HybridGallery: React.FC = () => {
-    const allImages = PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).slice(0, 20);
+    // 1. Gather ALL images from ALL projects and Shuffle them
+    const randomImages = useMemo(() => {
+        // Flatten all images
+        const all = PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).filter(Boolean);
+        
+        // Fisher-Yates Shuffle
+        for (let i = all.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [all[i], all[j]] = [all[j], all[i]];
+        }
+        
+        // Return top 25 images
+        return all.slice(0, 25);
+    }, []);
     
-    const positions = [
-        { top: '5%', left: '5%', rotate: -5, s: 0.9 },
-        { top: '12%', left: '60%', rotate: 8, s: 1.1 },
-        { top: '45%', left: '10%', rotate: -3, s: 1.0 },
-        { top: '38%', left: '75%', rotate: 6, s: 0.85 },
-        { top: '75%', left: '15%', rotate: -7, s: 1.2 },
-        { top: '70%', left: '85%', rotate: 4, s: 0.95 },
-        { top: '0%', left: '35%', rotate: 2, s: 1.05 },
-        { top: '55%', left: '40%', rotate: -4, s: 0.9 },
-        { top: '22%', left: '82%', rotate: 5, s: 1.15 },
-        { top: '88%', left: '8%', rotate: -6, s: 1.0 },
-        { top: '18%', left: '-5%', rotate: 3, s: 0.8 },
-        { top: '62%', left: '92%', rotate: -5, s: 1.1 },
-        { top: '32%', left: '38%', rotate: 7, s: 0.9 },
-        { top: '92%', left: '55%', rotate: -2, s: 1.2 },
-        { top: '-8%', left: '65%', rotate: 4, s: 0.95 },
-        { top: '40%', left: '20%', rotate: 2, s: 1.05 },
-        { top: '10%', left: '80%', rotate: -3, s: 0.85 },
-        { top: '85%', left: '40%', rotate: 5, s: 1.1 },
-        { top: '65%', left: '-10%', rotate: -4, s: 0.9 },
-        { top: '20%', left: '110%', rotate: 6, s: 1.0 },
-    ];
-
     return (
         <motion.div 
             className="absolute w-[300vw] h-[300vh] top-[-100vh] left-[-100vw] cursor-move z-10"
@@ -106,14 +95,22 @@ const HybridGallery: React.FC = () => {
             {/* Global Drag Surface (the "sheet") */}
             <div className="absolute inset-0 bg-transparent z-0" />
 
-            {/* Individual Movable Elements */}
-            {allImages.map((img, i) => (
-                <IndividualDraggable 
-                    key={i} 
-                    img={img} 
-                    initialPos={positions[i] || { top: '50%', left: '50%', rotate: 0, s: 1 }} 
-                />
-            ))}
+            {/* Individual Movable Elements with Random Positions */}
+            {randomImages.map((img, i) => {
+                // Generate random position for each image
+                const top = `${Math.floor(Math.random() * 90)}%`;
+                const left = `${Math.floor(Math.random() * 90)}%`;
+                const rotate = Math.floor(Math.random() * 40 - 20);
+                const s = 0.7 + Math.random() * 0.6;
+
+                return (
+                    <IndividualDraggable 
+                        key={i} 
+                        img={img} 
+                        initialPos={{ top, left, rotate, s }} 
+                    />
+                );
+            })}
         </motion.div>
     );
 };
@@ -241,12 +238,10 @@ const SplitManifesto: React.FC = () => {
                                 No Magic.<br/>
                                 <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '1.5px #0F0328' }}>High-Res Logic.</span>
                             </h2>
-                            {/* Adjusted Down Arrow size and position */}
                             <div className="mt-14 md:mt-20">
                                 <DownArrow className="text-brand-purple" size={42} />
                             </div>
                         </div>
-                        {/* Dots removed as requested */}
                     </div>
 
                     <div className="p-8 md:p-16 space-y-16 md:space-y-32">
