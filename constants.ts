@@ -1,55 +1,14 @@
 import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, DesignPowerTier, ClarityTier, Script, Resource, Workbook, CourseModule, PartnershipModel } from './types';
 
-// --- TEAM ASSETS ---
-import francoImg from './assets/team/franco.webp';
-import arianaImg from './assets/team/Ariana.webp';
-
-// --- PROJECT HERO ASSETS ---
-import unmplynmtHero from './assets/cases/unmplymnt/Hero.webp';
-import justBoxesHero from './assets/cases/just-boxes/Hero.webp';
-import surfboardHero from './assets/cases/surfboard-v001/Hero.webp';
-// These are placeholders/files not yet uploaded in the list, verify they exist locally:
-import cartridgesHero from './assets/cases/the-cartridges/Hero.webp'; 
-import jonheysHero from './assets/cases/jonheys-dumpling-house/Hero.webp'; 
-import francaHero from './assets/cases/franca-austral/Hero.webp'; 
-import travellerHero from './assets/cases/traveller-entrepreneur/Hero.webp'; 
-
-// --- DETAIL & PROCESS IMAGE IMPORTS ---
-// 1. UNMPLYNMT
-import unmpDetail1 from './assets/cases/unmplymnt/detail-1.webp';
-import unmpDetail2 from './assets/cases/unmplymnt/detail-2.webp';
-import unmpDetail3 from './assets/cases/unmplymnt/detail-3.webp';
-import unmpDetail4 from './assets/cases/unmplymnt/detail-4.webp';
-import unmpDetail5 from './assets/cases/unmplymnt/detail-5.webp';
-import unmpDetail6 from './assets/cases/unmplymnt/detail-6.webp';
-import unmpDetail7 from './assets/cases/unmplymnt/detail-7.webp';
-import unmpProcess1 from './assets/cases/unmplymnt/process-1.webp';
-import unmpProcess2 from './assets/cases/unmplymnt/process-2.webp';
-import unmpProcess3 from './assets/cases/unmplymnt/process-3.webp';
-import unmpProcess5 from './assets/cases/unmplymnt/process-5.webp';
-
-// 2. Just Boxes
-import jbDetail1 from './assets/cases/just-boxes/detail-1.webp';
-import jbDetail2 from './assets/cases/just-boxes/detail-2.webp';
-
-// 3. Surfboard
-import surfDetail1 from './assets/cases/surfboard-v001/detail-1.webp';
-import surfDetail2 from './assets/cases/surfboard-v001/detail-2.webp';
-import surfDetail3 from './assets/cases/surfboard-v001/detail-3.webp';
-import surfDetail4 from './assets/cases/surfboard-v001/detail-4.webp';
-import surfDetail5 from './assets/cases/surfboard-v001/detail-5.webp';
-import surfProcess1 from './assets/cases/surfboard-v001/process-1.webp';
-import surfProcess2 from './assets/cases/surfboard-v001/process-2.webp';
-
+// --- ASSETS ---
+// These paths now point to your new public/assets folder automatically.
 
 export const ASSETS = {
   team: {
-    franco: francoImg,
-    ariana: arianaImg
+    franco: '/assets/team/Franco.webp',
+    ariana: '/assets/team/Ariana.webp'
   },
   services: {
-    // Replaced Unsplash images with Brand Hex Codes
-    // You can use these in your style props (e.g., backgroundColor: ASSETS.services.clarity)
       clarity: "#FCC803",      // Brand Yellow
       designPower: "#3A0888",  // Brand Purple
       partnership: "#0F0328"   // Brand Navy
@@ -65,31 +24,29 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity', 
     tags: ['Brutalism', 'Typography', 'Strategy'],
     year: 2025,
-    imageUrl: unmplynmtHero, 
+    imageUrl: '/assets/cases/unmplymnt/Hero.webp', 
     featured: true,
     client: 'Internal Project',
     role: 'Strategy, logo & mark system, type system.',
-    // HERE IS WHERE YOU ADD THEM:
     detailImages: [
-        unmpDetail1, 
-        unmpDetail2, 
-        unmpDetail3, 
-        unmpDetail4, 
-        unmpDetail5,
-        unmpDetail6,
-        unmpDetail7
+        '/assets/cases/unmplymnt/detail-1.webp', 
+        '/assets/cases/unmplymnt/detail-2.webp', 
+        '/assets/cases/unmplymnt/detail-3.webp', 
+        '/assets/cases/unmplymnt/detail-4.webp', 
+        '/assets/cases/unmplymnt/detail-5.webp',
+        '/assets/cases/unmplymnt/detail-6.webp',
+        '/assets/cases/unmplymnt/detail-7.webp'
     ],
     story: {
         goal: "UNMPLYNMT began as a belief: that clothing can be more than fashion — it can be a banner for identity.",
         gap: "Most streetwear brands dress their ambition in borrowed codes. UNMPLYNMT wasn’t about nostalgia.",
         gamble: "We developed a visual voice that mirrors that attitude: Typographic Brutality.",
         gain: "Identity done right doesn’t whisper. It moves people.",
-        // ADD PROCESS IMAGES HERE:
         processImages: [
-            unmpProcess1,
-            unmpProcess2,
-            unmpProcess3,
-            unmpProcess5
+            '/assets/cases/unmplymnt/process-1.webp',
+            '/assets/cases/unmplymnt/process-2.webp',
+            '/assets/cases/unmplymnt/process-3.webp',
+            '/assets/cases/unmplymnt/process-5.webp'
         ]
     }
   },
@@ -101,13 +58,13 @@ export const PROJECTS: Project[] = [
     category: 'Packaging',
     tags: ['Packaging', 'Industrial', 'Minimalism'],
     year: 2024,
-    imageUrl: justBoxesHero, 
+    imageUrl: '/assets/cases/just-boxes/Hero.webp', 
     featured: true,
     client: 'Just Boxes',
     role: 'Creative Direction',
     detailImages: [
-        jbDetail1,
-        jbDetail2
+        '/assets/cases/just-boxes/detail-1.webp',
+        '/assets/cases/just-boxes/detail-2.webp'
     ],
     story: {
         goal: "Celebrate cardboard as a primary luxury material.",
@@ -125,16 +82,16 @@ export const PROJECTS: Project[] = [
     category: '3D Design',
     tags: ['3D Viz', 'Technical', 'Surfacing'],
     year: 2022,
-    imageUrl: surfboardHero,
+    imageUrl: '/assets/cases/surfboard-v001/Hero.webp',
     featured: true,
     client: 'Technical Study',
     role: '3D Artist',
     detailImages: [
-        surfDetail1,
-        surfDetail2,
-        surfDetail3,
-        surfDetail4,
-        surfDetail5
+        '/assets/cases/surfboard-v001/detail-1.webp',
+        '/assets/cases/surfboard-v001/detail-2.webp',
+        '/assets/cases/surfboard-v001/detail-3.webp',
+        '/assets/cases/surfboard-v001/detail-4.webp',
+        '/assets/cases/surfboard-v001/detail-5.webp'
     ],
     story: {
         goal: "Mimic the exact light refraction of hand-shaped surfboard resin.",
@@ -142,8 +99,8 @@ export const PROJECTS: Project[] = [
         gamble: "A 2-week deep dive into a single material shader.",
         gain: "The creation of our 'Hydro-Logic' shader library.",
         processImages: [
-            surfProcess1,
-            surfProcess2
+            '/assets/cases/surfboard-v001/process-1.webp',
+            '/assets/cases/surfboard-v001/process-2.webp'
         ]
     }
   },
@@ -155,11 +112,11 @@ export const PROJECTS: Project[] = [
     category: '3D Design',
     tags: ['Industrial', 'Hardware', 'Lighting'],
     year: 2021,
-    imageUrl: cartridgesHero,
+    imageUrl: '/assets/cases/the-cartridges/Hero.webp',
     featured: false,
     client: 'Modular Labs',
     role: 'Visualization Lead',
-    detailImages: [], // Leave empty until you upload these assets
+    detailImages: [],
     story: {
         goal: "Represent complex modularity through simple, high-res geometric lighting.",
         gap: "Technical products are often shown in flat lighting.",
@@ -176,7 +133,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     tags: ['Hospitality', 'Kinetic Type', 'Logo'],
     year: 2023,
-    imageUrl: jonheysHero,
+    imageUrl: '/assets/cases/jonheys-dumpling-house/Hero.webp',
     featured: true,
     client: 'Jonhey’s',
     role: 'Lead Designer',
@@ -197,7 +154,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     tags: ['Editorial', 'Strategy', 'Nature'],
     year: 2023,
-    imageUrl: francaHero,
+    imageUrl: '/assets/cases/franca-austral/Hero.webp',
     featured: false,
     client: 'Franca Collective',
     role: 'Art Director',
@@ -218,7 +175,7 @@ export const PROJECTS: Project[] = [
     category: 'Strategy',
     tags: ['Positioning', 'Messaging', 'Narrative'],
     year: 2021,
-    imageUrl: travellerHero,
+    imageUrl: '/assets/cases/traveller-entrepreneur/Hero.webp',
     featured: true,
     client: 'Personal Brand',
     role: 'Lead Strategist',
@@ -233,7 +190,6 @@ export const PROJECTS: Project[] = [
   }
 ];
 
-// ... (KEEP THE REST OF THE FILE EXACTLY AS IT IS: TEAM_MEMBERS, NAV_LINKS, etc.)
 export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
   franco: {
     name: 'Franco',
@@ -259,7 +215,6 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
   }
 };
 
-// ... Rest of the file constants ...
 export const NAV_LINKS = [
   { name: 'Studio', path: '/about' }, 
   { name: 'Clarity', path: '/clarity' },
@@ -471,19 +426,19 @@ export const FREE_RESOURCES: Resource[] = [
         title: 'The Clarity Audit', 
         format: 'PDF', 
         desc: 'A 15-point checklist to identify narrative leaks in your current brand.', 
-        link: '/docs/audit.pdf' // Points to public/docs/audit.pdf
+        link: '/docs/audit.pdf' 
     },
     { 
         id: '02', 
         title: 'No Magic Questionnaire', 
-        format: 'PDF', // Changed from Notion to PDF for consistency
+        format: 'PDF', 
         desc: 'The exact intake form we use to deconstruct high-growth brands.', 
         link: '/docs/questionnaire.pdf' 
     },
     { 
         id: '03', 
         title: 'Positioning One-Pager', 
-        format: 'PDF', // Changed from Template to PDF
+        format: 'PDF', 
         desc: 'A minimalist template to define your core value prop on a single page.', 
         link: '/docs/positioning.pdf' 
     }
@@ -647,3 +602,9 @@ export const SCRIPTS_DATA: Script[] = [
 ];
 export const WORKBOOKS: Workbook[] = [];
 export const COURSE_MODULES: CourseModule[] = [];
+export const PROCESS_STEPS = [
+    { time: "Day 01", title: "Intake", desc: "We download your brain." },
+    { time: "Week 01", title: "Strategy", desc: "We define the logic." },
+    { time: "Week 04", title: "Execution", desc: "We build the engine." },
+    { time: "Launch", title: "Handoff", desc: "You take the keys." }
+];
