@@ -217,9 +217,9 @@ const ProcessGallery: React.FC<{ images: string[], onImageSelect: (img: string) 
 
     return (
         <section ref={targetRef} className="relative h-[300vh] bg-brand-offwhite">
-            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-                <div className="flex flex-col w-full">
-                    <div className="container mx-auto px-6 md:px-8 mb-12">
+            <div className="sticky top-0 flex h-screen items-center">
+                <div class="overflow-hidden w-full">
+                     <div class="flex gap-4 md:gap-12 px-6 md:px-8 w-max">
                         <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] md:text-xs font-bold mb-4 block">Visual Audit // Raw Process</span>
                         <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-brand-navy">The Messy Middle</h2>
                     </div>
