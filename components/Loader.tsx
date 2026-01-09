@@ -250,7 +250,7 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                 <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
+                    transition={{ delay: 0.1 }}
                     className="mt-6 font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-brand-purple/50 font-bold"
                 >
                     [ Use pen or cursor to sketch ]
