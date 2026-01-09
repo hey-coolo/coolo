@@ -196,64 +196,59 @@ const NarrativeSection: React.FC<{
 }
 
 const ProcessGallery: React.FC<{ images: string[], onImageSelect: (img: string) => void }> = ({ images, onImageSelect }) => {
-    const targetRef = useRef<HTMLDivElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [horizontalScrollLength, setHorizontalScrollLength] = useState(0);
-
-    useEffect(() => {
-        if (containerRef.current) {
-            setHorizontalScrollLength(containerRef.current.scrollWidth - window.innerWidth);
-        }
-    }, [images]);
-
-    const { scrollYProgress } = useScroll({
-        target: targetRef,
-        offset: ["start start", "end end"]
-    });
-
-    // The scroll distance should exactly match the container's horizontal overflow
-    // To avoid dead space, we calculate the x translate based on container width
-    const x = useTransform(scrollYProgress, [0, 1], ["0px", `-${horizontalScrollLength}px`]);
+    // We duplicate the images once just to ensure we have a nice long grid for the "messy" feel
+    // You can remove .concat(images) if you only want to show the exact source images
+    const displayImages = [...images, ...images].slice(0, 8); 
 
     return (
-        <section ref={targetRef} className="relative h-[300vh] bg-brand-offwhite">
-            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-                {/* FIX 1: Changed 'class' to 'className' and added 'h-full justify-center' for vertical alignment */}
-                <div className="flex flex-col w-full h-full justify-center">
-                     
-                     {/* FIX 2: Changed 'class' to 'className' 
-                        - Changed to 'flex-col' so the label sits ABOVE the title 
-                        - Added 'mb-12' to push the images down away from the text
-                     */}
-                     <div className="flex flex-col px-6 md:px-8 w-full max-w-[90vw] mb-12">
-                        <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] md:text-xs font-bold mb-4 block">
-                            Visual Audit // Raw Process
-                        </span>
-                        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-brand-navy">
-                            The Messy Middle
-                        </h2>
-                    </div>
-                   
-                    <motion.div 
-                        ref={containerRef} 
-                        style={{ x }} 
-                        className="flex gap-4 md:gap-12 px-6 md:px-8 w-max"
-                    >
-                        {images.concat(images).concat(images).map((img, i) => (
-                            <motion.div 
-                                key={i} 
-                                onClick={() => onImageSelect(img)}
-                                data-cursor-text="VIEW"
-                                whileHover={{ scale: 0.97 }}
-                                className="relative h-[40vh] md:h-[55vh] w-[300px] md:w-[650px] flex-shrink-0 cursor-pointer overflow-hidden shadow-2xl bg-brand-navy/5 group"
-                            >
-                                <img src={img} className="h-full w-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" alt="Process" />
-                                <div className="absolute inset-0 bg-brand-navy/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </motion.div>
-                        ))}
-                        {/* Buffer space at the end to ensure it doesn't snap abruptly */}
-                        <div className="w-[10vw] flex-shrink-0" />
-                    </motion.div>
+        <section className="py-32 md:py-48 bg-brand-offwhite relative z-10">
+            <div className="container mx-auto px-6 md:px-8">
+                
+                {/* Header Section */}
+                <div className="mb-24 md:mb-32 max-w-3xl">
+                    <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] md:text-xs font-bold mb-4 block">
+                        Visual Audit // Raw Process
+                    </span>
+                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.9]">
+                        The Messy Middle
+                    </h2>
+                </div>
+
+                {/* Editorial Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 w-full">
+                    {displayImages.map((img, i) => (
+                        <motion.div 
+                            key={i}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-10%" }}
+                            transition={{ duration: 0.8, delay: i % 2 === 0 ? 0 : 0.2 }}
+                            onClick={() => onImageSelect(img)}
+                            className={`relative cursor-pointer group ${
+                                // This creates the "Editorial Stagger" effect
+                                // It pushes every second image down by 12rem on desktop
+                                i % 2 !== 0 ? 'md:mt-32' : '' 
+                            }`}
+                        >
+                            <div className="overflow-hidden shadow-2xl bg-brand-navy/5 aspect-[3/4] md:aspect-[4/5]">
+                                <img 
+                                    src={img} 
+                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-out" 
+                                    alt="Process detail" 
+                                />
+                            </div>
+                            
+                            {/* Optional: Tiny caption for extra 'editorial' feel */}
+                            <div className="mt-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/60">
+                                    Fig. {i + 1}
+                                </span>
+                                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-purple">
+                                    [View]
+                                </span>
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </section>
