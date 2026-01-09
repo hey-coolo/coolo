@@ -6,7 +6,7 @@
 > **STATE:** ready_to_engage  
 > **LOC:** Mount Maunganui, NZ (Est. 2024)
 
-![Coolo Preview]('https://cdn.jsdelivr.net/gh/hey-coolo/COOLO/asset/images/site-preview.webp')
+![Coolo Preview]('./COOLO/asset/images/site-preview.webp')
 
 ## // MISSION_PROTOCOL
 
