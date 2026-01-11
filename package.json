@@ -23,7 +23,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "typescript": "~5.6.2",
     "vite": "^5.4.1",
-    "@react-email/components": "^0.0.12", 
+    "@react-email/components": "18.3.1", 
     "resend": "^2.0.0"
   }
 }
