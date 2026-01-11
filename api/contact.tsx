@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
   try {
     // 2. Add to Audience (ONLY if ID exists)
-    if (process.env.RESEND_AUDIENCE_ID) {
+      if (process.env.RESEND_AUDIENCE_ID) {
       try {
         await resend.contacts.create({
           email: email,
@@ -27,8 +27,8 @@ export default async function handler(req, res) {
           audienceId: process.env.RESEND_AUDIENCE_ID,
         });
       } catch (e) {
-        console.warn("Audience skipped:", e);
-      }     
+        console.warn("Audience creation failed:", e);
+      }
     }
 
     // 3. Send Stylized Email
