@@ -65,7 +65,7 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
             const dist = Math.hypot(clientX - lastPos.current.x, clientY - lastPos.current.y);
 
             // Lowered threshold to 30 for smoother trails on mobile/touch
-            if (dist > 35) {
+            if (dist > 80) {
                 const nextImage = allImages[trailCount.current % allImages.length];
                 const id = trailCount.current++;
                 
