@@ -138,20 +138,20 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 5,
-    title: 'Jonhey’s Dumpling House',
-    slug: 'jonheys-dumpling-house',
+    title: 'Johney’s Dumpling House',
+    slug: 'johneys-dumpling-house',
     description: 'High-energy hospitality branding with a contemporary street-food edge.',
     category: 'Photography',
     tags: ['Hospitality', 'Kinetic Type', 'Logo'],
     year: 2023,
-    imageUrl: './assets/cases/jonheys-dumpling-house/Hero.webp',
+    imageUrl: './assets/cases/johneys-dumpling-house/Hero.webp',
     featured: true,
     client: 'Jonhey’s Dumpling House',
     role: 'Product Photographer',
     detailImages: [
-        './assets/cases/jonheys-dumpling-house/detail-1.webp',
-        './assets/cases/jonheys-dumpling-house/detail-2.webp',
-        './assets/cases/jonheys-dumpling-house/detail-3.webp'
+        './assets/cases/johneys-dumpling-house/detail-1.webp',
+        './assets/cases/johneys-dumpling-house/detail-2.webp',
+        './assets/cases/johneys-dumpling-house/detail-3.webp'
     ],
     story: {
         goal: "Showcase the exquisite craftsmanship of Johney's delectable dumplings but also serve as the visual centerpiece for their festival food stall menus.",
@@ -159,9 +159,9 @@ export const PROJECTS: Project[] = [
         gamble: "Injecting energy into the visuals with playful compositions and vibrant lighting that reflect the brand’s street-food spirit.",
         gain: "A library of images that turned menus into memorable brand touchpoints and helped position Johney’s as a standout in busy festival environments.",
         processImages: [
-            './assets/cases/jonheys-dumpling-house/process-1.webp',
-            './assets/cases/jonheys-dumpling-house/process-2.webp',
-            './assets/cases/jonheys-dumpling-house/process-3.webp'
+            './assets/cases/johneys-dumpling-house/process-1.webp',
+            './assets/cases/johneys-dumpling-house/process-2.webp',
+            './assets/cases/johneys-dumpling-house/process-3.webp'
         ]
     }
   },
