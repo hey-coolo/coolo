@@ -1,10 +1,11 @@
 import { Resend } from 'resend';
 import { MissionReceivedEmail } from '../components/emails/MissionReceived';
 
+// Securely load the API key
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
-  // 1. Security check
+  // 1. Security Check
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -16,38 +17,42 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 2. Add to Audience (ONLY if ID exists)
-      if (process.env.RESEND_AUDIENCE_ID) {
-      try {
-        await resend.contacts.create({
-          email: email,
-          firstName: name.split(' ')[0],
-          lastName: name.split(' ').slice(1).join(' '),
-          unsubscribed: false,
-          audienceId: process.env.RESEND_AUDIENCE_ID,
-        });
-      } catch (e) {
-        console.warn("Audience creation failed:", e);
+    // 2. Add to Audience (Updated based on your Docs)
+    // We only try this if you have an Audience ID set up in Vercel
+    if (process.env.RESEND_AUDIENCE_ID) {
+      const { error: contactError } = await resend.contacts.create({
+        email: email,
+        firstName: name.split(' ')[0],
+        lastName: name.split(' ').slice(1).join(' '),
+        unsubscribed: false,
+        audienceId: process.env.RESEND_AUDIENCE_ID,
+      });
+
+      if (contactError) {
+        console.warn("Audience creation warning:", contactError);
       }
     }
 
     // 3. Send Stylized Email
-    const emailRequest = resend.emails.send({
+    const { error: emailError } = await resend.emails.send({
       from: 'COOLO <hey@coolo.co.nz>',
       to: [email],
       subject: 'Mission Received // COOLO',
       react: MissionReceivedEmail({ name }),
     });
 
-    // 4. Notify You
-    const adminRequest = resend.emails.send({
+    if (emailError) {
+      console.error("Email sending failed:", emailError);
+      return res.status(500).json({ error: emailError.message });
+    }
+
+    // 4. Notify You (Admin Email)
+    await resend.emails.send({
       from: 'COOLO Bot <system@coolo.co.nz>',
       to: ['hey@coolo.co.nz'],
       subject: `New Lead: ${name}`,
       html: `<p>New inquiry from ${name} (${email}).<br/>Business: ${business}<br/>Goal: ${goal}</p>`
     });
-
-    await Promise.all([emailRequest, adminRequest]);
 
     return res.status(200).json({ message: 'Success' });
 
