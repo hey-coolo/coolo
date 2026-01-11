@@ -33,7 +33,7 @@ const AboutPage: React.FC = () => {
                         <div>
                             <div className="flex items-center gap-2 mb-2">
                                 <svg className="w-4 h-4 text-brand-purple group-hover:text-brand-yellow transition-colors" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
-                                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">Internal Resources / Restricted</span>
+                                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">Internal Tools / Restricted</span>
                             </div>
                             <h3 className="text-4xl font-black uppercase tracking-tight text-brand-navy group-hover:text-brand-offwhite">Access Agency Playbook &rarr;</h3>
                         </div>
@@ -71,7 +71,7 @@ const AboutPage: React.FC = () => {
             </div>
         </section>
 
-        {/* Values / The Protocol */}
+        {/* Values / The Principles */}
         <section className="py-32 border-t-2 border-brand-navy">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
                 {[
@@ -82,7 +82,7 @@ const AboutPage: React.FC = () => {
                 ].map((val, i) => (
                     <AnimatedSection key={val.t} delay={i * 100} className="h-full">
                         <div className="border-r-2 border-bottom-2 border-brand-navy p-12 h-full hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-500 group">
-                            <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold mb-4 block">Protocol 0{i + 1}</span>
+                            <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold mb-4 block">Principle 0{i + 1}</span>
                             <h3 className="text-3xl font-black uppercase tracking-tight mb-6">{val.t}</h3>
                             <p className="font-body text-lg opacity-60 group-hover:opacity-100 transition-opacity leading-relaxed">{val.d}</p>
                         </div>
@@ -91,12 +91,12 @@ const AboutPage: React.FC = () => {
             </div>
         </section>
 
-        {/* The Unit / Team CMS Integration */}
+        {/* The Crew / Team CMS Integration */}
         <section className="py-48 relative border-t border-brand-navy/10">
             <AnimatedSection>
                 <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
                     <div>
-                        <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-4 block">The Unit / Operators</span>
+                        <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-4 block">The Crew</span>
                         <h2 className="text-7xl md:text-[10vw] font-black uppercase tracking-tight leading-[0.9] text-brand-navy">
                             The Unit
                         </h2>
@@ -126,7 +126,7 @@ const AboutPage: React.FC = () => {
                                 <div className="flex justify-between items-start">
                                     <div className="w-2 h-2 bg-brand-yellow opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     <span className="font-mono text-[10px] uppercase tracking-widest text-brand-offwhite/50 group-hover:text-brand-yellow font-bold border border-brand-offwhite/20 px-2 py-1 bg-brand-navy/20 backdrop-blur-sm">
-                                        View Dossier
+                                        View Profile
                                     </span>
                                 </div>
                                 

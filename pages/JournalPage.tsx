@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
@@ -10,17 +9,16 @@ const JournalListPage: React.FC = () => (
         <div className="container mx-auto px-8">
             <AnimatedSection>
                 <header className="py-24 md:py-48 max-w-6xl relative">
-                    <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-6 block">Intel / Journal</span>
-                    <h1 className="text-brand-navy text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.85]">
-                        The Brain<br/><span className="text-brand-purple italic">Dump.</span>
+                    <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-6 block">Journal / Thoughts</span>
+                    <h1 className="text-brand-navy text-8xl md:text-[15vw] font-black uppercase tracking-tight leading-[0.85]">
+                        Brain<br/><span className="text-brand-purple italic">Dump.</span>
                     </h1>
                     <p className="font-body text-2xl md:text-4xl text-brand-navy/60 mt-16 leading-tight max-w-4xl font-light">
                         Musings on the intersection of brand strategy, kinetic design, and the slow burn of clarity.
                     </p>
                     
-                     {/* System Marker */}
                     <div className="absolute top-24 right-0 hidden lg:block text-right">
-                        <div className="font-mono text-[10px] uppercase font-bold text-brand-purple/40 tracking-[0.3em]">Status: Online</div>
+                        <div className="font-mono text-[10px] uppercase font-bold text-brand-purple/40 tracking-[0.3em]">Status: Live</div>
                         <div className="font-mono text-[10px] uppercase font-bold text-brand-purple/40 tracking-[0.3em] mt-1">Ref: {JOURNAL_POSTS.length} Entries</div>
                     </div>
                 </header>
@@ -57,7 +55,6 @@ const JournalListPage: React.FC = () => (
                                     </div>
                                 </div>
                                 
-                                {/* Hover Image Reveal */}
                                 <div className="hidden lg:block absolute top-1/2 right-12 -translate-y-1/2 w-64 aspect-video opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10 overflow-hidden bg-brand-navy border border-brand-offwhite/10 rotate-3 group-hover:rotate-0 transform transition-transform">
                                     <img src={post.imageUrl} alt="" className="w-full h-full object-cover grayscale opacity-60" />
                                 </div>
@@ -78,7 +75,7 @@ const JournalPostPage: React.FC<{ slug: string }> = ({ slug }) => {
             <div className="min-h-screen flex items-center justify-center bg-brand-navy text-brand-offwhite">
                 <div className="text-center">
                     <h1 className="text-6xl font-black uppercase tracking-tight">Entry_Missing</h1>
-                    <Link to="/journal" className="font-mono uppercase text-brand-yellow mt-8 block tracking-widest text-xs">Return to Intel &rarr;</Link>
+                    <Link to="/journal" className="font-mono uppercase text-brand-yellow mt-8 block tracking-widest text-xs">Return to Journal &rarr;</Link>
                 </div>
             </div>
         )
@@ -155,7 +152,7 @@ const JournalPostPage: React.FC<{ slug: string }> = ({ slug }) => {
                                      </div>
                                 </div>
                                 <Link to="/journal" className="font-mono text-xs uppercase font-bold tracking-[0.2em] text-brand-purple hover:text-brand-yellow transition-colors bg-brand-navy py-3 px-6 hover:bg-brand-navy/90">
-                                    Return to Intel
+                                    Back to Grid
                                 </Link>
                              </div>
                          </AnimatedSection>

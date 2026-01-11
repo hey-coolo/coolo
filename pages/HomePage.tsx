@@ -18,7 +18,6 @@ const DownArrow: React.FC<{ className?: string; size?: number }> = ({ className 
     </motion.div>
 );
 
-// --- IMAGE TRAIL COMPONENT ---
 interface TrailItem {
     id: number;
     x: number;
@@ -173,7 +172,7 @@ const BrandHero: React.FC = () => {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                            className="text-[12vw] md:text-[10vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
+                            className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                         >
                             BRAND STRATEGY
                         </motion.h1>
@@ -184,7 +183,7 @@ const BrandHero: React.FC = () => {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 1.4, delay: 0.4, ease: "easeOut" }}
-                            className="text-[12vw] md:text-[10vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
+                            className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none absolute -left-[1em] top-[-0.05em] pointer-events-none"
                         >
                             &
                         </motion.span>
@@ -193,7 +192,7 @@ const BrandHero: React.FC = () => {
                                 initial={{ opacity: 0, x: 50 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-                                className="font-serif italic font-light text-brand-purple lowercase tracking-normal"
+                                className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                             >
                                 DESIGN POWER
                             </motion.h1>
@@ -243,8 +242,6 @@ const SplitManifesto: React.FC = () => {
     return (
         <section className="border-t-2 border-brand-navy bg-brand-offwhite relative z-40 overflow-hidden">
             <div className="container mx-auto border-x border-brand-navy/10">
-                {/* FIX: 'items-start' is required here so the left column height 
-                    is independent of the right column, enabling the sticky effect. */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-start">
                     
                     {/* LEFT COLUMN: Sticky Header */}
@@ -283,7 +280,7 @@ const SplitManifesto: React.FC = () => {
 
                         <div className="pt-8 md:pt-16">
                              <Link to="/about" className="inline-block border-2 border-brand-navy px-8 md:px-12 py-5 md:py-6 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy">
-                                 Read the Protocol
+                                 Read the Manifesto
                              </Link>
                         </div>
                     </div>
@@ -338,7 +335,7 @@ const ServiceRouter: React.FC = () => {
                                     {leg.hoverText}
                                 </p>
                                 <span className="inline-block font-mono text-sm uppercase font-bold tracking-widest border-b-2 border-brand-purple group-hover:border-brand-yellow pb-1 group-hover:text-brand-yellow transition-colors text-brand-purple">
-                                    Initiate Protocol
+                                    Let's Go
                                 </span>
                             </div>
                         </Link>
@@ -349,26 +346,21 @@ const ServiceRouter: React.FC = () => {
     )
 }
 
-// --- NEW COMPONENT: FEATURED PROJECT SPOTLIGHT ---
 const FeatureSpotlight: React.FC = () => {
-    // Show the first project in the list (UNMPLYNMT) as the feature
     const featuredProject = PROJECTS[0]; 
 
     return (
         <section className="relative bg-brand-navy overflow-hidden group">
             <Link to={`/work/${featuredProject.slug}`} className="block relative min-h-screen md:min-h-[120vh]">
-                {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <img 
                         src={featuredProject.imageUrl} 
                         alt={featuredProject.title} 
                         className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-700 grayscale group-hover:grayscale-0"
                     />
-                    {/* Gradient Overlay for Text Readability */}
                     <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent opacity-90" />
                 </div>
 
-                {/* Content Overlay */}
                 <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-16">
                     <div className="container mx-auto">
                         <motion.div 
@@ -515,7 +507,6 @@ const ShowcaseGrid: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-y-24">
-                    {/* START FROM PROJECT 1, AS 0 IS FEATURED */}
                     {PROJECTS.slice(1, 7).map((project, index) => (
                         <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-24' : ''}`}>
                              <ProjectCard project={project} className="aspect-[4/3] w-full" />
@@ -539,7 +530,7 @@ const LatestIntel: React.FC = () => {
         <section className="py-24 relative z-40 bg-brand-offwhite overflow-hidden">
              <div className="container mx-auto px-8">
                  <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-                    <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-brand-navy">Latest Intel</h3>
+                    <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-brand-navy">Latest Thoughts</h3>
                     <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">View All Entries &rarr;</Link>
                  </div>
                  

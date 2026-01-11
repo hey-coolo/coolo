@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Resource } from '../types';
 
 const ClarityPage: React.FC = () => {
-  // State for the Resource Lock Modal
   const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent'>('idle');
@@ -27,16 +26,12 @@ const ClarityPage: React.FC = () => {
 
     setStatus('processing');
 
-    // SIMULATION: Here you would normally send the email to Mailchimp/ConvertKit.
-    // For now, we simulate a 1.5s delay, then trigger the file download.
     setTimeout(() => {
         setStatus('sent');
-        
-        // Trigger the actual download
         if (selectedRes?.link) {
             const link = document.createElement('a');
             link.href = selectedRes.link;
-            link.download = selectedRes.title; // Suggests the filename
+            link.download = selectedRes.title;
             link.target = "_blank";
             document.body.appendChild(link);
             link.click();
@@ -51,7 +46,7 @@ const ClarityPage: React.FC = () => {
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-5xl">
             <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold block mb-4">Service Leg 01 / Strategy</span>
-            <h1 className="text-brand-navy text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] mt-0">
+            <h1 className="text-brand-navy text-8xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.9] mt-0">
               No Magic<br/><span className="text-brand-purple">Formula™</span>
             </h1>
             <p className="font-body text-2xl md:text-4xl text-brand-navy/70 mt-12 leading-tight max-w-3xl">
@@ -60,20 +55,18 @@ const ClarityPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
-        {/* Free Intelligence / Lead Magnet Section */}
         <section className="py-24 border-t-2 border-brand-navy mb-32">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                 <div className="lg:col-span-4">
                     <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-4 block">Leg 0 / Starter Kit</span>
-                    <h2 className="text-5xl font-black uppercase tracking-tight leading-none text-brand-navy">Free<br/>Intelligence.</h2>
+                    <h2 className="text-5xl font-black uppercase tracking-tight leading-none text-brand-navy">Free<br/>Game.</h2>
                     <p className="mt-8 font-body text-xl text-brand-navy/60 leading-relaxed">
-                        Start with the system. We've declassified three of our core strategic tools. Unlock the archives below.
+                        Start with the system. We've unlocked three of our core strategic tools. Get them below.
                     </p>
                 </div>
                 <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                     {FREE_RESOURCES.map((res, i) => (
                         <AnimatedSection key={res.id} delay={i * 100} className="h-full">
-                            {/* Replaced <a> with <button> to trigger modal */}
                             <button 
                                 onClick={() => handleOpenModal(res)}
                                 className="group w-full text-left border border-brand-navy/10 p-8 h-full bg-white hover:bg-brand-navy transition-all duration-500 flex flex-col"
@@ -83,7 +76,7 @@ const ClarityPage: React.FC = () => {
                                 <p className="font-body text-sm text-brand-navy/60 group-hover:text-brand-offwhite/60 mb-8">{res.desc}</p>
                                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-brand-navy/5 w-full group-hover:border-brand-offwhite/10">
                                     <span className="font-mono text-[10px] uppercase font-bold text-brand-navy group-hover:text-brand-offwhite">{res.format}</span>
-                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-purple group-hover:text-brand-yellow">Unlock Access &rarr;</span>
+                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-purple group-hover:text-brand-yellow">Download &rarr;</span>
                                 </div>
                             </button>
                         </AnimatedSection>
@@ -92,12 +85,10 @@ const ClarityPage: React.FC = () => {
             </div>
         </section>
 
-        {/* Core Tiers */}
         <section className="pb-48 grid grid-cols-1 md:grid-cols-2 gap-8">
             {CLARITY_TIERS.map((tier, i) => (
                 <AnimatedSection key={tier.name} delay={i * 100}>
                     <Link to={`/clarity/${tier.slug}`} className="block border-2 border-brand-navy p-12 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-500 h-full group relative overflow-hidden bg-white hover:border-brand-navy">
-                        
                         <div className="flex flex-col h-full justify-between relative z-10">
                             <div>
                                 <div className="flex justify-between items-start mb-8">
@@ -175,27 +166,27 @@ const ClarityPage: React.FC = () => {
                     <button onClick={handleCloseModal} className="absolute top-4 right-4 text-brand-navy/40 hover:text-brand-navy font-mono text-xl">&times;</button>
                     
                     <div className="mb-8">
-                        <span className="font-mono text-xs uppercase tracking-widest text-brand-purple font-bold block mb-2">Restricted Intel</span>
-                        <h3 className="text-4xl font-black uppercase tracking-tight text-brand-navy leading-none">Unlock<br/>{selectedRes.title}</h3>
+                        <span className="font-mono text-xs uppercase tracking-widest text-brand-purple font-bold block mb-2">Locked Content</span>
+                        <h3 className="text-4xl font-black uppercase tracking-tight text-brand-navy leading-none">Get<br/>{selectedRes.title}</h3>
                     </div>
 
                     {status === 'sent' ? (
                         <div className="text-center py-8">
                             <div className="w-16 h-16 bg-brand-yellow text-brand-navy rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">✓</div>
-                            <h4 className="text-2xl font-bold uppercase text-brand-navy mb-2">Access Granted</h4>
-                            <p className="font-body text-brand-navy/70">The file has been pushed to your device.</p>
-                            <button onClick={handleCloseModal} className="mt-8 font-mono text-xs uppercase tracking-widest border-b border-brand-navy pb-1">Close Terminal</button>
+                            <h4 className="text-2xl font-bold uppercase text-brand-navy mb-2">It's Yours.</h4>
+                            <p className="font-body text-brand-navy/70">The file is downloading.</p>
+                            <button onClick={handleCloseModal} className="mt-8 font-mono text-xs uppercase tracking-widest border-b border-brand-navy pb-1">Close</button>
                         </div>
                     ) : (
                         <form onSubmit={handleSubscribe} className="space-y-6">
                             <p className="font-body text-brand-navy/70 leading-relaxed">
-                                Enter your credentials to access this strategic resource.
+                                Where should we send the file?
                             </p>
                             <div>
                                 <input 
                                     type="email" 
                                     required
-                                    placeholder="ENTER EMAIL ADDRESS"
+                                    placeholder="YOUR EMAIL"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full bg-brand-navy/5 border-b-2 border-brand-navy/20 p-4 font-mono text-sm focus:outline-none focus:border-brand-purple transition-colors placeholder-brand-navy/30 text-brand-navy"
@@ -206,9 +197,9 @@ const ClarityPage: React.FC = () => {
                                 disabled={status === 'processing'}
                                 className="w-full bg-brand-navy text-brand-offwhite font-mono uppercase font-bold py-4 hover:bg-brand-purple transition-all disabled:opacity-50 disabled:cursor-wait"
                             >
-                                {status === 'processing' ? 'Verifying...' : 'Authenticate & Download'}
+                                {status === 'processing' ? 'Processing...' : 'Get Download'}
                             </button>
-                            <p className="text-center font-mono text-[9px] uppercase text-brand-navy/30">Secure Connection // No Spam Protocol</p>
+                            <p className="text-center font-mono text-[9px] uppercase text-brand-navy/30">No Spam. Just Value.</p>
                         </form>
                     )}
                 </motion.div>

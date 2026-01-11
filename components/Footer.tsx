@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import BrandLogo from './BrandLogo';
 
 const Footer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,9 +37,7 @@ const Footer: React.FC = () => {
     <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden">
       
       {/* 1. MASSIVE FULL-WIDTH YELLOW CTA SECTION */}
-      {/* w-full bg-brand-yellow ensures it goes edge-to-edge */}
       <div className="w-full bg-brand-yellow py-32 md:py-48 relative overflow-hidden group text-brand-navy">
-         {/* Background Texture/Noise could go here */}
          <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
 
         <div className="container mx-auto px-6 md:px-8 relative z-10">
@@ -49,13 +46,12 @@ const Footer: React.FC = () => {
                 Ready to evolve?
             </span>
             
-            {/* Navy Text on Yellow Background */}
             <h2 className="text-6xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.85] flex flex-col md:block items-center">
                 <span>START THE</span>
                 <br className="hidden md:block"/>
                 <motion.span 
                 style={{ skewX, x, display: 'inline-block', originX: 0 }}
-                className="text-brand-purple" // Keep purple pop for "GRIND"
+                className="text-brand-purple" 
                 >
                 GRIND.
                 </motion.span>
@@ -71,10 +67,8 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. THE NAVIGATION GRID (Dark Navy Section) */}
+      {/* 2. THE NAVIGATION GRID */}
       <div className="container mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 py-32">
-        
-        {/* Col 1: Index */}
         <div>
             <h4 className="font-mono text-[10px] uppercase text-brand-purple tracking-widest font-bold mb-6">Index</h4>
             <ul className="space-y-4">
@@ -88,7 +82,6 @@ const Footer: React.FC = () => {
             </ul>
         </div>
 
-        {/* Col 2: Services */}
         <div>
             <h4 className="font-mono text-[10px] uppercase text-brand-purple tracking-widest font-bold mb-6">Services</h4>
             <ul className="space-y-4">
@@ -102,7 +95,6 @@ const Footer: React.FC = () => {
             </ul>
         </div>
 
-        {/* Col 3: Network */}
         <div>
             <h4 className="font-mono text-[10px] uppercase text-brand-purple tracking-widest font-bold mb-6">Network</h4>
             <ul className="space-y-4">
@@ -116,7 +108,6 @@ const Footer: React.FC = () => {
             </ul>
         </div>
 
-        {/* Col 4: Studio Info */}
         <div className="flex flex-col justify-between h-full">
             <div>
                 <h4 className="font-mono text-[10px] uppercase text-brand-purple tracking-widest font-bold mb-6">HQ</h4>
@@ -131,23 +122,38 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. BIG LOGO ANCHOR */}
+      {/* 3. BIG KINETIC LOGO ANCHOR */}
       <div className="border-t border-brand-offwhite/10">
           <div className="container mx-auto px-6 md:px-8 py-12 md:py-16">
               <div className="flex flex-col md:flex-row justify-between items-end gap-8">
                   <div className="w-full md:w-auto">
                       <div className="w-48 md:w-96 opacity-100 mb-8 md:mb-0">
-                        {/* Force light logo on dark footer */}
-                        <BrandLogo color="#F7F7F7" className="w-full h-auto" />
+                        {/* Kinetic Text Logo */}
+                        <svg viewBox="0 0 300 80" className="w-full h-auto">
+                            <motion.text
+                                x="0"
+                                y="60"
+                                className="font-sans font-black text-8xl tracking-tighter"
+                                fill="transparent"
+                                stroke="#F7F7F7"
+                                strokeWidth="2"
+                                initial={{ strokeDasharray: 800, strokeDashoffset: 800 }}
+                                whileInView={{ strokeDashoffset: 0 }}
+                                viewport={{ once: false, amount: 0.5 }}
+                                transition={{ duration: 2.5, ease: "easeInOut" }}
+                            >
+                                COOLO
+                            </motion.text>
+                        </svg>
                       </div>
                   </div>
 
                   <div className="w-full md:w-auto flex flex-col md:items-end gap-2">
                       <p className="font-mono text-[10px] uppercase tracking-widest opacity-40">
-                          &copy; {new Date().getFullYear()} COOLO Studio. All Rights Reserved.
+                          &copy; {new Date().getFullYear()} COOLO Studio.
                       </p>
                       <p className="font-mono text-[10px] uppercase tracking-widest opacity-40">
-                          System V2.0_Alpha
+                          V2.0_Studio
                       </p>
                   </div>
               </div>
@@ -157,7 +163,6 @@ const Footer: React.FC = () => {
   );
 };
 
-// Simple Time Component
 const TimeDisplay = () => {
     const [time, setTime] = React.useState(new Date().toLocaleTimeString('en-NZ', { hour: '2-digit', minute: '2-digit', timeZone: 'Pacific/Auckland' }));
     

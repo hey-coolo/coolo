@@ -26,16 +26,12 @@ const ContactPage: React.FC = () => {
     if (step > 0) setStep(step - 1);
   };
 
-  // --- NEW: HANDLE ENTER KEY ---
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      // Allow normal Enter behavior in textareas (new line), unless CMD/CTRL is held
       if (e.currentTarget.tagName === 'TEXTAREA' && !e.metaKey && !e.ctrlKey) {
         return;
       }
-      e.preventDefault(); // Prevent form submission refresh
-      
-      // If on the final step, submit. Otherwise, go next.
+      e.preventDefault(); 
       if (step === 5) {
         handleTransmission();
       } else {
@@ -79,9 +75,9 @@ const ContactPage: React.FC = () => {
         <AnimatedSection>
             <div className="max-w-4xl mx-auto">
                 <header className="mb-16">
-                    <span className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold block mb-4">The Details</span>
+                    <span className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold block mb-4">Discovery</span>
                     <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tight text-brand-navy leading-[0.95]">
-                        {status === 'success' ? 'We got it.' : 'Let\'s Talk.'}
+                        {status === 'success' ? 'We Got It.' : 'Let\'s Talk.'}
                     </h1>
                 </header>
 
@@ -109,9 +105,9 @@ const ContactPage: React.FC = () => {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
-                                    <h3 className="text-4xl md:text-5xl font-black uppercase text-brand-navy leading-none mb-6">Sent.</h3>
+                                    <h3 className="text-4xl md:text-5xl font-black uppercase text-brand-navy leading-none mb-6">Received.</h3>
                                     <p className="font-body text-xl text-brand-navy/60 max-w-lg mx-auto mb-12">
-                                        Thanks for the info. We'll take a look and hit you back within 24 hours.
+                                        Your brief is logged. We'll take a look and get back to you within 24 hours.
                                     </p>
                                     <button 
                                         onClick={() => window.location.reload()} 
@@ -126,7 +122,7 @@ const ContactPage: React.FC = () => {
                             {status !== 'success' && step === 0 && (
                                 <motion.div key="step0" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                                     <label className="block text-3xl md:text-5xl font-light text-brand-navy leading-tight">
-                                        Who are you? <br/>
+                                        First up, who are you? <br/>
                                         I am <input 
                                             autoFocus
                                             type="text" 
@@ -175,7 +171,7 @@ const ContactPage: React.FC = () => {
                             {status !== 'success' && step === 2 && (
                                 <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                                     <label className="block text-3xl md:text-5xl font-light text-brand-navy leading-tight">
-                                        The specific friction or pain point <br/> we are facing right now is: <br/>
+                                        The main friction or pain point <br/> we are facing right now is: <br/>
                                         <textarea 
                                             autoFocus
                                             name="problem" 
@@ -194,7 +190,7 @@ const ContactPage: React.FC = () => {
                              {status !== 'success' && step === 3 && (
                                 <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                                     <label className="block text-3xl md:text-5xl font-light text-brand-navy leading-tight">
-                                        The single most important outcome <br/> I hope to achieve with COOLO is: <br/>
+                                        The big outcome <br/> I hope to achieve with COOLO is: <br/>
                                         <textarea 
                                             autoFocus
                                             name="goal" 
@@ -213,7 +209,7 @@ const ContactPage: React.FC = () => {
                             {status !== 'success' && step === 4 && (
                                 <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8">
                                     <label className="block text-3xl md:text-5xl font-light text-brand-navy leading-tight">
-                                        You can confirm this brief and <br/> send the dossier to: <br/>
+                                        You can reply to me at: <br/>
                                         <input 
                                             autoFocus
                                             type="email" 
@@ -237,10 +233,10 @@ const ContactPage: React.FC = () => {
                                     animate={{ opacity: 1, scale: 1 }}
                                     className="text-center py-12"
                                 >
-                                    <div className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-8">Brief Generated</div>
-                                    <h3 className="text-4xl md:text-6xl font-black uppercase text-brand-navy leading-none mb-8">Send it?</h3>
+                                    <div className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-8">Brief Ready</div>
+                                    <h3 className="text-4xl md:text-6xl font-black uppercase text-brand-navy leading-none mb-8">Ready to Send?</h3>
                                     <p className="font-body text-xl text-brand-navy/60 max-w-lg mx-auto mb-12">
-                                        We'll review your notes and get back to you shortly.
+                                        We will review your notes and hit you back shortly.
                                     </p>
                                     
                                     <button 
@@ -253,7 +249,7 @@ const ContactPage: React.FC = () => {
 
                                     {status === 'error' && (
                                         <p className="mt-4 text-red-600 font-mono text-xs uppercase tracking-widest font-bold">
-                                            Signal Lost. Please try again.
+                                            Error. Please try again.
                                         </p>
                                     )}
                                 </motion.div>
@@ -274,7 +270,7 @@ const ContactPage: React.FC = () => {
                                 onClick={handleNext}
                                 className="bg-brand-purple text-brand-offwhite font-mono text-xs uppercase px-8 py-3 hover:bg-brand-yellow hover:text-brand-navy transition-all font-bold tracking-widest shadow-lg"
                             >
-                                Proceed &rarr;
+                                Next &rarr;
                             </button>
                         </div>
                     )}
