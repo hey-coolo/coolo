@@ -3,97 +3,91 @@ import { useParams, Link } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
-// --- 1. CINEMATIC REVEAL LOADER (Inverted: Big Solid -> Small Logo) ---
+// --- 1. LOADER: BIG SOLID LOGO -> SMALL -> FADE OUT ---
 const ProjectReveal: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
     return (
         <motion.div
-            className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none"
-            // Fade out the small logo at the end of the sequence
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-brand-offwhite"
             animate={{ opacity: 0 }}
-            transition={{ duration: 0.3, delay: 1.4, ease: "easeOut" }} 
+            transition={{ duration: 0.5, delay: 1.5, ease: "easeInOut" }}
             onAnimationComplete={onComplete}
         >
-            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                    <mask id="logo-mask">
-                        {/* 1. Black Background = Transparent (Reveals the Page) */}
-                        <rect x="0" y="0" width="100" height="100" fill="black" />
-                        
-                        {/* 2. White Shapes = Opaque (Shows the Overlay Color) */}
-                        <g transform="translate(50 50)">
-                            <motion.g
-                                initial={{ scale: 60 }} // Start Huge (Covers Screen)
-                                animate={{ scale: 1 }}  // Shrink to Logo Size
-                                transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                            >
-                                {/* Left Pill */}
-                                <rect x="-12" y="-40" width="10" height="80" rx="5" fill="white" />
-                                
-                                {/* Right Pill */}
-                                <rect x="2" y="-40" width="10" height="80" rx="5" fill="white" />
-
-                                {/* GAP FILLER: Ensures total coverage at start, then splits open */}
-                                <motion.rect 
-                                    x="-2" y="-40" width="4" height="80" fill="white"
-                                    initial={{ scaleX: 1 }}
-                                    animate={{ scaleX: 0 }}
-                                    transition={{ duration: 0.8, ease: "easeInOut" }}
-                                />
-                            </motion.g>
-                        </g>
-                    </mask>
-                </defs>
-
-                {/* The Visible Overlay Layer (Brand Off-White) */}
-                <rect 
-                    x="0" y="0" width="100" height="100" 
-                    fill="#F7F7F7" 
-                    mask="url(#logo-mask)" 
-                />
-            </svg>
+            <div className="w-full h-full flex items-center justify-center overflow-hidden">
+                {/* Logic: The "II" Logo starts massive (scaling way up) and shrinks down to 1.
+                   This creates the "Big to Small" transition you asked for.
+                */}
+                <motion.div
+                    initial={{ scale: 60 }} 
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+                    className="w-24 h-24 relative"
+                >
+                    {/* Left Pill */}
+                    <div className="absolute left-[25px] top-[10px] w-[15px] h-[80px] bg-brand-navy rounded-[7.5px]" />
+                    {/* Right Pill */}
+                    <div className="absolute right-[25px] top-[10px] w-[15px] h-[80px] bg-brand-navy rounded-[7.5px]" />
+                </motion.div>
+            </div>
         </motion.div>
     );
 };
 
 // --- 2. IMAGE COMPONENTS ---
 
-// Type A: The "Cinema" Image (Full Width, Parallax, High Impact)
-const CinemaImage: React.FC<{ src: string }> = ({ src }) => {
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-    const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]); 
+// Type A: Expanding Image (The "Stay There & Open" Effect)
+// Uses a tall container + sticky positioning to lock the image while it scales.
+const ExpandingImage: React.FC<{ src: string }> = ({ src }) => {
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    // Scale from 80% to 110% as we scroll through the container
+    const scale = useTransform(scrollYProgress, [0.2, 0.7], [0.8, 1.1]);
     
+    // Fade in/out smoothly at edges
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
     return (
-        <div ref={ref} className="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden relative shadow-2xl my-12">
-            <motion.div style={{ y, scale: 1.1 }} className="w-full h-full">
-                <img src={src} className="w-full h-full object-cover" alt="" />
-            </motion.div>
+        // 1. Tall container (150vh) creates the "scroll time"
+        <div ref={containerRef} className="h-[150vh] w-full relative mb-16">
+            {/* 2. Sticky wrapper locks the image to the center of the viewport */}
+            <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+                {/* 3. The Image scales up inside */}
+                <motion.div 
+                    style={{ scale, opacity }} 
+                    className="w-full h-full md:w-[90%] md:h-[80%]"
+                >
+                    <img src={src} className="w-full h-full object-cover shadow-2xl" alt="" />
+                </motion.div>
+            </div>
         </div>
     );
 };
 
-// Type B: The "Scatter" Image (Smaller, Static Scroll, Float Hover)
+// Type B: Scatter Image (Standard, gentle parallax)
 const ScatterImage: React.FC<{ src: string; align: 'left' | 'right' }> = ({ src, align }) => {
     return (
         <motion.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-15%" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`w-3/4 md:w-2/3 aspect-[4/5] md:aspect-square overflow-hidden relative shadow-lg bg-brand-navy/5 ${align === 'right' ? 'self-end' : 'self-start'}`}
+            transition={{ duration: 0.8 }}
+            className={`w-full md:w-3/4 aspect-[4/5] overflow-hidden relative shadow-lg bg-brand-navy/5 mb-16 ${align === 'right' ? 'self-end' : 'self-start'}`}
         >
-            <motion.div 
+            <motion.img 
                 whileHover={{ scale: 1.05 }} 
                 transition={{ duration: 0.6 }}
-                className="w-full h-full"
-            >
-                <img src={src} className="w-full h-full object-cover" alt="" />
-            </motion.div>
+                src={src} 
+                className="w-full h-full object-cover" 
+                alt="" 
+            />
         </motion.div>
     );
 };
 
-// --- 3. STICKY SCROLL SECTION (Rhythmic Layout) ---
+// --- 3. STICKY SCROLL SECTION ---
 const StickyScrollSection: React.FC<{ 
     title: string; 
     text: string; 
@@ -103,15 +97,16 @@ const StickyScrollSection: React.FC<{
     if (!images || images.length === 0) return null;
 
     return (
-        <div className="container mx-auto px-6 md:px-8 py-32 relative">
+        <div className="container mx-auto px-6 md:px-8 py-12 relative">
             <div className={`flex flex-col md:flex-row gap-16 md:gap-32 relative items-start ${align === 'right' ? 'md:flex-row-reverse' : ''}`}>
                 
                 {/* STICKY TEXT COLUMN */}
-                <div className="md:w-1/3 md:sticky md:top-0 md:h-screen flex flex-col justify-center py-12 md:py-0 z-10">
+                <div className="md:w-1/3 md:sticky md:top-0 md:h-screen flex flex-col justify-center py-12 md:py-0 z-20 pointer-events-none">
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
+                        className="pointer-events-auto" // Re-enable clicks on text
                     >
                         <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-8 block border-l-2 border-brand-purple pl-4">
                             {title}
@@ -122,15 +117,19 @@ const StickyScrollSection: React.FC<{
                     </motion.div>
                 </div>
 
-                {/* SCROLLING IMAGE STREAM (Rhythmic Grid) */}
-                <div className="md:w-2/3 flex flex-col gap-24 py-12 md:py-32 w-full">
+                {/* SCROLLING IMAGE STREAM */}
+                <div className="md:w-2/3 flex flex-col w-full">
                     {images.map((img, i) => {
-                        // RHYTHM LOGIC: 0=Cinema, 1=Left, 2=Right
-                        const position = i % 3;
-                        if (position === 0) {
-                            return <CinemaImage key={i} src={img} />;
+                        // RHYTHM LOGIC: 
+                        // Every 2nd image gets the "Expanding" treatment for impact.
+                        // Others are scattered.
+                        const isFeature = i % 2 === 0;
+
+                        if (isFeature) {
+                            return <ExpandingImage key={i} src={img} />;
                         } else {
-                            return <ScatterImage key={i} src={img} align={position === 1 ? 'left' : 'right'} />;
+                            // Alternate align for scatter images
+                            return <ScatterImage key={i} src={img} align={i % 3 === 0 ? 'left' : 'right'} />;
                         }
                     })}
                 </div>
@@ -197,7 +196,7 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="break-inside-avoid overflow-hidden mb-4"
+                            className="break-inside-avoid overflow-hidden mb-4 bg-brand-offwhite/5"
                         >
                             <img src={img} className="w-full h-auto object-cover grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-700" alt="" />
                         </motion.div>
@@ -263,11 +262,9 @@ const ProjectPage: React.FC = () => {
 
   // --- IMAGE LOGIC ---
   const details = project.detailImages || [];
-  // Use all visuals available, looping if necessary to fill the rhythm
   const allVisuals = details.length > 0 ? details : [project.imageUrl];
   
   const chunkSize = Math.ceil(allVisuals.length / 3);
-  
   const goalImages = allVisuals.slice(0, chunkSize);
   const gapImages = allVisuals.slice(chunkSize, chunkSize * 2);
   const gambleImages = allVisuals.slice(chunkSize * 2);
@@ -282,6 +279,7 @@ const ProjectPage: React.FC = () => {
         
         <ProjectHero project={project} />
         
+        {/* 01: THE GOAL (Sticky Left) */}
         <StickyScrollSection 
             title="01 / The Goal" 
             text={goal} 
@@ -289,6 +287,7 @@ const ProjectPage: React.FC = () => {
             align="left"
         />
 
+        {/* 02: THE GAP (Sticky Right) */}
         {gap && (
             <StickyScrollSection 
                 title="02 / The Gap" 
@@ -298,6 +297,7 @@ const ProjectPage: React.FC = () => {
             />
         )}
 
+        {/* 03: THE GAMBLE (Sticky Left) */}
         {gamble && (
             <StickyScrollSection 
                 title="03 / The Gamble" 
@@ -307,6 +307,7 @@ const ProjectPage: React.FC = () => {
             />
         )}
 
+        {/* 04: THE GAIN (Big Centered Impact) */}
         {gain && (
             <div className="min-h-[60vh] flex items-center justify-center bg-brand-navy text-brand-offwhite">
                 <div className="container mx-auto px-6 md:px-8 text-center">
