@@ -3,12 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
-// --- 1. CINEMATIC REVEAL LOADER (Inverted: Big Solid -> Small Logo) ---
 const ProjectReveal: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
     return (
         <motion.div
             className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none"
-            // Fade out the small logo at the end of the sequence
             animate={{ opacity: 0 }}
             transition={{ duration: 0.3, delay: 1.4, ease: "easeOut" }} 
             onAnimationComplete={onComplete}
@@ -54,8 +52,6 @@ const ProjectReveal: React.FC<{ onComplete: () => void }> = ({ onComplete }) => 
         </motion.div>
     );
 };
-
-// --- 2. IMAGE COMPONENTS ---
 
 // Type A: The "Cinema" Image (Full Width, Parallax, High Impact)
 const CinemaImage: React.FC<{ src: string }> = ({ src }) => {
@@ -176,37 +172,148 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
     );
 };
 
-const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
-    if (!images || images.length === 0) return null;
+// --- 3. REDESIGN: EDITORIAL SECTION (The Narrative) ---
+// This replaces the sticky scroll. It allows images to be full height (no cropping)
+// and creates a magazine-like flow.
+
+const EditorialSection: React.FC<{ 
+    step: string; 
+    title: string; 
+    text: string; 
+    images: string[];
+    inverted?: boolean;
+}> = ({ step, title, text, images, inverted = false }) => {
+    if (!text) return null;
+
     return (
-        <div className="py-32 bg-brand-navy text-brand-offwhite relative z-20">
+        <section className="py-24 md:py-40 border-b border-brand-navy/5">
             <div className="container mx-auto px-6 md:px-8">
-                <div className="mb-32 border-b border-brand-offwhite/10 pb-8 flex flex-col md:flex-row justify-between md:items-end gap-8">
-                    <h3 className="font-sans text-6xl md:text-9xl font-black uppercase tracking-tighter leading-[0.85]">
-                        The<br/><span className="text-brand-purple">Mess.</span>
-                    </h3>
-                    <span className="font-mono text-xs uppercase tracking-widest opacity-50 text-right">
-                        Raw Output // Archive 01-{images.length}
-                    </span>
+                <div className={`flex flex-col ${inverted ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 md:gap-24`}>
+                    
+                    {/* TEXT COLUMN */}
+                    <div className="md:w-1/3 flex flex-col pt-8">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-10%" }}
+                            transition={{ duration: 0.8 }}
+                        >
+                            <div className="flex items-center gap-4 mb-8">
+                                <span className="font-mono text-brand-purple text-xs font-bold border border-brand-purple px-2 py-1 rounded-full">
+                                    {step}
+                                </span>
+                                <span className="font-mono text-brand-navy/40 text-xs uppercase tracking-widest">
+                                    Phase
+                                </span>
+                            </div>
+                            
+                            <h2 className="text-4xl md:text-5xl font-black text-brand-navy mb-8 uppercase tracking-tight leading-[0.9]">
+                                {title}
+                            </h2>
+                            
+                            <p className="font-body text-lg md:text-xl text-brand-navy/80 leading-relaxed">
+                                {text}
+                            </p>
+                        </motion.div>
+                    </div>
+
+                    {/* IMAGES COLUMN - NO CROP LOGIC */}
+                    <div className="md:w-2/3 flex flex-col gap-12">
+                        {images && images.map((img, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true, margin: "-10%" }}
+                                transition={{ duration: 0.8, delay: i * 0.1 }}
+                                className="w-full bg-brand-navy/5 p-4 md:p-8" // Add a subtle frame
+                            >
+                                {/* w-full + h-auto ensures NO cropping regardless of image shape */}
+                                <img 
+                                    src={img} 
+                                    alt={`${title} detail ${i}`} 
+                                    className="w-full h-auto shadow-2xl" 
+                                />
+                            </motion.div>
+                        ))}
+                    </div>
+
                 </div>
-                
-                <div className="columns-1 md:columns-3 gap-4 space-y-4">
+            </div>
+        </section>
+    );
+};
+
+// --- 4. REDESIGN: THE GAIN (Results) ---
+const ResultsSection: React.FC<{ gain: string }> = ({ gain }) => {
+    if (!gain) return null;
+    return (
+        <section className="py-40 bg-brand-navy text-brand-offwhite relative overflow-hidden">
+            {/* Decorative Background Elements */}
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-50" />
+            
+            <div className="container mx-auto px-6 md:px-8 relative z-10 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                >
+                    <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-12 block">
+                        04 / The Outcome
+                    </span>
+                    <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tight leading-tight max-w-5xl mx-auto">
+                        "{gain}"
+                    </h2>
+                </motion.div>
+            </div>
+        </section>
+    );
+};
+
+// --- 5. REDESIGN: MASONRY GALLERY (Process) ---
+// Using CSS columns allows uncropped images of different sizes to stack perfectly like Pinterest.
+const MasonryGallery: React.FC<{ images: string[] }> = ({ images }) => {
+    if (!images || images.length === 0) return null;
+    
+    return (
+        <section className="py-32 bg-brand-offwhite">
+            <div className="container mx-auto px-6 md:px-8">
+                <div className="mb-24">
+                    <h3 className="text-brand-navy font-black text-5xl md:text-8xl uppercase tracking-tighter opacity-10">
+                        Process
+                    </h3>
+                    <p className="font-mono text-brand-navy text-xs uppercase tracking-widest -mt-6 ml-2">
+                        Archive // {images.length} Assets Found
+                    </p>
+                </div>
+
+                {/* CSS COLUMNS FOR MASONRY LAYOUT */}
+                <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
                     {images.map((img, i) => (
                         <motion.div 
                             key={i}
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="break-inside-avoid overflow-hidden mb-4"
+                            transition={{ duration: 0.6, delay: i * 0.05 }}
+                            className="break-inside-avoid"
                         >
-                            <img src={img} className="w-full h-auto object-cover grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-700" alt="" />
+                            <div className="group relative overflow-hidden bg-brand-navy/5">
+                                {/* NO CROP: w-full h-auto */}
+                                <img 
+                                    src={img} 
+                                    className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700 ease-out" 
+                                    alt="Process" 
+                                />
+                                <div className="absolute inset-0 bg-brand-purple/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                            </div>
                         </motion.div>
                     ))}
                 </div>
             </div>
-        </div>
-    )
-}
+        </section>
+    );
+};
 
 const NextProject: React.FC<{ project: any }> = ({ project }) => (
     <Link to={`/work/${project.slug}`} className="block relative h-screen overflow-hidden group bg-brand-navy z-20">
@@ -318,8 +425,7 @@ const ProjectPage: React.FC = () => {
             </div>
         )}
 
-        <ProcessGallery images={processImages} />
-
+    
         <NextProject project={nextProject} />
       </div>
     </>
