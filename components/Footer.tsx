@@ -1,179 +1,191 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import BrandLogo from './BrandLogo';
+
+// --- STUDIO RADIO PLAYLIST ---
+const TRACKS = [
+    "Aphex Twin - #3", 
+    "MF DOOM - Rhymes Like Dimes",
+    "Tame Impala - Nangs",
+    "Fred again.. - Delilah",
+    "Khruangbin - Texas Sun",
+    "Radiohead - Weird Fishes",
+    "Kaytranada - 10%"
+];
+
+const MusicTicker = () => {
+    const track = useMemo(() => TRACKS[Math.floor(Math.random() * TRACKS.length)], []);
+    
+    return (
+        <div className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-help group">
+            {/* Equalizer Animation */}
+            <div className="flex gap-[2px] items-end h-3">
+                <motion.div animate={{ height: [4, 10, 6] }} transition={{ repeat: Infinity, duration: 0.4 }} className="w-[2px] bg-brand-yellow group-hover:bg-brand-purple" />
+                <motion.div animate={{ height: [8, 3, 12] }} transition={{ repeat: Infinity, duration: 0.5 }} className="w-[2px] bg-brand-yellow group-hover:bg-brand-purple" />
+                <motion.div animate={{ height: [10, 5, 8] }} transition={{ repeat: Infinity, duration: 0.6 }} className="w-[2px] bg-brand-yellow group-hover:bg-brand-purple" />
+            </div>
+            <span className="font-mono text-[9px] uppercase tracking-widest whitespace-nowrap text-brand-offwhite">
+                ON AIR: {track}
+            </span>
+        </div>
+    );
+};
+
+const TimeDisplay = () => {
+    const [time, setTime] = useState("");
+    
+    useEffect(() => {
+        const updateTime = () => {
+            const now = new Date();
+            // Create NZ time string manually to avoid hydration mismatch
+            const nzTime = now.toLocaleTimeString('en-NZ', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                timeZone: 'Pacific/Auckland',
+                hour12: false
+            });
+            setTime(nzTime);
+        };
+        
+        updateTime();
+        const interval = setInterval(updateTime, 1000 * 60);
+        return () => clearInterval(interval);
+    }, []);
+
+    if (!time) return <span className="font-mono text-[10px] opacity-0">00:00</span>;
+
+    return <div className="font-mono text-[10px] font-bold opacity-80 text-brand-offwhite">{time} NZT</div>;
+}
 
 const Footer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [emailText, setEmailText] = useState("hey@coolo.co.nz");
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end end"]
   });
 
-  const skewX = useTransform(scrollYProgress, [0, 1], ["0deg", "-20deg"]);
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]); 
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
+  // Parallax for the big text
+  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "0%"]);
 
-  const links = {
-    index: [
-      { name: 'Work', path: '/work' },
-      { name: 'Studio', path: '/about' },
-      { name: 'Team', path: '/team' },
-      { name: 'Journal', path: '/journal' },
-    ],
-    services: [
-      { name: 'Clarity', path: '/clarity' },
-      { name: 'Design Power', path: '/design-power' },
-      { name: 'Partnership', path: '/partnership' },
-      { name: 'FAQ', path: '/faq' },
-    ],
-    social: [
-      { name: 'Instagram', url: 'https://instagram.com/coolo.co' },
-      { name: 'LinkedIn', url: 'https://linkedin.com/company/coolo' },
-      { name: 'Email', url: 'mailto:hey@coolo.co.nz' },
-    ]
+  const handleCopyEmail = () => {
+      navigator.clipboard.writeText("hey@coolo.co.nz");
+      setEmailText("SAVED TO CLIPBOARD.");
+      setTimeout(() => setEmailText("hey@coolo.co.nz"), 2000);
   };
 
   return (
-    <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden">
+    <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden border-t-2 border-brand-offwhite/10">
       
-      {/* 1. MASSIVE FULL-WIDTH YELLOW CTA SECTION */}
-      <div className="w-full bg-brand-yellow py-32 md:py-48 relative overflow-hidden group text-brand-navy">
-         <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
-
-        <div className="container mx-auto px-6 md:px-8 relative z-10">
-            <motion.div style={{ opacity }} className="flex flex-col items-center text-center">
-            <span className="font-mono text-sm uppercase tracking-widest mb-8 font-black border-b-2 border-brand-navy pb-1">
-                Ready to evolve?
-            </span>
-            
-            <h2 className="text-6xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.85] flex flex-col md:block items-center">
-                <span>START THE</span>
-                <br className="hidden md:block"/>
-                <motion.span 
-                style={{ skewX, x, display: 'inline-block', originX: 0 }}
-                className="text-brand-purple" 
-                >
-                GRIND.
-                </motion.span>
-            </h2>
-            
-            <a 
-                href="mailto:hey@coolo.co.nz" 
-                className="inline-block mt-16 text-2xl md:text-4xl font-sans font-black hover:text-brand-purple transition-colors duration-300 underline decoration-brand-navy decoration-4 underline-offset-8"
-            >
-                hey@coolo.co.nz
-            </a>
-            </motion.div>
-        </div>
-      </div>
-
-      {/* 2. THE NAVIGATION GRID */}
-      <div className="container mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 py-32">
-        <div>
-            <h4 className="font-mono text-[10px] uppercase text-brand-purple tracking-widest font-bold mb-6">Index</h4>
-            <ul className="space-y-4">
-                {links.index.map(link => (
-                    <li key={link.name}>
-                        <Link to={link.path} className="font-sans text-xl md:text-2xl font-bold uppercase tracking-tight hover:text-brand-yellow transition-colors">
-                            {link.name}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
-
-        <div>
-            <h4 className="font-mono text-[10px] uppercase text-brand-purple tracking-widest font-bold mb-6">Services</h4>
-            <ul className="space-y-4">
-                {links.services.map(link => (
-                    <li key={link.name}>
-                        <Link to={link.path} className="font-sans text-xl md:text-2xl font-bold uppercase tracking-tight hover:text-brand-yellow transition-colors">
-                            {link.name}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
-
-        <div>
-            <h4 className="font-mono text-[10px] uppercase text-brand-purple tracking-widest font-bold mb-6">Network</h4>
-            <ul className="space-y-4">
-                {links.social.map(link => (
-                    <li key={link.name}>
-                        <a href={link.url} target="_blank" rel="noopener noreferrer" className="font-sans text-xl md:text-2xl font-bold uppercase tracking-tight hover:text-brand-yellow transition-colors">
-                            {link.name}
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        </div>
-
-        <div className="flex flex-col justify-between h-full">
-            <div>
-                <h4 className="font-mono text-[10px] uppercase text-brand-purple tracking-widest font-bold mb-6">HQ</h4>
-                <p className="font-mono text-xs leading-relaxed opacity-60">
-                    Mount Maunganui,<br/>New Zealand.<br/>Earth.
-                </p>
-            </div>
-            <div className="mt-8 md:mt-0">
-                <h4 className="font-mono text-[10px] uppercase text-brand-purple tracking-widest font-bold mb-2">Time</h4>
-                <TimeDisplay />
-            </div>
-        </div>
-      </div>
-
-      {/* 3. BIG KINETIC LOGO ANCHOR */}
-      <div className="border-t border-brand-offwhite/10">
-          <div className="container mx-auto px-6 md:px-8 py-12 md:py-16">
-              <div className="flex flex-col md:flex-row justify-between items-end gap-8">
-                  <div className="w-full md:w-auto">
-                      <div className="w-48 md:w-96 opacity-100 mb-8 md:mb-0">
-                        {/* Kinetic Text Logo */}
-                        <svg viewBox="0 0 300 80" className="w-full h-auto">
-                            <motion.text
-                                x="0"
-                                y="60"
-                                className="font-sans font-black text-8xl tracking-tighter"
-                                fill="transparent"
-                                stroke="#F7F7F7"
-                                strokeWidth="2"
-                                initial={{ strokeDasharray: 800, strokeDashoffset: 800 }}
-                                whileInView={{ strokeDashoffset: 0 }}
-                                viewport={{ once: false, amount: 0.5 }}
-                                transition={{ duration: 2.5, ease: "easeInOut" }}
-                            >
-                                COOLO
-                            </motion.text>
-                        </svg>
-                      </div>
+      {/* 1. THE BIG STATEMENT */}
+      <div className="relative border-b border-brand-offwhite/10">
+          <div className="container mx-auto px-6 md:px-8 py-24 md:py-32">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end">
+                  <div className="max-w-2xl">
+                      <span className="font-mono text-brand-yellow uppercase tracking-[0.3em] text-xs font-bold mb-8 block">
+                          End of Page / Start of Project
+                      </span>
+                      <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tight leading-[0.85] text-brand-offwhite">
+                          Ready to<br/>
+                          <span className="text-brand-purple">make noise?</span>
+                      </h2>
                   </div>
-
-                  <div className="w-full md:w-auto flex flex-col md:items-end gap-2">
-                      <p className="font-mono text-[10px] uppercase tracking-widest opacity-40">
-                          &copy; {new Date().getFullYear()} COOLO Studio.
-                      </p>
-                      <p className="font-mono text-[10px] uppercase tracking-widest opacity-40">
-                          V2.0_Studio
-                      </p>
+                  
+                  <div className="flex flex-col items-start lg:items-end gap-8">
+                        <button 
+                            onClick={handleCopyEmail}
+                            className="text-2xl md:text-4xl font-mono font-bold hover:text-brand-yellow transition-colors underline decoration-2 underline-offset-8 decoration-brand-purple"
+                        >
+                            {emailText}
+                        </button>
+                        
+                        <Link 
+                            to="/contact" 
+                            className="bg-brand-offwhite text-brand-navy font-mono text-sm uppercase font-black px-12 py-5 hover:bg-brand-yellow hover:scale-105 transition-all shadow-[4px_4px_0px_0px_rgba(252,200,3,1)]"
+                        >
+                            Start A Project &rarr;
+                        </Link>
                   </div>
               </div>
+          </div>
+      </div>
+
+      {/* 2. THE GRID */}
+      <div className="container mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 border-b border-brand-offwhite/10">
+          {/* SITEMAP */}
+          <div className="border-r border-brand-offwhite/10 py-12 pr-8">
+              <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Directory</h4>
+              <ul className="space-y-3 font-mono text-xs uppercase tracking-widest">
+                  <li><Link to="/work" className="hover:text-brand-yellow transition-colors">Selected Work</Link></li>
+                  <li><Link to="/clarity" className="hover:text-brand-yellow transition-colors">The Brains</Link></li>
+                  <li><Link to="/design-power" className="hover:text-brand-yellow transition-colors">The Craft</Link></li>
+                  <li><Link to="/about" className="hover:text-brand-yellow transition-colors">Studio</Link></li>
+              </ul>
+          </div>
+
+          {/* SOCIALS */}
+          <div className="md:border-r border-brand-offwhite/10 py-12 px-0 md:px-8">
+              <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Social</h4>
+              <ul className="space-y-3 font-mono text-xs uppercase tracking-widest">
+                  <li><a href="https://instagram.com/coolo.co" target="_blank" rel="noopener noreferrer" className="hover:text-brand-yellow transition-colors">Instagram ↗</a></li>
+                  <li><a href="https://linkedin.com/company/coolo" target="_blank" rel="noopener noreferrer" className="hover:text-brand-yellow transition-colors">LinkedIn ↗</a></li>
+              </ul>
+          </div>
+
+          {/* LIVE STATUS */}
+          <div className="border-r border-brand-offwhite/10 py-12 px-8 col-span-2 md:col-span-1 border-t md:border-t-0 border-r-0 md:border-r">
+              <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Live Status</h4>
+              <div className="space-y-4">
+                  <TimeDisplay />
+                  <MusicTicker />
+                  <div className="flex items-center gap-2 mt-4">
+                      <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-brand-offwhite/60">Accepting Projects</span>
+                  </div>
+              </div>
+          </div>
+
+          {/* LOCATION */}
+          <div className="py-12 px-0 md:px-8 col-span-2 md:col-span-1 border-t md:border-t-0">
+              <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Coordinates</h4>
+              <p className="font-mono text-xs uppercase tracking-widest leading-relaxed text-brand-offwhite/80">
+                  Mount Maunganui,<br/>
+                  New Zealand.<br/>
+                  Earth.
+              </p>
+          </div>
+      </div>
+
+      {/* 3. THE MASSIVE LOGO FOOTER */}
+      <div className="w-full overflow-hidden border-t border-brand-offwhite/5 pt-4">
+          <motion.div 
+            style={{ y }}
+            className="w-full flex justify-center items-end"
+          >
+             {/* This SVG renders the word "COOLO" edge-to-edge.
+                It uses the 'Big Shoulders Display' font geometry.
+             */}
+             <h1 className="text-[28vw] leading-[0.75] font-black tracking-tighter text-brand-offwhite select-none pointer-events-none mix-blend-overlay opacity-30 translate-y-4">
+                COOLO
+             </h1>
+          </motion.div>
+      </div>
+      
+      {/* 4. COPYRIGHT BAR */}
+      <div className="bg-brand-dark border-t border-brand-offwhite/10 py-4">
+          <div className="container mx-auto px-6 md:px-8 flex justify-between items-center">
+              <p className="font-mono text-[9px] uppercase tracking-widest text-brand-offwhite/30">
+                  © {new Date().getFullYear()} COOLO Studio.
+              </p>
+              <p className="font-mono text-[9px] uppercase tracking-widest text-brand-offwhite/30">
+                  Built by Humans.
+              </p>
           </div>
       </div>
     </footer>
   );
 };
-
-const TimeDisplay = () => {
-    const [time, setTime] = React.useState(new Date().toLocaleTimeString('en-NZ', { hour: '2-digit', minute: '2-digit', timeZone: 'Pacific/Auckland' }));
-    
-    React.useEffect(() => {
-        const interval = setInterval(() => {
-            setTime(new Date().toLocaleTimeString('en-NZ', { hour: '2-digit', minute: '2-digit', timeZone: 'Pacific/Auckland' }));
-        }, 1000 * 60);
-        return () => clearInterval(interval);
-    }, []);
-
-    return <div className="font-mono text-sm font-bold opacity-80">{time} NZT</div>;
-}
 
 export default Footer;
