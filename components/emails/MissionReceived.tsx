@@ -62,7 +62,7 @@ export const MissionReceivedEmail = ({ name }: MissionReceivedEmailProps) => {
                 MOUNT MAUNGANUI, NZ<br/>
                 <Link href="https://instagram.com/coolo.co" style={link}>INSTAGRAM</Link>
                 {' • '}
-                <Link href="https://coolo.co.nz/unsubscribe" style={{...link, color: '#999', textDecoration: 'none'}}>UNSUBSCRIBE</Link>
+                <Link href="https://coolo.co.nz/unsubscribepage" style={{...link, color: '#999', textDecoration: 'none'}}>UNSUBSCRIBE</Link>
               </Text>
           </Section>
         </Container>
