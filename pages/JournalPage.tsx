@@ -143,10 +143,14 @@ const JournalPostPage: React.FC<{ slug: string }> = ({ slug }) => {
                              
                              <div className="mt-32 pt-16 border-t border-brand-navy/10 flex justify-between items-center">
                                 <div className="flex items-center gap-4">
-                                     <div className="w-10 h-10 bg-brand-purple rounded-full overflow-hidden">
-                                        <img src={TEAM_MEMBERS.franco.imageUrl}/>
-                                        </div>
-                                     <div className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy">
+                                    <div className="w-10 h-10 bg-brand-purple rounded-full overflow-hidden">
+                                        <img 
+                                            src={TEAM_MEMBERS.franco.imageUrl} 
+                                            className="w-full h-full object-cover" 
+                                            alt="Franco"
+                                        />
+                                    </div>
+                                    <div className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy">
                                         Franco <span className="text-brand-navy/40">/ Creative Director</span>
                                      </div>
                                 </div>
