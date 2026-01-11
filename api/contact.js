@@ -16,34 +16,34 @@ export default async function handler(req, res) {
   }
 
   try {
-    // --- 1. ADD CONTACT TO RESEND AUDIENCE (Database) ---
-    // We wrap this in a try/catch so it doesn't block the email if it fails
-    // (e.g. if the user is already on the list)
+    // --- 1. ADD CONTACT TO RESEND AUDIENCE (Optional Database) ---
+    // We wrap this in a try/catch so it doesn't block the email if it fails.
     try {
       const audienceId = process.env.RESEND_AUDIENCE_ID;
       
-      const contactPayload = {
-        email: email,
-        firstName: name.split(' ')[0],
-        lastName: name.split(' ').slice(1).join(' '),
-        unsubscribed: false,
-      };
-
-      // Only add audienceId if you actually have one configured in Vercel
+      // Only attempt to add if an Audience ID is configured in Vercel
       if (audienceId) {
-        contactPayload.audienceId = audienceId;
+        await resend.contacts.create({
+          email: email,
+          firstName: name.split(' ')[0],
+          lastName: name.split(' ').slice(1).join(' '),
+          unsubscribed: false,
+          audienceId: audienceId,
+          properties: {
+            business_name: business || '',
+            job_role: role || '',
+          }
+        });
+        console.log("Contact added to Resend Audience");
       }
-
-      await resend.contacts.create(contactPayload);
-      console.log("Contact added to Resend Audience");
     } catch (contactError) {
       // Log error but DO NOT CRASH. Continue to send the email.
-      console.warn("Could not add contact to audience (likely already exists or no ID):", contactError);
+      console.warn("Audience Skipped (likely duplicate or no ID):", contactError);
     }
 
     // --- 2. SEND "MISSION RECEIVED" EMAIL (Transactional) ---
     const emailRequest = resend.emails.send({
-      from: 'COOLO <hey@coolo.co.nz>', // Make sure this domain is verified in Resend
+      from: 'COOLO <hey@coolo.co.nz>', // Ensure this domain is verified in Resend
       to: [email],
       subject: 'Mission Received // COOLO',
       react: MissionReceivedEmail({ name }),
