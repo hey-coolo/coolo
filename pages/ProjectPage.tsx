@@ -173,8 +173,6 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
 };
 
 // --- 3. REDESIGN: EDITORIAL SECTION (The Narrative) ---
-// This replaces the sticky scroll. It allows images to be full height (no cropping)
-// and creates a magazine-like flow.
 
 const EditorialSection: React.FC<{ 
     step: string; 
@@ -249,10 +247,8 @@ const ResultsSection: React.FC<{ gain: string }> = ({ gain }) => {
     if (!gain) return null;
     return (
         <section className="py-40 bg-brand-navy text-brand-offwhite relative overflow-hidden">
-            {/* Decorative Background Elements */}
             <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-50" />
-            
-            <div className="container mx-auto px-6 md:px-8 relative z-10 text-center">
+             <div className="container mx-auto px-6 md:px-8 relative z-10 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -359,7 +355,6 @@ const ProjectPage: React.FC = () => {
   
   const project = PROJECTS[currentIndex];
   const nextProject = PROJECTS[(currentIndex + 1) % PROJECTS.length];
-  
   const { goal, gap, gamble, gain, processImages } = project.story || {
       goal: project.description,
       gap: "",
@@ -372,9 +367,7 @@ const ProjectPage: React.FC = () => {
   const details = project.detailImages || [];
   // Use all visuals available, looping if necessary to fill the rhythm
   const allVisuals = details.length > 0 ? details : [project.imageUrl];
-  
   const chunkSize = Math.ceil(allVisuals.length / 3);
-  
   const goalImages = allVisuals.slice(0, chunkSize);
   const gapImages = allVisuals.slice(chunkSize, chunkSize * 2);
   const gambleImages = allVisuals.slice(chunkSize * 2);
@@ -424,7 +417,6 @@ const ProjectPage: React.FC = () => {
                 </div>
             </div>
         )}
-
     
         <NextProject project={nextProject} />
       </div>
