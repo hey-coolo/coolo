@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { PROJECTS, PROJECT_CATEGORIES } from '../constants';
 import { ProjectCategory } from '../types';
@@ -64,11 +63,11 @@ const WorkPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Simple 2-column grid to ensure items never collapse into strips */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            {filteredProjects.map((project) => (
-              <div key={project.id}>
-                  <ProjectCard project={project} className="aspect-[16/10] w-full" />
+          {/* EDITORIAL STAGGERED GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-12 md:gap-y-32">
+            {filteredProjects.map((project, index) => (
+              <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-32' : ''}`}>
+                  <ProjectCard project={project} className="aspect-[4/5] w-full" />
                   <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
                       <div>
                           <h3 className="text-3xl font-black uppercase tracking-tight leading-none text-brand-navy">{project.title}</h3>

@@ -33,7 +33,6 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
     const lastPos = useRef({ x: 0, y: 0 });
     const trailCount = useRef(0);
 
-    // 1. Gather ALL images and shuffle once
     const allImages = useMemo(() => {
         const all = PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).filter(Boolean);
         for (let i = all.length - 1; i > 0; i--) {
@@ -44,14 +43,11 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
     }, []);
 
     useEffect(() => {
-        // Shared function for both Mouse and Touch events
         const handleMove = (clientX: number, clientY: number) => {
             if (!containerRef.current) return;
 
             const rect = containerRef.current.getBoundingClientRect();
 
-            // Safety check: Ensure we are inside bounds
-            // Note: On mobile, rect changes as you scroll, so this keeps trails relative to the section
             if (
                 clientX < rect.left || 
                 clientX > rect.right || 
@@ -61,15 +57,12 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
                 return;
             }
 
-            // Calculate distance from last drop point
             const dist = Math.hypot(clientX - lastPos.current.x, clientY - lastPos.current.y);
 
-            // Lowered threshold to 30 for smoother trails on mobile/touch
             if (dist > 80) {
                 const nextImage = allImages[trailCount.current % allImages.length];
                 const id = trailCount.current++;
                 
-                // Calculate position relative to the section
                 const relativeX = clientX - rect.left;
                 const relativeY = clientY - rect.top;
 
@@ -77,15 +70,14 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
                     id,
                     x: relativeX,
                     y: relativeY,
-                    rotation: Math.random() * 20 - 10, // Random tilt
-                    scale: 0.6 + Math.random() * 0.4,  // Random size
+                    rotation: Math.random() * 20 - 10,
+                    scale: 0.6 + Math.random() * 0.4,
                     img: nextImage
                 };
 
                 setTrail(prev => [...prev, newItem]);
                 lastPos.current = { x: clientX, y: clientY };
 
-                // Auto-remove this specific item after 1 second (1000ms)
                 setTimeout(() => {
                     setTrail(prev => prev.filter(i => i.id !== id));
                 }, 1000);
@@ -97,14 +89,11 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
         };
 
         const handleTouchMove = (e: TouchEvent) => {
-            // We use the first touch point
             const touch = e.touches[0];
             handleMove(touch.clientX, touch.clientY);
         };
 
-        // Attach to WINDOW to ensure we catch events generally
         window.addEventListener('mousemove', handleMouseMove);
-        // Passive: true allows scrolling while still capturing the move coordinates
         window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
         return () => {
@@ -127,7 +116,7 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
                         style={{
                             left: item.x,
                             top: item.y,
-                            x: "-50%", // Center on cursor/finger
+                            x: "-50%",
                             y: "-50%" 
                         }}
                     >
@@ -144,7 +133,6 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
 };
 
 const BrandHero: React.FC = () => {
-    // Ref for the section to track bounds for the Image Trail
     const sectionRef = useRef<HTMLElement>(null);
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
@@ -164,13 +152,10 @@ const BrandHero: React.FC = () => {
             onMouseMove={handleMouseMove}
             className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden"
         >
-            {/* The Image Trail Layer */}
             <ImageTrail containerRef={sectionRef} />
 
-            {/* Studio Grid Overlay */}
             <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03] z-10"></div>
             
-            {/* Interactive Light */}
             <motion.div 
                 style={{ 
                     x: useTransform(springX, [-0.5, 0.5], [100, -100]), 
@@ -181,7 +166,6 @@ const BrandHero: React.FC = () => {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brand-purple/5 blur-[120px] rounded-full" />
             </motion.div>
 
-            {/* Central Content */}
             <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
                 <div className="relative mb-16 md:mb-32">
                     <div className="pointer-events-auto inline-block">
@@ -189,7 +173,6 @@ const BrandHero: React.FC = () => {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                            // FIX: Removed mix-blend-difference on mobile, kept on md+. Removed text-white on mobile.
                             className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                         >
                             BRAND STRATEGY
@@ -210,7 +193,6 @@ const BrandHero: React.FC = () => {
                                 initial={{ opacity: 0, x: 50 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-                                // FIX: Same fix here. Force brand-navy on mobile.
                                 className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                             >
                                 DESIGN POWER
@@ -219,7 +201,6 @@ const BrandHero: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Meta Footer Section */}
                 <div className="mt-auto pointer-events-auto">
                     <div className="text-center mb-6">
                         <span className="font-mono text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold text-brand-navy">
@@ -363,6 +344,61 @@ const ServiceRouter: React.FC = () => {
     )
 }
 
+// --- NEW COMPONENT: FEATURED PROJECT SPOTLIGHT ---
+const FeatureSpotlight: React.FC = () => {
+    // Show the first project in the list (UNMPLYNMT) as the feature
+    const featuredProject = PROJECTS[0]; 
+
+    return (
+        <section className="relative bg-brand-navy overflow-hidden group">
+            <Link to={`/work/${featuredProject.slug}`} className="block relative min-h-screen md:min-h-[120vh]">
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                    <img 
+                        src={featuredProject.imageUrl} 
+                        alt={featuredProject.title} 
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-700 grayscale group-hover:grayscale-0"
+                    />
+                    {/* Gradient Overlay for Text Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent opacity-90" />
+                </div>
+
+                {/* Content Overlay */}
+                <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-16">
+                    <div className="container mx-auto">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8 }}
+                        >
+                            <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-xs font-bold mb-6 block">
+                                Featured Case Study
+                            </span>
+                            <h2 className="text-[15vw] leading-[0.8] font-black uppercase tracking-tighter text-brand-offwhite mb-8 group-hover:text-brand-yellow transition-colors duration-500">
+                                {featuredProject.title}
+                            </h2>
+                            
+                            <div className="flex flex-col md:flex-row gap-12 border-t border-brand-offwhite/20 pt-8 text-brand-offwhite/80">
+                                <div className="max-w-xl">
+                                    <p className="font-body text-xl md:text-3xl leading-tight font-light">
+                                        {featuredProject.description}
+                                    </p>
+                                </div>
+                                <div className="mt-auto ml-auto">
+                                    <span className="font-mono text-sm uppercase tracking-widest border-b-2 border-brand-yellow pb-2 text-brand-yellow font-bold">
+                                        Open Case File &rarr;
+                                    </span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                </div>
+            </Link>
+        </section>
+    );
+};
+
 const CapabilityList: React.FC = () => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const mouseX = useMotionValue(0);
@@ -474,7 +510,8 @@ const ShowcaseGrid: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-y-24">
-                    {PROJECTS.slice(0, 4).map((project, index) => (
+                    {/* START FROM PROJECT 1, AS 0 IS FEATURED */}
+                    {PROJECTS.slice(1, 5).map((project, index) => (
                         <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-24' : ''}`}>
                              <ProjectCard project={project} className="aspect-[4/3] w-full" />
                              <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
@@ -523,6 +560,7 @@ const HomePage: React.FC = () => {
       <BrandHero />
       <SplitManifesto />
       <ServiceRouter />
+      <FeatureSpotlight /> {/* NEW SECTION ADDED HERE */}
       <CapabilityList />
       <ShowcaseGrid />
       <LatestIntel />

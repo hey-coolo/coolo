@@ -1,13 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useParams, Link } from 'react-router-dom';
 import { PROJECTS } from '../constants';
-import { motion, useScroll, useTransform, AnimatePresence, MotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
 // --- UTILITY COMPONENTS ---
 
-// 1. Smooth Parallax Image Component
-// This creates that "floating" reveal effect you wanted.
+// Smooth Parallax Image Component
 const ParallaxImage: React.FC<{ src: string; className?: string }> = ({ src, className }) => {
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
@@ -15,7 +14,6 @@ const ParallaxImage: React.FC<{ src: string; className?: string }> = ({ src, cla
         offset: ["start end", "end start"]
     });
     
-    // The image moves slightly faster/slower than scroll to create depth
     const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
     const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1, 1.1]);
 
@@ -28,12 +26,10 @@ const ParallaxImage: React.FC<{ src: string; className?: string }> = ({ src, cla
     );
 };
 
-// 2. Sticky Scroll Section
-// Keeps text fixed on one side while images scroll on the other.
+// Sticky Scroll Section
 const StickySection: React.FC<{ title: string; text: string; image?: string; align?: 'left' | 'right' }> = ({ title, text, image, align = 'left' }) => {
     return (
         <div className="min-h-screen container mx-auto px-6 md:px-8 py-24 md:py-32 flex flex-col md:flex-row gap-16 md:gap-32 relative">
-            
             {/* TEXT SIDE (Sticky) */}
             <div className={`md:w-1/3 flex flex-col justify-center ${align === 'right' ? 'md:order-2' : 'md:order-1'}`}>
                 <div className="md:sticky md:top-32">
@@ -63,23 +59,18 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
         offset: ["start start", "end start"]
     });
 
-    // Parallax for Hero Background
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
     const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
     return (
         <div ref={ref} className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-brand-navy">
             {/* Background Image with Parallax */}
-            <motion.div 
-                style={{ y, opacity }}
-                className="absolute inset-0 z-0"
-            >
+            <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
                 <img src={project.imageUrl} className="w-full h-full object-cover opacity-60 grayscale" alt="" />
-                {/* Gradient Overlay for Contrast */}
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/40 to-transparent" />
             </motion.div>
 
-            {/* Content - High Contrast (White Text) */}
+            {/* Content */}
             <div className="relative z-10 container mx-auto px-6 md:px-8 text-center text-brand-offwhite">
                 <motion.span 
                     initial={{ opacity: 0, y: 20 }}
@@ -136,7 +127,6 @@ const GalleryGrid: React.FC<{ images: string[] }> = ({ images }) => {
                     </p>
                 </div>
                 
-                {/* Masonry-ish Layout */}
                 <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
                     {images.map((img, i) => (
                         <motion.div 
@@ -193,6 +183,7 @@ const ProjectPage: React.FC = () => {
   const project = PROJECTS[currentIndex];
   const nextProject = PROJECTS[(currentIndex + 1) % PROJECTS.length];
   
+  // Use existing data structure
   const { goal, gap, gamble, gain, processImages } = project.story || {
       goal: project.description,
       gap: "",
@@ -206,39 +197,39 @@ const ProjectPage: React.FC = () => {
       
       <ProjectHero project={project} />
       
-      {/* 01: The Brief / Setup - Sticky Layout */}
+      {/* 01: The Goal / The Brief */}
       <StickySection 
-        title="01 / The Brief" 
+        title="01 / The Goal" 
         text={goal} 
         image={project.detailImages?.[0] || project.imageUrl} 
         align="left"
       />
 
-      {/* 02: The Friction - Only if 'gap' exists */}
+      {/* 02: The Gap / The Friction */}
       {gap && (
           <StickySection 
-            title="02 / The Friction" 
+            title="02 / The Gap" 
             text={gap} 
             image={project.detailImages?.[1]} 
             align="right"
           />
       )}
 
-      {/* 03: The Pivot - Only if 'gamble' exists */}
+      {/* 03: The Gamble / The Pivot */}
       {gamble && (
           <StickySection 
-            title="03 / The Pivot" 
+            title="03 / The Gamble" 
             text={gamble} 
             image={project.detailImages?.[2]} 
             align="left"
           />
       )}
 
-      {/* 04: Impact Statement */}
+      {/* 04: The Gain / Impact */}
       {gain && (
           <div className="py-32 md:py-48 container mx-auto px-6 md:px-8">
               <div className="max-w-4xl mx-auto text-center">
-                  <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-8 block">04 / The Impact</span>
+                  <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-8 block">04 / The Gain</span>
                   <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-brand-navy">
                       {gain}
                   </h2>
@@ -246,7 +237,7 @@ const ProjectPage: React.FC = () => {
           </div>
       )}
 
-      {/* Process Gallery (Dark Mode) */}
+      {/* Process Gallery */}
       <GalleryGrid images={processImages} />
 
       {/* Next Project */}
