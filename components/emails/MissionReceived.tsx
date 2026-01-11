@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Html, Head, Body, Container, Section, Text, Heading, Link, Hr, Preview } from '@react-email/components';
 
-// COOLO Brand Colors
+// BRAND COLORS
 const colors = {
   navy: '#0F0328',
   offWhite: '#F7F7F7',
@@ -24,13 +24,13 @@ export const MissionReceivedEmail = ({ name }: MissionReceivedEmailProps) => {
       <Preview>Transmission Received. Stand by.</Preview>
       <Body style={main}>
         <Container style={container}>
-          {/* Header */}
+          {/* HEADER */}
           <Section style={header}>
             <Heading style={brandLogo}>COOLO</Heading>
             <Text style={statusBadge}>STATUS: RECEIVED</Text>
           </Section>
 
-          {/* Content */}
+          {/* CONTENT */}
           <Section style={contentSection}>
             <Heading style={h1}>MISSION<br/><span style={{color: colors.purple}}>ACKNOWLEDGED.</span></Heading>
             
@@ -55,7 +55,7 @@ export const MissionReceivedEmail = ({ name }: MissionReceivedEmailProps) => {
 
           <Hr style={divider} />
 
-          {/* Footer */}
+          {/* FOOTER */}
           <Section style={footer}>
             <Text style={footerText}>
               COOLO STUDIO<br/>
