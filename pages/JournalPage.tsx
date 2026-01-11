@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
-import { JOURNAL_POSTS } from '../constants';
+import { JOURNAL_POSTS, TEAM_MEMBERS } from '../constants'; 
 import { motion } from 'framer-motion';
 
 const JournalListPage: React.FC = () => (
@@ -144,8 +144,8 @@ const JournalPostPage: React.FC<{ slug: string }> = ({ slug }) => {
                              <div className="mt-32 pt-16 border-t border-brand-navy/10 flex justify-between items-center">
                                 <div className="flex items-center gap-4">
                                      <div className="w-10 h-10 bg-brand-purple rounded-full overflow-hidden">
-                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800" className="w-full h-full object-cover" />
-                                     </div>
+                                        <img src={TEAM_MEMBERS.franco.imageUrl}/>
+                                        </div>
                                      <div className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy">
                                         Franco <span className="text-brand-navy/40">/ Creative Director</span>
                                      </div>

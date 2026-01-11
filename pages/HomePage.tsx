@@ -372,29 +372,25 @@ const CapabilityList: React.FC = () => {
         { 
             id: '01', 
             title: 'Strategy', 
-            desc: 'Positioning, Messaging, & Roadmaps', 
-            img: 'https://images.unsplash.com/photo-1470075801209-17f9ec0cada6?auto=format&fit=crop&q=80&w=800',
+            desc: 'Positioning, Messaging, Brand Playbook, & Roadmaps', 
             link: '/clarity'
         },
         { 
             id: '02', 
             title: 'Identity', 
-            desc: 'Visual Systems, Logos, & Typography', 
-            img: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800',
+            desc: 'Visual Systems, Logos, Brand Guidelines, Colour, & Typography,', 
             link: '/design-power'
         },
         { 
             id: '03', 
             title: 'Digital', 
-            desc: 'Webflow Development & UI/UX', 
-            img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+            desc: 'Web Design, Webflow Dev, Content Strategy, & Campaign Creative', 
             link: '/design-power'
         },
         { 
             id: '04', 
-            title: 'Motion', 
-            desc: '3D Visualization & Kinetic Type', 
-            img: 'https://images.unsplash.com/photo-1633167606207-d840b5070fc2?auto=format&fit=crop&q=80&w=1200',
+            title: 'Visuals', 
+            desc: 'Motion Design, 3D Product Vis, GFX & Kinetic Type', 
             link: '/design-power'
         }
     ];
@@ -458,14 +454,7 @@ const CapabilityList: React.FC = () => {
                     rotate: hoveredIndex !== null ? -5 : 0
                 }}
                 transition={{ duration: 0.2, ease: "linear" }}
-            >
-                {hoveredIndex !== null && (
-                    <img 
-                        src={capabilities[hoveredIndex].img} 
-                        alt="" 
-                        className="w-full h-full object-cover grayscale contrast-125"
-                    />
-                )}
+            >                
             </motion.div>
         </section>
     );
