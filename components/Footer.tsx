@@ -157,24 +157,8 @@ const Footer: React.FC = () => {
           </div>
       </div>
 
-      {/* 3. THE "00" LOGO FOOTER */}
-      <div className="w-full overflow-hidden border-t border-brand-offwhite/5 pt-12 flex justify-center items-end relative">
-          
-          <motion.div 
-            style={{ y, opacity }}
-            className="w-[50vw] md:w-[25vw] max-w-[400px] pointer-events-none mix-blend-overlay grayscale"
-          >
-             {/* THE DOBLE OO ICON */}
-             <img 
-                src="/assets/logos/apple-touch-icon.png" 
-                alt="COOLO Studio Mark" 
-                className="w-full h-full object-contain"
-             />
-          </motion.div>
-
-      </div>
-      
-      {/* 4. COPYRIGHT BAR */}
+     
+      {/* 3. COPYRIGHT BAR */}
       <div className="bg-brand-dark border-t border-brand-offwhite/10 py-4 relative z-10">
           <div className="container mx-auto px-6 md:px-8 flex justify-between items-center">
               <p className="font-mono text-[12px] uppercase tracking-widest text-brand-offwhite/30">
