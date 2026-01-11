@@ -1,24 +1,23 @@
 import { Resend } from 'resend';
 import { MissionReceivedEmail } from './components/emails/MissionReceived.tsx';
 
-// Securely load the API key
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
-  // 1. Security Check
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, business, role, problem, goal } = req.body;
+  // Destructure the NEW fields
+  const { name, email, vibe, budget, message } = req.body;
 
   if (!email || !name) {
     return res.status(400).json({ error: 'Email and Name are required' });
   }
 
   try {
-    // 2. Add to Audience (Updated based on your Docs)
-     if (process.env.RESEND_AUDIENCE_ID) {
+    // 1. Add to Audience (Optional)
+    if (process.env.RESEND_AUDIENCE_ID) {
       const { error: contactError } = await resend.contacts.create({
         email: email,
         firstName: name.split(' ')[0],
@@ -26,17 +25,14 @@ export default async function handler(req, res) {
         unsubscribed: false,
         audienceId: process.env.RESEND_AUDIENCE_ID,
       });
-
-      if (contactError) {
-        console.warn("Audience creation warning:", contactError);
-      }
+      if (contactError) console.warn("Audience creation warning:", contactError);
     }
 
-    // 3. Send Stylized Email
+    // 2. Send "Mission Received" Confirmation to User
     const { error: emailError } = await resend.emails.send({
       from: 'COOLO <hey@coolo.co.nz>',
       to: [email],
-      subject: 'Mission Received // COOLO',
+      subject: 'We got your message // COOLO',
       react: MissionReceivedEmail({ name }),
     });
 
@@ -45,12 +41,20 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: emailError.message });
     }
 
-    // 4. Notify You (Admin Email)
+    // 3. Notify Admin (You)
     await resend.emails.send({
       from: 'COOLO Bot <system@coolo.co.nz>',
       to: ['hey@coolo.co.nz'],
-      subject: `New Lead: ${name}`,
-      html: `<p>New inquiry from ${name} (${email}).<br/>Business: ${business}<br/>Goal: ${goal}</p>`
+      subject: `New Lead: ${name} (${vibe})`,
+      html: `
+        <h2>New Inquiry from Website</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mission:</strong> ${vibe}</p>
+        <p><strong>Budget:</strong> ${budget}</p>
+        <br/>
+        <p><strong>Message:</strong><br/>${message}</p>
+      `
     });
 
     return res.status(200).json({ message: 'Success' });
