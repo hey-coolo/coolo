@@ -3,45 +3,39 @@ import { useParams, Link } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
-// --- 1. REAL LOGO LOADER (CSS MASK REVEAL) ---
+// --- 1. LOADER: BIG SOLID LOGO -> SMALL -> FADE OUT ---
 const ProjectReveal: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
     return (
         <motion.div
-            className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-brand-offwhite"
             animate={{ opacity: 0 }}
-            transition={{ duration: 0.5, delay: 1.6, ease: "easeInOut" }}
+            transition={{ duration: 0.5, delay: 1.5, ease: "easeInOut" }}
             onAnimationComplete={onComplete}
         >
-            {/* This DIV is the "Ink". It's a solid block of Brand Navy.
-                We apply a MASK using your SVG logo. 
-                We scale the DIV from 60x (Huge) to 1x (Logo Size).
-                Result: The screen starts solid Navy, then shrinks into the shape of your logo, 
-                revealing the page around it.
-            */}
-            <motion.div
-                initial={{ scale: 60 }} 
-                animate={{ scale: 1 }}
-                transition={{ duration: 1.4, ease: [0.19, 1, 0.22, 1] }} // "Expo" ease for snap
-                className="w-48 h-48 bg-brand-navy" // The color of the loader
-                style={{
-                    maskImage: 'url(/assets/logos/logo-dark.svg)',
-                    WebkitMaskImage: 'url(/assets/logos/logo-dark.svg)',
-                    maskPosition: 'center',
-                    WebkitMaskPosition: 'center',
-                    maskRepeat: 'no-repeat',
-                    WebkitMaskRepeat: 'no-repeat',
-                    maskSize: 'contain',
-                    WebkitMaskSize: 'contain'
-                }}
-            />
+            <div className="w-full h-full flex items-center justify-center overflow-hidden">
+                {/* Logic: The "II" Logo starts massive (scaling way up) and shrinks down to 1.
+                   This creates the "Big to Small" transition you asked for.
+                */}
+                <motion.div
+                    initial={{ scale: 60 }} 
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+                    className="w-24 h-24 relative"
+                >
+                    {/* Left Pill */}
+                    <div className="absolute left-[25px] top-[10px] w-[15px] h-[80px] bg-brand-navy rounded-[7.5px]" />
+                    {/* Right Pill */}
+                    <div className="absolute right-[25px] top-[10px] w-[15px] h-[80px] bg-brand-navy rounded-[7.5px]" />
+                </motion.div>
+            </div>
         </motion.div>
     );
 };
 
 // --- 2. IMAGE COMPONENTS ---
 
-// Type A: "Scroll-Jacked" Expanding Image
-// Locks in place -> Scales Up -> Scrolls Away
+// Type A: Expanding Image (The "Stay There & Open" Effect)
+// Uses a tall container + sticky positioning to lock the image while it scales.
 const ExpandingImage: React.FC<{ src: string }> = ({ src }) => {
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
@@ -49,29 +43,30 @@ const ExpandingImage: React.FC<{ src: string }> = ({ src }) => {
         offset: ["start end", "end start"]
     });
 
-    // 1. Scale Effect: Grows from 85% to 100% full bleed
-    const scale = useTransform(scrollYProgress, [0.3, 0.6], [0.85, 1]);
+    // Scale from 80% to 110% as we scroll through the container
+    const scale = useTransform(scrollYProgress, [0.2, 0.7], [0.8, 1.1]);
     
-    // 2. Opacity: Fades in, stays solid, fades out
-    const opacity = useTransform(scrollYProgress, [0.1, 0.3, 0.7, 0.9], [0, 1, 1, 0]);
+    // Fade in/out smoothly at edges
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
     return (
-        // TALL container (150vh) creates the scroll "track" time
-        <div ref={containerRef} className="h-[150vh] w-full relative mb-16 flex items-center justify-center">
-            {/* Sticky Wrapper: Pins the image to the viewport center */}
+        // 1. Tall container (150vh) creates the "scroll time"
+        <div ref={containerRef} className="h-[150vh] w-full relative mb-16">
+            {/* 2. Sticky wrapper locks the image to the center of the viewport */}
             <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+                {/* 3. The Image scales up inside */}
                 <motion.div 
                     style={{ scale, opacity }} 
-                    className="w-full h-full md:w-[95%] md:h-[90%] shadow-2xl"
+                    className="w-full h-full md:w-[90%] md:h-[80%]"
                 >
-                    <img src={src} className="w-full h-full object-cover" alt="" />
+                    <img src={src} className="w-full h-full object-cover shadow-2xl" alt="" />
                 </motion.div>
             </div>
         </div>
     );
 };
 
-// Type B: Standard Scatter Image
+// Type B: Scatter Image (Standard, gentle parallax)
 const ScatterImage: React.FC<{ src: string; align: 'left' | 'right' }> = ({ src, align }) => {
     return (
         <motion.div 
@@ -92,7 +87,7 @@ const ScatterImage: React.FC<{ src: string; align: 'left' | 'right' }> = ({ src,
     );
 };
 
-// --- 3. STICKY NARRATIVE SECTION ---
+// --- 3. STICKY SCROLL SECTION ---
 const StickyScrollSection: React.FC<{ 
     title: string; 
     text: string; 
@@ -103,16 +98,15 @@ const StickyScrollSection: React.FC<{
 
     return (
         <div className="container mx-auto px-6 md:px-8 py-12 relative">
-            {/* 'items-start' is CRITICAL for sticky to work */}
             <div className={`flex flex-col md:flex-row gap-16 md:gap-32 relative items-start ${align === 'right' ? 'md:flex-row-reverse' : ''}`}>
                 
-                {/* STICKY TEXT SIDE */}
+                {/* STICKY TEXT COLUMN */}
                 <div className="md:w-1/3 md:sticky md:top-0 md:h-screen flex flex-col justify-center py-12 md:py-0 z-20 pointer-events-none">
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        className="pointer-events-auto"
+                        className="pointer-events-auto" // Re-enable clicks on text
                     >
                         <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-8 block border-l-2 border-brand-purple pl-4">
                             {title}
@@ -123,16 +117,19 @@ const StickyScrollSection: React.FC<{
                     </motion.div>
                 </div>
 
-                {/* SCROLLING VISUAL SIDE */}
+                {/* SCROLLING IMAGE STREAM */}
                 <div className="md:w-2/3 flex flex-col w-full">
                     {images.map((img, i) => {
-                        // RHYTHM: Use ExpandingImage for the first item, scatter the rest
-                        const isFeature = i === 0 || i % 3 === 0;
+                        // RHYTHM LOGIC: 
+                        // Every 2nd image gets the "Expanding" treatment for impact.
+                        // Others are scattered.
+                        const isFeature = i % 2 === 0;
 
                         if (isFeature) {
                             return <ExpandingImage key={i} src={img} />;
                         } else {
-                            return <ScatterImage key={i} src={img} align={i % 2 === 0 ? 'left' : 'right'} />;
+                            // Alternate align for scatter images
+                            return <ScatterImage key={i} src={img} align={i % 3 === 0 ? 'left' : 'right'} />;
                         }
                     })}
                 </div>
@@ -263,11 +260,10 @@ const ProjectPage: React.FC = () => {
       processImages: []
   };
 
-  // --- SMART IMAGE SPLITTING ---
+  // --- IMAGE LOGIC ---
   const details = project.detailImages || [];
   const allVisuals = details.length > 0 ? details : [project.imageUrl];
   
-  // Split images into chunks for the 3 narrative sections
   const chunkSize = Math.ceil(allVisuals.length / 3);
   const goalImages = allVisuals.slice(0, chunkSize);
   const gapImages = allVisuals.slice(chunkSize, chunkSize * 2);
@@ -311,7 +307,7 @@ const ProjectPage: React.FC = () => {
             />
         )}
 
-        {/* 04: THE GAIN (Big Impact) */}
+        {/* 04: THE GAIN (Big Centered Impact) */}
         {gain && (
             <div className="min-h-[60vh] flex items-center justify-center bg-brand-navy text-brand-offwhite">
                 <div className="container mx-auto px-6 md:px-8 text-center">
