@@ -150,7 +150,8 @@ export const PROJECTS: Project[] = [
     role: 'Product Photographer',
     detailImages: [
         './assets/cases/jonheys-dumpling-house/detail-1.webp',
-        './assets/cases/jonheys-dumpling-house/detail-1.webp'
+        './assets/cases/jonheys-dumpling-house/detail-2.webp',
+        './assets/cases/jonheys-dumpling-house/detail-3.webp'
     ],
     story: {
         goal: "Showcase the exquisite craftsmanship of Johney's delectable dumplings but also serve as the visual centerpiece for their festival food stall menus.",
@@ -159,7 +160,8 @@ export const PROJECTS: Project[] = [
         gain: "A library of images that turned menus into memorable brand touchpoints and helped position Johney’s as a standout in busy festival environments.",
         processImages: [
             './assets/cases/jonheys-dumpling-house/process-1.webp',
-            './assets/cases/jonheys-dumpling-house/process-2.webp'
+            './assets/cases/jonheys-dumpling-house/process-2.webp',
+            './assets/cases/jonheys-dumpling-house/process-3.webp'
         ]
     }
   },
@@ -177,7 +179,9 @@ export const PROJECTS: Project[] = [
     role: 'Art Director',
     detailImages: [
         './assets/cases/franca-austral/detail-1.webp',
-        './assets/cases/franca-austral/detail-2.webp'
+        './assets/cases/franca-austral/detail-2.webp',
+        './assets/cases/franca-austral/detail-3.webp',
+        './assets/cases/franca-austral/detail-4.webp'
 
     ],
     story: {
@@ -189,7 +193,7 @@ export const PROJECTS: Project[] = [
             './assets/cases/franca-austral/process-1.webp',
             './assets/cases/franca-austral/process-2.webp',
             './assets/cases/franca-austral/process-3.webp',
-            '.assets/cases/franca-austral/process-4.webp'
+            './assets/cases/franca-austral/process-4.webp'
             ]
     }
   },
