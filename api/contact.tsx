@@ -33,11 +33,12 @@ export default async function handler(req, res) {
         // Try adding to default audience if no ID provided
         try {
              await resend.contacts.create({
-                email: email,
-                firstName: name.split(' ')[0],
-                lastName: name.split(' ').slice(1).join(' '),
-                unsubscribed: false
+              email: email,
+              firstName: name.split(' ')[0],
+              lastName: name.split(' ').slice(1).join(' '),
+              unsubscribed: false
             });
+
         } catch (e) {
             console.warn("Default Audience skipped:", e);
         }

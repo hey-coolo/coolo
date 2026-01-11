@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 const ContactPage: React.FC = () => {
   const [step, setStep] = useState(0);
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  
   const [formData, setFormData] = useState({
     name: '',
     business: '',
