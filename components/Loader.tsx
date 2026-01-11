@@ -11,7 +11,7 @@ const COLORS = [
   { name: 'Navy', hex: '#0F0328' },
   { name: 'Yellow', hex: '#FCC803' },
   { name: 'OffWhite', hex: '#F7F7F7' }, 
-  { name: 'Red', hex: '#FF3333' },     
+  { name: 'Red', hex: '#7670C5' },     
 ];
 
 const BRUSH_SIZES = [2, 6, 12];

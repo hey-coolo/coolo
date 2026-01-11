@@ -70,6 +70,7 @@ const App: React.FC = () => {
              className="flex flex-col min-h-screen"
           >
               <Header />
+              <div className="relative z-10 bg-brand-offwhite shadow-2xl mb-[100vh] lg:mb-[80vh]"></div>
               <main className="flex-grow">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -108,6 +109,7 @@ const App: React.FC = () => {
                   </motion.div>
                 </AnimatePresence>
               </main>
+              <div className="fixed bottom-0 left-0 right-0 z-0 h-[100vh] lg:h-[80vh]"></div>
               <Footer />
           </motion.div>
       )}

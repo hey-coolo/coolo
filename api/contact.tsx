@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import { MissionReceivedEmail } from '../components/emails/MissionReceived';
+import { MissionReceivedEmail } from './components/emails/MissionReceived.tsx';
 
 // Securely load the API key
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -18,8 +18,7 @@ export default async function handler(req, res) {
 
   try {
     // 2. Add to Audience (Updated based on your Docs)
-    // We only try this if you have an Audience ID set up in Vercel
-    if (process.env.RESEND_AUDIENCE_ID) {
+     if (process.env.RESEND_AUDIENCE_ID) {
       const { error: contactError } = await resend.contacts.create({
         email: email,
         firstName: name.split(' ')[0],
