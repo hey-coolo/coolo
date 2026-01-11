@@ -5,365 +5,204 @@ import { PROJECTS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
-const DownArrow: React.FC<{ className?: string; size?: number }> = ({ className = "", size = 42 }) => (
-    <motion.div 
-        animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        className={className}
-    >
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <polyline points="19 12 12 19 5 12"></polyline>
-        </svg>
-    </motion.div>
-);
+// --- Components ---
 
-const IndividualDraggable: React.FC<{ img: string; initialPos: { top: string; left: string; rotate: number; s: number }; onClick?: () => void }> = ({ img, initialPos, onClick }) => {
-    const [zIndex, setZIndex] = useState(10);
-    const [isDragging, setIsDragging] = useState(false);
- 
+const ScrollProgress: React.FC = () => {
+    const { scrollYProgress } = useScroll();
     return (
-        <motion.div 
-            drag
-            dragMomentum={true}
-            dragTransition={{ power: 0.2, timeConstant: 200 }}
-            onDragStart={() => {
-                setZIndex(100);
-                setIsDragging(true);
-            }}
-            onDragEnd={() => {
-                setZIndex(10 + Math.floor(Math.random() * 5));
-                setTimeout(() => setIsDragging(false), 100); 
-            }}
-            onClick={() => {
-                if (!isDragging && onClick) onClick();
-            }}
-            className="absolute w-[220px] md:w-[380px] aspect-[4/5] shadow-2xl cursor-grab active:cursor-grabbing group overflow-hidden border border-brand-navy/5 bg-white"
-            style={{ 
-                top: initialPos.top, 
-                left: initialPos.left, 
-                zIndex: zIndex
-            }}
-            initial={{ rotate: initialPos.rotate, scale: initialPos.s, opacity: 0 }}
-            animate={{ opacity: 0.85, transition: { duration: 1, delay: Math.random() * 0.5 } }}
-            whileHover={{ opacity: 1, scale: initialPos.s * 1.02, zIndex: 110, transition: { duration: 0.2 } }}
-            whileDrag={{ scale: initialPos.s * 1.05, rotate: 0, opacity: 1, boxShadow: "0 40px 80px rgba(15,3,40,0.2)" }}
-        >
-            <img src={img} className="w-full h-full object-cover pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-700" alt="" />
-            <div className="absolute inset-0 bg-brand-purple/0 group-hover:bg-brand-purple/10 transition-colors pointer-events-none flex items-center justify-center">
-                 <span className="opacity-0 group-hover:opacity-100 font-mono text-[9px] bg-brand-navy text-brand-offwhite px-2 py-1 uppercase tracking-widest transition-opacity duration-300">View</span>
-            </div>
-        </motion.div>
+        <motion.div
+            className="fixed top-0 left-0 right-0 h-1 bg-brand-purple origin-left z-[100]"
+            style={{ scaleX: scrollYProgress }}
+        />
     );
 };
 
-const ProjectHero: React.FC<{ project: any; onImageClick: (src: string) => void }> = ({ project, onImageClick }) => {
-    const allProjectImages = [
-        project.imageUrl,
-        ...(project.detailImages || []),
-        ...(project.story?.processImages || [])
-    ].filter(Boolean); 
-
-    const images = Array(5).fill(allProjectImages).flat().slice(0, 32);
-
-    const positions = Array.from({ length: 32 }).map((_, i) => ({
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        rotate: Math.random() * 20 - 10,
-        s: 0.8 + Math.random() * 0.5
-    }));
-
+const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
     return (
-        <div className="relative h-screen w-full overflow-hidden bg-brand-offwhite">
-            <motion.div 
-                className="absolute w-[300vw] h-[300vh] top-[-100vh] left-[-100vw] cursor-move z-10"
-                drag
-                dragConstraints={{ left: -1800, right: 900, top: -1800, bottom: 900 }}
-                dragElastic={0.05}
+        <div className="relative min-h-[80vh] flex flex-col justify-center items-center bg-brand-offwhite overflow-hidden pt-32 pb-16">
+            <div className="container mx-auto px-6 md:px-8 relative z-10 text-center">
+                <motion.span 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-bold mb-6 block"
+                >
+                    Case Study {project.id.toString().padStart(2, '0')}
+                </motion.span>
+                <motion.h1 
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+                    className="text-[12vw] leading-[0.85] font-black uppercase tracking-tighter text-brand-navy mb-8"
+                >
+                    {project.title}
+                </motion.h1>
+                
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="flex flex-wrap justify-center gap-8 md:gap-16 font-mono text-xs uppercase tracking-widest text-brand-navy/60"
+                >
+                    <span>{project.client}</span>
+                    <span>{project.role}</span>
+                    <span>{project.year}</span>
+                </motion.div>
+            </div>
+
+            {/* Hero Image / Background Element */}
+             <motion.div 
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+                className="absolute inset-0 z-0 opacity-10 pointer-events-none"
             >
-                <div className="absolute inset-0 bg-transparent z-0" />
-                {images.map((img, i) => (
-                    <IndividualDraggable 
-                        key={i} 
-                        img={img} 
-                        initialPos={positions[i]} 
-                        onClick={() => onImageClick(img)}
-                    />
-                ))}
+                 <img src={project.imageUrl} className="w-full h-full object-cover grayscale" alt="" />
             </motion.div>
-
-            <div className="absolute inset-0 pointer-events-none flex flex-col justify-center items-center z-50 p-6">
-                <div className="text-center">
-                    <motion.span 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="font-mono uppercase tracking-[0.5em] text-[10px] md:text-xs font-bold mb-6 block text-brand-purple"
-                    >
-                        {project.category === 'Partnership' ? 'Partnership Archive' : `Case Study ${project.id.toString().padStart(2, '0')}`}
-                    </motion.span>
-                    <div className="pointer-events-auto inline-block">
-                        <motion.h1 
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                            className="text-[16vw] md:text-[12vw] leading-[0.8] font-black uppercase tracking-tighter text-brand-navy break-words max-w-[95vw] select-all"
-                        >
-                            {project.title}
-                        </motion.h1>
-                    </div>
-                    <div className="mt-12 flex flex-wrap justify-center gap-4 md:gap-8 font-mono text-[10px] md:text-sm uppercase tracking-widest text-brand-navy/40 font-bold">
-                        <span>{project.year}</span>
-                        <span className="opacity-20">//</span>
-                        <span>{project.category}</span>
-                    </div>
-                </div>
-                <div className="absolute bottom-12 flex flex-col items-center gap-4 pointer-events-none">
-                    <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-brand-navy/30 font-bold bg-white/50 backdrop-blur-sm px-4 py-2">
-                        [ TOSS & CLICK TO EXPLORE ]
-                    </span>
-                </div>
-            </div>
         </div>
-    )
-}
+    );
+};
 
-const NarrativeSection: React.FC<{ 
-    step: string, 
-    title: string, 
-    content: string, 
-    images?: string[], 
-    isDark?: boolean 
-}> = ({ step, title, content, images, isDark }) => {
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-    const y = useTransform(scrollYProgress, [0, 0.5], [100, 0]);
-
+const VisualSection: React.FC<{ image: string, caption?: string, align?: 'left' | 'right' | 'center' }> = ({ image, caption, align = 'center' }) => {
     return (
-        <section ref={ref} className={`py-32 md:py-48 overflow-hidden ${isDark ? 'bg-brand-navy text-brand-offwhite' : 'bg-brand-offwhite text-brand-navy'}`}>
-            <div className="container mx-auto px-6 md:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-                    <div className="lg:col-span-4 lg:sticky lg:top-32 lg:h-max">
-                        <motion.div style={{ opacity, y }}>
-                            <span className={`font-mono text-[10px] uppercase tracking-[0.3em] font-bold block mb-4 text-brand-purple`}>
-                                {step}
-                            </span>
-                            <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-12 break-words">
-                                {title}
-                            </h2>
-                            {step.includes("01") && (
-                                <div className="mt-8">
-                                    <DownArrow className="text-brand-purple" />
-                                </div>
-                            )}
-                        </motion.div>
-                    </div>
-                    <div className="lg:col-span-8">
-                        <motion.p style={{ opacity }} className={`font-body text-xl md:text-4xl leading-tight font-light mb-16 break-words ${isDark ? 'text-brand-offwhite/80' : 'text-brand-navy/80'}`}>
-                            {content}
-                        </motion.p>
-                        {images && images.length > 0 && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                {images.map((img, i) => (
-                                    <div key={i} className={`overflow-hidden shadow-2xl ${i % 2 === 1 ? 'md:mt-16' : ''} bg-brand-navy/5`}>
-                                        <img src={img} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="" />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+        <div className={`py-12 md:py-24 container mx-auto px-6 md:px-8 flex ${align === 'left' ? 'justify-start' : align === 'right' ? 'justify-end' : 'justify-center'}`}>
+            <motion.div 
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.8 }}
+                className={`w-full ${align === 'center' ? 'md:w-full' : 'md:w-3/4 lg:w-2/3'}`}
+            >
+                <div className="overflow-hidden bg-brand-navy/5 shadow-2xl">
+                    <motion.img 
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.5 }}
+                        src={image} 
+                        alt={caption || ""} 
+                        className="w-full h-auto object-cover" 
+                    />
                 </div>
-            </div>
-        </section>
-    )
+                {caption && <p className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 mt-4">{caption}</p>}
+            </motion.div>
+        </div>
+    );
 }
 
-const ProcessGallery: React.FC<{ images: string[], onImageSelect: (img: string) => void }> = ({ images, onImageSelect }) => {
+const TextSection: React.FC<{ title: string, text: string }> = ({ title, text }) => (
+    <div className="py-24 container mx-auto px-6 md:px-8">
+        <div className="max-w-2xl mx-auto text-center">
+            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-4 block">{title}</span>
+            <p className="font-body text-2xl md:text-4xl leading-tight font-light text-brand-navy">
+                {text}
+            </p>
+        </div>
+    </div>
+);
+
+const GalleryGrid: React.FC<{ images: string[] }> = ({ images }) => {
     if (!images || images.length === 0) return null;
     return (
-        <section className="py-32 md:py-48 bg-brand-offwhite relative z-10">
+        <div className="py-24 bg-brand-navy text-brand-offwhite">
             <div className="container mx-auto px-6 md:px-8">
-                <div className="mb-24 md:mb-32 max-w-3xl">
-                    <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] md:text-xs font-bold mb-4 block">Visual Audit // Raw Process</span>
-                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.9]">The Messy Middle</h2>
-                </div>
-                <div className="columns-1 md:columns-2 gap-8 md:gap-12 space-y-8 md:space-y-12">
+                <h3 className="font-sans text-6xl font-black uppercase tracking-tight mb-16">Process<br/>Archive</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {images.map((img, i) => (
                         <motion.div 
                             key={i}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-10%" }}
-                            transition={{ duration: 0.8, delay: i % 2 === 0 ? 0 : 0.2 }}
-                            onClick={() => onImageSelect(img)}
-                            className="relative break-inside-avoid cursor-pointer group mb-8 md:mb-12"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className="aspect-square bg-brand-offwhite/5 overflow-hidden relative group"
                         >
-                            <div className="shadow-2xl bg-brand-navy/5 overflow-hidden">
-                                <img src={img} className="w-full h-auto block grayscale group-hover:grayscale-0 transition-all duration-700 ease-out" alt="Process detail" />
-                                <div className="absolute inset-0 bg-brand-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply" />
-                            </div>
-                            <div className="mt-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 px-1">
-                                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/60">Fig. {i + 1}</span>
-                                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-purple">[View Full Res]</span>
-                            </div>
+                            <img src={img} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500 grayscale group-hover:grayscale-0" alt="" />
                         </motion.div>
                     ))}
                 </div>
             </div>
-        </section>
-    );
+        </div>
+    )
 }
 
-const ImageModal: React.FC<{ src: string | null; onClose: () => void }> = ({ src, onClose }) => {
-    return ReactDOM.createPortal(
-        <AnimatePresence>
-            {src && (
-                <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    onClick={onClose}
-                    className="fixed inset-0 z-[99999] bg-brand-navy/95 backdrop-blur-3xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
-                >
-                    <motion.div 
-                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                        className="relative w-full h-full flex items-center justify-center pointer-events-none"
-                    >
-                        <div className="relative flex flex-col items-center pointer-events-auto" onClick={(e) => e.stopPropagation()}>
-                            <img src={src} className="w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain shadow-[0_50px_100px_rgba(0,0,0,0.5)] border border-white/10" alt="Full Resolution" />
-                            <div className="w-full mt-6 flex flex-col md:flex-row justify-between items-center gap-6">
-                                <div className="font-mono text-[10px] uppercase tracking-widest text-brand-offwhite/50 font-bold">Source Inspection // Studio Capture</div>
-                                <button onClick={onClose} className="font-mono text-[11px] uppercase tracking-widest text-brand-yellow font-black border-b-2 border-brand-yellow pb-1 hover:text-brand-offwhite hover:border-brand-offwhite transition-all">CLOSE_DOSS_ [ESC]</button>
-                            </div>
-                        </div>
-                    </motion.div>
-                </motion.div>
-            )}
-        </AnimatePresence>,
-        document.body
-    );
-};
+const NextProject: React.FC<{ project: any }> = ({ project }) => (
+    <Link to={`/work/${project.slug}`} className="block relative h-[60vh] overflow-hidden group bg-brand-navy">
+        <div className="absolute inset-0 opacity-40 group-hover:opacity-20 transition-opacity duration-700">
+            <img src={project.imageUrl} className="w-full h-full object-cover grayscale" alt="" />
+        </div>
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-brand-offwhite z-10">
+            <span className="font-mono text-xs uppercase tracking-[0.3em] mb-4">Next Case File</span>
+            <h2 className="text-[10vw] font-black uppercase tracking-tighter leading-none group-hover:scale-105 transition-transform duration-700">
+                {project.title}
+            </h2>
+        </div>
+    </Link>
+);
 
 const ProjectPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const currentIndex = PROJECTS.findIndex(p => p.slug === slug);
 
- useEffect(() => {
-  if (!selectedImage) return;
-  const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelectedImage(null); };
-  document.body.style.overflow = 'hidden';
-  window.addEventListener('keydown', handleEsc);
-  return () => {
-    document.body.style.overflow = '';
-    window.removeEventListener('keydown', handleEsc);
-  };
-}, [selectedImage]);
-
-  if (currentIndex === -1) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-brand-offwhite text-brand-navy overflow-hidden">
-        <div className="text-center p-6">
-            <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight">Missing_Data</h1>
-            <Link to="/work" className="font-mono uppercase text-brand-purple mt-8 block tracking-widest text-xs">Return to Archives &rarr;</Link>
-        </div>
-      </div>
-    );
-  }
+  if (currentIndex === -1) return <div>Project not found</div>;
   
   const project = PROJECTS[currentIndex];
   const nextProject = PROJECTS[(currentIndex + 1) % PROJECTS.length];
   
-  // Logic to determine if this is a "Lite" project or a full Case Study
-  const isLiteMode = !project.story?.gap || project.story.gap === "";
-
-  const story = project.story || {
-      goal: project.challenge || "Define the mission.",
+  // Destructure story or provide defaults
+  const { goal, gap, gamble, gain, processImages } = project.story || {
+      goal: project.description,
       gap: "",
       gamble: "",
-      gain: project.outcome || "The impact.",
-      processImages: project.detailImages?.slice(0,3) || []
+      gain: "",
+      processImages: []
   };
 
   return (
-    <div className="bg-brand-offwhite text-brand-navy min-h-screen">
-      <ProjectHero project={project} onImageClick={setSelectedImage} />
+    <div className="bg-brand-offwhite text-brand-navy min-h-screen selection:bg-brand-purple selection:text-white">
+      <ScrollProgress />
+      <ProjectHero project={project} />
       
-      <NarrativeSection 
-        step={isLiteMode ? "01 Context" : "01 The Goal"}
-        title={isLiteMode ? "Partnership Scope" : "Call to Adventure"}
-        content={story.goal}
-        isDark={false}
-      />
+      {/* 01: The Setup */}
+      <TextSection title="01 / The Brief" text={goal} />
+      
+      {/* Visuals - Hero Image */}
+      <VisualSection image={project.imageUrl} caption="Primary Visual System" />
 
-      {!isLiteMode && story.processImages.length > 0 && (
-           <ProcessGallery images={story.processImages} onImageSelect={setSelectedImage} />
-      )}
- 
-      {!isLiteMode && (
-          <NarrativeSection 
-            step="02 The Gap"
-            title="The Struggle"
-            content={story.gap}
-            isDark={true}
-          />
+      {/* 02: The Conflict */}
+      {gap && <TextSection title="02 / The Friction" text={gap} />}
+
+      {/* Visuals - Details (Alternating) */}
+      {project.detailImages && project.detailImages.length > 0 && (
+          <>
+            <VisualSection image={project.detailImages[0]} align="left" caption="Detail 01" />
+            {project.detailImages[1] && <VisualSection image={project.detailImages[1]} align="right" caption="Detail 02" />}
+          </>
       )}
 
-      {!isLiteMode && (
-          <NarrativeSection 
-            step="03 The Gamble"
-            title="The Pivot"
-            content={story.gamble}
-            images={project.detailImages?.slice(0, 2)}
-            isDark={false}
-          />
-      )}
+      {/* 03: The Solution */}
+      {gamble && <TextSection title="03 / The Pivot" text={gamble} />}
 
-      <section className="py-24 md:py-48 bg-brand-yellow text-brand-navy overflow-hidden">
-          <div className="container mx-auto px-6 md:px-8 text-center">
-              <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold mb-8 block">
-                  {isLiteMode ? "02 Output / Impact" : "04 The Gain / Impact"}
-              </span>
-              <h2 className="text-3xl md:text-5xl lg:text-[4vw] font-black uppercase tracking-tighter leading-[1.1] max-w-4xl mx-auto break-words">
-                  {story.gain}
-              </h2>
-             
-              <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-4 gap-8 border-t border-brand-navy/10 pt-12">
-                  <div className="text-center">
-                      <div className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2">Role</div>
-                      <div className="font-bold text-lg md:text-xl uppercase">{project.role}</div>
-                  </div>
-                  <div className="text-center">
-                      <div className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2">Year</div>
-                      <div className="font-bold text-lg md:text-xl">{project.year}</div>
-                  </div>
-                  <div className="text-center md:col-span-2">
-                      <div className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2">Stack</div>
-                      <div className="font-bold text-lg md:text-xl flex flex-wrap justify-center gap-4">
-                          {project.tags.map(t => <span key={t} className="uppercase tracking-widest">{t}</span>)}
-                      </div>
-                  </div>
-              </div>
+      {/* Full Width Impact Visual */}
+      {project.detailImages && project.detailImages[2] && (
+          <div className="py-12">
+              <img src={project.detailImages[2]} className="w-full h-[80vh] object-cover" alt="" />
           </div>
-      </section>
+      )}
 
-      <section className="bg-brand-navy py-48 md:py-64 relative overflow-hidden group">
-        <Link to={`/work/${nextProject.slug}`} className="block relative z-10 text-center p-6">
-            <span className="font-mono text-brand-offwhite/50 uppercase tracking-[0.5em] text-[10px] md:text-xs font-black">Next Case File</span>
-            <h3 className="text-5xl md:text-[8vw] font-black uppercase tracking-tighter text-brand-offwhite mt-8 md:mt-12 transition-transform duration-1000 group-hover:scale-95 group-hover:text-brand-yellow break-words">
-                {nextProject.title} &rarr;
-            </h3>
-        </Link>
-        <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-700">
-             <img src={nextProject.imageUrl} className="w-full h-full object-cover grayscale" alt="" />
-        </div>
-      </section>
+      {/* 04: The Result */}
+      {gain && (
+          <div className="py-32 container mx-auto px-6 md:px-8 text-center">
+              <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-6 block">04 / Impact</span>
+              <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tight leading-none text-brand-navy">
+                  {gain}
+              </h2>
+          </div>
+      )}
 
-      <ImageModal src={selectedImage} onClose={() => setSelectedImage(null)} />
-   </div>
+      {/* Process Gallery (Grid) */}
+      <GalleryGrid images={processImages} />
+
+      {/* Next Project Nav */}
+      <NextProject project={nextProject} />
+    </div>
   );
 };
 
