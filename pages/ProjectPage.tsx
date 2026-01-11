@@ -3,33 +3,53 @@ import { useParams, Link } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
-// --- 1. CINEMATIC REVEAL LOADER (Fixed Center) ---
+// --- 1. CINEMATIC REVEAL LOADER (Inverted: Big Solid -> Small Logo) ---
 const ProjectReveal: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
     return (
         <motion.div
             className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none"
-            initial={{ opacity: 1 }}
+            // Fade out the small logo at the end of the sequence
             animate={{ opacity: 0 }}
-            transition={{ duration: 0.2, delay: 1.6 }}
+            transition={{ duration: 0.3, delay: 1.4, ease: "easeOut" }} 
             onAnimationComplete={onComplete}
         >
             <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
                 <defs>
                     <mask id="logo-mask">
-                        <rect x="0" y="0" width="100" height="100" fill="white" />
+                        {/* 1. Black Background = Transparent (Reveals the Page) */}
+                        <rect x="0" y="0" width="100" height="100" fill="black" />
+                        
+                        {/* 2. White Shapes = Opaque (Shows the Overlay Color) */}
                         <g transform="translate(50 50)">
                             <motion.g
-                                initial={{ scale: 1 }}
-                                animate={{ scale: 300 }} 
-                                transition={{ duration: 1.4, delay: 0.2, ease: [0.83, 0, 0.17, 1] }}
+                                initial={{ scale: 60 }} // Start Huge (Covers Screen)
+                                animate={{ scale: 1 }}  // Shrink to Logo Size
+                                transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
                             >
-                                <rect x="-12" y="-40" width="10" height="80" rx="5" fill="black" />
-                                <rect x="2" y="-40" width="10" height="80" rx="5" fill="black" />
+                                {/* Left Pill */}
+                                <rect x="-12" y="-40" width="10" height="80" rx="5" fill="white" />
+                                
+                                {/* Right Pill */}
+                                <rect x="2" y="-40" width="10" height="80" rx="5" fill="white" />
+
+                                {/* GAP FILLER: Ensures total coverage at start, then splits open */}
+                                <motion.rect 
+                                    x="-2" y="-40" width="4" height="80" fill="white"
+                                    initial={{ scaleX: 1 }}
+                                    animate={{ scaleX: 0 }}
+                                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                                />
                             </motion.g>
                         </g>
                     </mask>
                 </defs>
-                <rect x="0" y="0" width="100" height="100" fill="#F7F7F7" mask="url(#logo-mask)" />
+
+                {/* The Visible Overlay Layer (Brand Off-White) */}
+                <rect 
+                    x="0" y="0" width="100" height="100" 
+                    fill="#F7F7F7" 
+                    mask="url(#logo-mask)" 
+                />
             </svg>
         </motion.div>
     );
@@ -41,7 +61,7 @@ const ProjectReveal: React.FC<{ onComplete: () => void }> = ({ onComplete }) => 
 const CinemaImage: React.FC<{ src: string }> = ({ src }) => {
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-    const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]); // Deep parallax
+    const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]); 
     
     return (
         <div ref={ref} className="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden relative shadow-2xl my-12">
@@ -105,14 +125,8 @@ const StickyScrollSection: React.FC<{
                 {/* SCROLLING IMAGE STREAM (Rhythmic Grid) */}
                 <div className="md:w-2/3 flex flex-col gap-24 py-12 md:py-32 w-full">
                     {images.map((img, i) => {
-                        // RHYTHM LOGIC:
-                        // Index 0: Cinema (Full Impact)
-                        // Index 1: Scatter Left
-                        // Index 2: Scatter Right
-                        // Index 3: Cinema...
-                        
+                        // RHYTHM LOGIC: 0=Cinema, 1=Left, 2=Right
                         const position = i % 3;
-
                         if (position === 0) {
                             return <CinemaImage key={i} src={img} />;
                         } else {
@@ -176,7 +190,6 @@ const ProcessGallery: React.FC<{ images: string[] }> = ({ images }) => {
                     </span>
                 </div>
                 
-                {/* Horizontal Scroll / Masonry Mix */}
                 <div className="columns-1 md:columns-3 gap-4 space-y-4">
                     {images.map((img, i) => (
                         <motion.div 
@@ -226,7 +239,6 @@ const ProjectPage: React.FC = () => {
   const [isRevealing, setIsRevealing] = useState(true); 
   const currentIndex = PROJECTS.findIndex(p => p.slug === slug);
 
-  // Scroll reset & Reveal trigger
   useEffect(() => {
       window.scrollTo(0, 0);
       setIsRevealing(true);
@@ -249,15 +261,11 @@ const ProjectPage: React.FC = () => {
       processImages: []
   };
 
-  // --- IMAGE LOGIC (Smart Splitting) ---
+  // --- IMAGE LOGIC ---
   const details = project.detailImages || [];
-  
-  // Distribute images to sections.
-  // Ideally, each section gets 3+ images to feel like a "stream".
-  // If we don't have enough, we repeat visuals or fallback to hero.
+  // Use all visuals available, looping if necessary to fill the rhythm
   const allVisuals = details.length > 0 ? details : [project.imageUrl];
   
-  // Logic: Split available images roughly evenly among the 3 active sections
   const chunkSize = Math.ceil(allVisuals.length / 3);
   
   const goalImages = allVisuals.slice(0, chunkSize);
@@ -272,10 +280,8 @@ const ProjectPage: React.FC = () => {
 
       <div className="bg-brand-offwhite text-brand-navy min-h-screen selection:bg-brand-purple selection:text-white">
         
-        {/* Full Screen Hero with Parallax */}
         <ProjectHero project={project} />
         
-        {/* 01: THE GOAL (Sticky Left) */}
         <StickyScrollSection 
             title="01 / The Goal" 
             text={goal} 
@@ -283,7 +289,6 @@ const ProjectPage: React.FC = () => {
             align="left"
         />
 
-        {/* 02: THE GAP (Sticky Right) */}
         {gap && (
             <StickyScrollSection 
                 title="02 / The Gap" 
@@ -293,7 +298,6 @@ const ProjectPage: React.FC = () => {
             />
         )}
 
-        {/* 03: THE GAMBLE (Sticky Left) */}
         {gamble && (
             <StickyScrollSection 
                 title="03 / The Gamble" 
@@ -303,7 +307,6 @@ const ProjectPage: React.FC = () => {
             />
         )}
 
-        {/* 04: THE GAIN (Big Centered Impact) */}
         {gain && (
             <div className="min-h-[60vh] flex items-center justify-center bg-brand-navy text-brand-offwhite">
                 <div className="container mx-auto px-6 md:px-8 text-center">
@@ -315,10 +318,8 @@ const ProjectPage: React.FC = () => {
             </div>
         )}
 
-        {/* PROCESS GALLERY (Masonry) */}
         <ProcessGallery images={processImages} />
 
-        {/* NEXT PROJECT NAV */}
         <NextProject project={nextProject} />
       </div>
     </>
