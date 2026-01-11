@@ -10,9 +10,7 @@ const Footer: React.FC = () => {
     offset: ["start end", "end end"]
   });
 
-  // Re-implemented the Skew/Motion effects from your original footer
-  const skewX = useTransform(scrollYProgress, [0, 1], ["0deg", "-20deg"]);
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "5%"]); 
+  const skewX = useTransform(scrollYProgress, [0, 1], ["0deg", "-10deg"]);
   const opacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
 
   const links = {
@@ -36,30 +34,42 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden pt-24 md:pt-32">
+    <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden pt-24">
       
-      {/* 1. THE RETURN OF "START THE GRIND" (Adapted for Dark Mode) */}
-      <div className="container mx-auto px-6 md:px-8 mb-32 md:mb-48">
-        <motion.div style={{ opacity }} className="flex flex-col items-center text-center">
-          <span className="font-mono text-sm uppercase text-brand-purple tracking-widest mb-8 font-bold">
-            Ready to evolve?
-          </span>
-          <h2 className="text-6xl md:text-[14vw] font-black uppercase tracking-tight text-brand-offwhite leading-[0.85] flex flex-col md:block items-center">
-            <span>START THE</span>
-            <br className="hidden md:block"/>
-            <motion.span 
-              style={{ skewX, x, display: 'inline-block', originX: 0 }}
-              className="text-brand-yellow" // Changed to Yellow for contrast on Navy
-            >
-              GRIND.
-            </motion.span>
-          </h2>
-          <a 
-            href="mailto:hey@coolo.co.nz" 
-            className="inline-block mt-16 text-2xl md:text-4xl font-sans font-black hover:text-brand-yellow transition-colors duration-300 underline decoration-brand-purple decoration-4 underline-offset-8"
-          >
-            hey@coolo.co.nz
-          </a>
+      {/* 1. MASSIVE YELLOW CTA BLOCK */}
+      {/* This creates the high-contrast "Hazard" look requested */}
+      <div className="container mx-auto px-6 md:px-8 mb-24 md:mb-32">
+        <motion.div 
+            style={{ opacity }}
+            className="bg-brand-yellow p-12 md:p-24 relative overflow-hidden group"
+        >
+            {/* Background Kinetic Effect */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
+            
+            <div className="relative z-10 flex flex-col items-center text-center">
+                <span className="font-mono text-sm uppercase text-brand-navy tracking-widest mb-8 font-black border-b-2 border-brand-navy pb-1">
+                    Ready to evolve?
+                </span>
+                
+                {/* Text is now Navy on Yellow for max contrast */}
+                <h2 className="text-6xl md:text-[12vw] font-black uppercase tracking-tight text-brand-navy leading-[0.85] flex flex-col md:block items-center">
+                    <span>START THE</span>
+                    <br className="hidden md:block"/>
+                    <motion.span 
+                        style={{ skewX, display: 'inline-block', originX: 0 }}
+                        className="text-brand-purple" // Pop of purple on yellow
+                    >
+                        GRIND.
+                    </motion.span>
+                </h2>
+                
+                <a 
+                    href="mailto:hey@coolo.co.nz" 
+                    className="inline-block mt-12 md:mt-16 text-2xl md:text-4xl font-sans font-black text-brand-navy hover:text-brand-purple transition-colors duration-300 underline decoration-brand-navy decoration-4 underline-offset-8"
+                >
+                    hey@coolo.co.nz
+                </a>
+            </div>
         </motion.div>
       </div>
 
@@ -130,13 +140,13 @@ const Footer: React.FC = () => {
                   <div className="w-full md:w-auto">
                       <div className="w-48 md:w-96 opacity-100 mb-8 md:mb-0">
                         {/* Force light logo on dark footer */}
-                        <BrandLogo color="#F7F7F7" className="w-full h-auto" />
+                        <BrandLogo color="#F7F7F7" className="w-full h-full" />
                       </div>
                   </div>
 
                   <div className="w-full md:w-auto flex flex-col md:items-end gap-2">
                       <p className="font-mono text-[10px] uppercase tracking-widest opacity-40">
-                          &copy; {new Date().getFullYear()} COOLO Studio. All Rights Reserved.
+                          &copy; {new Date().getFullYear()} COOLO Studio.
                       </p>
                       <p className="font-mono text-[10px] uppercase tracking-widest opacity-40">
                           System V2.0_Alpha
