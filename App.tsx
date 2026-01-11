@@ -70,7 +70,6 @@ const App: React.FC = () => {
              className="flex flex-col min-h-screen"
           >
               <Header />
-              <div className="relative z-10 bg-brand-offwhite shadow-2xl mb-[100vh] lg:mb-[80vh]"></div>
               <main className="flex-grow">
                 <AnimatePresence mode="wait">
                   <motion.div
