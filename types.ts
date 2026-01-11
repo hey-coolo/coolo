@@ -24,7 +24,7 @@ export interface Project {
   };
 }
 
-export type ProjectCategory = 'All' | 'Featured' | '3D Design' | 'Brand Identity' | 'Web Design' | 'Campaign' | 'Fashion' | 'Packaging' | 'Motion Design' | 'Digital Art' | 'Strategy' | 'Partnership';
+export type ProjectCategory = 'All' | 'Featured' | '3D Design' | 'Brand Identity' | 'Web Design' | 'Campaign' | 'Fashion' | 'Packaging' | 'Motion Design' | 'Digital Art' | 'Strategy' | 'Partnership' | 'Photography';
 
 export interface ServiceTier {
   title: string;

@@ -87,7 +87,7 @@ export const PROJECTS: Project[] = [
     year: 2022,
     imageUrl: './assets/cases/surfboard-v001/Hero.webp',
     featured: true,
-    client: 'Technical Study',
+    client: 'Concept Art Test',
     role: '3D Artist',
     detailImages: [
         './assets/cases/surfboard-v001/detail-1.webp',
@@ -117,8 +117,8 @@ export const PROJECTS: Project[] = [
     year: 2021,
     imageUrl: './assets/cases/the-cartridges/Hero.webp',
     featured: false,
-    client: 'Modular Labs',
-    role: 'Visualization Lead',
+    client: 'Concept Art Test',
+    role: '3D Artist',
     detailImages: [ 
         './assets/cases/the-cartridges/detail-1.webp', 
         './assets/cases/the-cartridges/detail-2.webp', 
@@ -141,20 +141,26 @@ export const PROJECTS: Project[] = [
     title: 'Jonhey’s Dumpling House',
     slug: 'jonheys-dumpling-house',
     description: 'High-energy hospitality branding with a contemporary street-food edge.',
-    category: 'Brand Identity',
+    category: 'Photography',
     tags: ['Hospitality', 'Kinetic Type', 'Logo'],
     year: 2023,
-    imageUrl: '/assets/cases/jonheys-dumpling-house/Hero.webp',
+    imageUrl: './assets/cases/jonheys-dumpling-house/Hero.webp',
     featured: true,
-    client: 'Jonhey’s',
-    role: 'Lead Designer',
-    detailImages: [],
+    client: 'Jonhey’s Dumpling House',
+    role: 'Product Photographer',
+    detailImages: [
+        './assets/cases/jonheys-dumpling-house/detail-1.webp',
+        './assets/cases/jonheys-dumpling-house/detail-1.webp'
+    ],
     story: {
-        goal: "Break the 'red and gold' hospitality cliché.",
-        gap: "Dumpling houses usually feel traditional.",
-        gamble: "Using neon purple and heavy, distorted typography.",
-        gain: "Immediate cult-status.",
-        processImages: []
+        goal: "Showcase the exquisite craftsmanship of Johney's delectable dumplings but also serve as the visual centerpiece for their festival food stall menus.",
+        gap: "Typical dumpling photography can feel flat and generic — not capturing the personality and handmade soul behind the food.",
+        gamble: "Injecting energy into the visuals with playful compositions and vibrant lighting that reflect the brand’s street-food spirit.",
+        gain: "A library of images that turned menus into memorable brand touchpoints and helped position Johney’s as a standout in busy festival environments.",
+        processImages: [
+            './assets/cases/jonheys-dumpling-house/process-1.webp',
+            './assets/cases/jonheys-dumpling-house/process-2.webp'
+        ]
     }
   },
   {
@@ -169,13 +175,22 @@ export const PROJECTS: Project[] = [
     featured: false,
     client: 'Franca Collective',
     role: 'Art Director',
-    detailImages: [],
+    detailImages: [
+        './assets/cases/franca-austral/detail-1.webp',
+        './assets/cases/franca-austral/detail-2.webp'
+
+    ],
     story: {
         goal: "Capture the vast silence of southern landscapes.",
         gap: "Nature brands are often cluttered.",
         gamble: "A 60-page brand book with almost zero body copy.",
         gain: "A sophisticated, high-end presence.",
-        processImages: []
+        processImages: [
+            './assets/cases/franca-austral/process-1.webp',
+            './assets/cases/franca-austral/process-2.webp',
+            './assets/cases/franca-austral/process-3.webp',
+            '.assets/cases/franca-austral/process-4.webp'
+            ]
     }
   },
   {
