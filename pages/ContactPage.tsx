@@ -1,10 +1,11 @@
-
 import React, { useState } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ContactPage: React.FC = () => {
   const [step, setStep] = useState(0);
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  
   const [formData, setFormData] = useState({
     name: '',
     business: '',
@@ -26,6 +27,34 @@ const ContactPage: React.FC = () => {
     if (step > 0) setStep(step - 1);
   };
 
+  // --- NEW SENDING LOGIC ---
+  const handleTransmission = async () => {
+    setStatus('submitting');
+
+    try {
+      // REPLACE 'YOUR_ENDPOINT_HERE' with your actual service URL (e.g. Formspree, Getform)
+      const response = await fetch('YOUR_ENDPOINT_HERE', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          subject: `New Inquiry from ${formData.name}`,
+          ...formData
+        })
+      });
+
+      if (response.ok) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      setStatus('error');
+    }
+  };
+
   // Kinetic input styling
   const inputClass = "bg-transparent border-b-4 border-brand-purple/30 text-brand-navy font-black focus:border-brand-purple focus:outline-none placeholder-brand-navy/20 w-full transition-all duration-300";
 
@@ -38,18 +67,50 @@ const ContactPage: React.FC = () => {
                 <header className="mb-16">
                     <span className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold block mb-4">Procedural Intake / Discovery</span>
                     <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tight text-brand-navy leading-[0.95]">
-                        State Your<br/>Mission.
+                        {status === 'success' ? 'Transmission Completed.' : 'State Your Mission.'}
                     </h1>
                 </header>
 
                 <div className="bg-white border border-brand-navy/10 p-8 md:p-16 shadow-2xl min-h-[400px] flex flex-col justify-between relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 font-mono text-[10px] uppercase tracking-widest opacity-30">
-                        Step 0{step + 1} / 06
-                    </div>
+                    
+                    {/* Hide Step Counter on Success */}
+                    {status !== 'success' && (
+                        <div className="absolute top-0 right-0 p-4 font-mono text-[10px] uppercase tracking-widest opacity-30">
+                            Step 0{step + 1} / 06
+                        </div>
+                    )}
 
-                    <form onSubmit={(e) => e.preventDefault()} className="relative z-10">
+                    <form onSubmit={(e) => e.preventDefault()} className="relative z-10 h-full flex flex-col justify-center">
                         <AnimatePresence mode="wait">
-                            {step === 0 && (
+                            
+                            {/* --- SUCCESS STATE --- */}
+                            {status === 'success' && (
+                                <motion.div
+                                    key="success"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="text-center py-12"
+                                >
+                                    <div className="w-20 h-20 bg-brand-yellow rounded-full flex items-center justify-center mx-auto mb-8">
+                                        <svg className="w-10 h-10 text-brand-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-4xl md:text-5xl font-black uppercase text-brand-navy leading-none mb-6">Received.</h3>
+                                    <p className="font-body text-xl text-brand-navy/60 max-w-lg mx-auto mb-12">
+                                        Your brief has been logged in our system. We will analyze the data and signal back within 24 hours.
+                                    </p>
+                                    <button 
+                                        onClick={() => window.location.reload()} 
+                                        className="font-mono text-xs uppercase tracking-widest text-brand-purple border-b border-brand-purple pb-1 hover:text-brand-navy hover:border-brand-navy transition-colors"
+                                    >
+                                        Start New Transmission
+                                    </button>
+                                </motion.div>
+                            )}
+
+                            {/* --- STEPS 0-4 (Inputs) --- */}
+                            {status !== 'success' && step === 0 && (
                                 <motion.div 
                                     key="step0"
                                     initial={{ opacity: 0, x: 20 }}
@@ -72,7 +133,7 @@ const ContactPage: React.FC = () => {
                                 </motion.div>
                             )}
 
-                            {step === 1 && (
+                            {status !== 'success' && step === 1 && (
                                 <motion.div 
                                     key="step1"
                                     initial={{ opacity: 0, x: 20 }}
@@ -103,7 +164,7 @@ const ContactPage: React.FC = () => {
                                 </motion.div>
                             )}
 
-                            {step === 2 && (
+                            {status !== 'success' && step === 2 && (
                                 <motion.div 
                                     key="step2"
                                     initial={{ opacity: 0, x: 20 }}
@@ -125,7 +186,7 @@ const ContactPage: React.FC = () => {
                                 </motion.div>
                             )}
 
-                             {step === 3 && (
+                             {status !== 'success' && step === 3 && (
                                 <motion.div 
                                     key="step3"
                                     initial={{ opacity: 0, x: 20 }}
@@ -147,7 +208,7 @@ const ContactPage: React.FC = () => {
                                 </motion.div>
                             )}
 
-                            {step === 4 && (
+                            {status !== 'success' && step === 4 && (
                                 <motion.div 
                                     key="step4"
                                     initial={{ opacity: 0, x: 20 }}
@@ -170,7 +231,8 @@ const ContactPage: React.FC = () => {
                                 </motion.div>
                             )}
 
-                             {step === 5 && (
+                             {/* --- STEP 5 (Review & Submit) --- */}
+                             {status !== 'success' && step === 5 && (
                                 <motion.div 
                                     key="step5"
                                     initial={{ opacity: 0, scale: 0.9 }}
@@ -182,18 +244,26 @@ const ContactPage: React.FC = () => {
                                     <p className="font-body text-xl text-brand-navy/60 max-w-lg mx-auto mb-12">
                                         We will review your intel and respond within 24 hours if the fit is right.
                                     </p>
-                                    <a 
-                                        href={`mailto:hey@coolo.co.nz?subject=Inquiry from ${formData.name}&body=Name: ${formData.name}%0ABusiness: ${formData.business} (${formData.role})%0A%0AThe Pain:%0A${formData.problem}%0A%0AThe Goal:%0A${formData.goal}`}
-                                        className="inline-block bg-brand-navy text-brand-offwhite font-mono text-xl uppercase px-12 py-6 hover:bg-brand-purple transition-all shadow-xl"
+                                    
+                                    <button 
+                                        onClick={handleTransmission}
+                                        disabled={status === 'submitting'}
+                                        className="inline-block bg-brand-navy text-brand-offwhite font-mono text-xl uppercase px-12 py-6 hover:bg-brand-purple transition-all shadow-xl disabled:opacity-70 disabled:cursor-wait"
                                     >
-                                        Execute Transmission
-                                    </a>
+                                        {status === 'submitting' ? 'Transmitting...' : 'Send Transmission'}
+                                    </button>
+
+                                    {status === 'error' && (
+                                        <p className="mt-4 text-red-600 font-mono text-xs uppercase tracking-widest font-bold">
+                                            Error: Signal Lost. Please try again.
+                                        </p>
+                                    )}
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </form>
 
-                    {step < 5 && (
+                    {status !== 'success' && step < 5 && (
                         <div className="flex justify-between items-center mt-12 pt-8 border-t border-brand-navy/5">
                             <button 
                                 onClick={handleBack} 
@@ -214,6 +284,7 @@ const ContactPage: React.FC = () => {
         </AnimatedSection>
       </div>
 
+      {/* Footer Info */}
       <div className="bg-brand-navy text-brand-offwhite py-24 mt-24">
         <div className="container mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-16 font-mono uppercase tracking-[0.2em] text-[10px]">
           <div>
@@ -226,7 +297,7 @@ const ContactPage: React.FC = () => {
           </div>
           <div>
               <h3 className="text-brand-purple mb-4 font-bold">Network</h3>
-              <a href="https://instagram.com/coolo.studio" target="_blank" rel="noopener noreferrer" className="text-lg font-sans font-black tracking-normal block hover:text-brand-purple">Instagram</a>
+              <a href="https://instagram.com/coolo.co" target="_blank" rel="noopener noreferrer" className="text-lg font-sans font-black tracking-normal block hover:text-brand-purple">Instagram</a>
           </div>
         </div>
       </div>
