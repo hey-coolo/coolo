@@ -108,7 +108,6 @@ const App: React.FC = () => {
                   </motion.div>
                 </AnimatePresence>
               </main>
-              <div className="fixed bottom-0 left-0 right-0 z-0 h-[100vh] lg:h-[80vh]"></div>
               <Footer />
           </motion.div>
       )}

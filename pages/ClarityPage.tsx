@@ -51,7 +51,7 @@ const ClarityPage: React.FC = () => {
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-5xl">
             <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold block mb-4">Service Leg 01 / Strategy</span>
-            <h1 className="text-brand-navy text-8xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.9] mt-0">
+            <h1 className="text-brand-navy text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] mt-0">
               No Magic<br/><span className="text-brand-purple">Formula™</span>
             </h1>
             <p className="font-body text-2xl md:text-4xl text-brand-navy/70 mt-12 leading-tight max-w-3xl">

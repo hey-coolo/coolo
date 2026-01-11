@@ -12,7 +12,7 @@ const ScriptsPage: React.FC = () => {
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-5xl">
             <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold block mb-4">Intel / Source Code</span>
-            <h1 className="text-brand-navy text-8xl md:text-[14vw] font-black uppercase tracking-tighter leading-[0.8] mt-0">
+            <h1 className="text-brand-navy text-8xl md:text-[12vw] font-black uppercase tracking-tighter leading-[0.8] mt-0">
               The Agency<br/><span className="text-brand-purple italic">Playbook.</span>
             </h1>
             <p className="font-body text-2xl md:text-3xl text-brand-navy/70 mt-12 leading-tight max-w-4xl">

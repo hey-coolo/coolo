@@ -13,7 +13,7 @@ const DesignPowerPage: React.FC = () => {
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-6xl">
             <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black block mb-6">Service Leg 02 / Design Power</span>
-            <h1 className="text-8xl md:text-[15vw] font-black uppercase tracking-tight leading-[0.9] mt-8 text-brand-navy">
+            <h1 className="text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] mt-8 text-brand-navy">
               The Creative<br/><span className="text-brand-purple italic">Method™</span>
             </h1>
             <p className="font-body text-2xl md:text-5xl text-brand-navy/60 mt-16 leading-tight max-w-4xl font-light">

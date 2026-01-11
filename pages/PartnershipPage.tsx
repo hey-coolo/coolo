@@ -11,7 +11,7 @@ const PartnershipPage: React.FC = () => {
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-5xl">
             <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold">Leg 3: Scale</span>
-            <h1 className="text-brand-navy text-7xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.9] mt-8">
+            <h1 className="text-brand-navy text-7xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] mt-8">
               The Scale<br/><span className="text-brand-purple">Button.</span>
             </h1>
             <p className="font-body text-2xl md:text-4xl text-brand-navy/70 mt-12 leading-tight max-w-3xl">

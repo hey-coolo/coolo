@@ -77,7 +77,7 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
                     <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-xs font-bold mb-8 block">
                         Case Study {project.id.toString().padStart(2, '0')}
                     </span>
-                    <h1 className="text-[13vw] leading-[0.8] font-black uppercase tracking-tighter text-brand-offwhite mb-12 mix-blend-overlay opacity-90">
+                    <h1 className="text-[12vw] leading-[0.8] font-black uppercase tracking-tighter text-brand-offwhite mb-12 mix-blend-overlay opacity-90">
                         {project.title}
                     </h1>
                     

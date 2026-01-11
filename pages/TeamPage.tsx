@@ -11,7 +11,7 @@ const TeamPage: React.FC = () => {
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-6xl">
             <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm mb-4 block">Our Senior Unit</span>
-            <h1 className="text-8xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.9] text-brand-navy">
+            <h1 className="text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] text-brand-navy">
                 The<br/><span className="text-brand-purple">Operatives</span>
             </h1>
             <p className="font-body text-2xl md:text-4xl text-brand-lavender mt-12 leading-[1.1] max-w-4xl">

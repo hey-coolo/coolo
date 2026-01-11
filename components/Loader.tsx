@@ -30,9 +30,6 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   
-  // History for Undo (Optional future expansion)
-  const [history, setHistory] = useState<ImageData[]>([]);
-
   // 1. Loading Simulation
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,7 +41,7 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
         }
         return prev + 1; 
       });
-    }, 20);
+    }, 20); // Speed of loader
     return () => clearInterval(interval);
   }, []);
 
@@ -87,7 +84,6 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
     if (!ctx) return;
 
     const handleResize = () => {
-      // Save content
       const tempCanvas = document.createElement('canvas');
       tempCanvas.width = canvas.width;
       tempCanvas.height = canvas.height;
@@ -101,7 +97,6 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
 
-      // Restore content
       ctx.drawImage(tempCanvas, 0, 0, canvas.width / dpr, canvas.height / dpr);
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -238,7 +233,6 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                         exit={{ opacity: 0, x: -20 }}
                         className="pointer-events-auto absolute left-6 md:left-12 top-24 bg-white border border-brand-navy/10 p-4 shadow-xl flex flex-col gap-6"
                     >
-                        {/* Colors */}
                         <div className="flex flex-col gap-2">
                             <span className="font-mono text-[8px] uppercase tracking-widest opacity-50">Ink</span>
                             <div className="flex gap-2">
@@ -253,7 +247,6 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                                 ))}
                             </div>
                         </div>
-                        {/* Size */}
                         <div className="flex flex-col gap-2">
                             <span className="font-mono text-[8px] uppercase tracking-widest opacity-50">Width</span>
                             <div className="flex items-center gap-3">
@@ -267,7 +260,6 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                                 ))}
                             </div>
                         </div>
-                        {/* Eraser */}
                         <div className="flex flex-col gap-2">
                             <button
                                 onClick={() => setIsEraser(!isEraser)}
@@ -280,7 +272,6 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
                 )}
             </AnimatePresence>
 
-            {/* Bottom HUD */}
             <div className="flex flex-col md:flex-row justify-between items-end gap-6 w-full pointer-events-auto">
                  <div className="flex gap-4">
                     <button 
@@ -300,42 +291,32 @@ const Loader: React.FC<LoaderProps> = ({ onEnter }) => {
             </div>
         </div>
 
-        {/* Layer 3: Main Content (Logo + Button) */}
+        {/* Layer 3: Main Content (BRAND LOGO LOADING ANIMATION) */}
         <div className="relative z-30 flex flex-col items-center pointer-events-none select-none p-4 max-w-full mt-auto mb-16 md:mb-32">
             
-            {/* SVG Logo Animation (RESTORED) */}
-            <div className="w-[85vw] md:w-[40vw] max-w-lg aspect-[3/1] relative mb-6 md:mb-8">
+            {/* SVG MASK REVEAL */}
+            <div className="w-[70vw] md:w-[35vw] max-w-lg aspect-[3/1] relative mb-6 md:mb-8">
                 <svg viewBox="0 0 300 100" className="w-full h-full">
-                    <text
-                        x="50%"
-                        y="50%"
-                        dominantBaseline="middle"
-                        textAnchor="middle"
-                        className="font-sans font-black text-6xl sm:text-7xl md:text-8xl tracking-tighter"
-                        fill="transparent"
-                        stroke="#0F0328"
-                        strokeWidth="1.5"
-                        strokeDasharray="1000"
-                        strokeDashoffset={1000 - (progress * 10)}
-                        style={{ transition: 'stroke-dashoffset 0.1s linear' }}
-                    >
-                        COOLO
-                    </text>
-                    <text
-                         x="50%"
-                         y="50%"
-                         dominantBaseline="middle"
-                         textAnchor="middle"
-                         className="font-sans font-black text-6xl sm:text-7xl md:text-8xl tracking-tighter"
-                         fill="#0F0328"
-                         stroke="none"
-                         style={{ 
-                             opacity: isReady ? 1 : 0,
-                             transition: 'opacity 0.5s ease-out'
-                         }}
-                    >
-                        COOLO
-                    </text>
+                    {/* Define the Mask */}
+                    <defs>
+                        <clipPath id="logo-load-mask">
+                            <rect x="0" y="0" width={`${progress * 3}`} height="100" />
+                        </clipPath>
+                    </defs>
+
+                    {/* 1. Ghost Logo (Faint background) */}
+                    <image 
+                        href="/assets/logos/logo-dark.svg" 
+                        x="0" y="0" width="300" height="100" 
+                        opacity="0.1" 
+                    />
+
+                    {/* 2. Filling Logo (Revealed by Mask) */}
+                    <image 
+                        href="/assets/logos/logo-dark.svg" 
+                        x="0" y="0" width="300" height="100" 
+                        clipPath="url(#logo-load-mask)"
+                    />
                 </svg>
             </div>
 

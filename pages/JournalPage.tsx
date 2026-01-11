@@ -11,7 +11,7 @@ const JournalListPage: React.FC = () => (
             <AnimatedSection>
                 <header className="py-24 md:py-48 max-w-6xl relative">
                     <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-6 block">Intel / Journal</span>
-                    <h1 className="text-brand-navy text-8xl md:text-[15vw] font-black uppercase tracking-tight leading-[0.85]">
+                    <h1 className="text-brand-navy text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.85]">
                         The Brain<br/><span className="text-brand-purple italic">Dump.</span>
                     </h1>
                     <p className="font-body text-2xl md:text-4xl text-brand-navy/60 mt-16 leading-tight max-w-4xl font-light">
