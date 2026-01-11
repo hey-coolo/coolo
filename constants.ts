@@ -147,7 +147,7 @@ export const PROJECTS: Project[] = [
     imageUrl: './assets/cases/johneys-dumpling-house/Hero.webp',
     featured: true,
     client: 'Jonhey’s Dumpling House',
-    role: 'Product Photographer',
+    role: 'Food Photography',
     detailImages: [
         './assets/cases/johneys-dumpling-house/detail-1.webp',
         './assets/cases/johneys-dumpling-house/detail-2.webp',
