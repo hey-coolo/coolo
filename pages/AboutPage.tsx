@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 const AboutPage: React.FC = () => {
   return (
-    <div className="bg-brand-offwhite min-h-screen pt-32">
+    <div className="bg-brand-offwhite pt-32">
       <div className="container mx-auto px-8">
         
         {/* Header / Origin Story */}
@@ -143,9 +143,9 @@ const AboutPage: React.FC = () => {
                     </AnimatedSection>
                 ))}
 
-                {/* 2. NEW: RECRUITMENT / PARTNER SLOT */}
+                {/* 2. RECRUITMENT SLOT */}
                 <AnimatedSection delay={300}>
-                    <Link to="/contact" className="group relative block aspect-[3/4] overflow-hidden bg-brand-offwhite border-2 border-brand-navy/10 hover:border-brand-purple transition-colors duration-500 flex flex-col justify-center items-center text-center p-12">
+                    <a href="mailto:hey@coolo.co.nz?subject=Join%20The%20Unit%20%2F%20Portfolio" className="group relative block aspect-[3/4] overflow-hidden bg-brand-offwhite border-2 border-brand-navy/10 hover:border-brand-purple transition-colors duration-500 flex flex-col justify-center items-center text-center p-12">
                         
                         {/* Technical Background Pattern */}
                         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#3A0888_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -166,10 +166,10 @@ const AboutPage: React.FC = () => {
                              </p>
 
                              <span className="inline-block mt-8 border-b-2 border-brand-purple pb-1 font-mono text-xs uppercase font-bold text-brand-purple tracking-widest group-hover:text-brand-navy group-hover:border-brand-navy transition-all">
-                                Submit Portfolio
+                                Send Portfolio via Email
                              </span>
                         </div>
-                    </Link>
+                    </a>
                 </AnimatedSection>
 
             </div>
