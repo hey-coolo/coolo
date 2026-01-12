@@ -338,44 +338,44 @@ export const SERVICE_LEGS: ServiceLeg[] = [
 
 export const CLARITY_TIERS: ClarityTier[] = [
     { 
-        slug: 'clarity-audit',
-        name: 'Clarity Audit', 
-        subtitle: 'The Diagnostic Phase',
-        desc: "A surgical audit of your current brand positioning. We find the leaks in your narrative.", 
-        cta: "Book Audit", 
-        features: ["Narrative Audit", "Competitor Matrix", "Friction Report", "Immediate Fixes"],
-        timeline: "1 Week",
-        idealFor: "Founders sensing a plateau but unsure why."
+        slug: 'the-reality-check',
+        name: 'The Brand Reality Check', 
+        subtitle: 'Free Brand Diagnostic',
+        desc: "Is your brand confusing? Your customers probably think so. Use these free tools to check your pulse before you spend a dime.", 
+        cta: "Download Free Tools", 
+        features: ["5-Minute Brand Audit", "The 'Hard Questions' Form", "Positioning Template", "Immediate Feedback"],
+        timeline: "Instant (Self-Paced)",
+        idealFor: "Founders who think they might have a branding problem."
     },
     { 
-        slug: 'consulting',
-        name: 'Consulting Sprint', 
-        subtitle: 'The No Magic Formula™',
-        desc: "2–4 week strategy sprint. We diagnose the friction and build the brand OS.", 
-        cta: "Inquire Now", 
-        features: ["Positioning One-Pager", "Audience Map", "Messaging Matrix", "90-Day Roadmap"],
-        timeline: "4 Weeks",
-        idealFor: "Funded Startups and Scale-ups needing alignment."
+        slug: 'brand-garage-guide',
+        name: 'The Brand Garage Guide', 
+        subtitle: 'The DIY Kit ($99)',
+        desc: "You aren't ready to hire us yet? Cool. Stop guessing and use our guide to define your story yourself. Simple English, no fluff.", 
+        cta: "Get the Guide", 
+        features: ["7-Day Step-by-Step Plan", "Audience Definition Tools", "Brand Voice Cheatsheet", "No Video Fluff"],
+        timeline: "1 Week (Self-Paced)",
+        idealFor: "DIY Founders ready to move out of 'Garage Mode'."
     },
     { 
-        slug: 'brand-os',
-        name: 'Brand OS', 
-        subtitle: 'The Full Protocol',
-        desc: "Comprehensive brand strategy and systems design. This is your company's operating manual.", 
-        cta: "Secure OS", 
-        features: ["Positioning Strategy", "Verbal Identity", "Brand Story Spine", "Campaign Pillars", "9-Month Roadmap"],
-        timeline: "8 Weeks",
-        idealFor: "Companies preparing for Series A/B or major pivots."
+        slug: 'strategy-sessions',
+        name: 'The Strategy Sessions', 
+        subtitle: 'No Magic Formula™',
+        desc: "We sit down. We talk. We fix the confusion. Two sessions to find your truth and write the Playbook that guides your business.", 
+        cta: "Book a Chat", 
+        features: ["2x Strategy Calls", "The Brand Playbook (PDF)", "The One-Page Cheat Sheet", "Jargon-Free Messaging"],
+        timeline: "2–4 Weeks",
+        idealFor: "Business owners tired of generic marketing."
     },
     { 
-        slug: 'fractional-strategy',
-        name: 'Fractional Strategy', 
-        subtitle: 'Senior Guidance',
+        slug: 'creative-partner',
+        name: 'The Creative Partner'',
+        subtitle: 'Senior Guidance / Ongoing Support',
         desc: "Ongoing strategic partnership. We join your executive team as the 'Strategic Brain'.", 
-        cta: "Apply for Retainer", 
-        features: ["Monthly Advisory", "Campaign Oversight", "Hiring Assistance", "Board Presentation Prep"],
-        timeline: "Retainer",
-        idealFor: "Established brands needing senior CD leadership."
+        cta: "Work With Us", 
+        features: ["Visual Identity Design", "Website & Content Direction", "Monthly Creative Support", "Quality Control"],
+        timeline: "Ongoing",
+        idealFor: "Brands that want to look professional, 24/7."
     }
 ];
 
@@ -504,23 +504,23 @@ export const JOURNAL_POSTS: JournalPost[] = [
 export const FREE_RESOURCES: Resource[] = [
     { 
         id: '01', 
-        title: 'The Clarity Audit', 
+        title: '5-Minute Brand Reality Check', 
         format: 'PDF', 
-        desc: 'A 15-point checklist to identify narrative leaks in your current brand.', 
+        desc: 'Does your brand look like a bad mixtape? If your vibe is all over the place, start here.', 
         link: './docs/audit.pdf' 
     },
     { 
         id: '02', 
-        title: 'No Magic Questionnaire', 
+        title: 'The No Magic Questionnaire', 
         format: 'PDF', 
-        desc: 'The exact intake form we use to deconstruct high-growth brands.', 
+        desc: 'The exact questions we ask when the meter is running. Steal our process and diagnose yourself.', 
         link: './docs/questionnaire.pdf' 
     },
     { 
         id: '03', 
-        title: 'Positioning One-Pager', 
+        title: 'The Cheat Sheet', 
         format: 'PDF', 
-        desc: 'A minimalist template to define your core value prop on a single page.', 
+        desc: 'A one-page template. If you can’t explain your business here, you are trying too hard.', 
         link: './docs/positioning.pdf' 
     }
 ];

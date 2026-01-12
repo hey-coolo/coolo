@@ -57,7 +57,10 @@ const ClarityPage: React.FC = () => {
                 No Magic<br/><span className="text-brand-purple italic">Formula™</span>
               </h1>
               <p className="font-body text-2xl md:text-4xl text-brand-navy/70 mt-12 leading-tight max-w-3xl italic">
-                We trade hype for real perspective. A system built for founders who want a plan that actually sticks.
+                WE DON’T INVENT YOUR BRAND. WE REVEAL IT.
+                <br/><span className="text-brand-navy/40 not-italic text-xl mt-4 block font-normal">
+                Stop chasing trends. The answer isn't a new logo—it's the truth. You already have a great brand, it's just buried under bad habits. We help you find it.
+                </span>
               </p>
             </header>
           </AnimatedSection>
@@ -66,10 +69,10 @@ const ClarityPage: React.FC = () => {
           <section className="py-24 border-t-2 border-brand-navy mb-32">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                   <div className="lg:col-span-4">
-                      <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-4 block">The Starter Kit</span>
+                      <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-4 block">The Reality Check</span>
                       <h2 className="text-5xl font-black uppercase tracking-tight leading-none text-brand-navy">Free<br/>Game.</h2>
                       <p className="mt-8 font-body text-xl text-brand-navy/60 leading-relaxed">
-                          We believe in open-sourcing our best thinking. Grab these tools and start auditing your brand vibe today.
+                          You think your branding is fine. Your customers might think it’s a mess. Use these free tools to check your pulse before you spend a dime.
                       </p>
                   </div>
                   <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -130,14 +133,14 @@ const ClarityPage: React.FC = () => {
           <section className="pb-32 border-t border-brand-navy/10 pt-24">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                   <div className="lg:col-span-4">
-                      <h3 className="text-4xl font-black uppercase text-brand-navy tracking-tight italic">The Result.</h3>
+                      <h3 className="text-4xl font-black uppercase text-brand-navy tracking-tight italic">The Outcome.</h3>
                   </div>
                   <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12">
                       {[
-                          { t: "Unmistakable Space", d: "A clear position that makes you the only logical choice in your niche." },
-                          { t: "Human Mapping", d: "Real people, real needs. We skip the corporate personas for actual insight." },
-                          { t: "The Message", d: "A narrative spine that works across every single channel you touch." },
-                          { t: "90-Day Flow", d: "A tactical plan you can actually execute without the burnout." }
+                          { t: "No More Guessing", d: "You stop wondering 'does this look right?' and start knowing 'this works'." },
+                          { t: "Human Connection", d: "We skip the corporate personas. We talk to real people about real needs." },
+                          { t: "One Clear Voice", d: "Your website, your emails, and your sales deck finally sound like the same person." },
+                          { t: "A Real Plan", d: "A 90-day roadmap you can actually follow without burning out." }
                       ].map(o => (
                           <div key={o.t}>
                               <h4 className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-2">{o.t}</h4>
