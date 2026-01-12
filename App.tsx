@@ -22,7 +22,7 @@ import AboutPage from './pages/AboutPage';
 import TierDetailPage from './pages/TierDetailPage';
 import ClarityTierPage from './pages/ClarityTierPage';
 import PartnershipDetail from './pages/PartnershipDetail';
-import FAQPage from './pages/FAQPage';
+import QAPage from './pages/FAQPage';
 import PlaybookPage from './pages/PlaybookPage';
 import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
@@ -105,7 +105,7 @@ const App: React.FC = () => {
                       <Route path="/drops" element={<DropsPage />} />
                       <Route path="/drops/:slug" element={<DropDetailPage />} />
                       <Route path="/contact" element={<ContactPage />} />
-                      <Route path="/faq" element={<FAQPage />} />
+                      <Route path="/faq" element={<QAPage />} />
                       <Route path="/unsubscribe" element={<unsubscribe />} />
                     </Routes>
                   </motion.div>
