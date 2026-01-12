@@ -20,9 +20,9 @@ const ClarityPage: React.FC = () => {
     setSelectedRes(null);
   };
 
-const handleSubscribe = async (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || !selectedRes) return;
 
     setStatus('processing');
 
@@ -32,21 +32,15 @@ const handleSubscribe = async (e: React.FormEvent) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
             email, 
-            resourceId: selectedRes?.id // <--- Pass the ID
+            resourceId: selectedRes.id 
         })
       });
 
       if (!response.ok) throw new Error('API Error');
-
-      // SUCCESS: Show the "Sent" state
       setStatus('sent');
-      
-      // NOTE: We REMOVED the document.createElement download logic here.
-      // The user must go to their email to get the file.
-
     } catch (error) {
       console.error(error);
-      setStatus('idle'); // Allow retry
+      setStatus('idle');
     }
   };
 
@@ -57,7 +51,7 @@ const handleSubscribe = async (e: React.FormEvent) => {
           <header className="py-24 md:py-48 max-w-5xl">
             <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold block mb-4">Service Leg 01 / Strategy</span>
             <h1 className="text-brand-navy text-8xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.9] mt-0">
-              No Magic<br/><span className="text-brand-purple">Formula™</span>
+              The No Magic<br/><span className="text-brand-purple">Formula™</span>
             </h1>
             <p className="font-body text-2xl md:text-4xl text-brand-navy/70 mt-12 leading-tight max-w-3xl">
               We replace hype with clarity. A calibrated system to help founders find their sharp point-of-view and a workable plan.
@@ -75,150 +69,74 @@ const handleSubscribe = async (e: React.FormEvent) => {
                     </p>
                 </div>
                 <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {FREE_RESOURCES.map((res, i) => (
-                        <AnimatedSection key={res.id} delay={i * 100} className="h-full">
+                    {FREE_RESOURCES.map((res) => (
+                        <AnimatedSection key={res.id}>
                             <button 
                                 onClick={() => handleOpenModal(res)}
-                                className="group w-full text-left border border-brand-navy/10 p-8 h-full bg-white hover:bg-brand-navy transition-all duration-500 flex flex-col"
+                                className="group bg-white border-2 border-brand-navy p-8 h-full flex flex-col text-left hover:bg-brand-purple hover:text-white transition-all duration-500 shadow-[8px_8px_0px_0px_#0F0328] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
                             >
-                                <span className="font-mono text-xs uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold mb-4 block">Resource {res.id}</span>
-                                <h3 className="text-2xl font-black uppercase tracking-tight mb-4 group-hover:text-brand-offwhite leading-none">{res.title}</h3>
-                                <p className="font-body text-sm text-brand-navy/60 group-hover:text-brand-offwhite/60 mb-8">{res.desc}</p>
-                                <div className="mt-auto flex items-center justify-between pt-4 border-t border-brand-navy/5 w-full group-hover:border-brand-offwhite/10">
-                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-navy group-hover:text-brand-offwhite">{res.format}</span>
-                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-purple group-hover:text-brand-yellow">Download &rarr;</span>
-                                </div>
+                                <span className="font-mono text-xs uppercase tracking-widest opacity-60 mb-4">{res.tag}</span>
+                                <h3 className="text-2xl font-black uppercase leading-tight mb-4">{res.title}</h3>
+                                <p className="font-body text-sm opacity-80 mb-8 flex-grow">{res.description}</p>
+                                <span className="font-mono text-xs font-bold uppercase tracking-widest border-b-2 border-current pb-1 w-fit">Get Tool &rarr;</span>
                             </button>
                         </AnimatedSection>
                     ))}
                 </div>
             </div>
         </section>
-
-        <section className="pb-48 grid grid-cols-1 md:grid-cols-2 gap-8">
-            {CLARITY_TIERS.map((tier, i) => (
-                <AnimatedSection key={tier.name} delay={i * 100}>
-                    <Link to={`/clarity/${tier.slug}`} className="block border-2 border-brand-navy p-12 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-500 h-full group relative overflow-hidden bg-white hover:border-brand-navy">
-                        <div className="flex flex-col h-full justify-between relative z-10">
-                            <div>
-                                <div className="flex justify-between items-start mb-8">
-                                    <span className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple group-hover:text-brand-yellow">{tier.subtitle}</span>
-                                    <span className="font-mono text-[10px] uppercase font-black px-2 py-1 bg-brand-navy/5 group-hover:bg-brand-offwhite/10 group-hover:text-brand-yellow">Bespoke Quote</span>
-                                </div>
-                                <h3 className="text-5xl font-black uppercase leading-none tracking-tight mb-6">{tier.name}</h3>
-                                <p className="font-body text-xl text-brand-navy/60 group-hover:text-brand-offwhite/70 transition-colors leading-relaxed">
-                                    {tier.desc}
-                                </p>
-                                
-                                <ul className="mt-8 space-y-2 border-t border-brand-navy/10 pt-8 group-hover:border-brand-offwhite/20">
-                                    {tier.features.slice(0, 3).map(f => (
-                                        <li key={f} className="font-mono text-[10px] uppercase tracking-widest flex items-center gap-2">
-                                            <span className="w-1 h-1 bg-brand-purple group-hover:bg-brand-yellow"></span> {f}
-                                        </li>
-                                    ))}
-                                    {tier.features.length > 3 && (
-                                         <li className="font-mono text-[10px] uppercase tracking-widest flex items-center gap-2 opacity-50">
-                                             + Full Protocol
-                                         </li>
-                                    )}
-                                </ul>
-                            </div>
-                            
-                            <div className="mt-12 flex items-center gap-4">
-                                <span className="font-mono text-sm uppercase font-bold tracking-widest">Explore Tier</span>
-                                <div className="w-12 h-[2px] bg-brand-navy group-hover:bg-brand-yellow group-hover:w-24 transition-all duration-500"></div>
-                            </div>
-                        </div>
-                    </Link>
-                </AnimatedSection>
-            ))}
-        </section>
-        
-        <section className="pb-32 border-t border-brand-navy/10 pt-24">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-                <div className="lg:col-span-4">
-                    <h3 className="text-4xl font-black uppercase text-brand-navy tracking-tight">The Outcome.</h3>
-                </div>
-                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12">
-                    {[
-                        { t: "Positioning", d: "A tight, credible position you can defend and communicate." },
-                        { t: "Audience Mapping", d: "Real people, real needs (JTBD), real language. No fake personas." },
-                        { t: "Messaging System", d: "Narrative spine + value props + proof points + content angles." },
-                        { t: "Story Roadmap", d: "Campaign themes, content pillars, and your next 90-day plan." }
-                    ].map(o => (
-                        <div key={o.t}>
-                            <h4 className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-2">{o.t}</h4>
-                            <p className="font-body text-xl text-brand-navy/80">{o.d}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
       </div>
 
-      {/* RESOURCE LOCK MODAL */}
       <AnimatePresence>
         {selectedRes && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-brand-navy/90 backdrop-blur-sm"
+          >
             <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] flex items-center justify-center bg-brand-navy/95 backdrop-blur-sm p-4"
-                onClick={handleCloseModal}
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-brand-offwhite w-full max-w-xl p-8 md:p-12 relative border-2 border-brand-navy shadow-[16px_16px_0px_0px_#6E3DFF]"
             >
-                <motion.div 
-                    initial={{ scale: 0.9, y: 20 }}
-                    animate={{ scale: 1, y: 0 }}
-                    exit={{ scale: 0.9, y: 20 }}
-                    className="bg-brand-offwhite p-8 md:p-12 max-w-lg w-full relative border-2 border-brand-yellow"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <button onClick={handleCloseModal} className="absolute top-4 right-4 text-brand-navy/40 hover:text-brand-navy font-mono text-xl">&times;</button>
-                    
-                    <div className="mb-8">
-                        <span className="font-mono text-xs uppercase tracking-widest text-brand-purple font-bold block mb-2">Locked Content</span>
-                        <h3 className="text-4xl font-black uppercase tracking-tight text-brand-navy leading-none">Get<br/>{selectedRes.title}</h3>
-                    </div>
-
-                    {status === 'sent' ? (
-                        <div className="text-center py-8">
-                            <div className="w-16 h-16 bg-brand-yellow text-brand-navy rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
-                        📬
-                        </div>
-                            <h4 className="text-2xl font-bold uppercase text-brand-navy mb-2">Check Your Inbox.</h4>
-                            <p className="font-body text-brand-navy/70 max-w-xs mx-auto">We've sent the secure download link to <strong>{email}</strong>.
-                        </p>
-                            <button onClick={handleCloseModal} className="mt-8 font-mono text-xs uppercase tracking-widest border-b border-brand-navy pb-1">
-                                Close Terminal
-                            </button>
-                        </div>
-                    ) : (
-                        <form onSubmit={handleSubscribe} className="space-y-6">
-                            <p className="font-body text-brand-navy/70 leading-relaxed">
-                                Where should we send the file?
-                            </p>
-                            <div>
-                                <input 
-                                    type="email" 
-                                    required
-                                    placeholder="YOUR EMAIL"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-brand-navy/5 border-b-2 border-brand-navy/20 p-4 font-mono text-sm focus:outline-none focus:border-brand-purple transition-colors placeholder-brand-navy/30 text-brand-navy"
-                                />
-                            </div>
-                            <button 
-                                type="submit" 
-                                disabled={status === 'processing'}
-                                className="w-full bg-brand-navy text-brand-offwhite font-mono uppercase font-bold py-4 hover:bg-brand-purple transition-all disabled:opacity-50 disabled:cursor-wait"
-                            >
-                                {status === 'processing' ? 'Processing...' : 'Get Download'}
-                            </button>
-                            <p className="text-center font-mono text-[9px] uppercase text-brand-navy/30">No Spam. Just Value.</p>
-                        </form>
-                    )}
-                </motion.div>
+              <button onClick={handleCloseModal} className="absolute top-6 right-6 text-brand-navy hover:text-brand-purple transition-colors text-2xl font-black">✕</button>
+              
+              {status === 'sent' ? (
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-brand-yellow rounded-full flex items-center justify-center mx-auto mb-8 border-2 border-brand-navy">
+                    <span className="text-3xl">✓</span>
+                  </div>
+                  <h3 className="text-3xl font-black uppercase mb-4">Check Your Inbox</h3>
+                  <p className="font-body text-brand-navy/60">We've sent the {selectedRes.title} to your email. Go get it.</p>
+                  <button onClick={handleCloseModal} className="mt-12 font-mono text-xs uppercase font-black tracking-widest border-b-2 border-brand-navy pb-1">Back to site</button>
+                </div>
+              ) : (
+                <>
+                  <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-4 block">Requesting: {selectedRes.title}</span>
+                  <h3 className="text-4xl font-black uppercase text-brand-navy mb-6 leading-none">Where should we send the file?</h3>
+                  <form onSubmit={handleSubscribe} className="space-y-6">
+                    <input 
+                      type="email" 
+                      required
+                      placeholder="YOUR@EMAIL.COM"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full bg-brand-navy/5 border-2 border-brand-navy p-6 font-mono text-xl focus:border-brand-purple focus:outline-none transition-colors"
+                    />
+                    <button 
+                      type="submit"
+                      disabled={status === 'processing'}
+                      className="w-full bg-brand-navy text-white font-black uppercase py-6 text-xl hover:bg-brand-purple transition-colors disabled:opacity-50"
+                    >
+                      {status === 'processing' ? 'Processing...' : 'Send it to me'}
+                    </button>
+                    <p className="text-[10px] font-mono uppercase tracking-widest text-brand-navy/40 text-center">By clicking, you're joining the COOLO network. No spam, just high-signal strategy.</p>
+                  </form>
+                </>
+              )}
             </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

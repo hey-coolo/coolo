@@ -1,28 +1,26 @@
 import React from 'react';
 
 interface BrandLogoProps {
+  variant?: 'light' | 'dark';
   className?: string;
-  color?: string;
 }
 
-const BrandLogo: React.FC<BrandLogoProps> = ({ className = "w-32", color = "#0F0328" }) => {
-  // Logic: The Header passes specific hex codes. 
-  // If the requested color is Light (White/#F7F7F7), load the Light SVG.
-  // Otherwise, load the Dark (Navy) SVG.
-  
-  const isLight = color === '#F7F7F7' || color === '#ffffff' || color === 'white';
-  const logoSrc = isLight 
-    ? '/assets/logos/logo-light.svg' 
-    : '/assets/logos/logo-dark.svg';
+const BrandLogo: React.FC<BrandLogoProps> = ({ variant = 'dark', className = 'h-8' }) => {
+  const logoSrc = variant === 'light' 
+    ? './assets/logos/logo-light.svg' 
+    : './assets/logos/logo-dark.svg';
 
   return (
-    <div className={`${className} flex items-center justify-center`}>
-      <img 
-        src={logoSrc} 
-        alt="COOLO" 
-        className="w-full h-full object-contain"
-      />
-    </div>
+    <img 
+      src={logoSrc} 
+      alt="COOLO" 
+      className={className}
+      onError={(e) => {
+        // Fallback to text if SVG fails to load
+        e.currentTarget.style.display = 'none';
+        e.currentTarget.parentElement!.innerHTML = '<span class="font-black text-2xl tracking-tighter">COOLO</span>';
+      }}
+    />
   );
 };
 
