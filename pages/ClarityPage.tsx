@@ -57,7 +57,7 @@ const ClarityPage: React.FC = () => {
                 No Magic<br/><span className="text-brand-purple italic">Formula™</span>
               </h1>
               <p className="font-body text-2xl md:text-4xl text-brand-navy/70 mt-12 leading-tight max-w-3xl italic">
-                WE DON’T INVENT YOUR BRAND. WE REVEAL IT.
+                We Don’t invent your brand. We help you reveal it.
                 <br/><span className="text-brand-navy/40 not-italic text-xl mt-4 block font-normal">
                 Stop chasing trends. The answer isn't a new logo—it's the truth. You already have a great brand, it's just buried under bad habits. We help you find it.
                 </span>
