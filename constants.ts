@@ -50,33 +50,9 @@ export const PROJECTS: Project[] = [
         ]
     }
   },
-  {
-    id: 8,
-    title: 'Just Boxes',
-    slug: 'just-boxes',
-    description: 'Elevating the structural honesty of material packaging.',
-    category: 'Packaging',
-    tags: ['Packaging', 'Industrial', 'Minimalism'],
-    year: 2025,
-    imageUrl: './assets/cases/just-boxes/Hero.webp', 
-    featured: true,
-    client: 'Just Boxes',
-    role: 'Creative Direction',
-    detailImages: [
-        './assets/cases/just-boxes/detail-1.webp',
-        './assets/cases/just-boxes/detail-2.webp'
-    ],
-    story: {
-        goal: "Celebrate cardboard as a primary luxury material.",
-        gap: "Sustainable packaging is often over-designed.",
-        gamble: "No plastic coatings. We used structural folding.",
-        gain: "A signature packaging system that is 100% recyclable.",
-        processImages: [
-            '/assets/cases/just-boxes/detail-1.webp',
-            '/assets/cases/just-boxes/detail-2.webp'
-        ]
-    }
-  },    
+  
+  
+
   {
     id: 2,
     title: 'Surfboard v001',
@@ -107,97 +83,40 @@ export const PROJECTS: Project[] = [
         ]
     }
   },
-  {
-    id: 4,
-    title: 'The Cartridges',
-    slug: 'the-cartridges',
-    description: 'Vintage classic snes cartridges. The cartridges popular in the late 80s and early 90s include games using 8-bits, low-resolution pixel matrix screens. Games like super mario, contra ii, mortal kombat, donkey kong, and more.',
-    category: '3D Design',
-    tags: ['Industrial', 'Hardware', 'Lighting',],
-    year: 2021,
-    imageUrl: './assets/cases/the-cartridges/Hero.webp',
-    featured: false,
-    client: 'Concept Art Test',
-    role: '3D Artist',
-    detailImages: [ 
-        './assets/cases/the-cartridges/detail-1.webp', 
-        './assets/cases/the-cartridges/detail-2.webp', 
-        './assets/cases/the-cartridges/detail-3.webp', 
-        './assets/cases/the-cartridges/detail-4.webp'],
 
-        story: {
-        goal: "Represent complex modularity through simple, high-res geometric lighting.",
-        gap: "Technical products are often shown in flat lighting.",
-        gamble: "Using pitch-black environments to force focus.",
-        gain: "A set of high-converting visual assets.",
-        processImages: [
-        './assets/cases/the-cartridges/process-1.webp', 
-        './assets/cases/the-cartridges/process-2.webp', 
-        './assets/cases/the-cartridges/process-3.webp']
-    }
-  },
-  {
-    id: 7,
-    title: 'Johney’s Dumpling House',
-    slug: 'johneys-dumpling-house',
-    description: 'High-energy hospitality branding with a contemporary street-food edge.',
-    category: 'Photography',
-    tags: ['Hospitality', 'Photography', 'Food Photography'],
-    year: 2020,
-    imageUrl: './assets/cases/johneys-dumpling-house/Hero.webp',
-    featured: true,
-    client: 'Jonhey’s Dumpling House',
-    role: 'Food Photography',
+    {
+    id: 3,
+    title: 'Ntegrity',
+    slug: 'ntegrity',
+    description: 'Operational design support for Australia’s leading non-profit marketing agency.',
+    category: 'Partnership',
+    tags: ['Agency', 'Digital Ads', 'Social Media', 'Events'],
+    year: 2022,
+    imageUrl: '/assets/cases/ntegrity/Hero.webp', 
+    featured: false,
+    client: 'Ntegrity Agency',
+    role: 'Mid-Weight Designer',
     detailImages: [
-        './assets/cases/johneys-dumpling-house/detail-1.webp',
-        './assets/cases/johneys-dumpling-house/detail-2.webp',
-        './assets/cases/johneys-dumpling-house/detail-3.webp'
+        '/assets/cases/ntegrity/detail-1.webp',
+        '/assets/cases/ntegrity/detail-2.webp',
+        '/assets/cases/ntegrity/detail-3.gif',
+        '/assets/cases/ntegrity/detail-4.webp',
+        '/assets/cases/ntegrity/detail-5.gif'
     ],
     story: {
-        goal: "Showcase the exquisite craftsmanship of Johney's delectable dumplings but also serve as the visual centerpiece for their festival food stall menus.",
-        gap: "Typical dumpling photography can feel flat and generic — not capturing the personality and handmade soul behind the food.",
-        gamble: "Injecting energy into the visuals with playful compositions and vibrant lighting that reflect the brand’s street-food spirit.",
-        gain: "A library of images that turned menus into memorable brand touchpoints and helped position Johney’s as a standout in busy festival environments.",
+        goal: "Collaborated seamlessly with the Ntegrity team, to bring creative visions to life.",
+        gap: "", // Empty to trigger Gallery Mode
+        gamble: "Multidisciplinary role as a Mid-Weight Designer at ntegrity.",
+        gain: "Digital design, display ads, social media paid ads, email design, web design, brand guidelines.",
         processImages: [
-            './assets/cases/johneys-dumpling-house/process-1.webp',
-            './assets/cases/johneys-dumpling-house/process-2.webp',
-            './assets/cases/johneys-dumpling-house/process-3.webp'
+            '/assets/cases/ntegrity/process-1.webp',
+            '/assets/cases/ntegrity/process-2.webp',
+            '/assets/cases/ntegrity/process-3.webp',
+            '/assets/cases/ntegrity/process-4.gif',
+            '/assets/cases/ntegrity/process-5.png'
         ]
     }
   },
-  {
-    id: 6,
-    title: 'Franca Austral',
-    slug: 'franca-austral',
-    description: 'Editorial-led identity design inspired by Southern landscapes.',
-    category: 'Brand Identity',
-    tags: ['Editorial', 'Strategy', 'Nature'],
-    year: 2018,
-    imageUrl: './assets/cases/franca-austral/Hero.webp',
-    featured: false,
-    client: 'Franca Austral Cerveceria',
-    role: 'Creative Designer',
-    detailImages: [
-        './assets/cases/franca-austral/detail-1.webp',
-        './assets/cases/franca-austral/detail-2.webp',
-        './assets/cases/franca-austral/detail-3.webp',
-        './assets/cases/franca-austral/detail-4.webp'
-
-    ],
-    story: {
-        goal: "Capture the essence of Patagonia coastal landscapes for a craft beer company.",
-        gap: "The new brand identity perfectly captures franca austral's essence - their passion for handcrafted beer, love for whales, and coastal location.",
-        gamble: "A 60-page brand book with almost zero body copy.",
-        gain: "The brand well positioned among customers who enjoy and appreciate natural, quality beer without additives.",
-        processImages: [
-            './assets/cases/franca-austral/process-1.webp',
-            './assets/cases/franca-austral/process-2.webp',
-            './assets/cases/franca-austral/process-3.webp',
-            './assets/cases/franca-austral/process-4.webp'
-            ]
-    }
-  },
- 
 {
     id: 5,
     title: 'Pablo Creative',
@@ -235,36 +154,121 @@ export const PROJECTS: Project[] = [
         ] 
     }
   },
-  {
-    id: 3,
-    title: 'Ntegrity',
-    slug: 'ntegrity',
-    description: 'Operational design support for Australia’s leading non-profit marketing agency.',
-    category: 'Partnership',
-    tags: ['Agency', 'Digital Ads', 'Social Media', 'Events'],
-    year: 2022,
-    imageUrl: '/assets/cases/ntegrity/Hero.webp', 
+
+{
+    id: 4,
+    title: 'The Cartridges',
+    slug: 'the-cartridges',
+    description: 'Vintage classic snes cartridges. The cartridges popular in the late 80s and early 90s include games using 8-bits, low-resolution pixel matrix screens. Games like super mario, contra ii, mortal kombat, donkey kong, and more.',
+    category: '3D Design',
+    tags: ['Industrial', 'Hardware', 'Lighting',],
+    year: 2021,
+    imageUrl: './assets/cases/the-cartridges/Hero.webp',
     featured: false,
-    client: 'Ntegrity Agency',
-    role: 'Mid-Weight Designer',
+    client: 'Concept Art Test',
+    role: '3D Artist',
+    detailImages: [ 
+        './assets/cases/the-cartridges/detail-1.webp', 
+        './assets/cases/the-cartridges/detail-2.webp', 
+        './assets/cases/the-cartridges/detail-3.webp', 
+        './assets/cases/the-cartridges/detail-4.webp'],
+
+        story: {
+        goal: "Represent complex modularity through simple, high-res geometric lighting.",
+        gap: "Technical products are often shown in flat lighting.",
+        gamble: "Using pitch-black environments to force focus.",
+        gain: "A set of high-converting visual assets.",
+        processImages: [
+        './assets/cases/the-cartridges/process-1.webp', 
+        './assets/cases/the-cartridges/process-2.webp', 
+        './assets/cases/the-cartridges/process-3.webp']
+    }
+  },
+ {
+    id: 7,
+    title: 'Johney’s Dumpling House',
+    slug: 'johneys-dumpling-house',
+    description: 'High-energy hospitality branding with a contemporary street-food edge.',
+    category: 'Photography',
+    tags: ['Hospitality', 'Photography', 'Food Photography'],
+    year: 2020,
+    imageUrl: './assets/cases/johneys-dumpling-house/Hero.webp',
+    featured: true,
+    client: 'Jonhey’s Dumpling House',
+    role: 'Food Photography',
     detailImages: [
-        '/assets/cases/ntegrity/detail-1.webp',
-        '/assets/cases/ntegrity/detail-2.webp',
-        '/assets/cases/ntegrity/detail-3.gif',
-        '/assets/cases/ntegrity/detail-4.webp',
-        '/assets/cases/ntegrity/detail-5.gif'
+        './assets/cases/johneys-dumpling-house/detail-1.webp',
+        './assets/cases/johneys-dumpling-house/detail-2.webp',
+        './assets/cases/johneys-dumpling-house/detail-3.webp'
     ],
     story: {
-        goal: "Collaborated seamlessly with the Ntegrity team, to bring creative visions to life.",
-        gap: "", // Empty to trigger Gallery Mode
-        gamble: "Multidisciplinary role as a Mid-Weight Designer at ntegrity.",
-        gain: "Digital design, display ads, social media paid ads, email design, web design, brand guidelines.",
+        goal: "Showcase the exquisite craftsmanship of Johney's delectable dumplings but also serve as the visual centerpiece for their festival food stall menus.",
+        gap: "Typical dumpling photography can feel flat and generic — not capturing the personality and handmade soul behind the food.",
+        gamble: "Injecting energy into the visuals with playful compositions and vibrant lighting that reflect the brand’s street-food spirit.",
+        gain: "A library of images that turned menus into memorable brand touchpoints and helped position Johney’s as a standout in busy festival environments.",
         processImages: [
-            '/assets/cases/ntegrity/process-1.webp',
-            '/assets/cases/ntegrity/process-2.webp',
-            '/assets/cases/ntegrity/process-3.webp',
-            '/assets/cases/ntegrity/process-4.gif',
-            '/assets/cases/ntegrity/process-5.png'
+            './assets/cases/johneys-dumpling-house/process-1.webp',
+            './assets/cases/johneys-dumpling-house/process-2.webp',
+            './assets/cases/johneys-dumpling-house/process-3.webp'
+        ]
+    }
+  },
+ {
+    id: 6,
+    title: 'Franca Austral',
+    slug: 'franca-austral',
+    description: 'Editorial-led identity design inspired by Southern landscapes.',
+    category: 'Brand Identity',
+    tags: ['Editorial', 'Strategy', 'Nature'],
+    year: 2018,
+    imageUrl: './assets/cases/franca-austral/Hero.webp',
+    featured: false,
+    client: 'Franca Austral Cerveceria',
+    role: 'Creative Designer',
+    detailImages: [
+        './assets/cases/franca-austral/detail-1.webp',
+        './assets/cases/franca-austral/detail-2.webp',
+        './assets/cases/franca-austral/detail-3.webp',
+        './assets/cases/franca-austral/detail-4.webp'
+
+    ],
+    story: {
+        goal: "Capture the essence of Patagonia coastal landscapes for a craft beer company.",
+        gap: "The new brand identity perfectly captures franca austral's essence - their passion for handcrafted beer, love for whales, and coastal location.",
+        gamble: "A 60-page brand book with almost zero body copy.",
+        gain: "The brand well positioned among customers who enjoy and appreciate natural, quality beer without additives.",
+        processImages: [
+            './assets/cases/franca-austral/process-1.webp',
+            './assets/cases/franca-austral/process-2.webp',
+            './assets/cases/franca-austral/process-3.webp',
+            './assets/cases/franca-austral/process-4.webp'
+            ]
+    }
+  },
+ {
+    id: 8,
+    title: 'Just Boxes',
+    slug: 'just-boxes',
+    description: 'Elevating the structural honesty of material packaging.',
+    category: 'Packaging',
+    tags: ['Packaging', 'Industrial', 'Minimalism'],
+    year: 2025,
+    imageUrl: './assets/cases/just-boxes/Hero.webp', 
+    featured: true,
+    client: 'Just Boxes',
+    role: 'Creative Direction',
+    detailImages: [
+        './assets/cases/just-boxes/detail-1.webp',
+        './assets/cases/just-boxes/detail-2.webp'
+    ],
+    story: {
+        goal: "Celebrate cardboard as a primary luxury material.",
+        gap: "Sustainable packaging is often over-designed.",
+        gamble: "No plastic coatings. We used structural folding.",
+        gain: "A signature packaging system that is 100% recyclable.",
+        processImages: [
+            '/assets/cases/just-boxes/detail-1.webp',
+            '/assets/cases/just-boxes/detail-2.webp'
         ]
     }
   }
