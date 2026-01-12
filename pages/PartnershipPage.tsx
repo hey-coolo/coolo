@@ -9,8 +9,7 @@ const PartnershipPage: React.FC = () => {
       <div className="container mx-auto px-8">
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-5xl">
-            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold block mb-4">Leg 3: Scale</span>
-            {/* UPDATED HEADER STYLE */}
+            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold">Leg 3: Scale</span>
             <h1 className="text-brand-navy text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] mt-0">
               The Scale<br/><span className="text-brand-purple italic">Button.</span>
             </h1>
@@ -63,7 +62,7 @@ const PartnershipPage: React.FC = () => {
         </section>
 
         {/* Capabilities */}
-        <section className="py-32 border-y border-brand-navy/10 bg-white -mx-8 px-8">
+        <section className="py-32 border-t border-brand-navy/10 bg-white -mx-8 px-8">
             <div className="container mx-auto">
                 <div className="max-w-4xl mb-16">
                     <h2 className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-6">Capabilities</h2>
@@ -91,18 +90,7 @@ const PartnershipPage: React.FC = () => {
                 </div>
             </div>
         </section>
-
-        <section className="py-48 text-center">
-             <AnimatedSection>
-                 <span className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-8 block">Network Status: Accepting Partners</span>
-                 <h2 className="text-[12vw] font-black uppercase tracking-tight leading-none mb-16 text-brand-navy">
-                    Signal the<br/><span className="text-brand-purple italic">Unit.</span>
-                 </h2>
-                 <a href="mailto:hey@coolo.co.nz" className="inline-block bg-brand-navy text-brand-offwhite font-mono text-2xl uppercase px-16 py-8 hover:bg-brand-purple transition-all duration-700 shadow-2xl">
-                    hey@coolo.co.nz
-                 </a>
-             </AnimatedSection>
-        </section>
+       
       </div>
     </div>
   );

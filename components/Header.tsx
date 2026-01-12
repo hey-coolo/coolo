@@ -63,22 +63,35 @@ const Header: React.FC = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-10">
           {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.name}
-              to={link.path}
-              className={({ isActive }) => `font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 relative group font-bold ${
-                isLightText ? 'text-brand-offwhite hover:text-brand-yellow drop-shadow-sm' : 'text-brand-navy hover:text-brand-purple'
-              } ${isActive ? (isLightText ? '!text-brand-yellow' : '!text-brand-purple underline decoration-2 underline-offset-4') : ''}`}
-            >
-              {({ isActive }) => (
-                <>
+            <div key={link.name} className="relative group">
+                <NavLink
+                  to={link.path}
+                  className={({ isActive }) => `font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 relative font-bold block py-4 ${
+                    isLightText ? 'text-brand-offwhite hover:text-brand-yellow drop-shadow-sm' : 'text-brand-navy hover:text-brand-purple'
+                  } ${isActive ? (isLightText ? '!text-brand-yellow' : '!text-brand-purple underline decoration-2 underline-offset-4') : ''}`}
+                >
                   {link.name.toUpperCase()}
-                  {!isActive && <span className={`absolute -bottom-1 left-0 w-0 h-[2px] bg-brand-yellow group-hover:w-full transition-all duration-300`}></span>}
-                </>
-              )}
-            </NavLink>
+                </NavLink>
+
+                {/* Desktop Dropdown */}
+                {link.subLinks && (
+                    <div className="absolute left-0 pt-2 w-48 hidden group-hover:block">
+                        <div className="bg-brand-navy border border-brand-offwhite/10 shadow-xl py-2">
+                            {link.subLinks.map((sub) => (
+                                <Link 
+                                    key={sub.name}
+                                    to={sub.path}
+                                    className="block px-4 py-2 font-mono text-[9px] uppercase tracking-widest text-brand-offwhite hover:bg-brand-purple hover:text-white transition-colors"
+                                >
+                                    {sub.name}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
           ))}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 ml-6">
               <span className={`font-mono text-[9px] uppercase tracking-widest opacity-40 px-3 py-1.5 border border-current rounded-md font-bold transition-opacity hover:opacity-100 ${isLightText ? 'text-brand-offwhite border-brand-offwhite/30' : 'text-brand-navy border-brand-navy/10 bg-brand-navy/5'}`}>
                   V2.0_ALPHA
               </span>
@@ -110,7 +123,7 @@ const Header: React.FC = () => {
                 animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
                 exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
                 transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-                className="fixed inset-0 bg-brand-navy z-50 flex flex-col items-center justify-center space-y-6 md:hidden px-8"
+                className="fixed inset-0 bg-brand-navy z-50 flex flex-col items-center justify-center space-y-6 md:hidden px-8 overflow-y-auto py-20"
             >
                 {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
@@ -118,7 +131,7 @@ const Header: React.FC = () => {
                     <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-brand-yellow rounded-full blur-[100px]"></div>
                 </div>
 
-                <div className="flex flex-col items-center gap-6 relative z-10 w-full">
+                <div className="flex flex-col items-center gap-8 relative z-10 w-full">
                     {NAV_LINKS.map((link, i) => (
                         <motion.div
                             key={link.name}
@@ -130,12 +143,28 @@ const Header: React.FC = () => {
                             <NavLink 
                                 to={link.path}
                                 onClick={() => setIsOpen(false)}
-                                className={({ isActive }) => `block font-black text-4xl uppercase tracking-tighter transition-colors ${
+                                className={({ isActive }) => `block font-black text-4xl uppercase tracking-tighter transition-colors mb-2 ${
                                     isActive ? 'text-brand-yellow' : 'text-brand-offwhite hover:text-brand-yellow'
                                 }`}
                             >
                                 {link.name}
                             </NavLink>
+                            
+                            {/* Mobile Sublinks */}
+                            {link.subLinks && (
+                                <div className="flex flex-col gap-2 mb-4">
+                                    {link.subLinks.map(sub => (
+                                        <Link 
+                                            key={sub.name}
+                                            to={sub.path}
+                                            onClick={() => setIsOpen(false)}
+                                            className="font-mono text-xs uppercase tracking-widest text-brand-offwhite/50 hover:text-brand-white"
+                                        >
+                                            {sub.name}
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
                         </motion.div>
                     ))}
                     
@@ -143,7 +172,7 @@ const Header: React.FC = () => {
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
-                        className="mt-12 flex flex-col items-center gap-8 w-full border-t border-brand-offwhite/10 pt-12"
+                        className="mt-8 flex flex-col items-center gap-8 w-full border-t border-brand-offwhite/10 pt-12"
                     >
                         <span className="font-mono text-[9px] uppercase tracking-widest text-brand-offwhite/50 border border-brand-offwhite/20 px-3 py-1 rounded">
                             V2.0_ALPHA

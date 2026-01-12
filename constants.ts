@@ -297,10 +297,45 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
 };
 
 export const NAV_LINKS = [
-  { name: 'Studio', path: '/about' }, 
-  { name: 'Clarity', path: '/clarity' },
-  { name: 'Design Power', path: '/design-power' },
-  { name: 'Partnership', path: '/partnership' },
+  { 
+    name: 'Studio', 
+    path: '/about',
+    subLinks: [
+      { name: 'The Unit', path: '/team' },
+      { name: 'Playbook', path: '/playbook' },
+      { name: 'Join Us', path: '/join' },
+      { name: 'Drops', path: '/drops' }
+    ]
+  }, 
+  { 
+    name: 'Clarity', 
+    path: '/clarity',
+    subLinks: [
+      { name: 'Free Resources', path: '/clarity/free-resources' },
+      { name: 'Workbook', path: '/clarity/workbook' },
+      { name: 'Course', path: '/clarity/course' }
+    ]
+  },
+  { 
+    name: 'Design Power', 
+    path: '/design-power',
+    subLinks: [
+      { name: 'The Basics', path: '/design-power/the-basics' },
+      { name: 'The Campaign', path: '/design-power/the-campaign' },
+      { name: 'The Website', path: '/design-power/the-website' },
+      { name: 'The Full Flex', path: '/design-power/the-full-flex' }
+    ]
+  },
+  { 
+    name: 'Partnership', 
+    path: '/partnership',
+    subLinks: [
+      { name: 'Scale', path: '/partnership/scale' },
+      { name: 'Fractional CD', path: '/partnership/fractional-cd' },
+      { name: 'Project Spike', path: '/partnership/project-spike' },
+      { name: 'Equity', path: '/partnership/equity' }
+    ]
+  },
   { name: 'Work', path: '/work' },
   { name: 'Journal', path: '/journal' },
   { name: 'FAQ', path: '/faq' },
