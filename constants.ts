@@ -51,7 +51,7 @@ export const PROJECTS: Project[] = [
     }
   },
   {
-    id: 2,
+    id: 8,
     title: 'Just Boxes',
     slug: 'just-boxes',
     description: 'Elevating the structural honesty of material packaging.',
@@ -78,7 +78,7 @@ export const PROJECTS: Project[] = [
     }
   },    
   {
-    id: 3,
+    id: 2,
     title: 'Surfboard v001',
     slug: 'surfboard-v001',
     description: 'Technical 3D exploration of hydro-dynamic resin surfacing.',
@@ -137,7 +137,7 @@ export const PROJECTS: Project[] = [
     }
   },
   {
-    id: 5,
+    id: 7,
     title: 'Johney’s Dumpling House',
     slug: 'johneys-dumpling-house',
     description: 'High-energy hospitality branding with a contemporary street-food edge.',
@@ -197,29 +197,9 @@ export const PROJECTS: Project[] = [
             ]
     }
   },
-  {
-    id: 7,
-    title: 'Traveller to Entrepreneur',
-    slug: 'traveller-entrepreneur',
-    description: 'Strategic repositioning for a high-performance global nomadic brand.',
-    category: 'Strategy',
-    tags: ['Positioning', 'Messaging', 'Narrative'],
-    year: 2021,
-    imageUrl: './assets/cases/traveller-entrepreneur/Hero.webp',
-    featured: true,
-    client: 'Personal Brand',
-    role: 'Lead Strategist',
-    detailImages: [],
-    story: {
-        goal: "Pivot an audience from 'lifestyle travel' to 'business technicality'.",
-        gap: "The travel content was too casual.",
-        gamble: "Cutting 80% of existing content categories.",
-        gain: "A 300% increase in inbound consulting leads.",
-        processImages: []
-    }
-  },
+ 
 {
-    id: 8,
+    id: 5,
     title: 'Pablo Creative',
     slug: 'pablo-creative',
     description: 'Multidisciplinary design studio partnership. Covering photography, graphic design, web, and motion.',
@@ -234,18 +214,29 @@ export const PROJECTS: Project[] = [
         '/assets/cases/pablo-creative/detail-1.webp',
         '/assets/cases/pablo-creative/detail-2.webp',
         '/assets/cases/pablo-creative/detail-3.webp',
-        '/assets/cases/pablo-creative/detail-4.webp'
+        '/assets/cases/pablo-creative/detail-4.webp',
+        '/assets/cases/pablo-creative/detail-5.webp',
+        '/assets/cases/pablo-creative/detail-6.webp',
+        '/assets/cases/pablo-creative/detail-7.webp'
     ],
     story: {
         goal: "Deliver high-output creative across every medium: Print, Web, Motion, and Video.",
         gap: "", // Empty to trigger Gallery Mode
         gamble: "", 
         gain: "A diverse portfolio of integrated campaigns built on speed and precision.",
-        processImages: [] 
+        processImages: [
+            '/assets/cases/pablo-creative/process-1.webp',
+            '/assets/cases/pablo-creative/process-2.webp',
+            '/assets/cases/pablo-creative/process-3.webp',
+            '/assets/cases/pablo-creative/process-4.webp',
+            '/assets/cases/pablo-creative/process-5.webp',
+            '/assets/cases/pablo-creative/process-6.webp',
+            '/assets/cases/pablo-creative/process-7.webp'
+        ] 
     }
   },
   {
-    id: 9,
+    id: 3,
     title: 'Ntegrity',
     slug: 'ntegrity',
     description: 'Operational design support for Australia’s leading non-profit marketing agency.',
@@ -259,14 +250,22 @@ export const PROJECTS: Project[] = [
     detailImages: [
         '/assets/cases/ntegrity/detail-1.webp',
         '/assets/cases/ntegrity/detail-2.webp',
-        '/assets/cases/ntegrity/detail-3.webp'
+        '/assets/cases/ntegrity/detail-3.gif',
+        '/assets/cases/ntegrity/detail-4.webp',
+        '/assets/cases/ntegrity/detail-5.gif'
     ],
     story: {
         goal: "Support large-scale fundraising events with high-volume digital assets and paid media content.",
         gap: "", // Empty to trigger Gallery Mode
         gamble: "",
         gain: "Seamless campaign execution for major Australian non-profits.",
-        processImages: []
+        processImages: [
+            '/assets/cases/ntegrity/process-1.webp',
+            '/assets/cases/ntegrity/process-2.webp',
+            '/assets/cases/ntegrity/process-3.webp',
+            '/assets/cases/ntegrity/process-4.gif',
+            '/assets/cases/ntegrity/process-5.png'
+        ]
     }
   }
 ];
