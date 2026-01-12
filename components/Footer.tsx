@@ -77,30 +77,14 @@ const Footer: React.FC = () => {
                         GRIND.
                     </span>
                 </h2>
-                <a 
-                    href="mailto:hey@coolo.co.nz" 
+                
+                {/* CHANGED: Replaced mailto with Link to Contact Page */}
+                <Link 
+                    to="/contact" 
                     className="inline-block mt-16 text-3xl md:text-5xl font-sans font-black hover:text-brand-purple transition-colors duration-300 underline decoration-brand-yellow decoration-4 underline-offset-8"
                 >
                     hey@coolo.co.nz
-                </a>
-            </div>
-
-            {/* Protocol Status Box */}
-            <div className="mt-32 max-w-4xl mx-auto border-2 border-brand-purple/20 p-8 md:p-12 relative overflow-hidden bg-white/50 backdrop-blur-sm">
-                <div className="absolute top-0 left-0 w-2 h-full bg-brand-purple"></div>
-                <div className="flex flex-col md:flex-row gap-8 items-start">
-                    <div className="font-mono text-[10px] uppercase font-black text-brand-purple px-2 py-1 bg-brand-purple/5 border border-brand-purple/20 whitespace-nowrap">
-                        Protocol Status: 2.0_Alpha
-                    </div>
-                    <div className="space-y-4">
-                        <p className="font-mono text-[10px] uppercase tracking-widest leading-relaxed text-brand-navy/60 font-bold">
-                            This interface is currently live for testing and calibration purposes. The case studies, technical imagery, and copy provided do not yet fully reflect the studio's real-world output or the final "Senior Unit" protocol.
-                        </p>
-                        <p className="font-mono text-[10px] uppercase tracking-widest leading-relaxed text-brand-navy/40">
-                            We believe in continuous improvement and the logic of public builds. High-fidelity assets are currently undergoing final rendering and will replace these placeholders shortly.
-                        </p>
-                    </div>
-                </div>
+                </Link>
             </div>
 
         </div>
