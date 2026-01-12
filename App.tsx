@@ -22,7 +22,7 @@ import AboutPage from './pages/AboutPage';
 import TierDetailPage from './pages/TierDetailPage';
 import ClarityTierPage from './pages/ClarityTierPage';
 import PartnershipDetail from './pages/PartnershipDetail';
-import QAPage from './pages/FAQPage';
+import QAPage from './pages/QAPage';
 import PlaybookPage from './pages/PlaybookPage';
 import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
