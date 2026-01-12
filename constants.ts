@@ -84,7 +84,7 @@ export const PROJECTS: Project[] = [
     description: 'Technical 3D exploration of hydro-dynamic resin surfacing.',
     category: '3D Design',
     tags: ['3D Viz', 'Technical', 'Surfacing'],
-    year: 2022,
+    year: 2023,
     imageUrl: './assets/cases/surfboard-v001/Hero.webp',
     featured: true,
     client: 'Concept Art Test',
@@ -111,10 +111,10 @@ export const PROJECTS: Project[] = [
     id: 4,
     title: 'The Cartridges',
     slug: 'the-cartridges',
-    description: 'Hardware visualization focusing on modular industrial aesthetics.',
+    description: 'Vintage classic snes cartridges. The cartridges popular in the late 80s and early 90s include games using 8-bits, low-resolution pixel matrix screens. Games like super mario, contra ii, mortal kombat, donkey kong, and more.',
     category: '3D Design',
-    tags: ['Industrial', 'Hardware', 'Lighting'],
-    year: 2022,
+    tags: ['Industrial', 'Hardware', 'Lighting',],
+    year: 2021,
     imageUrl: './assets/cases/the-cartridges/Hero.webp',
     featured: false,
     client: 'Concept Art Test',
@@ -143,7 +143,7 @@ export const PROJECTS: Project[] = [
     description: 'High-energy hospitality branding with a contemporary street-food edge.',
     category: 'Photography',
     tags: ['Hospitality', 'Photography', 'Food Photography'],
-    year: 2021,
+    year: 2020,
     imageUrl: './assets/cases/johneys-dumpling-house/Hero.webp',
     featured: true,
     client: 'Jonhey’s Dumpling House',
@@ -175,8 +175,8 @@ export const PROJECTS: Project[] = [
     year: 2018,
     imageUrl: './assets/cases/franca-austral/Hero.webp',
     featured: false,
-    client: 'Franca Collective',
-    role: 'Art Director',
+    client: 'Franca Austral Cerveceria',
+    role: 'Creative Designer',
     detailImages: [
         './assets/cases/franca-austral/detail-1.webp',
         './assets/cases/franca-austral/detail-2.webp',
@@ -185,10 +185,10 @@ export const PROJECTS: Project[] = [
 
     ],
     story: {
-        goal: "Capture the vast silence of southern landscapes.",
-        gap: "Nature brands are often cluttered.",
+        goal: "Capture the essence of Patagonia coastal landscapes for a craft beer company.",
+        gap: "The new brand identity perfectly captures franca austral's essence - their passion for handcrafted beer, love for whales, and coastal location.",
         gamble: "A 60-page brand book with almost zero body copy.",
-        gain: "A sophisticated, high-end presence.",
+        gain: "The brand well positioned among customers who enjoy and appreciate natural, quality beer without additives.",
         processImages: [
             './assets/cases/franca-austral/process-1.webp',
             './assets/cases/franca-austral/process-2.webp',
@@ -205,7 +205,7 @@ export const PROJECTS: Project[] = [
     description: 'Multidisciplinary design studio partnership. Covering photography, graphic design, web, and motion.',
     category: 'Partnership',
     tags: ['Studio', 'Motion', 'Photography', 'Graphic Design'],
-    year: 2020,
+    year: 2022,
     imageUrl: '/assets/cases/pablo-creative/Hero.webp', 
     featured: false,
     client: 'Pablo Creative',
@@ -220,10 +220,10 @@ export const PROJECTS: Project[] = [
         '/assets/cases/pablo-creative/detail-7.webp'
     ],
     story: {
-        goal: "Deliver high-output creative across every medium: Print, Web, Motion, and Video.",
+        goal: "Combined innovation with style, to ensure creative work and service met the needs and expectations of clients by collaborating side by side with the owner and Creative Director, Ben.",
         gap: "", // Empty to trigger Gallery Mode
-        gamble: "", 
-        gain: "A diverse portfolio of integrated campaigns built on speed and precision.",
+        gamble: "Branding, marketing, vector illustration, photography, videography, web design,motion graphics, gfx, and more.", 
+        gain: "A delightful experience collaborating with Ben from Pablo Creative. Ben's keen insight set the tone for our work together.",
         processImages: [
             '/assets/cases/pablo-creative/process-1.webp',
             '/assets/cases/pablo-creative/process-2.webp',
@@ -242,7 +242,7 @@ export const PROJECTS: Project[] = [
     description: 'Operational design support for Australia’s leading non-profit marketing agency.',
     category: 'Partnership',
     tags: ['Agency', 'Digital Ads', 'Social Media', 'Events'],
-    year: 2021,
+    year: 2022,
     imageUrl: '/assets/cases/ntegrity/Hero.webp', 
     featured: false,
     client: 'Ntegrity Agency',
@@ -255,10 +255,10 @@ export const PROJECTS: Project[] = [
         '/assets/cases/ntegrity/detail-5.gif'
     ],
     story: {
-        goal: "Support large-scale fundraising events with high-volume digital assets and paid media content.",
+        goal: "Collaborated seamlessly with the Ntegrity team, to bring creative visions to life.",
         gap: "", // Empty to trigger Gallery Mode
-        gamble: "",
-        gain: "Seamless campaign execution for major Australian non-profits.",
+        gamble: "Multidisciplinary role as a Mid-Weight Designer at ntegrity.",
+        gain: "Digital design, display ads, social media paid ads, email design, web design, brand guidelines.",
         processImages: [
             '/assets/cases/ntegrity/process-1.webp',
             '/assets/cases/ntegrity/process-2.webp',
