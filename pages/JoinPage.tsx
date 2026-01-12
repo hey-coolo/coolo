@@ -22,17 +22,11 @@ const JoinPage: React.FC = () => {
     e.preventDefault();
     setStatus('submitting');
 
-    // Reuse the contact API for simplicity, or create a new one. 
-    // We send 'role' as the 'message' context for the existing backend structure if needed.
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('/api/join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            ...formData,
-            vibe: 'Talent Application', // Force this vibe
-            message: `ROLE: ${formData.role} \n RATE: ${formData.rate} \n PORTFOLIO: ${formData.portfolio}`
-        })
+        body: JSON.stringify(formData)
       });
 
       if (response.ok) {
@@ -49,10 +43,12 @@ const JoinPage: React.FC = () => {
   const inputClass = "bg-transparent border-b-2 border-brand-navy/20 text-brand-navy font-mono text-xl md:text-2xl focus:border-brand-purple focus:outline-none placeholder-brand-navy/30 w-full py-6 transition-all duration-300";
 
   return (
-    <div className="bg-brand-offwhite min-h-screen flex flex-col font-sans pt-32">
-      <main className="container mx-auto px-8 flex-grow">
+    <div className="bg-brand-offwhite min-h-screen flex flex-col font-sans">
+      <Header />
+      
+      <main className="container mx-auto px-8 pt-48 pb-32 flex-grow">
         <AnimatedSection>
-            <div className="max-w-3xl mx-auto py-24 md:py-32">
+            <div className="max-w-3xl mx-auto">
                 
                 {status !== 'success' && (
                     <header className="mb-24 text-left">
@@ -126,7 +122,7 @@ const JoinPage: React.FC = () => {
                                     <p className="font-mono text-[10px] uppercase text-brand-navy/40 max-w-[200px]">By submitting, you agree to being added to our talent database.</p>
                                 </div>
                                 {status === 'error' && (
-                                    <p className="text-red-500 font-mono text-xs uppercase font-bold tracking-widest bg-red-50 p-4 border-l-4 border-red-500">Something went wrong.</p>
+                                    <p className="text-red-500 font-mono text-xs uppercase font-bold tracking-widest bg-red-50 p-4 border-l-4 border-red-500">Something went wrong. Email hey@coolo.co.nz directly.</p>
                                 )}
                             </form>
                         )}
@@ -135,6 +131,8 @@ const JoinPage: React.FC = () => {
             </div>
         </AnimatedSection>
       </main>
+      
+      <Footer />
     </div>
   );
 };

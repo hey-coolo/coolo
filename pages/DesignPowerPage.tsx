@@ -1,13 +1,13 @@
 import React from 'react';
 import AnimatedSection from '../components/AnimatedSection';
 import { DESIGN_POWER_TIERS } from '../constants';
+import { Link } from 'react-router-dom';
 
 const DesignPowerPage: React.FC = () => {
   return (
     <div className="bg-brand-offwhite pt-32">
       <div className="container mx-auto px-8">
         
-        {/* 1. HERO: The Hook */}
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-6xl">
             <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold block mb-4">Phase 02 / The Creative Execution</span>
@@ -26,7 +26,6 @@ const DesignPowerPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
-        {/* 2. THE PHILOSOPHY: Why We Do It */}
         <section className="py-24 border-t-2 border-brand-navy grid grid-cols-1 lg:grid-cols-2 gap-16">
            <div>
               <h2 className="text-5xl font-black uppercase tracking-tight leading-none text-brand-navy">
@@ -44,7 +43,6 @@ const DesignPowerPage: React.FC = () => {
            </div>
         </section>
 
-        {/* 3. THE TIERS: The Menu */}
         <section className="pb-48">
             <div className="mb-16">
                 <h3 className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold">The Menu</h3>
@@ -53,7 +51,8 @@ const DesignPowerPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {DESIGN_POWER_TIERS.map((tier, i) => (
                     <AnimatedSection key={tier.slug} delay={i * 100}>
-                        <div className="border border-brand-navy/10 bg-white p-8 md:p-12 hover:border-brand-purple transition-all duration-500 group h-full flex flex-col justify-between">
+                        {/* THE WHOLE CARD IS NOW A LINK */}
+                        <Link to={`/design-power/${tier.slug}`} className="block border border-brand-navy/10 bg-white p-8 md:p-12 hover:border-brand-purple transition-all duration-500 group h-full flex flex-col justify-between">
                             <div>
                                 <div className="flex justify-between items-start mb-8">
                                     <div>
@@ -68,12 +67,7 @@ const DesignPowerPage: React.FC = () => {
                                 </p>
 
                                 <ul className="space-y-4 mb-12">
-                                    {tier.features?.map((feature) => (
-                                        <li key={feature} className="flex items-center font-mono text-sm text-brand-navy">
-                                            <span className="w-2 h-2 bg-brand-purple rounded-full mr-4"></span>
-                                            {feature}
-                                        </li>
-                                    )) || tier.deliverables?.map((feature) => (
+                                    {(tier.deliverables || []).slice(0, 3).map((feature) => (
                                         <li key={feature} className="flex items-center font-mono text-sm text-brand-navy">
                                             <span className="w-2 h-2 bg-brand-purple rounded-full mr-4"></span>
                                             {feature}
@@ -82,16 +76,15 @@ const DesignPowerPage: React.FC = () => {
                                 </ul>
                             </div>
 
-                            <button className="w-full py-4 border-2 border-brand-navy text-brand-navy font-mono uppercase font-bold hover:bg-brand-navy hover:text-white transition-all">
+                            <div className="w-full py-4 border-2 border-brand-navy text-brand-navy font-mono uppercase font-bold hover:bg-brand-navy hover:text-white transition-all text-center">
                                 {tier.cta}
-                            </button>
-                        </div>
+                            </div>
+                        </Link>
                     </AnimatedSection>
                 ))}
             </div>
         </section>
 
-        {/* 4. THE PROCESS: How it works */}
         <section className="pb-32 border-t border-brand-navy/10 pt-24">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                 <div className="lg:col-span-4">

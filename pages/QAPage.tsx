@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { QA_DATA } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 
 const FAQPage: React.FC = () => {
+  const [btnText, setBtnText] = useState("Ask a Weird Question");
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText("hey@coolo.co.nz");
+    setBtnText("Email Copied to Clipboard");
+    setTimeout(() => setBtnText("Ask a Weird Question"), 2000);
+  };
+
   return (
     <div className="bg-brand-offwhite pt-32 min-h-screen">
       
       <div className="container mx-auto px-8 pb-24">
         
-        {/* 1. HERO: Matches Brand Standard */}
         <AnimatedSection>
             <header className="py-24 md:py-48 max-w-6xl">
                 <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold block mb-4">
@@ -24,11 +31,9 @@ const FAQPage: React.FC = () => {
             </header>
         </AnimatedSection>
 
-        {/* 2. THE Q&A GRID */}
         <div className="space-y-32 border-t border-brand-navy/10 pt-24">
             {QA_DATA.map((section, i) => (
                 <div key={i} className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                    {/* Sticky Category Title */}
                     <div className="lg:col-span-4">
                         <div className="sticky top-32">
                             <h2 className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-4">
@@ -38,7 +43,6 @@ const FAQPage: React.FC = () => {
                         </div>
                     </div>
                     
-                    {/* Questions */}
                     <div className="lg:col-span-8 space-y-20">
                         {section.questions.map((item, j) => (
                             <AnimatedSection delay={j * 0.1} key={j}>
@@ -59,7 +63,6 @@ const FAQPage: React.FC = () => {
             ))}
         </div>
 
-        {/* 3. FINAL CTA: High Contrast */}
         <AnimatedSection>
             <div className="mt-40 p-12 md:p-24 border-2 border-brand-navy bg-white text-center relative overflow-hidden">
                 <div className="relative z-10">
@@ -69,12 +72,13 @@ const FAQPage: React.FC = () => {
                     <p className="font-body text-xl md:text-2xl mb-12 text-brand-navy/60 max-w-2xl mx-auto">
                         If your question is too weird, too specific, or too embarrassing for this list, just ask us directly.
                     </p>
-                    <a 
-                        href="mailto:hey@coolo.co.nz?subject=Weird%20Question" 
+                    {/* BUTTON COPIES EMAIL, NO MAILTO */}
+                    <button 
+                        onClick={handleCopy}
                         className="inline-block bg-brand-navy text-brand-offwhite hover:bg-brand-purple px-10 py-5 font-mono uppercase font-bold text-lg transition-all tracking-widest shadow-[8px_8px_0px_0px_#FCC803] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
                     >
-                        Ask a Weird Question
-                    </a>
+                        {btnText}
+                    </button>
                 </div>
             </div>
         </AnimatedSection>
