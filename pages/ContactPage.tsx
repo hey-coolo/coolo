@@ -29,6 +29,8 @@ const ContactPage: React.FC = () => {
 
       if (response.ok) {
         setStatus('success');
+        // Optional: Scroll to top of the receipt if the form was very long
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         setStatus('error');
       }
@@ -46,35 +48,63 @@ const ContactPage: React.FC = () => {
         
         <AnimatedSection>
             <div className="max-w-3xl mx-auto">
-                <header className="mb-24 text-center md:text-left">
-                    <span className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold block mb-4">Discovery</span>
-                    <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tight text-brand-navy leading-[0.9]">
-                        Let's Start<br/>Something.
-                    </h1>
-                </header>
+                
+                {/* HIDE HEADER ON SUCCESS TO FOCUS ON THE RECEIPT */}
+                {status !== 'success' && (
+                    <header className="mb-24 text-center md:text-left">
+                        <span className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold block mb-4">Discovery</span>
+                        <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tight text-brand-navy leading-[0.9]">
+                            Let's Start<br/>Something.
+                        </h1>
+                    </header>
+                )}
 
-                <div className="bg-white border border-brand-navy/10 p-8 md:p-16 shadow-xl relative">
+                <div className={`relative transition-all duration-500 ${status === 'success' ? '' : 'bg-white border border-brand-navy/10 p-8 md:p-16 shadow-xl'}`}>
                     <AnimatePresence mode="wait">
                         {status === 'success' ? (
+                            // --- NEW SUCCESS STATE (THE RECEIPT) ---
                             <motion.div
                                 key="success"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="text-center py-24"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="min-h-[60vh] flex flex-col items-center justify-center text-center border-2 border-brand-navy p-8 md:p-16 bg-white shadow-[16px_16px_0px_0px_#0F0328]"
                             >
-                                <div className="w-20 h-20 bg-brand-yellow rounded-full flex items-center justify-center mx-auto mb-8 text-4xl">
-                                    ✌️
+                                <div className="w-24 h-24 bg-brand-yellow rounded-full flex items-center justify-center mx-auto mb-8 border-2 border-brand-navy">
+                                    <svg className="w-10 h-10 text-brand-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                    </svg>
                                 </div>
-                                <h3 className="text-5xl font-black uppercase text-brand-navy leading-none mb-6">We Got It.</h3>
-                                <p className="font-body text-xl text-brand-navy/60 max-w-md mx-auto mb-12">
-                                    Thanks for the intel. We'll review your brief and hit you back within 24 hours.
-                                </p>
-                                <button 
-                                    onClick={() => window.location.reload()} 
-                                    className="font-mono text-xs uppercase tracking-widest text-brand-purple border-b border-brand-purple pb-1 hover:text-brand-navy hover:border-brand-navy transition-colors"
-                                >
-                                    Send Another
-                                </button>
+                                
+                                <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold block mb-6">
+                                    Message Complete
+                                </span>
+
+                                <h3 className="text-6xl md:text-8xl font-black uppercase text-brand-navy tracking-tighter leading-[0.9] mb-8">
+                                    Message<br/>Sent.
+                                </h3>
+                                
+                                <div className="max-w-md mx-auto space-y-8">
+                                    <p className="font-body text-xl text-brand-navy/70 leading-relaxed">
+                                        We've received your brief. The team will review the information and get back as soon as possible.
+                                    </p>
+                                    
+                                    <div className="bg-brand-navy/5 border-l-4 border-brand-purple p-6 text-left">
+                                        <p className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 mb-2">Ticket ID</p>
+                                        <p className="font-mono text-xl font-bold text-brand-navy">#{Math.floor(Math.random() * 1000000)}</p>
+                                        <p className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 mt-4 mb-2">Status</p>
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                            <span className="font-mono text-sm font-bold text-brand-navy">Review Pending</span>
+                                        </div>
+                                    </div>
+
+                                    <button 
+                                        onClick={() => window.location.reload()} 
+                                        className="inline-block font-mono text-xs uppercase tracking-widest border-b-2 border-brand-navy pb-1 text-brand-navy hover:text-brand-purple hover:border-brand-purple transition-all pt-8"
+                                    >
+                                        Start New Message
+                                    </button>
+                                </div>
                             </motion.div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-24">
@@ -103,7 +133,7 @@ const ContactPage: React.FC = () => {
                                                 name="email" 
                                                 value={formData.email}
                                                 onChange={handleChange}
-                                                placeholder="john@studio.com" 
+                                                placeholder="you@studio.com" 
                                                 className={inputClass} 
                                             />
                                         </div>
@@ -200,7 +230,7 @@ const ContactPage: React.FC = () => {
         <div className="container mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-16 font-mono uppercase tracking-[0.2em] text-[10px]">
           <div><h3 className="text-brand-purple mb-4 font-bold">HQ</h3><p className="text-lg font-sans font-black tracking-normal">Mount Maunganui, NZ</p></div>
           <div><h3 className="text-brand-purple mb-4 font-bold">Direct Line</h3><a href="mailto:hey@coolo.co.nz" className="text-lg font-sans font-black tracking-normal block hover:text-brand-purple">hey@coolo.co.nz</a></div>
-          <div><h3 className="text-brand-purple mb-4 font-bold">Network</h3><a href="https://instagram.com/coolo.studio" target="_blank" rel="noopener noreferrer" className="text-lg font-sans font-black tracking-normal block hover:text-brand-purple">Instagram</a></div>
+          <div><h3 className="text-brand-purple mb-4 font-bold">Network</h3><a href="https://instagram.com/coolo.co" target="_blank" rel="noopener noreferrer" className="text-lg font-sans font-black tracking-normal block hover:text-brand-purple">Instagram</a></div>
         </div>
       </div>
     </div>

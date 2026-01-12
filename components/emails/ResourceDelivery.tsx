@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Html, Head, Body, Container, Section, Text, Heading, Link, Hr, Preview, Img } from '@react-email/components';
 
-// BRAND ASSETS (Must use absolute URLs for email clients)
-const LOGO_URL = 'https://coolo.co.nz/assets/logos/logo-dark.png'; // Make sure you have a PNG version for better email support, or use SVG if tested.
-// If you only have SVG, try: 'https://coolo.co.nz/assets/logos/logo-dark.svg'
+// UPDATE THIS to your actual live domain (e.g., https://coolo.co.nz)
+const BASE_URL = 'https://coolo.co.nz'; 
 
 const colors = {
   navy: '#0F0328',
@@ -19,7 +18,7 @@ interface ResourceDeliveryProps {
 
 export const ResourceDelivery = ({ 
   resourceName = "The Clarity Audit", 
-  downloadLink = "https://coolo.co.nz/docs/audit.pdf" 
+  downloadLink = "#" 
 }: ResourceDeliveryProps) => {
   return (
     <Html>
@@ -32,13 +31,13 @@ export const ResourceDelivery = ({
       <Body style={main}>
         <Container style={container}>
           
-          {/* BRAND HEADER */}
+          {/* BRAND HEADER - Using your actual asset */}
           <Section style={header}>
             <Img 
-                src="https://coolo.co.nz/assets/logos/apple-touch-icon.png" 
+                src={`${BASE_URL}/assets/logos/apple-touch-icon.png`} 
                 alt="COOLO" 
-                width="48" 
-                height="48" 
+                width="64" 
+                height="64" 
                 style={logo} 
             />
           </Section>
@@ -47,7 +46,7 @@ export const ResourceDelivery = ({
           <Section style={contentSection}>
             <Text style={statusBadge}>SECURE FILE TRANSFER</Text>
             
-            <Heading style={h1}>HERE IS YOUR<br/><span style={{color: colors.purple}}>INTELLIGENCE.</span></Heading>
+            <Heading style={h1}>FILE<br/><span style={{color: colors.purple}}>UNLOCKED.</span></Heading>
             
             <Text style={paragraph}>
               The <strong>{resourceName}</strong> file you requested has been retrieved from the archive.
@@ -57,13 +56,13 @@ export const ResourceDelivery = ({
               <Link href={downloadLink} style={button}>
                 DOWNLOAD FILE
               </Link>
-              <Text style={tinyText}>DIRECT LINK: {downloadLink}</Text>
+              <Text style={tinyText}>DIRECT LINK EXPOSED</Text>
             </Section>
 
             <Hr style={divider} />
 
             <Text style={paragraph}>
-              <strong>Next Step:</strong> Use this to audit your brand logic. If you find gaps, that's where we come in.
+              <strong>Mission Protocol:</strong> Use this to audit your brand logic. If you find gaps, reply to this email. We can fix them.
             </Text>
           </Section>
 
@@ -71,7 +70,7 @@ export const ResourceDelivery = ({
           <Section style={footer}>
             <Text style={footerText}>
               COOLO STUDIO // MOUNT MAUNGANUI<br/>
-              <Link href="https://coolo.co.nz" style={link}>COOLO.CO.NZ</Link>
+              <Link href={BASE_URL} style={link}>COOLO.CO.NZ</Link>
             </Text>
           </Section>
         </Container>
@@ -101,7 +100,7 @@ const header = {
 
 const logo = {
   margin: '0 auto',
-  borderRadius: '4px', // Slight rounded corners for the icon
+  borderRadius: '0px', 
 };
 
 const statusBadge = {
@@ -164,7 +163,6 @@ const tinyText = {
   fontSize: '10px',
   color: 'rgba(15, 3, 40, 0.4)',
   marginTop: '16px',
-  wordBreak: 'break-all' as const,
 };
 
 const divider = {
