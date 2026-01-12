@@ -1,66 +1,88 @@
-import * as React from 'react';
-import { Html, Head, Body, Container, Section, Text, Heading, Img, Hr, Row, Column } from '@react-email/components';
+import { Body, Container, Head, Heading, Html, Img, Preview, Section, Text, Tailwind, Row, Column } from "@react-email/components";
+import * as React from "react";
 
-const colors = { navy: '#0F0328', offWhite: '#F7F7F7', purple: '#3A0888', yellow: '#FCC803' };
+const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "";
 
-interface NewLeadAlertProps {
-  name: string;
-  email: string;
-  vibe: string;
-  message: string;
-  budget?: string;
-}
-
-export const NewLeadAlert = ({ name, email, vibe, message, budget }: NewLeadAlertProps) => {
+export const NewLeadAlert = ({ email = "test@test.com", message = "Pricing inquiry", source = "Website" }) => {
   return (
     <Html>
-      <Head />
-      <Body style={{ backgroundColor: colors.offWhite, fontFamily: 'Helvetica, Arial, sans-serif', padding: '40px 0' }}>
-        <Container style={{ margin: '0 auto', maxWidth: '600px', padding: '0 20px' }}>
-          
-          <Section style={{ marginBottom: '32px' }}>
-            <Img src="https://coolo.co.nz/assets/logos/logo-dark.svg" alt="COOLO" width="70" />
-            <Text style={{ fontSize: '11px', fontWeight: 700, color: colors.purple, textTransform: 'uppercase', marginTop: '12px', letterSpacing: '0.2em' }}>
-              Inbound Lead // New Brief
-            </Text>
-          </Section>
+      <Head>
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
+          @media (prefers-color-scheme: dark) {
+            .bg-mode-body { background-color: #010101 !important; }
+            .bg-mode-card { background-color: #0F0328 !important; border-color: #7670C5 !important; }
+            .text-mode-primary { color: #F7F7F7 !important; }
+            .text-mode-secondary { color: #7670C5 !important; }
+            .border-mode-div { border-color: #3A0888 !important; }
+          }
+        `}</style>
+      </Head>
+      <Preview>New Lead: {source}</Preview>
+      <Tailwind
+        config={{
+          theme: {
+            extend: {
+              colors: {
+                'brand-purple': '#3A0888',
+                'brand-offwhite': '#F7F7F7',
+                'brand-yellow': '#FCC803',
+                'brand-lavender': '#7670C5',
+                'brand-navy': '#0F0328',
+                'brand-dark': '#010101',
+              },
+              fontFamily: {
+                sans: ['"Big Shoulders Display"', 'Helvetica', 'Arial', 'sans-serif'],
+                mono: ['"Space Mono"', 'Courier', 'monospace'],
+              }
+            },
+          },
+        }}
+      >
+        <Body className="bg-mode-body bg-brand-offwhite font-sans my-auto mx-auto px-4 py-12">
+          <Container className="mx-auto w-full max-w-[600px]">
+            
+            <Section className="bg-mode-card bg-white border-2 border-brand-navy p-10 shadow-none">
+              
+              <Text className="bg-brand-yellow text-brand-navy font-mono text-[11px] font-bold uppercase tracking-widest px-2 py-1 inline-block mb-4">
+                // INBOUND SIGNAL
+              </Text>
 
-          <Section style={{ backgroundColor: '#ffffff', border: `2px solid ${colors.navy}`, padding: '48px', boxShadow: `12px 12px 0px 0px ${colors.navy}` }}>
-            <Heading style={{ color: colors.navy, fontSize: '32px', fontWeight: 900, textTransform: 'uppercase', margin: '0 0 32px', lineHeight: '1' }}>
-                Conversation:<br/>{name}
-            </Heading>
+              <Heading className="text-mode-primary text-brand-navy font-sans text-[56px] leading-[0.9] font-black uppercase m-0 mb-8">
+                INBOUND<br/>REQUEST
+              </Heading>
 
-            <Row style={{ marginBottom: '24px' }}>
-                <Column>
-                    <Text style={{ fontSize: '9px', fontWeight: 700, color: '#999', textTransform: 'uppercase', margin: '0', letterSpacing: '0.1em' }}>Email</Text>
-                    <Text style={{ fontSize: '16px', color: colors.navy, fontWeight: 700, margin: '4px 0 0' }}>{email}</Text>
-                </Column>
-                <Column>
-                    <Text style={{ fontSize: '9px', fontWeight: 700, color: '#999', textTransform: 'uppercase', margin: '0', letterSpacing: '0.1em' }}>Vibe</Text>
-                    <Text style={{ fontSize: '16px', color: colors.navy, fontWeight: 700, margin: '4px 0 0' }}>{vibe}</Text>
-                </Column>
-            </Row>
+              <Section className="border-t-2 border-brand-navy border-mode-div">
+                <Row className="border-b border-brand-lavender/30 py-3">
+                  <Column className="w-[100px]">
+                    <Text className="text-mode-secondary text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">SOURCE</Text>
+                  </Column>
+                  <Column>
+                    <Text className="text-mode-primary text-brand-navy font-bold font-sans text-[14px] m-0">{source}</Text>
+                  </Column>
+                </Row>
+                <Row className="border-b border-brand-lavender/30 py-3">
+                  <Column className="w-[100px]">
+                    <Text className="text-mode-secondary text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">EMAIL</Text>
+                  </Column>
+                  <Column>
+                    <Text className="text-mode-primary text-brand-navy font-bold font-sans text-[14px] m-0">{email}</Text>
+                  </Column>
+                </Row>
+                <Row className="border-b-2 border-brand-navy border-mode-div py-3">
+                  <Column className="w-[100px] align-top">
+                    <Text className="text-mode-secondary text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">MSG</Text>
+                  </Column>
+                  <Column>
+                    <Text className="text-mode-primary text-brand-navy font-sans text-[14px] italic m-0 opacity-80">"{message}"</Text>
+                  </Column>
+                </Row>
+              </Section>
 
-            {budget && (
-                <div style={{ marginBottom: '32px' }}>
-                    <Text style={{ fontSize: '9px', fontWeight: 700, color: '#999', textTransform: 'uppercase', margin: '0', letterSpacing: '0.1em' }}>Budget</Text>
-                    <Text style={{ fontSize: '16px', color: colors.navy, margin: '4px 0 0' }}>{budget}</Text>
-                </div>
-            )}
-
-            <Hr style={{ borderColor: '#eee', margin: '32px 0' }} />
-
-            <div>
-                <Text style={{ fontSize: '9px', fontWeight: 700, color: '#999', textTransform: 'uppercase', margin: '0', letterSpacing: '0.1em' }}>The Context</Text>
-                <Text style={{ fontSize: '16px', color: colors.navy, lineHeight: '1.6', margin: '12px 0 0', fontStyle: 'italic' }}>"{message}"</Text>
-            </div>
-          </Section>
-          
-          <Text style={{ textAlign: 'center' as const, color: '#999', fontSize: '10px', marginTop: '32px', letterSpacing: '0.2em' }}>
-            SYSTEM GENERATED // COOLO.CO.NZ
-          </Text>
-        </Container>
-      </Body>
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
     </Html>
   );
 };
