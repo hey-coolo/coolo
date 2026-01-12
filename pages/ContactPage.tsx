@@ -59,7 +59,7 @@ const ContactPage: React.FC = () => {
                         <h1 className="text-7xl md:text-9xl font-black uppercase tracking-tight text-brand-navy leading-[0.85]">
                             Let's Start<br/>Something.
                         </h1>
-                        <p className="mt-8 text-xl text-brand-navy/60 max-w-xl italic font-medium">
+                        <p className="mt-8 text-xl text-brand-navy/60 max-w-xl font-medium">
                             Have a vision? A struggle? A dream? Tell us what's on your mind.
                         </p>
                     </header>

@@ -1,78 +1,63 @@
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { DROPS } from '../constants';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 
-const DropDetailPage: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const drop = DROPS.find(d => d.slug === slug);
-
-  const [mainImage, setMainImage] = useState(drop?.imageUrl || '');
-
-  if (!drop) {
-    return (
-      <div className="container mx-auto p-8 text-center min-h-[60vh] flex flex-col justify-center">
-        <h1 className="text-4xl font-bold">Drop Not Found</h1>
-        <Link to="/drops" className="mt-4 inline-block text-brand-muted hover:underline">Back to Drops</Link>
-      </div>
-    );
-  }
-
-  const handleThumbnailClick = (image: string) => {
-    setMainImage(image);
-  };
-  
+const DropsPage: React.FC = () => {
   return (
-    <div className="container mx-auto p-4 md:p-8">
-      <AnimatedSection>
-        <section className="py-24 md:py-32">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
-            {/* Image Gallery */}
-            <div className="flex flex-col gap-4 sticky top-24 h-max">
-              <div className="aspect-square bg-brand-dark/5 overflow-hidden rounded-lg">
-                <img src={mainImage} alt={drop.title} className="w-full h-full object-cover"/>
-              </div>
-              <div className="grid grid-cols-4 gap-4">
-                {drop.galleryImages?.map((img, index) => (
-                   <div 
-                     key={index} 
-                     className={`aspect-square bg-brand-dark/5 overflow-hidden cursor-pointer border-2 transition-colors rounded-md ${mainImage === img ? 'border-brand-accent' : 'border-transparent'}`}
-                     onClick={() => handleThumbnailClick(img)}
-                    >
-                     <img src={img} alt={`${drop.title} thumbnail ${index + 1}`} className="w-full h-full object-cover"/>
-                   </div>
-                ))}
-              </div>
-            </div>
+    <div className="bg-brand-offwhite min-h-screen pt-32">
+      <div className="container mx-auto px-8">
+        
+        {/* Header */}
+        <AnimatedSection>
+          <header className="py-24 md:py-48 max-w-6xl mx-auto text-center">
+            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold block mb-4">Internal Lab</span>
+            <h1 className="text-brand-navy text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] mt-0">
+              The<br/><span className="text-brand-purple italic">Playground.</span>
+            </h1>
+            <p className="font-body text-2xl md:text-4xl text-brand-navy/70 mt-12 leading-tight max-w-3xl mx-auto">
+              Beyond client work, we build our own stuff. Drops are standalone mini-brands, creative experiments, and limited-run products.
+            </p>
+          </header>
+        </AnimatedSection>
 
-            {/* Product Info */}
-            <div>
-              <p className="font-mono text-base text-brand-muted">{drop.category}</p>
-              <h1 className="font-sans text-5xl md:text-7xl font-black uppercase tracking-tighter my-4">{drop.title}</h1>
-              <div className="flex justify-between items-center my-6 font-mono text-xl">
-                <span>{drop.price}</span>
-                <span>{drop.status}</span>
-              </div>
-              <p className="font-body text-xl text-brand-muted leading-relaxed my-8">{drop.longDescription}</p>
+        {/* Coming Soon Block */}
+        <section className="pb-48">
+            <AnimatedSection delay={200}>
+                <div className="border-2 border-dashed border-brand-navy/20 bg-brand-navy/5 p-12 md:p-32 text-center relative overflow-hidden group hover:border-brand-purple transition-colors duration-500">
+                    
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#3A0888_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
-              {drop.features && (
-                <div className="my-8 py-8 border-t border-brand-dark/20">
-                    <h3 className="font-mono text-base uppercase text-brand-muted mb-4">Features</h3>
-                    <ul className="list-disc list-inside font-body text-lg space-y-2 text-brand-muted">
-                        {drop.features.map(feature => <li key={feature}>{feature}</li>)}
-                    </ul>
+                    <div className="relative z-10 flex flex-col items-center">
+                        <div className="w-24 h-24 bg-brand-yellow rounded-full flex items-center justify-center mb-8 shadow-xl animate-pulse">
+                             <svg className="w-10 h-10 text-brand-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                            </svg>
+                        </div>
+                        
+                        <span className="font-mono text-xs uppercase tracking-[0.4em] text-brand-navy/40 font-bold mb-4 bg-white px-4 py-1 border border-brand-navy/10">
+                            Status: In Production
+                        </span>
+
+                        <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tight text-brand-navy mb-6">
+                            Cooking<br/>Something<br/>Weird.
+                        </h2>
+                        
+                        <p className="font-mono text-xs md:text-sm uppercase tracking-widest text-brand-navy/60 max-w-md mx-auto leading-relaxed mb-12">
+                            We are currently developing the first wave of internal projects. Expect physical goods, digital assets, and pure chaos.
+                        </p>
+
+                        <Link to="/" className="inline-block border-b-2 border-brand-purple pb-1 font-mono text-xs uppercase font-bold text-brand-purple tracking-widest hover:text-brand-navy hover:border-brand-navy transition-all">
+                            Return to Base &rarr;
+                        </Link>
+                    </div>
                 </div>
-              )}
-              
-              <button disabled={drop.status !== 'Live'} className="w-full mt-8 bg-brand-accent text-brand-dark font-mono font-bold uppercase tracking-wider py-5 px-8 transition-colors duration-300 text-lg hover:opacity-80 disabled:bg-brand-dark/10 disabled:text-brand-dark/40 disabled:cursor-not-allowed">
-                {drop.status === 'Coming Soon' ? 'Get Notified' : 'Add to Cart'}
-              </button>
-            </div>
-          </div>
+            </AnimatedSection>
         </section>
-      </AnimatedSection>
+
+      </div>
     </div>
   );
 };
 
-export default DropDetailPage;
+export default DropsPage;

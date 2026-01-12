@@ -312,8 +312,8 @@ export const NAV_LINKS = [
     path: '/clarity',
     subLinks: [
       { name: 'Free Resources', path: '/clarity/free-resources' },
-      { name: 'Workbook', path: '/clarity/workbook' },
-      { name: 'Course', path: '/clarity/course' }
+      // { name: 'Workbook', path: '/clarity/workbook' }, // HIDDEN: No content yet
+      // { name: 'Course', path: '/clarity/course' }      // HIDDEN: No content yet
     ]
   },
   { 
