@@ -529,84 +529,72 @@ export const FREE_RESOURCES: Resource[] = [
     }
 ];
 
-export const FAQ_DATA = [
+export const QA_DATA = [
   {
-    category: 'The Humans (Us)',
+    category: 'The Vibe Check',
     questions: [
       {
-          q: 'Are you a big agency in disguise?',
-          a: "Nope. It's two humans. Franco (Creative Director) and Ariana (The Boss/Ops). No account managers blocking your calls. No juniors practicing on your project. Just us."
+          q: 'Are you guys an Agency?',
+          a: "Please, no. Agencies have timesheets, account managers, and ping-pong tables to hide the burnout. We are a Studio. It’s just us (Franco & Ariana). We do the work. We answer the emails. We give a damn."
       },
       {
-          q: 'Are you guys artists or business people?',
-          a: "Both. That’s the point. Artists make cool stuff that doesn't sell. Business people make boring stuff that sells but nobody loves. We sit right in the middle: Cool stuff that actually works."
+          q: 'Why the 90s aesthetic?',
+          a: "It was the last time the world felt real. No AI, no algorithms, just raw creativity and good music. We bring that analog soul—tactile, honest, impermanent—into the digital work we do."
       },
       {
-          q: 'Where are you based? Do timezones matter?',
-          a: "We are in Mount Maunganui, New Zealand (the beach). We work with clients in the US, Europe, and Aus. We've mastered the art of the 'asynchronous hustle'—while you sleep, we build."
-      },
-      {
-          q: 'Can we meet for coffee?',
-          a: "If you're in the Mount, absolutely. If not, Google Meet is our coffee shop. We prioritize deep work over travel, which keeps your costs down and our focus up."
+          q: 'Can I text you on the weekend?',
+          a: "You can try. But unless the server is on fire or aliens have landed, we’re probably surfing, skating, or recharging. We protect our peace so we can be obsessed with your project on Monday."
       }
     ]
   },
   {
-    category: 'The Money (Value)',
+    category: 'The Money Talk',
     questions: [
       { 
-          q: 'Why are you more expensive than a freelancer?', 
-          a: "A freelancer asks, 'What do you want me to do?' We ask, 'Where do you want to go?' You aren't paying for hours; you're paying for the 10 years of mistakes we've already made so you don't have to." 
+          q: 'Why no "Cheap" option?', 
+          a: "Because cheap builds expensive problems. We could do a $50 logo, but you’d spend $5,000 fixing it next year. We price for longevity. We build engines that run for years, not stickers that peel off in a month." 
       },
       {
-          q: 'Why are you cheaper than a big agency?',
-          a: "Because you aren't paying for our office rent, our ping-pong table, or the salary of an Account Executive whose only job is to forward emails. Our overhead is low, so your money goes into the work."
+          q: 'Do you take equity?',
+          a: "If your idea is world-changing and you’re cool, let’s talk. But usually, our landlord prefers cash."
       },
       {
-          q: 'Can I just pay for a logo?',
-          a: "No. A logo without a strategy is just a sticker. We don't sell stickers. We build engines. If you want a $50 logo, there are great sites for that. If you want a brand, you're in the right place."
-      },
-      {
-          q: 'Do you offer payment plans?',
-          a: "Yes. We usually do 50/50, but for the big 'Full Flex' projects, we can split it into 3 monthly payments. We want to be partners, not a burden on your cash flow."
+          q: 'Can I split the bill?',
+          a: "Standard is 50/50. Half to start the engine, half before we hand over the keys. For the big 'Full Flex' projects, we can break it into three milestones to help cash flow."
       }
     ]
   },
   {
-    category: 'The Work (Process)',
+    category: 'The Process',
     questions: [
       {
-          q: 'What if I don’t like the design?',
-          a: "That almost never happens. Why? Because we don't do 'Ta-Da!' reveals. We show you the messy sketches, the rough ideas, and the bad drafts first. We steer the ship together. By the time we render the final pixels, you've already approved it."
+          q: 'Will you design exactly what I ask for?',
+          a: "No. We design what you need. If you want a 'Yes Man' to just move pixels around, there are cheaper options. You hire us to be the experts, to challenge you, and to stop you from making boring decisions."
       },
       {
           q: 'Do you use AI?',
-          a: "We use it to speed up the boring stuff (coding, resizing, file sorting) so we can spend more time on the human stuff (strategy, story, taste). AI is a tool, not the talent."
+          a: "We use it to handle the boring stuff (coding, resizing, file sorting) so we can spend more time on the human stuff (strategy, story, taste). AI is a tool, not the talent."
       },
       {
-          q: 'Who owns the work when we’re done?',
-          a: "You do. 100%. Once the final invoice is paid, we hand over every file, every font license, and every login. It’s your car; we just built the engine."
+          q: 'Webflow or Wordpress?',
+          a: "Webflow. Always. Wordpress is like a 2005 Honda Civic with a spoiler—it works, but it breaks down a lot. Webflow is a Tesla."
       },
       {
-          q: 'Will I be able to update the website myself?',
-          a: "Yes. We hate gatekeeping. We build on Webflow and set up a 'Editor Mode' so you can change text, swap images, and post blogs without calling us. We’ll even teach you how to do it."
+          q: 'Who owns the work?',
+          a: "You do. 100%. Once the final invoice is paid, we hand over every file, vector, and login. It’s your car; we just built the engine."
       }
     ]
   },
   {
-    category: 'The Vibe (Fit)',
+    category: 'The Fit',
     questions: [
       {
-          q: 'Who is this NOT for?',
-          a: "If you want a 'Yes Man' who just does what they're told, we aren't a fit. If you want the cheapest option, we aren't a fit. If you think branding is 'just a logo,' we definitely aren't a fit."
+          q: 'Do you work with boring industries?',
+          a: "Boring is a choice. Logistics can be sexy. Accounting can be punk. If you have an open mind, we can make any industry interesting."
       },
       {
           q: 'Can we start tomorrow?',
-          a: "Probably not. We usually book 2-4 weeks out to ensure we can give every client our full obsession. Good work takes focus, not rushing."
-      },
-      {
-          q: 'Do you work with boring industries?',
-          a: "We love boring industries. It's easy to make a fashion brand look cool. It's a fun challenge to make a logistics company look cool. If you have an open mind, we can make any industry interesting."
+          a: "Probably not. We usually book 2–4 weeks out. Good strategy takes a minute to marinate. We move fast, but we never rush."
       }
     ]
   }
