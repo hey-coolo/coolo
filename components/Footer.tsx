@@ -1,7 +1,6 @@
 import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import BrandLogo from './BrandLogo';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 // --- STUDIO RADIO PLAYLIST ---
 const TRACKS = [
@@ -18,7 +17,6 @@ const MusicTicker = () => {
     
     return (
         <div className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-help group">
-            {/* Equalizer Animation */}
             <div className="flex gap-[2px] items-end h-3">
                 <motion.div animate={{ height: [4, 10, 6] }} transition={{ repeat: Infinity, duration: 0.4 }} className="w-[2px] bg-brand-yellow group-hover:bg-brand-purple" />
                 <motion.div animate={{ height: [8, 3, 12] }} transition={{ repeat: Infinity, duration: 0.5 }} className="w-[2px] bg-brand-yellow group-hover:bg-brand-purple" />
@@ -45,81 +43,71 @@ const TimeDisplay = () => {
             });
             setTime(nzTime);
         };
-        
         updateTime();
         const interval = setInterval(updateTime, 1000 * 60);
         return () => clearInterval(interval);
     }, []);
 
     if (!time) return <span className="font-mono text-[10px] opacity-0">00:00</span>;
-
     return <div className="font-mono text-[10px] font-bold opacity-80 text-brand-offwhite">{time} NZT</div>;
 }
 
 const Footer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [emailText, setEmailText] = useState("hey@coolo.co.nz");
   
-  const handleCopyEmail = () => {
-      navigator.clipboard.writeText("hey@coolo.co.nz");
-      setEmailText("SAVED TO CLIPBOARD.");
-      setTimeout(() => setEmailText("hey@coolo.co.nz"), 2000);
-  };
-
   return (
     <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden border-t-2 border-brand-offwhite/10">
       
-      {/* 0. THE GRIND SECTION (ADDED) */}
-      <div className="bg-brand-yellow text-brand-navy py-16 md:py-24 border-b-2 border-brand-navy">
-          <div className="container mx-auto px-6 md:px-8 text-center">
-              <span className="font-mono text-xs uppercase tracking-[0.4em] font-black mb-6 block">The Call to Action</span>
-              <h2 className="text-7xl md:text-[10vw] font-black uppercase tracking-tight leading-[0.85] mb-12">
-                  Start the<br/>GRIND.
-              </h2>
-              <Link 
-                  to="/contact" 
-                  className="inline-block border-2 border-brand-navy bg-brand-navy text-brand-offwhite font-mono text-xl uppercase font-bold px-12 py-5 hover:bg-brand-offwhite hover:text-brand-navy transition-all shadow-[8px_8px_0px_0px_#FFF]"
-              >
-                  Initiate Sequence
-              </Link>
-          </div>
+      {/* --- RESTORED: START THE GRIND SECTION --- */}
+      <div className="bg-brand-offwhite text-brand-navy">
+        <div className="container mx-auto px-8 py-24 md:py-32">
+            
+            {/* Main CTA */}
+            <div className="flex flex-col items-center text-center">
+                <span className="font-mono text-sm uppercase text-brand-purple tracking-widest mb-8">
+                    Ready to evolve?
+                </span>
+                <h2 className="text-6xl md:text-[14vw] font-black uppercase tracking-tight text-brand-navy leading-[0.85] flex flex-col md:block items-center">
+                    <span>START THE</span>
+                    <br className="hidden md:block"/>
+                    <span 
+                        className="text-brand-purple inline-block origin-left md:ml-8" 
+                        style={{ transform: 'skewX(-20deg)' }}
+                    >
+                        GRIND.
+                    </span>
+                </h2>
+                <a 
+                    href="mailto:hey@coolo.co.nz" 
+                    className="inline-block mt-16 text-3xl md:text-5xl font-sans font-black hover:text-brand-purple transition-colors duration-300 underline decoration-brand-yellow decoration-4 underline-offset-8"
+                >
+                    hey@coolo.co.nz
+                </a>
+            </div>
+
+            {/* Protocol Status Box */}
+            <div className="mt-32 max-w-4xl mx-auto border-2 border-brand-purple/20 p-8 md:p-12 relative overflow-hidden bg-white/50 backdrop-blur-sm">
+                <div className="absolute top-0 left-0 w-2 h-full bg-brand-purple"></div>
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                    <div className="font-mono text-[10px] uppercase font-black text-brand-purple px-2 py-1 bg-brand-purple/5 border border-brand-purple/20 whitespace-nowrap">
+                        Protocol Status: 2.0_Alpha
+                    </div>
+                    <div className="space-y-4">
+                        <p className="font-mono text-[10px] uppercase tracking-widest leading-relaxed text-brand-navy/60 font-bold">
+                            This interface is currently live for testing and calibration purposes. The case studies, technical imagery, and copy provided do not yet fully reflect the studio's real-world output or the final "Senior Unit" protocol.
+                        </p>
+                        <p className="font-mono text-[10px] uppercase tracking-widest leading-relaxed text-brand-navy/40">
+                            We believe in continuous improvement and the logic of public builds. High-fidelity assets are currently undergoing final rendering and will replace these placeholders shortly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
       </div>
 
-      {/* 1. THE BIG STATEMENT */}
-      <div className="relative border-b border-brand-offwhite/10">
-          <div className="container mx-auto px-6 md:px-8 py-24 md:py-32">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end">
-                  <div className="max-w-2xl">
-                      <span className="font-mono text-brand-yellow uppercase tracking-[0.3em] text-xs font-bold mb-8 block">
-                          End of Page / Start of Project
-                      </span>
-                      <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tight leading-[0.85] text-brand-offwhite">
-                          Ready to<br/>
-                          <span className="text-brand-purple">make noise?</span>
-                      </h2>
-                  </div>
-                  
-                  <div className="flex flex-col items-start lg:items-end gap-8">
-                        <button 
-                            onClick={handleCopyEmail}
-                            className="text-2xl md:text-4xl font-mono font-bold hover:text-brand-yellow transition-colors underline decoration-2 underline-offset-8 decoration-brand-purple"
-                        >
-                            {emailText}
-                        </button>
-                        
-                        <Link 
-                            to="/contact" 
-                            className="bg-brand-offwhite text-brand-navy font-mono text-sm uppercase font-black px-12 py-5 hover:bg-brand-yellow hover:scale-105 transition-all shadow-[4px_4px_0px_0px_rgba(252,200,3,1)]"
-                        >
-                            Start A Project &rarr;
-                        </Link>
-                  </div>
-              </div>
-          </div>
-      </div>
-
-      {/* 2. THE GRID */}
-      <div className="container mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 border-b border-brand-offwhite/10">
+      {/* --- STANDARD FOOTER GRID --- */}
+      <div className="container mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 border-t border-brand-offwhite/10">
           {/* DIRECTORY */}
           <div className="border-r border-brand-offwhite/10 py-12 pr-8">
               <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Directory</h4>
@@ -164,8 +152,7 @@ const Footer: React.FC = () => {
           </div>
       </div>
 
-     
-      {/* 3. COPYRIGHT BAR */}
+      {/* COPYRIGHT BAR */}
       <div className="bg-brand-dark border-t border-brand-offwhite/10 py-4 relative z-10">
           <div className="container mx-auto px-6 md:px-8 flex justify-between items-center">
               <p className="font-mono text-[12px] uppercase tracking-widest text-brand-offwhite/30">
