@@ -10,8 +10,8 @@ const BrandLogo: React.FC<BrandLogoProps> = ({ variant = 'dark', className = 'h-
   const [hasError, setHasError] = useState(false);
 
   const logoSrc = variant === 'light' 
-    ? './assets/logos/logo-light.svg' 
-    : './assets/logos/logo-dark.svg';
+    ? '/assets/logos/logo-light.svg' 
+    : '/assets/logos/logo-dark.svg';
 
   if (hasError) {
     return (
@@ -24,7 +24,7 @@ const BrandLogo: React.FC<BrandLogoProps> = ({ variant = 'dark', className = 'h-
   return (
     <img 
       src={logoSrc} 
-      alt="COOLO" 
+      alt="00 COOLO" 
       className={className}
       onError={() => setHasError(true)}
     />
