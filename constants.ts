@@ -38,15 +38,11 @@ export const PROJECTS: Project[] = [
         './assets/cases/unmplymnt/detail-1.webp', 
         './assets/cases/unmplymnt/detail-2.webp', 
         './assets/cases/unmplymnt/detail-3.webp', 
-        './assets/cases/unmplymnt/detail-4.webp', 
         './assets/cases/unmplymnt/detail-5.webp',
         './assets/cases/unmplymnt/detail-6.webp',
         './assets/cases/unmplymnt/detail-7.webp',
-        './assets/cases/unmplymnt/detail-8.png',
-        './assets/cases/unmplymnt/detail-9.png',
         './assets/cases/unmplymnt/detail-10.png',
-        './assets/cases/unmplymnt/detail-11.png',
-        './assets/cases/unmplymnt/detail-12.png'
+        './assets/cases/unmplymnt/detail-11.png'
     ],
     story: {
         goal: "",
@@ -62,8 +58,6 @@ export const PROJECTS: Project[] = [
             './assets/cases/unmplymnt/process-6.png',
             './assets/cases/unmplymnt/process-7.png',
             './assets/cases/unmplymnt/process-8.png',
-            './assets/cases/unmplymnt/process-9.png',
-            './assets/cases/unmplymnt/process-10.png',
             './assets/cases/unmplymnt/process-11.png',
             './assets/cases/unmplymnt/process-12.png',
             './assets/cases/unmplymnt/process-13.png'
@@ -179,13 +173,14 @@ export const PROJECTS: Project[] = [
     role: 'Associate Creative Direction, Design Execution, Art Assistance',
     detailImages: [
         '/assets/cases/pablo-creative/detail-1.webp',
-        '/assets/cases/pablo-creative/detail-2.webp',
+        '/assets/cases/pablo-creative/detail-2.jpg',
         '/assets/cases/pablo-creative/detail-3.webp',
         '/assets/cases/pablo-creative/detail-4.webp',
         '/assets/cases/pablo-creative/detail-5.webp',
-        '/assets/cases/pablo-creative/detail-6.jpg',
-        '/assets/cases/pablo-creative/detail-7.webp',
-        '/assets/cases/pablo-creative/detail-8.jpg'
+        '/assets/cases/pablo-creative/detail-6.webp',
+        '/assets/cases/pablo-creative/detail-7.jpg',
+        '/assets/cases/pablo-creative/detail-8.webp',
+        '/assets/cases/pablo-creative/detail-9.webp'
     ],
     story: {
         goal: "",
@@ -198,7 +193,6 @@ export const PROJECTS: Project[] = [
             '/assets/cases/pablo-creative/process-3.webp',
             '/assets/cases/pablo-creative/process-4.webp',
             '/assets/cases/pablo-creative/process-5.webp',
-            '/assets/cases/pablo-creative/process-6.webp',
             '/assets/cases/pablo-creative/process-7.jpg',
             '/assets/cases/pablo-creative/process-8.webp',
             '/assets/cases/pablo-creative/process-9.jpg',
