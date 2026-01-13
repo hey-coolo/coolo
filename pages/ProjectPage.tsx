@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { useParams, Link } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 // --- 1. PRELOADER (DO NOT TOUCH) ---
 const ProjectReveal: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
@@ -193,7 +194,6 @@ const MainGallery: React.FC<{ images: string[]; onImageClick: (src: string) => v
                     <span className="font-mono text-brand-navy/40 text-xs uppercase tracking-widest font-bold">The Work</span>
                 </div>
                 
-                {/* UPDATED: CSS Columns for Aspect-Ratio Respecting Grid */}
                 <div className="columns-1 md:columns-2 gap-8 space-y-8">
                     {images.map((img, i) => (
                         <motion.div 
@@ -380,18 +380,11 @@ const ProjectPage: React.FC = () => {
   const detailImages = project.detailImages || [];
   const processImages = project.story?.processImages || [];
   const gain = project.story?.gain || "";
-  const project = PROJECTS[currentIndex];
-  const nextProject = PROJECTS[(currentIndex + 1) % PROJECTS.length];
-  
-  // Data extraction
-  const detailImages = project.detailImages || [];
-  const processImages = project.story?.processImages || [];
-  const gain = project.story?.gain || "";
 
   return (
     <>
       <Helmet>
-        <title>{project.title} | COOLO Studio Work</title>
+        <title>{project.title} | COOLO Work</title>
         <meta name="description" content={project.description.substring(0, 150)} />
         
         {/* Social Media Tags */}
@@ -400,8 +393,6 @@ const ProjectPage: React.FC = () => {
         <meta property="og:image" content={`https://coolo.co.nz${project.imageUrl}`} />
       </Helmet>
 
-  return (
-    <>
       <AnimatePresence>
         {isRevealing && <ProjectReveal onComplete={() => setIsRevealing(false)} />}
       </AnimatePresence>
