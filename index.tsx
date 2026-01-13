@@ -13,14 +13,6 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <HashRouter>
-      <App />
-    </HashRouter>
-  </React.StrictMode>
-);
-
-root.render(
-  <React.StrictMode>
     <HelmetProvider>  {/* <--- Wrap everything */}
       <HashRouter>
         <App />
