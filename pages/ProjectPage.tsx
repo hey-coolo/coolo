@@ -52,7 +52,13 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
     return (
         <div ref={ref} className="relative h-screen w-full overflow-hidden flex flex-col justify-center items-center bg-brand-navy">
             <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
-                <img src={project.imageUrl} className="w-full h-full object-cover opacity-60" alt="" />
+                <img 
+                    src={project.imageUrl} 
+                    className="w-full h-full object-cover opacity-60" 
+                    alt={project.title}
+                    loading="eager" // Hero image must be eager
+                    decoding="sync"
+                />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-brand-navy/20 to-brand-navy/90" />
             </motion.div>
 
@@ -209,7 +215,9 @@ const MainGallery: React.FC<{ images: string[]; onImageClick: (src: string) => v
                                 <img 
                                     src={img} 
                                     alt={`Output ${i}`} 
-                                    className="w-full h-auto block transition-transform duration-1000 group-hover:scale-[1.02]" 
+                                    className="w-full h-auto block transition-transform duration-1000 group-hover:scale-[1.02]"
+                                    loading="lazy"
+                                    decoding="async"
                                 />
                                 <div className="absolute inset-0 bg-brand-purple/0 group-hover:bg-brand-purple/5 transition-colors duration-500 pointer-events-none" />
                             </div>
@@ -280,7 +288,9 @@ const ProcessGallery: React.FC<{ images: string[]; onImageClick: (src: string) =
                             <img 
                                 src={img} 
                                 alt="Process" 
-                                className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700 ease-out border border-transparent group-hover:border-brand-purple/20 block" 
+                                className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700 ease-out border border-transparent group-hover:border-brand-purple/20 block"
+                                loading="lazy"
+                                decoding="async"
                             />
                             
                             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -322,7 +332,12 @@ const ResultsSection: React.FC<{ gain: string }> = ({ gain }) => {
 const NextProject: React.FC<{ project: any }> = ({ project }) => (
     <Link to={`/work/${project.slug}`} className="block relative h-screen overflow-hidden group bg-brand-navy z-20">
         <div className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-1000 ease-out">
-            <img src={project.imageUrl} className="w-full h-full object-cover grayscale" alt="" />
+            <img 
+                src={project.imageUrl} 
+                className="w-full h-full object-cover grayscale" 
+                alt={project.title}
+                loading="lazy"
+            />
         </div>
         
         <div className="absolute inset-0 flex flex-col justify-center items-center text-brand-offwhite z-10 p-8 text-center">
