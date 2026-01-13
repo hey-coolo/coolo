@@ -20,14 +20,18 @@ export const PROJECTS: Project[] = [
     id: 1,
     title: 'UNMPLYNMT',
     slug: 'unmplynmt',
-    description: 'A Brand Built Like Culture, Not a Logo. Brutalist identity system exploring the friction of labor and identity.',
+    description: `
+    Most 3D surfboard renders look like plastic toys. They miss the 'soul' of the board—
+    the way light bends through thick resin and fiberglass. We spent two weeks building 
+    a custom 'Hydro-Logic' shader in Blender to mimic the exact refractive index of 
+    hand-shaped glassing.`,
     category: 'Brand Identity', 
     tags: ['Brutalism', 'Typography', 'Strategy'],
     year: 2025,
     imageUrl: './assets/cases/unmplymnt/Hero.webp', 
     featured: true,
-    client: 'Internal Project',
-    role: 'Strategy, logo & mark system, type system.',
+    client: 'unmplymnt',
+    role: 'Brand Strategy, Logotype & Mark system, Art Direction, Content Creation.',
     detailImages: [
         './assets/cases/unmplymnt/detail-1.webp', 
         './assets/cases/unmplymnt/detail-2.webp', 
@@ -38,9 +42,9 @@ export const PROJECTS: Project[] = [
         './assets/cases/unmplymnt/detail-7.webp'
     ],
     story: {
-        goal: "UNMPLYNMT began as a belief: that clothing can be more than fashion — it can be a banner for identity.",
-        gap: "Most streetwear brands dress their ambition in borrowed codes. UNMPLYNMT was not about nostalgia.",
-        gamble: "We developed a visual voice that mirrors that attitude: Typographic Brutality.",
+        goal: "",
+        gap: "",
+        gamble: "",
         gain: "Identity done right does not whisper. It moves people.",
         processImages: [
             './assets/cases/unmplymnt/process-1.webp',
@@ -50,21 +54,27 @@ export const PROJECTS: Project[] = [
         ]
     }
   },
-  
-  
-
+    
   {
     id: 2,
     title: 'Surfboard v001',
     slug: 'surfboard-v001',
-    description: 'Technical 3D exploration of hydro-dynamic resin surfacing.',
+    description: `
+    Concept project. It's beach time and surfing season in Mount Maunganui. 
+    As a result, we see surfboards every day up and down the road and the beach. Despite their 
+    simple shapes they are full of colour, texture, and designs that inspire us. 
+    That's why we jumped into Cinema 4D and started creating high-res board renders.
+
+    It's evident that this isn't 100% engineer-correct. Probably it won't surf well. 
+    As mentioned, this is not a real surfboard, but we love how the renders turned out. We love the board design too.
+    The materials and textures... mmmm, what a beauty!`,
     category: '3D Design',
-    tags: ['3D Viz', 'Technical', 'Surfacing'],
+    tags: ['3D Design', 'Product Visualization', 'High-Res Rendering'],
     year: 2023,
     imageUrl: './assets/cases/surfboard-v001/Hero.webp',
     featured: true,
-    client: 'Concept Art Test',
-    role: '3D Artist',
+    client: 'Concept Test',
+    role: '3D Design, Product Renders',
     detailImages: [
         './assets/cases/surfboard-v001/detail-1.webp',
         './assets/cases/surfboard-v001/detail-2.webp',
@@ -73,10 +83,10 @@ export const PROJECTS: Project[] = [
         './assets/cases/surfboard-v001/detail-5.webp'
     ],
     story: {
-        goal: "Mimic the exact light refraction of hand-shaped surfboard resin.",
-        gap: "Generic 3D surfboard renders lack the 'depth' of real glassing.",
-        gamble: "A 2-week deep dive into a single material shader.",
-        gain: "The creation of our 'Hydro-Logic' shader library.",
+        goal: "",
+        gap: "",
+        gamble: "",
+        gain: "We're so happy with the outcome. And we are already working more on new surfboard design projects. We love it.",
         processImages: [
             './assets/cases/surfboard-v001/process-1.webp',
             './assets/cases/surfboard-v001/process-2.webp'
@@ -88,7 +98,15 @@ export const PROJECTS: Project[] = [
     id: 3,
     title: 'Ntegrity',
     slug: 'ntegrity',
-    description: 'Operational design support for Australia’s leading non-profit marketing agency.',
+    description: `
+      Operational design support for Australia’s leading non-profit marketing agency. 
+      Ntegrity needed more than just a freelancer; they needed a "Design Engine" capable 
+      of handling high-volume, high-stakes campaigns for major charities like The Salvation Army. 
+      
+      We embedded directly into their workflow, executing display ads, social motion, 
+      and campaign landing pages with rapid turnaround times. This wasn't just pixel-pushing; 
+      it was about maintaining strict brand integrity while delivering the emotional punch 
+      required for non-profit fundraising.`,
     category: 'Partnership',
     tags: ['Agency', 'Digital Ads', 'Social Media', 'Events'],
     year: 2022,
@@ -104,10 +122,10 @@ export const PROJECTS: Project[] = [
         '/assets/cases/ntegrity/detail-5.gif'
     ],
     story: {
-        goal: "Collaborated seamlessly with the Ntegrity team, to bring creative visions to life.",
-        gap: "", // Empty to trigger Gallery Mode
-        gamble: "Multidisciplinary role as a Mid-Weight Designer at ntegrity.",
-        gain: "Digital design, display ads, social media paid ads, email design, web design, brand guidelines.",
+        goal: "",
+        gap: "", 
+        gamble: "",
+        gain: "High-volume creative output with zero drop in brand fidelity.",
         processImages: [
             '/assets/cases/ntegrity/process-1.webp',
             '/assets/cases/ntegrity/process-2.webp',
@@ -121,14 +139,19 @@ export const PROJECTS: Project[] = [
     id: 4,
     title: 'Pablo Creative',
     slug: 'pablo-creative',
-    description: 'Multidisciplinary design studio partnership. Covering photography, graphic design, web, and motion.',
+    description: `
+      A true studio-to-studio collaboration. We partnered with Pablo Creative to expand 
+      their output capabilities without diluting their vision. Working side-by-side with 
+      their Creative Director, we handled everything from vector illustration and motion 
+      graphics to on-set photography direction. This project proved that two distinct 
+      creative voices could merge to form a louder, more versatile signal.`,
     category: 'Partnership',
     tags: ['Studio', 'Motion', 'Photography', 'Graphic Design'],
     year: 2022,
     imageUrl: '/assets/cases/pablo-creative/Hero.webp', 
     featured: false,
     client: 'Pablo Creative',
-    role: 'Design & Motion Lead',
+    role: 'Associate Creative Direction, Design Execution, Art Assistance',
     detailImages: [
         '/assets/cases/pablo-creative/detail-1.webp',
         '/assets/cases/pablo-creative/detail-2.webp',
@@ -139,10 +162,10 @@ export const PROJECTS: Project[] = [
         '/assets/cases/pablo-creative/detail-7.webp'
     ],
     story: {
-        goal: "Combined innovation with style, to ensure creative work and service met the needs and expectations of clients by collaborating side by side with the owner and Creative Director, Ben.",
-        gap: "", // Empty to trigger Gallery Mode
-        gamble: "Branding, marketing, vector illustration, photography, videography, web design,motion graphics, gfx, and more.", 
-        gain: "A delightful experience collaborating with Ben from Pablo Creative. Ben's keen insight set the tone for our work together.",
+        goal: "",
+        gap: "", 
+        gamble: "", 
+        gain: "Seamless integration of two creative units.",
         processImages: [
             '/assets/cases/pablo-creative/process-1.webp',
             '/assets/cases/pablo-creative/process-2.webp',
@@ -159,13 +182,20 @@ export const PROJECTS: Project[] = [
     id: 5,
     title: 'The Cartridges',
     slug: 'the-cartridges',
-    description: 'Vintage classic snes cartridges. The cartridges popular in the late 80s and early 90s include games using 8-bits, low-resolution pixel matrix screens. Games like super mario, contra ii, mortal kombat, donkey kong, and more.',
+    description: `
+      Nostalgia is usually hazy, but we wanted to make it sharp. We took the iconic 
+      SNES cartridges of the 90s—Super Mario, Contra, Mortal Kombat—and treated them 
+      like high-end industrial design objects. We placed them in a pitch-black void and 
+      used stark, geometric lighting to highlight the physical details: the plastic grain, 
+      the sticker gloss, the dust in the grooves. It’s a study in how lighting can 
+      transform a cheap plastic toy into a premium artifact.
+    `,
     category: '3D Design',
     tags: ['Industrial', 'Hardware', 'Lighting',],
     year: 2021,
     imageUrl: './assets/cases/the-cartridges/Hero.webp',
     featured: false,
-    client: 'Concept Art Test',
+    client: 'Concept Art',
     role: '3D Artist',
     detailImages: [ 
         './assets/cases/the-cartridges/detail-1.webp', 
@@ -174,10 +204,10 @@ export const PROJECTS: Project[] = [
         './assets/cases/the-cartridges/detail-4.webp'],
 
         story: {
-        goal: "Represent complex modularity through simple, high-res geometric lighting.",
-        gap: "Technical products are often shown in flat lighting.",
-        gamble: "Using pitch-black environments to force focus.",
-        gain: "A set of high-converting visual assets.",
+        goal: "",
+        gap: "",
+        gamble: "",
+        gain: "A set of high-converting, hyper-real visual assets.",
         processImages: [
         './assets/cases/the-cartridges/process-1.webp', 
         './assets/cases/the-cartridges/process-2.webp', 
@@ -188,7 +218,11 @@ export const PROJECTS: Project[] = [
     id: 6,
     title: 'Johney’s Dumpling House',
     slug: 'johneys-dumpling-house',
-    description: 'High-energy hospitality branding with a contemporary street-food edge.',
+    description: `
+      Straightforward product photography for festival stalls and food truck menus. 
+      The brief was functional: capture the menu items clearly for immediate use at busy events. 
+      We focused purely on the food—ensuring it looked appetizing and legible on menu boards 
+      in chaotic, high-traffic street food environments. Simple, effective, and ready to sell.`,
     category: 'Photography',
     tags: ['Hospitality', 'Photography', 'Food Photography'],
     year: 2020,
@@ -202,10 +236,10 @@ export const PROJECTS: Project[] = [
         './assets/cases/johneys-dumpling-house/detail-3.webp'
     ],
     story: {
-        goal: "Showcase the exquisite craftsmanship of Johney's delectable dumplings but also serve as the visual centerpiece for their festival food stall menus.",
-        gap: "Typical dumpling photography can feel flat and generic — not capturing the personality and handmade soul behind the food.",
-        gamble: "Injecting energy into the visuals with playful compositions and vibrant lighting that reflect the brand’s street-food spirit.",
-        gain: "A library of images that turned menus into memorable brand touchpoints and helped position Johney’s as a standout in busy festival environments.",
+        goal: "",
+        gap: "",
+        gamble: "",
+        gain: "Clear, menu-ready assets for high-volume sales.",
         processImages: [
             './assets/cases/johneys-dumpling-house/process-1.webp',
             './assets/cases/johneys-dumpling-house/process-2.webp',
@@ -217,7 +251,13 @@ export const PROJECTS: Project[] = [
     id: 7,
     title: 'Franca Austral',
     slug: 'franca-austral',
-    description: 'Editorial-led identity design inspired by Southern landscapes.',
+    description: `
+      A craft beer born at the edge of the world. The brief was simple but heavy: capture 
+      the raw, untamed spirit of the Patagonian coast without falling into the trap of 
+      "rustic" clichés. We ignored the industry standard of busy, graffiti-laden cans and 
+      went the opposite direction—editorial silence. We built a visual identity grounded 
+      in white space, ocean-inspired tones, and a stark, whales-tail icon. It’s not just 
+      beer packaging; it’s a tribute to the southern landscapes where it’s brewed.`,
     category: 'Brand Identity',
     tags: ['Editorial', 'Strategy', 'Nature'],
     year: 2018,
@@ -233,10 +273,10 @@ export const PROJECTS: Project[] = [
 
     ],
     story: {
-        goal: "Capture the essence of Patagonia coastal landscapes for a craft beer company.",
-        gap: "The new brand identity perfectly captures franca austral's essence - their passion for handcrafted beer, love for whales, and coastal location.",
-        gamble: "A 60-page brand book with almost zero body copy.",
-        gain: "The brand well positioned among customers who enjoy and appreciate natural, quality beer without additives.",
+        goal: "",
+        gap: "",
+        gamble: "",
+        gain: "A visual identity that whispers quality instead of shouting for attention.",
         processImages: [
             './assets/cases/franca-austral/process-1.webp',
             './assets/cases/franca-austral/process-2.webp',
@@ -249,7 +289,13 @@ export const PROJECTS: Project[] = [
     id: 8,
     title: 'Just Boxes',
     slug: 'just-boxes',
-    description: 'Elevating the structural honesty of material packaging.',
+    description: `
+      Elevating the structural honesty of material packaging. Sustainable packaging often 
+      feels cheap or over-engineered. With Just Boxes, we wanted to celebrate the cardboard 
+      itself as a luxury material. We removed all plastic coatings and relied entirely on 
+      structural folding and high-quality recycled pulp. The design is stark and utilitarian, 
+      proving that you don't need glossy finishes to create a premium unboxing experience. 
+      It’s honest, structural, and 100% recyclable.`,
     category: 'Packaging',
     tags: ['Packaging', 'Industrial', 'Minimalism'],
     year: 2025,
@@ -262,10 +308,10 @@ export const PROJECTS: Project[] = [
         './assets/cases/just-boxes/detail-2.webp'
     ],
     story: {
-        goal: "Celebrate cardboard as a primary luxury material.",
-        gap: "Sustainable packaging is often over-designed.",
-        gamble: "No plastic coatings. We used structural folding.",
-        gain: "A signature packaging system that is 100% recyclable.",
+        goal: "",
+        gap: "",
+        gamble: "",
+        gain: "Packaging that feels expensive but costs the earth nothing.",
         processImages: [
             '/assets/cases/just-boxes/detail-1.webp',
             '/assets/cases/just-boxes/detail-2.webp'
