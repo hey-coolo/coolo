@@ -79,11 +79,9 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
     );
 };
 
-// --- 3. FIXED IMAGE MODAL (Uses document.body to prevent crashes) ---
+// --- 3. MODAL (SAFE MODE) ---
+// Renders to document.body to ensure it always has a valid target.
 const ImageModal: React.FC<{ src: string | null; onClose: () => void }> = ({ src, onClose }) => {
-    // Only render if we have an image, or if we want to animate out (handled by AnimatePresence)
-    // Note: We move AnimatePresence *inside* the portal so it persists during exit animations
-    
     return ReactDOM.createPortal(
         <AnimatePresence>
             {src && (
@@ -102,9 +100,8 @@ const ImageModal: React.FC<{ src: string | null; onClose: () => void }> = ({ src
                         transition={{ type: 'spring', damping: 30, stiffness: 300 }}
                         className="relative w-full h-full flex items-center justify-center pointer-events-none"
                     >
-                        {/* Content Wrapper */}
                         <div 
-                            className="relative flex flex-col items-center pointer-events-auto"
+                            className="relative flex flex-col items-center pointer-events-auto max-w-full max-h-full"
                             onClick={(e) => e.stopPropagation()} 
                         >
                             <img 
@@ -112,16 +109,12 @@ const ImageModal: React.FC<{ src: string | null; onClose: () => void }> = ({ src
                                 className="w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain shadow-[0_50px_100px_rgba(0,0,0,0.5)] border border-white/10" 
                                 alt="Full Resolution" 
                             />
-                            
-                            <div className="w-full mt-6 flex flex-col md:flex-row justify-between items-center gap-6">
-                                <div className="font-mono text-[10px] uppercase tracking-widest text-brand-offwhite/50 font-bold">
-                                    Source Inspection // Studio Capture
-                                </div>
+                            <div className="w-full mt-6 flex justify-center">
                                 <button 
                                     onClick={onClose}
                                     className="font-mono text-[11px] uppercase tracking-widest text-brand-yellow font-black border-b-2 border-brand-yellow pb-1 hover:text-brand-offwhite hover:border-brand-offwhite transition-all"
                                 >
-                                    CLOSE_DOSS_ [ESC]
+                                    CLOSE_VIEW [ESC]
                                 </button>
                             </div>
                         </div>
@@ -129,13 +122,11 @@ const ImageModal: React.FC<{ src: string | null; onClose: () => void }> = ({ src
                 </motion.div>
             )}
         </AnimatePresence>,
-        document.body // This renders the modal directly into the <body>, escaping all layout issues
+        document.body
     );
 };
 
-// --- 4. AGENCY BRIEF & STORY BLOCKS ---
-
-// Project Brief: Clean, Agency Style
+// --- 4. AGENCY BRIEF (Clean, Data-Driven) ---
 const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
     const MetaRow = ({ label, value }: { label: string, value: string }) => (
         <div className="flex justify-between items-baseline border-b border-brand-navy/10 py-3 mb-2">
@@ -148,8 +139,7 @@ const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
         <section className="py-24 md:py-32 bg-brand-offwhite relative z-20">
             <div className="container mx-auto px-6 md:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-                    
-                    {/* LEFT: Sticky Title */}
+                    {/* LEFT: Title */}
                     <div className="lg:col-span-4">
                         <motion.h2 
                             initial={{ opacity: 0, y: 20 }}
@@ -161,9 +151,8 @@ const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
                         </motion.h2>
                     </div>
 
-                    {/* RIGHT: Data & Story */}
+                    {/* RIGHT: Data & Desc */}
                     <div className="lg:col-span-8 flex flex-col gap-16">
-                        
                         <motion.div 
                             initial={{ opacity: 0 }} 
                             whileInView={{ opacity: 1 }} 
@@ -185,11 +174,7 @@ const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
                             className="font-body text-xl md:text-2xl text-brand-navy/80 leading-relaxed font-light space-y-8 max-w-3xl"
                         >
                             <p>{project.description}</p>
-                            {project.story?.goal && (
-                                <p className="opacity-80">{project.story.goal}</p>
-                            )}
                         </motion.div>
-
                     </div>
                 </div>
             </div>
@@ -197,72 +182,55 @@ const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
     );
 };
 
-// Story Block: STATIC Images (No click to open)
-const StoryBlock: React.FC<{ 
-    label: string; 
-    title: string; 
-    text: string; 
-    images: string[];
-    inverted?: boolean;
-}> = ({ label, title, text, images, inverted = false }) => {
-    if (!text) return null;
+// --- 5. THE WORK (Polished Gallery) ---
+const MainGallery: React.FC<{ images: string[]; onImageClick: (src: string) => void }> = ({ images, onImageClick }) => {
+    if (!images || images.length === 0) return null;
 
     return (
         <section className="py-24 border-t border-brand-navy/5">
             <div className="container mx-auto px-6 md:px-8">
-                <div className={`flex flex-col ${inverted ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 md:gap-24`}>
-                    
-                    {/* Text */}
-                    <div className="md:w-1/3 flex flex-col pt-8 md:sticky md:top-32 md:h-fit">
-                        <motion.div
-                            initial={{ opacity: 0, x: inverted ? 20 : -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
+                <div className="mb-12 flex items-center gap-4">
+                    <span className="w-2 h-2 bg-brand-purple rounded-full"></span>
+                    <span className="font-mono text-brand-navy/40 text-xs uppercase tracking-widest font-bold">The Work</span>
+                </div>
+                
+                <div className="space-y-16 md:space-y-32">
+                    {images.map((img, i) => (
+                        <motion.div 
+                            key={i}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-10%" }}
                             transition={{ duration: 0.8 }}
+                            className="w-full group cursor-zoom-in relative"
+                            onClick={() => onImageClick(img)}
                         >
-                            <div className="flex items-center gap-4 mb-8">
-                                <span className="w-2 h-2 bg-brand-purple rounded-full"></span>
-                                <span className="font-mono text-brand-navy/40 text-xs uppercase tracking-widest font-bold">
-                                    {label}
-                                </span>
-                            </div>
-                            <h2 className="text-4xl md:text-5xl font-black text-brand-navy mb-8 uppercase tracking-tight leading-[0.9]">
-                                {title}
-                            </h2>
-                            <p className="font-body text-lg md:text-xl text-brand-navy/80 leading-relaxed">
-                                {text}
-                            </p>
-                        </motion.div>
-                    </div>
-
-                    {/* Images - Non-interactive */}
-                    <div className="md:w-2/3 flex flex-col gap-16">
-                        {images && images.map((img, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-10%" }}
-                                transition={{ duration: 0.8 }}
-                                className="w-full bg-brand-navy/5"
-                            >
+                            {/* Visual Polish: Slight border or shadow for "Finished" work */}
+                            <div className="relative overflow-hidden bg-brand-navy/5 shadow-2xl">
                                 <img 
                                     src={img} 
-                                    alt="Detail" 
-                                    className="w-full h-auto shadow-2xl block" 
+                                    alt={`Output ${i}`} 
+                                    className="w-full h-auto block transition-transform duration-1000 group-hover:scale-[1.02]" 
                                 />
-                            </motion.div>
-                        ))}
-                    </div>
+                                <div className="absolute inset-0 bg-brand-purple/0 group-hover:bg-brand-purple/5 transition-colors duration-500 pointer-events-none" />
+                            </div>
+                            
+                            <div className="mt-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/40">Fig. 0{i + 1}</span>
+                                <span className="font-mono text-[9px] uppercase tracking-widest font-bold text-brand-purple">[ EXPAND ]</span>
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </section>
     );
 };
 
-const QuoteBlock: React.FC<{ text: string }> = ({ text }) => (
+// --- 6. QUOTE / BREAK ---
+const QuoteBreak: React.FC = () => (
     <section className="py-32 bg-brand-offwhite">
-        <div className="container mx-auto px-8 max-w-5xl text-center">
+        <div className="container mx-auto px-8 max-w-4xl text-center">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -270,46 +238,22 @@ const QuoteBlock: React.FC<{ text: string }> = ({ text }) => (
                 transition={{ duration: 0.8 }}
                 className="border-y border-brand-navy/10 py-16"
             >
-                <p className="font-sans font-black text-3xl md:text-6xl text-brand-navy uppercase leading-tight italic opacity-90">
-                    "{text}"
+                <p className="font-sans font-black text-3xl md:text-5xl text-brand-navy uppercase leading-tight italic opacity-90">
+                    "Process over perfection. The logic determines the path."
                 </p>
             </motion.div>
         </div>
     </section>
 );
 
-const ResultsSection: React.FC<{ gain: string }> = ({ gain }) => {
-    if (!gain) return null;
-    return (
-        <section className="py-40 bg-brand-navy text-brand-offwhite relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-50" />
-             <div className="container mx-auto px-6 md:px-8 relative z-10 text-center">
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-12 block">
-                        04 / The Outcome
-                    </span>
-                    <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tight leading-tight max-w-5xl mx-auto text-brand-offwhite">
-                        "{gain}"
-                    </h2>
-                </motion.div>
-            </div>
-        </section>
-    );
-};
-
-// --- 5. PROCESS ARCHIVE (INTERACTIVE) ---
-// This is the ONLY section where images will open in the modal.
-const ProcessArchive: React.FC<{ images: string[]; onImageClick: (src: string) => void }> = ({ images, onImageClick }) => {
+// --- 7. THE PROCESS (Raw / Humans) ---
+const ProcessGallery: React.FC<{ images: string[]; onImageClick: (src: string) => void }> = ({ images, onImageClick }) => {
     if (!images || images.length === 0) return null;
     
     return (
-        <section className="py-32 bg-brand-offwhite">
+        <section className="py-32 bg-brand-offwhite border-t border-brand-navy/10">
             <div className="container mx-auto px-6 md:px-8">
-                <div className="mb-24 flex flex-col md:flex-row justify-between items-end border-b border-brand-navy/10 pb-8">
+                <div className="mb-24 flex flex-col md:flex-row justify-between items-end pb-8 border-b border-brand-navy/10">
                     <div>
                         <h3 className="text-brand-navy font-black text-5xl md:text-8xl uppercase tracking-tighter opacity-10 leading-none">
                             Process
@@ -318,8 +262,8 @@ const ProcessArchive: React.FC<{ images: string[]; onImageClick: (src: string) =
                             Humans behind the machine
                         </p>
                     </div>
-                    <div className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 mb-2">
-                        Sketches / Moodboards / Exploration
+                    <div className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 mb-2 text-right">
+                        Sketches / Moodboards<br/>Exploration Data
                     </div>
                 </div>
 
@@ -334,13 +278,18 @@ const ProcessArchive: React.FC<{ images: string[]; onImageClick: (src: string) =
                             transition={{ delay: i * 0.05 }}
                             onClick={() => onImageClick(img)}
                         >
-                            <img src={img} alt="Process" className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700 ease-out border border-transparent group-hover:border-brand-purple/20" />
+                            <div className="bg-brand-navy/5 relative overflow-hidden">
+                                <img 
+                                    src={img} 
+                                    alt="Process" 
+                                    className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700 ease-out block" 
+                                />
+                                <div className="absolute inset-0 bg-brand-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none mix-blend-multiply" />
+                            </div>
                             
-                            {/* Hover Overlay */}
-                            <div className="absolute inset-0 bg-brand-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                            <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                                <span className="bg-white text-brand-navy font-mono text-[9px] uppercase font-bold px-2 py-1 tracking-widest border border-brand-navy shadow-lg">
-                                    [+]
+                            <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                <span className="bg-brand-navy text-brand-offwhite font-mono text-[9px] uppercase font-bold px-2 py-1 tracking-widest">
+                                    RAW_FILE
                                 </span>
                             </div>
                         </motion.div>
@@ -351,7 +300,7 @@ const ProcessArchive: React.FC<{ images: string[]; onImageClick: (src: string) =
     );
 };
 
-// --- 6. NEXT PROJECT (DO NOT TOUCH) ---
+// --- 8. NEXT PROJECT (DO NOT TOUCH) ---
 const NextProject: React.FC<{ project: any }> = ({ project }) => (
     <Link to={`/work/${project.slug}`} className="block relative h-screen overflow-hidden group bg-brand-navy z-20">
         <div className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-1000 ease-out">
@@ -409,26 +358,9 @@ const ProjectPage: React.FC = () => {
   const project = PROJECTS[currentIndex];
   const nextProject = PROJECTS[(currentIndex + 1) % PROJECTS.length];
   
-  const { goal, gap, gamble, gain, processImages } = project.story || {
-      goal: "",
-      gap: "",
-      gamble: "",
-      gain: "",
-      processImages: []
-  };
-
-  const details = project.detailImages || [];
-  const allVisuals = details.length > 0 ? details : [project.imageUrl];
-  
-  const storySections = [goal, gap, gamble].filter(Boolean);
-  const visualsPerSection = Math.ceil(allVisuals.length / (storySections.length || 1));
-  
-  let visualCursor = 0;
-  const getVisuals = () => {
-      const slice = allVisuals.slice(visualCursor, visualCursor + visualsPerSection);
-      visualCursor += visualsPerSection;
-      return slice;
-  };
+  // Data extraction
+  const detailImages = project.detailImages || [];
+  const processImages = project.story?.processImages || [];
 
   return (
     <>
@@ -440,48 +372,24 @@ const ProjectPage: React.FC = () => {
 
       <div className="bg-brand-offwhite text-brand-navy min-h-screen selection:bg-brand-purple selection:text-white">
         
+        {/* 1. Hero */}
         <ProjectHero project={project} />
         
+        {/* 2. Agency Brief (No Gaps/Goals text anymore, just the description) */}
         <ProjectBrief project={project} />
 
-        <div className="flex flex-col">
-            {goal && (
-                <StoryBlock 
-                    label="Phase 01" 
-                    title="The Goal" 
-                    text={goal} 
-                    images={getVisuals()} 
-                />
-            )}
+        {/* 3. The Work (Polished) */}
+        <MainGallery images={detailImages} onImageClick={setSelectedImage} />
 
-            {gap && (
-                <StoryBlock 
-                    label="Phase 02" 
-                    title="The Gap" 
-                    text={gap} 
-                    images={getVisuals()} 
-                    inverted={true}
-                />
-            )}
+        {/* 4. Quote / Interlude */}
+        <QuoteBreak />
 
-            <QuoteBlock text="Logic determines the path. Design builds the vehicle." />
-
-            {gamble && (
-                <StoryBlock 
-                    label="Phase 03" 
-                    title="The Gamble" 
-                    text={gamble} 
-                    images={getVisuals().length > 0 ? getVisuals() : [project.imageUrl]} 
-                />
-            )}
-        </div>
-
-        <ResultsSection gain={gain} />
-
-        {processImages && processImages.length > 0 && (
-            <ProcessArchive images={processImages} onImageClick={setSelectedImage} />
+        {/* 5. The Process (Raw / Sketches) */}
+        {processImages.length > 0 && (
+            <ProcessGallery images={processImages} onImageClick={setSelectedImage} />
         )}
     
+        {/* 6. Footer Nav */}
         <NextProject project={nextProject} />
       </div>
     </>
