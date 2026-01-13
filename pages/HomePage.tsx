@@ -378,7 +378,7 @@ const FeatureSpotlight: React.FC = () => {
                             
                             <div className="flex flex-col md:flex-row gap-12 border-t border-brand-offwhite/20 pt-8 text-brand-offwhite/80">
                                 <div className="max-w-xl">
-                                    <p className="font-body text-xl md:text-3xl leading-tight font-light">
+                                    <p className="font-body text-lg md:text-xl leading-relaxed font-light opacity-80 line-clamp-3 md:line-clamp-4">
                                         {featuredProject.description}
                                     </p>
                                 </div>
@@ -444,7 +444,7 @@ const CapabilityList: React.FC = () => {
                         Output.
                      </h2>
                      <div className="hidden md:block font-mono text-xs uppercase tracking-widest text-right opacity-80">
-                        Select a discipline<br/>to explore
+                        Select a capability<br/>to explore
                      </div>
                 </div>
 
@@ -530,7 +530,7 @@ const LatestIntel: React.FC = () => {
         <section className="py-24 relative z-40 bg-brand-offwhite overflow-hidden">
              <div className="container mx-auto px-8">
                  <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-                    <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-brand-navy">Latest Thoughts</h3>
+                    <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-brand-navy">Studio Thoughts</h3>
                     <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">View All Entries &rarr;</Link>
                  </div>
                  
