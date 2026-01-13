@@ -1,3 +1,4 @@
+// api/contact.tsx
 import { Resend } from 'resend';
 import { MissionReceivedEmail } from '../components/emails/MissionReceived';
 import { NewLeadAlert } from '../components/emails/NewLeadAlert';
@@ -23,25 +24,27 @@ export default async function handler(req: any, res: any) {
       } catch (e) { /* silent if exists */ }
     }
 
-    // 2. Personal auto-reply to user
-  const emailRequest = resend.emails.send({
-    from: 'COOLO <hey@send.coolo.co.nz>', 
-    to: [email],
-    reply_to: 'hey@coolo.co.nz', 
-    subject: 'Talk soon // COOLO',
-    react: MissionReceivedEmail({ name }),
-  });
+    // 2. Personal auto-reply to user (CONFIRMATION)
+    const emailRequest = resend.emails.send({
+      // CHANGE: Must use the verified 'send' subdomain
+      from: 'COOLO <hey@send.coolo.co.nz>', 
+      to: [email],
+      // ADD: So when they reply, it goes to your real inbox
+      reply_to: 'hey@coolo.co.nz', 
+      subject: 'Talk soon // COOLO',
+      react: MissionReceivedEmail({ name }),
+    });
 
-    // 3. Stylized brief receipt to hey@coolo.co.nz
-  const adminRequest = resend.emails.send({
-    from: 'COOLO Bot <system@send.coolo.co.nz>', 
-    to: ['hey@coolo.co.nz'], 
-    reply_to: email, 
-    subject: `New Lead Brief: ${name} (${vibe})`,
-    react: NewLeadAlert({ name, email, vibe, budget, message }),
-  });
-
-    
+    // 3. Stylized brief receipt to hey@coolo.co.nz (INTERNAL ALERT)
+    const adminRequest = resend.emails.send({
+      // CHANGE: Must use the verified 'send' subdomain
+      from: 'COOLO Bot <system@send.coolo.co.nz>', 
+      to: ['hey@coolo.co.nz'],
+      // ADD: So you can hit 'Reply' and it goes to the client
+      reply_to: email, 
+      subject: `New Lead Brief: ${name} (${vibe})`,
+      react: NewLeadAlert({ name, email, vibe, budget, message }),
+    });
 
     await Promise.all([emailRequest, adminRequest]);
     return res.status(200).json({ success: true });
