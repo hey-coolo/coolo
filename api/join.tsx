@@ -25,7 +25,7 @@ export default async function handler(req: any, res: any) {
 
     // 2. Send Confirmation to Applicant
   const emailRequest = resend.emails.send({
-    from: 'COOLO Careers <hey@send.coolo.co.nz>',
+    from: 'COOLO Careers <hey@coolo.co.nz>',
     to: [email],
     reply_to: 'hey@coolo.co.nz',
     subject: 'Application Received // COOLO',
@@ -33,7 +33,7 @@ export default async function handler(req: any, res: any) {
     });
 
   const adminRequest = resend.emails.send({
-    from: 'COOLO Bot <system@send.coolo.co.nz>',
+    from: 'COOLO Bot <system@coolo.co.nz>',
     to: ['hey@coolo.co.nz'],
     reply_to: email,
     subject: `New Talent: ${name} (${role})`,

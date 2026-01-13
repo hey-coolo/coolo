@@ -26,10 +26,8 @@ export default async function handler(req: any, res: any) {
 
     // 2. Personal auto-reply to user (CONFIRMATION)
     const emailRequest = resend.emails.send({
-      // CHANGE: Must use the verified 'send' subdomain
-      from: 'COOLO <hey@send.coolo.co.nz>', 
+      from: 'COOLO <hey@coolo.co.nz>', 
       to: [email],
-      // ADD: So when they reply, it goes to your real inbox
       reply_to: 'hey@coolo.co.nz', 
       subject: 'Talk soon // COOLO',
       react: MissionReceivedEmail({ name }),
@@ -37,10 +35,8 @@ export default async function handler(req: any, res: any) {
 
     // 3. Stylized brief receipt to hey@coolo.co.nz (INTERNAL ALERT)
     const adminRequest = resend.emails.send({
-      // CHANGE: Must use the verified 'send' subdomain
-      from: 'COOLO Bot <system@send.coolo.co.nz>', 
+      from: 'COOLO Bot <system@coolo.co.nz>', 
       to: ['hey@coolo.co.nz'],
-      // ADD: So you can hit 'Reply' and it goes to the client
       reply_to: email, 
       subject: `New Lead Brief: ${name} (${vibe})`,
       react: NewLeadAlert({ name, email, vibe, budget, message }),
