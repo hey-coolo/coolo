@@ -174,8 +174,7 @@ export const PROJECTS: Project[] = [
             '/assets/cases/pablo-creative/process-3.webp',
             '/assets/cases/pablo-creative/process-4.webp',
             '/assets/cases/pablo-creative/process-5.webp',
-            '/assets/cases/pablo-creative/process-6.webp',
-            '/assets/cases/pablo-creative/process-7.webp'
+            '/assets/cases/pablo-creative/process-6.webp'
         ] 
     }
   },

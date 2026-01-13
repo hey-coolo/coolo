@@ -3,16 +3,9 @@ import * as React from "react";
 
 const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://coolo.co.nz";
 
-// NOTE: API calls this "MissionReceivedEmail", do not rename!
 export const MissionReceivedEmail = ({ name = "Client" }: { name: string }) => {
   return (
     <Html>
-      <Head>
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
-        `}</style>
-      </Head>
-      <Preview>Mission briefing received</Preview>
       <Tailwind
         config={{
           theme: {
@@ -31,6 +24,12 @@ export const MissionReceivedEmail = ({ name = "Client" }: { name: string }) => {
           },
         }}
       >
+        <Head>
+          <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
+          `}</style>
+        </Head>
+        <Preview>Mission briefing received</Preview>
         <Body className="bg-brand-offwhite font-sans my-auto mx-auto px-4 py-12">
           <Container className="mx-auto w-full max-w-[600px]">
             

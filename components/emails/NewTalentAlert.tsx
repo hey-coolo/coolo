@@ -14,12 +14,6 @@ interface NewTalentAlertProps {
 export const NewTalentAlert = ({ name, email, role, rate, portfolio }: NewTalentAlertProps) => {
   return (
     <Html>
-      <Head>
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
-        `}</style>
-      </Head>
-      <Preview>Talent: {name}</Preview>
       <Tailwind
         config={{
           theme: {
@@ -38,6 +32,12 @@ export const NewTalentAlert = ({ name, email, role, rate, portfolio }: NewTalent
           },
         }}
       >
+        <Head>
+          <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
+          `}</style>
+        </Head>
+        <Preview>Talent: {name}</Preview>
         <Body className="bg-brand-offwhite font-sans my-auto mx-auto px-4 py-12">
           <Container className="mx-auto w-full max-w-[600px]">
             

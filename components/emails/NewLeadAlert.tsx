@@ -14,12 +14,6 @@ interface NewLeadAlertProps {
 export const NewLeadAlert = ({ name, email, vibe, message, budget }: NewLeadAlertProps) => {
   return (
     <Html>
-      <Head>
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
-        `}</style>
-      </Head>
-      <Preview>New Lead: {name}</Preview>
       <Tailwind
         config={{
           theme: {
@@ -38,6 +32,12 @@ export const NewLeadAlert = ({ name, email, vibe, message, budget }: NewLeadAler
           },
         }}
       >
+        <Head>
+          <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
+          `}</style>
+        </Head>
+        <Preview>New Lead: {name}</Preview>
         <Body className="bg-brand-offwhite font-sans my-auto mx-auto px-4 py-12">
           <Container className="mx-auto w-full max-w-[600px]">
             

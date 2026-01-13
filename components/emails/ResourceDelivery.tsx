@@ -6,12 +6,6 @@ const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "
 export const ResourceDelivery = ({ resourceName = "Brand Guide 2.0", downloadLink = "#" }: { resourceName: string; downloadLink: string }) => {
   return (
     <Html>
-      <Head>
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
-        `}</style>
-      </Head>
-      <Preview>Your download is ready</Preview>
       <Tailwind
         config={{
           theme: {
@@ -30,6 +24,12 @@ export const ResourceDelivery = ({ resourceName = "Brand Guide 2.0", downloadLin
           },
         }}
       >
+        <Head>
+          <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
+          `}</style>
+        </Head>
+        <Preview>Your download is ready</Preview>
         <Body className="bg-brand-offwhite font-sans my-auto mx-auto px-4 py-12">
           <Container className="mx-auto w-full max-w-[600px]">
             
