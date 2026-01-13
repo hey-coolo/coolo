@@ -33,8 +33,8 @@ export default async function handler(req: any, res: any) {
 
     // 3. Stylized brief receipt to hey@coolo.co.nz
     const adminRequest = resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: ['hey@coolo.co.nz'],
+      from: 'COOLO Bot <system@coolo.co.nz>',
+      to: ['bogni.3@gmail.com'],
       subject: `New Lead Brief: ${name} (${vibe})`,
       react: NewLeadAlert({ name, email, vibe, budget, message }),
     });
