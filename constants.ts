@@ -30,19 +30,19 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity', 
     tags: ['Brutalism', 'Typography', 'Strategy'],
     year: 2025,
-    imageUrl: './assets/cases/unmplymnt/Hero.webp', 
+    imageUrl: '/assets/cases/unmplymnt/Hero.webp', 
     featured: true,
     client: 'unmplymnt',
     role: 'Brand Strategy, Logotype & Mark system, Art Direction, Content Creation.',
     detailImages: [
-        './assets/cases/unmplymnt/detail-1.webp', 
-        './assets/cases/unmplymnt/detail-2.webp', 
-        './assets/cases/unmplymnt/detail-3.webp', 
-        './assets/cases/unmplymnt/detail-5.webp',
-        './assets/cases/unmplymnt/detail-6.webp',
-        './assets/cases/unmplymnt/detail-7.webp',
-        './assets/cases/unmplymnt/detail-10.png',
-        './assets/cases/unmplymnt/detail-11.png'
+        '/assets/cases/unmplymnt/detail-1.webp', 
+        '/assets/cases/unmplymnt/detail-2.webp', 
+        '/assets/cases/unmplymnt/detail-3.webp', 
+        '/assets/cases/unmplymnt/detail-5.webp',
+        '/assets/cases/unmplymnt/detail-6.webp',
+        '/assets/cases/unmplymnt/detail-7.webp',
+        '/assets/cases/unmplymnt/detail-10.png',
+        '/assets/cases/unmplymnt/detail-11.png'
     ],
     story: {
         goal: "",
@@ -50,17 +50,17 @@ export const PROJECTS: Project[] = [
         gamble: "",
         gain: "Identity done right does not whisper. It moves people.",
         processImages: [
-            './assets/cases/unmplymnt/process-1.webp',
-            './assets/cases/unmplymnt/process-2.webp',
-            './assets/cases/unmplymnt/process-3.webp',
-            './assets/cases/unmplymnt/process-4.webp',
-            './assets/cases/unmplymnt/process-5.png',
-            './assets/cases/unmplymnt/process-6.png',
-            './assets/cases/unmplymnt/process-7.png',
-            './assets/cases/unmplymnt/process-8.png',
-            './assets/cases/unmplymnt/process-11.png',
-            './assets/cases/unmplymnt/process-12.png',
-            './assets/cases/unmplymnt/process-13.png'
+            '/assets/cases/unmplymnt/process-1.webp',
+            '/assets/cases/unmplymnt/process-2.webp',
+            '/assets/cases/unmplymnt/process-3.webp',
+            '/assets/cases/unmplymnt/process-4.webp',
+            '/assets/cases/unmplymnt/process-5.png',
+            '/assets/cases/unmplymnt/process-6.png',
+            '/assets/cases/unmplymnt/process-7.png',
+            '/assets/cases/unmplymnt/process-8.png',
+            '/assets/cases/unmplymnt/process-11.png',
+            '/assets/cases/unmplymnt/process-12.png',
+            '/assets/cases/unmplymnt/process-13.png'
 
         ]
     }
@@ -82,16 +82,16 @@ export const PROJECTS: Project[] = [
     category: '3D Design',
     tags: ['3D Design', 'Product Visualization', 'High-Res Rendering'],
     year: 2023,
-    imageUrl: './assets/cases/surfboard-v001/Hero.webp',
+    imageUrl: '/assets/cases/surfboard-v001/Hero.webp',
     featured: true,
     client: 'Concept Test',
     role: '3D Design, Product Renders',
     detailImages: [
-        './assets/cases/surfboard-v001/detail-1.webp',
-        './assets/cases/surfboard-v001/detail-2.webp',
-        './assets/cases/surfboard-v001/detail-3.webp',
-        './assets/cases/surfboard-v001/detail-4.webp',
-        './assets/cases/surfboard-v001/detail-5.jpg'
+        '/assets/cases/surfboard-v001/detail-1.webp',
+        '/assets/cases/surfboard-v001/detail-2.webp',
+        '/assets/cases/surfboard-v001/detail-3.webp',
+        '/assets/cases/surfboard-v001/detail-4.webp',
+        '/assets/cases/surfboard-v001/detail-5.jpg'
     ],
     story: {
         goal: "",
@@ -99,12 +99,12 @@ export const PROJECTS: Project[] = [
         gamble: "",
         gain: "We're so happy with the outcome. And we are already working more on new surfboard design projects. We love it.",
         processImages: [
-            './assets/cases/surfboard-v001/process-1.webp',
-            './assets/cases/surfboard-v001/process-2.webp',
-            './assets/cases/surfboard-v001/process-3.jpg',
-            './assets/cases/surfboard-v001/process-4.webp',
-            './assets/cases/surfboard-v001/process-5.webp',
-            './assets/cases/surfboard-v001/process-6.png'
+            '/assets/cases/surfboard-v001/process-1.webp',
+            '/assets/cases/surfboard-v001/process-2.webp',
+            '/assets/cases/surfboard-v001/process-3.jpg',
+            '/assets/cases/surfboard-v001/process-4.webp',
+            '/assets/cases/surfboard-v001/process-5.webp',
+            '/assets/cases/surfboard-v001/process-6.png'
         ]
     }
   },
@@ -216,15 +216,15 @@ export const PROJECTS: Project[] = [
     category: '3D Design',
     tags: ['Industrial', 'Hardware', 'Lighting',],
     year: 2021,
-    imageUrl: './assets/cases/the-cartridges/Hero.webp',
+    imageUrl: '/assets/cases/the-cartridges/Hero.webp',
     featured: false,
     client: 'Concept Art',
     role: '3D Artist',
     detailImages: [ 
-        './assets/cases/the-cartridges/detail-1.webp', 
-        './assets/cases/the-cartridges/detail-2.webp', 
-        './assets/cases/the-cartridges/detail-3.webp', 
-        './assets/cases/the-cartridges/detail-4.webp'
+        '/assets/cases/the-cartridges/detail-1.webp', 
+        '/assets/cases/the-cartridges/detail-2.webp', 
+        '/assets/cases/the-cartridges/detail-3.webp', 
+        '/assets/cases/the-cartridges/detail-4.webp'
     ],
 
         story: {
@@ -233,14 +233,14 @@ export const PROJECTS: Project[] = [
         gamble: "",
         gain: "A set of high-converting, hyper-real visual assets.",
         processImages: [
-        './assets/cases/the-cartridges/process-1.webp', 
-        './assets/cases/the-cartridges/process-2.webp', 
-        './assets/cases/the-cartridges/process-3.webp',
-        './assets/cases/the-cartridges/process-4.jpg',
-        './assets/cases/the-cartridges/process-5.png',
-        './assets/cases/the-cartridges/process-6.jpg',
-        './assets/cases/the-cartridges/process-7.webp',
-        './assets/cases/the-cartridges/process-8.webp',
+        '/assets/cases/the-cartridges/process-1.webp', 
+        '/assets/cases/the-cartridges/process-2.webp', 
+        '/assets/cases/the-cartridges/process-3.webp',
+        '/assets/cases/the-cartridges/process-4.jpg',
+        '/assets/cases/the-cartridges/process-5.png',
+        '/assets/cases/the-cartridges/process-6.jpg',
+        '/assets/cases/the-cartridges/process-7.webp',
+        '/assets/cases/the-cartridges/process-8.webp',
         
     ]
     }
@@ -257,14 +257,14 @@ export const PROJECTS: Project[] = [
     category: 'Photography',
     tags: ['Hospitality', 'Photography', 'Food Photography'],
     year: 2020,
-    imageUrl: './assets/cases/johneys-dumpling-house/Hero.webp',
+    imageUrl: '/assets/cases/johneys-dumpling-house/Hero.webp',
     featured: true,
     client: 'Jonhey’s Dumpling House',
     role: 'Food Photography',
     detailImages: [
-        './assets/cases/johneys-dumpling-house/detail-1.webp',
-        './assets/cases/johneys-dumpling-house/detail-2.webp',
-        './assets/cases/johneys-dumpling-house/detail-3.webp'
+        '/assets/cases/johneys-dumpling-house/detail-1.webp',
+        '/assets/cases/johneys-dumpling-house/detail-2.webp',
+        '/assets/cases/johneys-dumpling-house/detail-3.webp'
     ],
     story: {
         goal: "",
@@ -272,9 +272,9 @@ export const PROJECTS: Project[] = [
         gamble: "",
         gain: "Clear, menu-ready assets for high-volume sales.",
         processImages: [
-            './assets/cases/johneys-dumpling-house/process-1.webp',
-            './assets/cases/johneys-dumpling-house/process-2.webp',
-            './assets/cases/johneys-dumpling-house/process-3.webp'
+            '/assets/cases/johneys-dumpling-house/process-1.webp',
+            '/assets/cases/johneys-dumpling-house/process-2.webp',
+            '/assets/cases/johneys-dumpling-house/process-3.webp'
         ]
     }
   },
@@ -292,15 +292,15 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     tags: ['Editorial', 'Strategy', 'Nature'],
     year: 2018,
-    imageUrl: './assets/cases/franca-austral/Hero.webp',
+    imageUrl: '/assets/cases/franca-austral/Hero.webp',
     featured: false,
     client: 'Franca Austral Cerveceria',
     role: 'Creative Designer',
     detailImages: [
-        './assets/cases/franca-austral/detail-1.webp',
-        './assets/cases/franca-austral/detail-2.webp',
-        './assets/cases/franca-austral/detail-3.webp',
-        './assets/cases/franca-austral/detail-4.webp'
+        '/assets/cases/franca-austral/detail-1.webp',
+        '/assets/cases/franca-austral/detail-2.webp',
+        '/assets/cases/franca-austral/detail-3.webp',
+        '/assets/cases/franca-austral/detail-4.webp'
 
     ],
     story: {
@@ -309,10 +309,10 @@ export const PROJECTS: Project[] = [
         gamble: "",
         gain: "A visual identity that whispers quality instead of shouting for attention.",
         processImages: [
-            './assets/cases/franca-austral/process-1.webp',
-            './assets/cases/franca-austral/process-2.webp',
-            './assets/cases/franca-austral/process-3.webp',
-            './assets/cases/franca-austral/process-4.webp'
+            '/assets/cases/franca-austral/process-1.webp',
+            '/assets/cases/franca-austral/process-2.webp',
+            '/assets/cases/franca-austral/process-3.webp',
+            '/assets/cases/franca-austral/process-4.webp'
             ]
     }
   },
@@ -330,13 +330,13 @@ export const PROJECTS: Project[] = [
     category: 'Packaging',
     tags: ['Packaging', 'Industrial', 'Minimalism'],
     year: 2025,
-    imageUrl: './assets/cases/just-boxes/Hero.webp', 
+    imageUrl: '/assets/cases/just-boxes/Hero.webp', 
     featured: true,
     client: 'Just Boxes',
     role: 'Creative Direction',
     detailImages: [
-        './assets/cases/just-boxes/detail-1.webp',
-        './assets/cases/just-boxes/detail-2.webp'
+        '/assets/cases/just-boxes/detail-1.webp',
+        '/assets/cases/just-boxes/detail-2.webp'
     ],
     story: {
         goal: "",
