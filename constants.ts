@@ -41,7 +41,12 @@ export const PROJECTS: Project[] = [
         './assets/cases/unmplymnt/detail-4.webp', 
         './assets/cases/unmplymnt/detail-5.webp',
         './assets/cases/unmplymnt/detail-6.webp',
-        './assets/cases/unmplymnt/detail-7.webp'
+        './assets/cases/unmplymnt/detail-7.webp',
+        './assets/cases/unmplymnt/detail-8.png',
+        './assets/cases/unmplymnt/detail-9.png',
+        './assets/cases/unmplymnt/detail-10.png',
+        './assets/cases/unmplymnt/detail-11.png',
+        './assets/cases/unmplymnt/detail-12.png'
     ],
     story: {
         goal: "",
@@ -52,7 +57,17 @@ export const PROJECTS: Project[] = [
             './assets/cases/unmplymnt/process-1.webp',
             './assets/cases/unmplymnt/process-2.webp',
             './assets/cases/unmplymnt/process-3.webp',
-            './assets/cases/unmplymnt/process-5.webp'
+            './assets/cases/unmplymnt/process-4.webp',
+            './assets/cases/unmplymnt/process-5.png',
+            './assets/cases/unmplymnt/process-6.png',
+            './assets/cases/unmplymnt/process-7.png',
+            './assets/cases/unmplymnt/process-8.png',
+            './assets/cases/unmplymnt/process-9.png',
+            './assets/cases/unmplymnt/process-10.png',
+            './assets/cases/unmplymnt/process-11.png',
+            './assets/cases/unmplymnt/process-12.png',
+            './assets/cases/unmplymnt/process-13.png'
+
         ]
     }
   },
@@ -82,7 +97,7 @@ export const PROJECTS: Project[] = [
         './assets/cases/surfboard-v001/detail-2.webp',
         './assets/cases/surfboard-v001/detail-3.webp',
         './assets/cases/surfboard-v001/detail-4.webp',
-        './assets/cases/surfboard-v001/detail-5.webp'
+        './assets/cases/surfboard-v001/detail-5.jpg'
     ],
     story: {
         goal: "",
@@ -91,7 +106,11 @@ export const PROJECTS: Project[] = [
         gain: "We're so happy with the outcome. And we are already working more on new surfboard design projects. We love it.",
         processImages: [
             './assets/cases/surfboard-v001/process-1.webp',
-            './assets/cases/surfboard-v001/process-2.webp'
+            './assets/cases/surfboard-v001/process-2.webp',
+            './assets/cases/surfboard-v001/process-3.jpg',
+            './assets/cases/surfboard-v001/process-4.webp',
+            './assets/cases/surfboard-v001/process-5.webp',
+            './assets/cases/surfboard-v001/process-6.png'
         ]
     }
   },
@@ -121,7 +140,10 @@ export const PROJECTS: Project[] = [
         '/assets/cases/ntegrity/detail-2.webp',
         '/assets/cases/ntegrity/detail-3.gif',
         '/assets/cases/ntegrity/detail-4.webp',
-        '/assets/cases/ntegrity/detail-5.gif'
+        '/assets/cases/ntegrity/detail-5.gif',
+        '/assets/cases/ntegrity/detail-6.gif',
+        '/assets/cases/ntegrity/detail-7.png'
+
     ],
     story: {
         goal: "",
@@ -133,7 +155,8 @@ export const PROJECTS: Project[] = [
             '/assets/cases/ntegrity/process-2.webp',
             '/assets/cases/ntegrity/process-3.webp',
             '/assets/cases/ntegrity/process-4.gif',
-            '/assets/cases/ntegrity/process-5.png'
+            '/assets/cases/ntegrity/process-5.png',
+            '/assets/cases/ntegrity/process-6.png'
         ]
     }
   },
@@ -160,8 +183,9 @@ export const PROJECTS: Project[] = [
         '/assets/cases/pablo-creative/detail-3.webp',
         '/assets/cases/pablo-creative/detail-4.webp',
         '/assets/cases/pablo-creative/detail-5.webp',
-        '/assets/cases/pablo-creative/detail-6.webp',
-        '/assets/cases/pablo-creative/detail-7.webp'
+        '/assets/cases/pablo-creative/detail-6.jpg',
+        '/assets/cases/pablo-creative/detail-7.webp',
+        '/assets/cases/pablo-creative/detail-8.jpg'
     ],
     story: {
         goal: "",
@@ -174,7 +198,11 @@ export const PROJECTS: Project[] = [
             '/assets/cases/pablo-creative/process-3.webp',
             '/assets/cases/pablo-creative/process-4.webp',
             '/assets/cases/pablo-creative/process-5.webp',
-            '/assets/cases/pablo-creative/process-6.webp'
+            '/assets/cases/pablo-creative/process-6.webp',
+            '/assets/cases/pablo-creative/process-7.jpg',
+            '/assets/cases/pablo-creative/process-8.webp',
+            '/assets/cases/pablo-creative/process-9.jpg',
+            '/assets/cases/pablo-creative/process-10.jpg'
         ] 
     }
   },
@@ -202,7 +230,8 @@ export const PROJECTS: Project[] = [
         './assets/cases/the-cartridges/detail-1.webp', 
         './assets/cases/the-cartridges/detail-2.webp', 
         './assets/cases/the-cartridges/detail-3.webp', 
-        './assets/cases/the-cartridges/detail-4.webp'],
+        './assets/cases/the-cartridges/detail-4.webp'
+    ],
 
         story: {
         goal: "",
@@ -212,7 +241,14 @@ export const PROJECTS: Project[] = [
         processImages: [
         './assets/cases/the-cartridges/process-1.webp', 
         './assets/cases/the-cartridges/process-2.webp', 
-        './assets/cases/the-cartridges/process-3.webp']
+        './assets/cases/the-cartridges/process-3.webp',
+        './assets/cases/the-cartridges/process-4.jpg',
+        './assets/cases/the-cartridges/process-5.png',
+        './assets/cases/the-cartridges/process-6.jpg',
+        './assets/cases/the-cartridges/process-7.webp',
+        './assets/cases/the-cartridges/process-8.webp',
+        
+    ]
     }
   },
  {
