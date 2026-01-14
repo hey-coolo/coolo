@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sticker as StickerIcon, Trash2 } from 'lucide-react';
 
 // --- ASSETS ---
-
 const STICKER_ASSETS = [
   '/assets/stickers/fuel coffee cup.svg',
   '/assets/stickers/sticker_creative-blur.svg',
@@ -11,8 +10,8 @@ const STICKER_ASSETS = [
   '/assets/stickers/sticker_Hello-face.svg',
   '/assets/stickers/sticker_smile coolito.svg',
   '/assets/stickers/sticker_worldwide.svg',
-  '/assets/logos/logo-dark.svg', // Mixing in your existing logo
-];
+  '/assets/stickers/sticker_logo.svg',
+  ];
 
 interface Sticker {
   id: number;
@@ -20,7 +19,7 @@ interface Sticker {
   x: number;
   y: number;
   rotation: number;
-  scale: number; // Added Scale
+  scale: number;
 }
 
 const StickerSystem: React.FC = () => {
@@ -29,7 +28,7 @@ const StickerSystem: React.FC = () => {
 
   // 1. Load Persisted Stickers
   useEffect(() => {
-    const saved = localStorage.getItem('coolo_stickers_scatter_v3');
+    const saved = localStorage.getItem('coolo_stickers_scatter_v4');
     if (saved) {
       try {
         setStickers(JSON.parse(saved));
@@ -41,39 +40,47 @@ const StickerSystem: React.FC = () => {
 
   // 2. Save Stickers on Change
   useEffect(() => {
-    localStorage.setItem('coolo_stickers_scatter_v3', JSON.stringify(stickers));
+    localStorage.setItem('coolo_stickers_scatter_v4', JSON.stringify(stickers));
   }, [stickers]);
 
   const scatterConfetti = () => {
-    // Blast 5 stickers at once
-    const BATCH_SIZE = 5;
-    const newBatch: Sticker[] = [];
+    // Randomize batch size: 5 to 8 stickers
+    const batchSize = Math.floor(Math.random() * 4) + 5; 
+    let spawnedCount = 0;
 
-    for (let i = 0; i < BATCH_SIZE; i++) {
-        // Pick random asset
+    // Interval to create the "machine gun" scatter effect
+    const intervalId = setInterval(() => {
+        if (spawnedCount >= batchSize) {
+            clearInterval(intervalId);
+            return;
+        }
+
+        // --- Random Generation Logic ---
         const randomSrc = STICKER_ASSETS[Math.floor(Math.random() * STICKER_ASSETS.length)];
         
-        // Random placement (Spread across most of the screen)
-        const randomX = Math.random() * (window.innerWidth * 0.8) + (window.innerWidth * 0.1);
-        const randomY = Math.random() * (window.innerHeight * 0.8) + (window.innerHeight * 0.1);
+        // Placement: 5% padding from edges
+        const randomX = Math.random() * (window.innerWidth * 0.9) + (window.innerWidth * 0.05);
+        const randomY = Math.random() * (window.innerHeight * 0.9) + (window.innerHeight * 0.05);
         
-        // Chaotic rotation (-45 to 45 deg)
-        const randomRot = (Math.random() * 90) - 45; 
+        // Rotation: -60 to +60 degrees
+        const randomRot = (Math.random() * 120) - 60; 
         
-        // Varied sizes (0.7x to 1.3x) - Keeps it dynamic
-        const randomScale = 0.7 + Math.random() * 0.6; 
+        // Scale: 0.6x to 1.3x
+        const randomScale = 0.6 + Math.random() * 0.7; 
 
-        newBatch.push({
-            id: Date.now() + i, 
+        const newSticker: Sticker = {
+            id: Date.now() + Math.random(), // Ensure unique ID with fast spawning
             src: randomSrc,
             x: randomX,
             y: randomY,
             rotation: randomRot,
             scale: randomScale,
-        });
-    }
+        };
 
-    setStickers(prev => [...prev, ...newBatch]);
+        setStickers(prev => [...prev, newSticker]);
+        spawnedCount++;
+
+    }, 80); // 80ms delay between pops
   };
 
   const removeSticker = (id: number) => {
@@ -89,8 +96,7 @@ const StickerSystem: React.FC = () => {
   return (
     <>
       {/* --- THE CANVAS --- */}
-      {/* z-[999] ensures it is ON TOP of the Header (usually z-50) and all text */}
-      {/* pointer-events-none on the container allows clicking THROUGH empty space */}
+      {/* z-[999] = On top of everything. mix-blend-normal ensures colors pop. */}
       <div ref={constraintsRef} className="fixed inset-0 pointer-events-none z-[999] overflow-hidden mix-blend-normal">
         <AnimatePresence>
             {stickers.map((sticker) => (
@@ -98,24 +104,21 @@ const StickerSystem: React.FC = () => {
                 key={sticker.id}
                 drag
                 dragMomentum={false} 
-                // "Pop" Entrance Animation with Rotation and Scale
+                // "Spring Pop" Entrance
                 initial={{ scale: 0, opacity: 0, rotate: sticker.rotation + 180 }}
                 animate={{ scale: sticker.scale, opacity: 1, rotate: sticker.rotation, x: sticker.x, y: sticker.y }}
                 exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 
-                // Hover Effects
+                // Interaction
                 whileHover={{ scale: sticker.scale * 1.1, cursor: 'grab', zIndex: 1000 }}
                 whileDrag={{ scale: sticker.scale * 1.2, cursor: 'grabbing', zIndex: 1000 }}
                 
-                // pointer-events-auto re-enables clicking specifically on the sticker
                 className="absolute pointer-events-auto select-none group origin-center"
-                
-                // Double click to remove if it's blocking content
                 onDoubleClick={() => removeSticker(sticker.id)}
             >
                 <div className="relative">
-                    {/* Delete Hint (Visible on Hover) */}
+                    {/* Delete Hint */}
                     <button 
                         onClick={(e) => { e.stopPropagation(); removeSticker(sticker.id); }}
                         className="absolute -top-6 left-1/2 -translate-x-1/2 bg-brand-navy text-brand-offwhite rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 scale-75 shadow-md pointer-events-auto cursor-pointer"
@@ -126,7 +129,6 @@ const StickerSystem: React.FC = () => {
                     <img 
                         src={sticker.src} 
                         alt="sticker" 
-                        // Sizing
                         className="w-32 md:w-48 h-auto pointer-events-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.3)]"
                         draggable={false}
                     />
@@ -136,11 +138,10 @@ const StickerSystem: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* --- THE TRIGGER (Circular FAB) --- */}
-      {/* z-[1000] ensures the button is always clickable above the stickers */}
+      {/* --- THE TRIGGER --- */}
       <div className="fixed bottom-8 left-8 z-[1000] flex flex-col items-center gap-4 group">
         
-        {/* Clear Button (Hidden unless hovering) */}
+        {/* Clear Button */}
         {stickers.length > 0 && (
             <button 
                 onClick={clearDeck}
@@ -159,9 +160,9 @@ const StickerSystem: React.FC = () => {
           <StickerIcon size={24} className="group-active:rotate-12 transition-transform" />
         </button>
         
-        {/* Helper Tooltip */}
+        {/* Tooltip */}
         <span className="font-mono text-[9px] uppercase tracking-widest bg-brand-navy text-brand-offwhite px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity absolute left-16 bottom-4 whitespace-nowrap pointer-events-none rounded-sm">
-            Click to Scatter / Dbl Click to Delete
+            Click to Scatter
         </span>
 
       </div>
