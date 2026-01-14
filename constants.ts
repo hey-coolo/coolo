@@ -5,8 +5,8 @@ import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, De
 
 export const ASSETS = {
   team: {
-    franco: './assets/team/Franco.webp',
-    ariana: './assets/team/Ariana.webp'
+    franco: '/assets/team/Franco.webp',
+    ariana: '/assets/team/Ariana.webp'
   },
   services: {
       clarity: "#FCC803",      // Brand Yellow

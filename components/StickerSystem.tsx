@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sticker as StickerIcon, Trash2 } from 'lucide-react';
 
-// --- CONFIGURATION ---
-// These point to your new SVG files in public/assets/stickers/
+// --- ASSETS ---
+// Ensure these exist in public/assets/stickers/
 const STICKER_ASSETS = [
   '/assets/stickers/fuel coffee cup.svg',
   '/assets/stickers/sticker_creative-blur.svg',
@@ -11,7 +11,6 @@ const STICKER_ASSETS = [
   '/assets/stickers/sticker_Hello-face.svg',
   '/assets/stickers/sticker_smile coolito.svg',
   '/assets/stickers/sticker_worldwide.svg',
-
   '/assets/logos/logo-dark.svg', // Mixing in your existing logo
 ];
 
@@ -21,17 +20,16 @@ interface Sticker {
   x: number;
   y: number;
   rotation: number;
-  scale: number;
+  scale: number; // Added Scale Property
 }
 
 const StickerSystem: React.FC = () => {
-  const [isActive, setIsActive] = useState(false);
   const [stickers, setStickers] = useState<Sticker[]>([]);
   const constraintsRef = useRef(null);
 
-  // 1. Load Slaps
+  // 1. Load Persisted Stickers
   useEffect(() => {
-    const saved = localStorage.getItem('coolo_stickers_svg');
+    const saved = localStorage.getItem('coolo_stickers_scatter_v2');
     if (saved) {
       try {
         setStickers(JSON.parse(saved));
@@ -41,28 +39,41 @@ const StickerSystem: React.FC = () => {
     }
   }, []);
 
-  // 2. Save Slaps
+  // 2. Save Stickers on Change
   useEffect(() => {
-    localStorage.setItem('coolo_stickers_svg', JSON.stringify(stickers));
+    localStorage.setItem('coolo_stickers_scatter_v2', JSON.stringify(stickers));
   }, [stickers]);
 
-  const addSticker = (src: string) => {
-    // Randomize placement
-    const randomX = Math.random() * (window.innerWidth * 0.3) + 100;
-    const randomY = Math.random() * (window.innerHeight * 0.3) + 100;
-    const randomRot = (Math.random() * 40) - 20; // -20 to 20 degree tilt
-    const randomScale = 0.9 + Math.random() * 0.3; 
+  const scatterConfetti = () => {
+    // Blast 5 stickers at once
+    const BATCH_SIZE = 5;
+    const newBatch: Sticker[] = [];
 
-    const newSticker: Sticker = {
-      id: Date.now(),
-      src,
-      x: randomX,
-      y: randomY,
-      rotation: randomRot,
-      scale: randomScale,
-    };
+    for (let i = 0; i < BATCH_SIZE; i++) {
+        // Pick random asset
+        const randomSrc = STICKER_ASSETS[Math.floor(Math.random() * STICKER_ASSETS.length)];
+        
+        // Random placement (Spread across 80% of screen)
+        const randomX = Math.random() * (window.innerWidth * 0.8) + (window.innerWidth * 0.1);
+        const randomY = Math.random() * (window.innerHeight * 0.8) + (window.innerHeight * 0.1);
+        
+        // Chaotic rotation (-45 to 45 deg)
+        const randomRot = (Math.random() * 90) - 45; 
+        
+        // Varied sizes (0.8x to 1.4x)
+        const randomScale = 0.8 + Math.random() * 0.6; 
 
-    setStickers(prev => [...prev, newSticker]);
+        newBatch.push({
+            id: Date.now() + i, 
+            src: randomSrc,
+            x: randomX,
+            y: randomY,
+            rotation: randomRot,
+            scale: randomScale,
+        });
+    }
+
+    setStickers(prev => [...prev, ...newBatch]);
   };
 
   const removeSticker = (id: number) => {
@@ -70,110 +81,87 @@ const StickerSystem: React.FC = () => {
   };
 
   const clearDeck = () => {
-    if(confirm("Scrape the deck? This removes all stickers.")) {
+    if(stickers.length > 0 && confirm("Scrape the deck? This removes all stickers.")) {
         setStickers([]);
     }
   };
 
   return (
     <>
-      {/* --- THE CANVAS (Overlay) --- */}
-      <div ref={constraintsRef} className="fixed inset-0 pointer-events-none z-[45] overflow-hidden mix-blend-multiply">
-        {stickers.map((sticker) => (
-          <motion.div
-            key={sticker.id}
-            drag
-            dragMomentum={false} 
-            initial={{ scale: 0, rotate: 0, x: sticker.x, y: sticker.y }}
-            animate={{ scale: sticker.scale, rotate: sticker.rotation, x: sticker.x, y: sticker.y }}
-            whileHover={{ scale: sticker.scale * 1.1, cursor: 'grab', zIndex: 100 }}
-            whileDrag={{ scale: sticker.scale * 1.15, cursor: 'grabbing', zIndex: 100 }}
-            className="absolute pointer-events-auto select-none group"
-            onDragEnd={(_e, info) => {
-                const newStickers = stickers.map(s => 
-                    s.id === sticker.id ? { ...s, x: s.x + info.offset.x, y: s.y + info.offset.y } : s
-                );
-            }}
-            onDoubleClick={() => removeSticker(sticker.id)}
-          >
-            <div className="relative">
-                {/* Delete Button (Visible on Hover) */}
-                <button 
-                    onClick={(e) => { e.stopPropagation(); removeSticker(sticker.id); }}
-                    className="absolute -top-4 -right-4 bg-brand-navy text-brand-offwhite rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 scale-75 shadow-md"
-                >
-                    <X size={12} />
-                </button>
+      {/* --- THE CANVAS --- */}
+      {/* Z-Index 80 places it ABOVE the Header (z-50) but BELOW Loader/Cursor (z-100+) */}
+      <div ref={constraintsRef} className="fixed inset-0 pointer-events-none z-[80] overflow-hidden mix-blend-multiply">
+        <AnimatePresence>
+            {stickers.map((sticker) => (
+            <motion.div
+                key={sticker.id}
+                drag
+                dragMomentum={false} 
+                // "Pop" Entrance Animation
+                initial={{ scale: 0, opacity: 0, rotate: sticker.rotation + 180 }}
+                animate={{ scale: sticker.scale, opacity: 1, rotate: sticker.rotation, x: sticker.x, y: sticker.y }}
+                exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                
+                whileHover={{ scale: sticker.scale * 1.1, cursor: 'grab', zIndex: 100 }}
+                whileDrag={{ scale: sticker.scale * 1.2, cursor: 'grabbing', zIndex: 100 }}
+                
+                className="absolute pointer-events-auto select-none group origin-center"
+                
+                // Note: We don't update state onDragEnd for performance, 
+                // visual position is handled by Framer Motion until refresh.
+                
+                onDoubleClick={() => removeSticker(sticker.id)}
+            >
+                <div className="relative">
+                    {/* Delete Hint (Visible on Hover) */}
+                    <button 
+                        onClick={(e) => { e.stopPropagation(); removeSticker(sticker.id); }}
+                        className="absolute -top-6 left-1/2 -translate-x-1/2 bg-brand-navy text-brand-offwhite rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 scale-75 shadow-md pointer-events-auto cursor-pointer"
+                    >
+                        <X size={10} />
+                    </button>
 
-                <img 
-                    src={sticker.src} 
-                    alt="sticker" 
-                    className="w-32 md:w-48 h-auto pointer-events-none drop-shadow-[0_10px_15px_rgba(0,0,0,0.15)]"
-                    draggable={false}
-                />
-            </div>
-          </motion.div>
-        ))}
+                    <img 
+                        src={sticker.src} 
+                        alt="sticker" 
+                        className="w-32 md:w-48 h-auto pointer-events-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.2)]"
+                        draggable={false}
+                    />
+                </div>
+            </motion.div>
+            ))}
+        </AnimatePresence>
       </div>
 
-      {/* --- THE TOOLBAR --- */}
-      <div className="fixed bottom-6 left-6 z-[60] flex flex-col items-start gap-4">
-        <AnimatePresence>
-          {isActive && (
-            <motion.div 
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              className="bg-white border-2 border-brand-navy p-6 shadow-[8px_8px_0px_0px_#0F0328] flex flex-col gap-6 max-w-[340px]"
+      {/* --- THE TRIGGER (Circular FAB) --- */}
+      {/* Z-Index 90 ensures the button is clickable above the stickers */}
+      <div className="fixed bottom-8 left-8 z-[90] flex flex-col items-center gap-4 group">
+        
+        {/* Clear Button (Hidden unless hovering) */}
+        {stickers.length > 0 && (
+            <button 
+                onClick={clearDeck}
+                className="w-8 h-8 rounded-full bg-brand-offwhite text-brand-navy border border-brand-navy/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 shadow-md hover:bg-red-500 hover:text-white"
+                title="Clear All"
             >
-              <div className="flex justify-between items-center border-b-2 border-brand-navy/5 pb-2">
-                  <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-purple">
-                      COOLO_PACK_V1.SVG
-                  </span>
-                  <button onClick={clearDeck} className="text-brand-navy/40 hover:text-red-500 transition-colors" title="Clear All">
-                      <Trash2 size={14} />
-                  </button>
-              </div>
+                <Trash2 size={14} />
+            </button>
+        )}
 
-              <div className="grid grid-cols-4 gap-3">
-                {STICKER_ASSETS.map((src, i) => (
-                  <button
-                    key={i}
-                    onClick={() => addSticker(src)}
-                    className="aspect-square flex items-center justify-center bg-brand-offwhite hover:bg-brand-yellow/10 transition-all border border-brand-navy/10 hover:border-brand-navy group p-2 relative overflow-hidden"
-                  >
-                    <img 
-                        src={src} 
-                        alt="sticker-thumb" 
-                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" 
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-brand-navy/0 group-hover:bg-brand-navy/5 transition-colors">
-                        <span className="opacity-0 group-hover:opacity-100 font-mono text-[8px] font-bold text-brand-navy bg-white px-1 shadow-sm">ADD +</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-              
-              <div className="bg-brand-navy/5 p-3 text-center border-l-2 border-brand-purple">
-                  <p className="font-mono text-[9px] uppercase tracking-tight opacity-70">
-                      Drag to Slap &bull; Dbl Click to Scrap
-                  </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
+        {/* Scatter Button */}
         <button 
-          onClick={() => setIsActive(!isActive)}
-          className={`group flex items-center gap-3 px-6 py-4 font-mono text-[11px] uppercase tracking-widest font-black border-2 transition-all shadow-xl hover:-translate-y-1 ${
-            isActive 
-              ? 'bg-brand-purple text-brand-offwhite border-brand-purple' 
-              : 'bg-brand-navy text-brand-offwhite border-brand-navy'
-          }`}
+          onClick={scatterConfetti}
+          className="w-14 h-14 rounded-full bg-brand-purple text-brand-offwhite shadow-[4px_4px_0px_0px_#0F0328] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#0F0328] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all flex items-center justify-center border-2 border-brand-navy"
         >
-          <StickerIcon size={18} className={isActive ? "text-brand-yellow" : "text-brand-offwhite"} />
-          <span>{isActive ? 'Close Pack' : 'Sticker Slap'}</span>
+          <StickerIcon size={24} className="group-active:rotate-12 transition-transform" />
         </button>
+        
+        {/* Helper Tooltip */}
+        <span className="font-mono text-[9px] uppercase tracking-widest bg-brand-navy text-brand-offwhite px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity absolute left-16 bottom-4 whitespace-nowrap pointer-events-none rounded-sm">
+            Click to Scatter / Dbl Click to Delete
+        </span>
+
       </div>
     </>
   );

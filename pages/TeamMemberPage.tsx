@@ -60,7 +60,7 @@ const TeamMemberPage: React.FC = () => {
 
         <section className="py-24 border-t border-brand-navy/10 flex flex-col md:flex-row justify-between items-center gap-8">
             <Link to="/team" className="font-mono uppercase text-sm text-brand-lavender hover:text-brand-navy transition-colors tracking-widest font-bold">
-                &larr; Back to Unit
+                &larr; Back to Studio
             </Link>
             <span className="text-4xl font-black uppercase text-brand-purple tracking-tighter">COOLO SENIOR UNIT 0{Object.keys(TEAM_MEMBERS).indexOf(memberSlug) + 1}</span>
         </section>
