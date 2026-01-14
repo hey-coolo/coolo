@@ -29,6 +29,7 @@ import UnsubscribePage from './pages/Unsubscribe';
 import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
+import StickerSystem from './components/StickerSystem';
 
 const pageVariants = {
   initial: { opacity: 0, scale: 0.99, y: 10 },
@@ -72,6 +73,7 @@ const App: React.FC = () => {
              transition={{ duration: 1, ease: "easeOut" }}
              className="flex flex-col min-h-screen"
           >
+              <StickerSystem />
               <Header />
               <Analytics />
               <main className="flex-grow">
