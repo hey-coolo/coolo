@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sticker as StickerIcon, Trash2 } from 'lucide-react';
 
 // --- ASSETS ---
-// Ensure these exist in public/assets/stickers/
+
 const STICKER_ASSETS = [
   '/assets/stickers/fuel coffee cup.svg',
   '/assets/stickers/sticker_creative-blur.svg',
@@ -20,7 +20,7 @@ interface Sticker {
   x: number;
   y: number;
   rotation: number;
-  scale: number; // Added Scale Property
+  scale: number; // Added Scale
 }
 
 const StickerSystem: React.FC = () => {
@@ -29,7 +29,7 @@ const StickerSystem: React.FC = () => {
 
   // 1. Load Persisted Stickers
   useEffect(() => {
-    const saved = localStorage.getItem('coolo_stickers_scatter_v2');
+    const saved = localStorage.getItem('coolo_stickers_scatter_v3');
     if (saved) {
       try {
         setStickers(JSON.parse(saved));
@@ -41,7 +41,7 @@ const StickerSystem: React.FC = () => {
 
   // 2. Save Stickers on Change
   useEffect(() => {
-    localStorage.setItem('coolo_stickers_scatter_v2', JSON.stringify(stickers));
+    localStorage.setItem('coolo_stickers_scatter_v3', JSON.stringify(stickers));
   }, [stickers]);
 
   const scatterConfetti = () => {
@@ -53,15 +53,15 @@ const StickerSystem: React.FC = () => {
         // Pick random asset
         const randomSrc = STICKER_ASSETS[Math.floor(Math.random() * STICKER_ASSETS.length)];
         
-        // Random placement (Spread across 80% of screen)
+        // Random placement (Spread across most of the screen)
         const randomX = Math.random() * (window.innerWidth * 0.8) + (window.innerWidth * 0.1);
         const randomY = Math.random() * (window.innerHeight * 0.8) + (window.innerHeight * 0.1);
         
         // Chaotic rotation (-45 to 45 deg)
         const randomRot = (Math.random() * 90) - 45; 
         
-        // Varied sizes (0.8x to 1.4x)
-        const randomScale = 0.8 + Math.random() * 0.6; 
+        // Varied sizes (0.7x to 1.3x) - Keeps it dynamic
+        const randomScale = 0.7 + Math.random() * 0.6; 
 
         newBatch.push({
             id: Date.now() + i, 
@@ -89,28 +89,29 @@ const StickerSystem: React.FC = () => {
   return (
     <>
       {/* --- THE CANVAS --- */}
-      {/* Z-Index 80 places it ABOVE the Header (z-50) but BELOW Loader/Cursor (z-100+) */}
-      <div ref={constraintsRef} className="fixed inset-0 pointer-events-none z-[80] overflow-hidden mix-blend-multiply">
+      {/* z-[999] ensures it is ON TOP of the Header (usually z-50) and all text */}
+      {/* pointer-events-none on the container allows clicking THROUGH empty space */}
+      <div ref={constraintsRef} className="fixed inset-0 pointer-events-none z-[999] overflow-hidden mix-blend-normal">
         <AnimatePresence>
             {stickers.map((sticker) => (
             <motion.div
                 key={sticker.id}
                 drag
                 dragMomentum={false} 
-                // "Pop" Entrance Animation
+                // "Pop" Entrance Animation with Rotation and Scale
                 initial={{ scale: 0, opacity: 0, rotate: sticker.rotation + 180 }}
                 animate={{ scale: sticker.scale, opacity: 1, rotate: sticker.rotation, x: sticker.x, y: sticker.y }}
                 exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 
-                whileHover={{ scale: sticker.scale * 1.1, cursor: 'grab', zIndex: 100 }}
-                whileDrag={{ scale: sticker.scale * 1.2, cursor: 'grabbing', zIndex: 100 }}
+                // Hover Effects
+                whileHover={{ scale: sticker.scale * 1.1, cursor: 'grab', zIndex: 1000 }}
+                whileDrag={{ scale: sticker.scale * 1.2, cursor: 'grabbing', zIndex: 1000 }}
                 
+                // pointer-events-auto re-enables clicking specifically on the sticker
                 className="absolute pointer-events-auto select-none group origin-center"
                 
-                // Note: We don't update state onDragEnd for performance, 
-                // visual position is handled by Framer Motion until refresh.
-                
+                // Double click to remove if it's blocking content
                 onDoubleClick={() => removeSticker(sticker.id)}
             >
                 <div className="relative">
@@ -125,7 +126,8 @@ const StickerSystem: React.FC = () => {
                     <img 
                         src={sticker.src} 
                         alt="sticker" 
-                        className="w-32 md:w-48 h-auto pointer-events-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.2)]"
+                        // Sizing
+                        className="w-32 md:w-48 h-auto pointer-events-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.3)]"
                         draggable={false}
                     />
                 </div>
@@ -135,8 +137,8 @@ const StickerSystem: React.FC = () => {
       </div>
 
       {/* --- THE TRIGGER (Circular FAB) --- */}
-      {/* Z-Index 90 ensures the button is clickable above the stickers */}
-      <div className="fixed bottom-8 left-8 z-[90] flex flex-col items-center gap-4 group">
+      {/* z-[1000] ensures the button is always clickable above the stickers */}
+      <div className="fixed bottom-8 left-8 z-[1000] flex flex-col items-center gap-4 group">
         
         {/* Clear Button (Hidden unless hovering) */}
         {stickers.length > 0 && (
