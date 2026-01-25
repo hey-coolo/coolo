@@ -26,6 +26,7 @@ import JoinPage from './pages/JoinPage';
 import QAPage from './pages/QAPage';
 import PlaybookPage from './pages/PlaybookPage';
 import UnsubscribePage from './pages/Unsubscribe';
+import NotFoundPage from './pages/NotFoundPage';
 import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
@@ -121,6 +122,9 @@ const App: React.FC = () => {
                       <Route path="/join" element={<JoinPage />} />
                       <Route path="/faq" element={<QAPage />} />
                       <Route path="/unsubscribe" element={<UnsubscribePage />} />
+                      
+                      {/* 404 CATCH-ALL */}
+                      <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                   </motion.div>
                 </AnimatePresence>
