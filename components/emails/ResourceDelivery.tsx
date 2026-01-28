@@ -29,7 +29,7 @@ export const ResourceDelivery = ({ resourceName = "Brand Guide 2.0", downloadLin
             @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
           `}</style>
         </Head>
-        <Preview>Your download is ready</Preview>
+        <Preview>Good luck. This system works if you work it.</Preview>
         <Body className="bg-brand-offwhite font-sans my-auto mx-auto px-4 py-12">
           <Container className="mx-auto w-full max-w-[600px]">
             
