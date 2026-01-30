@@ -1,5 +1,3 @@
-// types.ts
-
 export interface Project {
   id: number;
   title: string;
@@ -150,4 +148,19 @@ export interface CourseModule {
     mod: string;
     title: string;
     desc: string;
+}
+
+// --- NEW AUDIT TYPES ---
+export interface PillarScore {
+  pillar: string; // C, O, O, L, O
+  name: string;
+  score: number;
+  critique: string;
+}
+
+export interface AuditResult {
+  totalScore: number;
+  verdict: string;
+  pillars: PillarScore[];
+  hardQuestions: string[];
 }
