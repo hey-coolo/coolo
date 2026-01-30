@@ -1,3 +1,5 @@
+// types.ts
+
 export interface Project {
   id: number;
   title: string;
@@ -149,6 +151,8 @@ export interface CourseModule {
     title: string;
     desc: string;
 }
+
+// --- NEW AUDIT TYPES ---
 export enum AppState {
   IDLE = 'IDLE',
   SCANNING = 'SCANNING',
@@ -158,7 +162,7 @@ export enum AppState {
 }
 
 export interface PillarScore {
-  pillar: string; // C, O, O, L, O
+  pillar: string;
   name: string;
   score: number;
   critique: string;
