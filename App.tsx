@@ -88,42 +88,46 @@ const App: React.FC = () => {
                     className="w-full will-change-transform"
                   >
                     <Routes location={location}>
-                      {/* SPECIFIC ROUTES MUST COME BEFORE DYNAMIC ROUTES */}
                       <Route path="/" element={<HomePage />} />
                       <Route path="/about" element={<AboutPage />} />
                       <Route path="/playbook" element={<PlaybookPage />} />
                       
-                      {/* CLARITY ROUTES */}
+                      {/* --- CLARITY ROUTES (ORDER MATTERS) --- */}
                       <Route path="/clarity/free-resources" element={<FreeResourcesPage />} />
+                      {/* Catch lowercase */}
                       <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
+                      {/* Catch CamelCase (Safety) */}
+                      <Route path="/clarity/RealityCheckApp" element={<RealityCheckApp />} />
+                      
+                      {/* Dynamic Route comes last */}
                       <Route path="/clarity/:slug" element={<ClarityTierPage />} />
                       <Route path="/clarity" element={<ClarityPage />} />
                       
-                      {/* DESIGN POWER ROUTES */}
+                      {/* --- DESIGN POWER ROUTES --- */}
                       <Route path="/design-power/:slug" element={<TierDetailPage />} />
                       <Route path="/design-power" element={<DesignPowerPage />} />
                       
-                      {/* PARTNERSHIP ROUTES */}
+                      {/* --- PARTNERSHIP ROUTES --- */}
                       <Route path="/partnership/:slug" element={<PartnershipDetail />} />
                       <Route path="/partnership" element={<PartnershipPage />} />
                       
-                      {/* WORK ROUTES */}
+                      {/* --- WORK ROUTES --- */}
                       <Route path="/work/:slug" element={<ProjectPage />} />
                       <Route path="/work" element={<WorkPage />} />
                       
-                      {/* TEAM ROUTES */}
+                      {/* --- TEAM ROUTES --- */}
                       <Route path="/team/:memberSlug" element={<TeamMemberPage />} />
                       <Route path="/team" element={<TeamPage />} />
                       
-                      {/* JOURNAL ROUTES */}
+                      {/* --- JOURNAL ROUTES --- */}
                       <Route path="/journal/:slug" element={<JournalPage />} />
                       <Route path="/journal" element={<JournalPage />} />
                       
-                      {/* DROPS ROUTES */}
+                      {/* --- DROPS ROUTES --- */}
                       <Route path="/drops/:slug" element={<DropDetailPage />} />
                       <Route path="/drops" element={<DropsPage />} />
                       
-                      {/* UTILITY ROUTES */}
+                      {/* --- UTILITY ROUTES --- */}
                       <Route path="/contact" element={<ContactPage />} />
                       <Route path="/join" element={<JoinPage />} />
                       <Route path="/faq" element={<QAPage />} />

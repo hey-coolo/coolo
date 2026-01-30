@@ -3,13 +3,16 @@ import { useParams, Link } from 'react-router-dom';
 import { BRAND_CLARITY_TIERS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import Accordion from '../components/Accordion';
-import RealityCheckApp from './clarity/RealityCheckApp'; // Import the App as fallback
+// Import the App as a fallback
+import RealityCheckApp from './clarity/RealityCheckApp'; 
 
 const ClarityTierPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
 
-  // SAFETY CATCH: If router routes reality-check here, render the app instead of error
-  if (slug === 'reality-check') {
+  // --- SAFETY CATCH ---
+  // If the router sends "reality-check" or "RealityCheckApp" here,
+  // we render the tool instead of showing an error.
+  if (slug && (slug.toLowerCase() === 'reality-check' || slug === 'RealityCheckApp')) {
     return <RealityCheckApp />;
   }
 
@@ -31,7 +34,6 @@ const ClarityTierPage: React.FC = () => {
     <div className="bg-brand-offwhite min-h-screen pt-32">
       <div className="container mx-auto px-8 pb-32">
         
-        {/* Header */}
         <AnimatedSection>
           <header className="py-24 max-w-5xl">
             <Link to="/clarity" className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-8 block hover:text-brand-navy transition-colors">
@@ -46,10 +48,8 @@ const ClarityTierPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
-        {/* Breakdown Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-16 py-24 border-t-2 border-brand-navy">
             
-            {/* Sidebar Meta */}
             <div className="lg:col-span-4 space-y-12">
                 <AnimatedSection delay={100}>
                     <div className="p-8 bg-brand-navy text-brand-offwhite">
@@ -85,7 +85,6 @@ const ClarityTierPage: React.FC = () => {
                 </AnimatedSection>
             </div>
 
-            {/* Main Scope List */}
             <div className="lg:col-span-8">
                 <h3 className="text-5xl font-black uppercase tracking-tight text-brand-navy mb-12">Scope Breakdown</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
@@ -126,7 +125,6 @@ const ClarityTierPage: React.FC = () => {
         </section>
       </div>
 
-      {/* Footer Nav - Kinetic Yellow Hover */}
       <section className="py-48 group bg-brand-navy hover:bg-brand-yellow transition-colors duration-500 flex flex-col items-center justify-center overflow-hidden">
          <Link to="/clarity" className="block relative z-10 text-center w-full">
             <span className="font-mono text-brand-offwhite/50 group-hover:text-brand-navy uppercase tracking-[0.5em] text-xs font-black transition-colors duration-300">Strategy Section</span>
