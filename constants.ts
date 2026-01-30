@@ -626,7 +626,7 @@ export const FREE_RESOURCES: Resource[] = [
         title: 'Interactive Brand Reality Check', 
         format: 'APP', 
         desc: 'Does your brand look like white noise? Run the diagnostic and get your resolution score instantly.', 
-        link: '/clarity/reality-check' 
+        link: '/clarity/RealityCheckApp' 
     },
     { 
         id: '02', 

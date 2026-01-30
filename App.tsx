@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import ClarityPage from './pages/ClarityPage';
 import FreeResourcesPage from './pages/clarity/FreeResourcesPage';
+import RealityCheckApp from './pages/clarity/RealityCheckApp';
 // import WorkbookPage from './pages/clarity/WorkbookPage'; // HIDDEN
 // import CoursePage from './pages/clarity/CoursePage';     // HIDDEN
 import ClarityTierPage from './pages/ClarityTierPage';
@@ -31,7 +32,6 @@ import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
 import StickerSystem from './components/StickerSystem';
-import RealityCheckApp from './pages/clarity/RealityCheckApp';
 
 const pageVariants = {
   initial: { opacity: 0, scale: 0.99, y: 10 },
@@ -96,11 +96,11 @@ const App: React.FC = () => {
                       
                       <Route path="/clarity" element={<ClarityPage />} />
                       <Route path="/clarity/free-resources" element={<FreeResourcesPage />} />
+                      <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
                       {/* HIDDEN UNTIL CONTENT IS READY */}
                       {/* <Route path="/clarity/workbook" element={<WorkbookPage />} /> */}
                       {/* <Route path="/clarity/course" element={<CoursePage />} /> */}
                       <Route path="/clarity/:slug" element={<ClarityTierPage />} />
-                      <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
                       
                       <Route path="/design-power" element={<DesignPowerPage />} />
                       <Route path="/design-power/:slug" element={<TierDetailPage />} />
@@ -124,7 +124,6 @@ const App: React.FC = () => {
                       <Route path="/join" element={<JoinPage />} />
                       <Route path="/faq" element={<QAPage />} />
                       <Route path="/unsubscribe" element={<UnsubscribePage />} />
-                      
                       
                       {/* 404 CATCH-ALL */}
                       <Route path="*" element={<NotFoundPage />} />
