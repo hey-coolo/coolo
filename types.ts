@@ -149,8 +149,14 @@ export interface CourseModule {
     title: string;
     desc: string;
 }
+export enum AppState {
+  IDLE = 'IDLE',
+  SCANNING = 'SCANNING',
+  ANALYZING = 'ANALYZING',
+  RESULTS = 'RESULTS',
+  ERROR = 'ERROR'
+}
 
-// --- NEW AUDIT TYPES ---
 export interface PillarScore {
   pillar: string; // C, O, O, L, O
   name: string;
