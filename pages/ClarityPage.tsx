@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Add useNavigate
 import AnimatedSection from '../components/AnimatedSection';
 import { BRAND_CLARITY_TIERS, FREE_RESOURCES } from '../constants';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Resource } from '../types';
 
 const ClarityPage: React.FC = () => {
+  const navigate = useNavigate(); // Initialize navigate
   const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
 
   const handleOpenModal = (res: Resource) => {
+    // If it's the app, just go there.
+    if (res.format === 'APP') {
+        navigate(res.link);
+        return;
+    }
     setSelectedRes(res);
     setStatus('idle');
     setEmail('');
@@ -83,7 +89,7 @@ const ClarityPage: React.FC = () => {
                                 <p className="font-body text-sm text-brand-navy/60 group-hover:text-brand-offwhite/60 mb-8">{res.desc}</p>
                                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-brand-navy/5 w-full group-hover:border-brand-offwhite/10">
                                     <span className="font-mono text-[10px] uppercase font-bold text-brand-navy group-hover:text-brand-offwhite">{res.format}</span>
-                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-purple group-hover:text-brand-yellow underline decoration-2 underline-offset-4">Get it &rarr;</span>
+                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-purple group-hover:text-brand-yellow underline decoration-2 underline-offset-4">{res.format === 'APP' ? 'Launch' : 'Get it'} &rarr;</span>
                                 </div>
                             </button>
                         </AnimatedSection>

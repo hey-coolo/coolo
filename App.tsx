@@ -31,6 +31,7 @@ import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
 import StickerSystem from './components/StickerSystem';
+import RealityCheckApp from './pages/clarity/RealityCheckApp';
 
 const pageVariants = {
   initial: { opacity: 0, scale: 0.99, y: 10 },
@@ -99,6 +100,7 @@ const App: React.FC = () => {
                       {/* <Route path="/clarity/workbook" element={<WorkbookPage />} /> */}
                       {/* <Route path="/clarity/course" element={<CoursePage />} /> */}
                       <Route path="/clarity/:slug" element={<ClarityTierPage />} />
+                      <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
                       
                       <Route path="/design-power" element={<DesignPowerPage />} />
                       <Route path="/design-power/:slug" element={<TierDetailPage />} />
@@ -122,6 +124,7 @@ const App: React.FC = () => {
                       <Route path="/join" element={<JoinPage />} />
                       <Route path="/faq" element={<QAPage />} />
                       <Route path="/unsubscribe" element={<UnsubscribePage />} />
+                      
                       
                       {/* 404 CATCH-ALL */}
                       <Route path="*" element={<NotFoundPage />} />

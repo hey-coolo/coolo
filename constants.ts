@@ -1,8 +1,5 @@
 import { Project, TeamMember, JournalPost, ServiceLeg, ProjectCategory, Drop, DesignPowerTier, ClarityTier, Script, Resource, Workbook, CourseModule, PartnershipModel } from './types';
 
-// --- ASSETS ---
-// These paths now point to your new public/assets folder automatically.
-
 export const ASSETS = {
   team: {
     franco: '/assets/team/Franco.webp',
@@ -626,10 +623,10 @@ export const JOURNAL_POSTS: JournalPost[] = [
 export const FREE_RESOURCES: Resource[] = [
     { 
         id: '01', 
-        title: '5-Minute Brand Reality Check', 
-        format: 'PDF', 
-        desc: 'Does your brand look like a bad mixtape? If your vibe is all over the place, start here.', 
-        link: './docs/audit.pdf' 
+        title: 'Interactive Brand Reality Check', 
+        format: 'APP', 
+        desc: 'Does your brand look like white noise? Run the diagnostic and get your resolution score instantly.', 
+        link: '/clarity/reality-check' 
     },
     { 
         id: '02', 
