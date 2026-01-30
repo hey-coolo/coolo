@@ -3,9 +3,16 @@ import { useParams, Link } from 'react-router-dom';
 import { BRAND_CLARITY_TIERS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import Accordion from '../components/Accordion';
+import RealityCheckApp from './clarity/RealityCheckApp'; // Import the App as fallback
 
 const ClarityTierPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+
+  // SAFETY CATCH: If router routes reality-check here, render the app instead of error
+  if (slug === 'reality-check') {
+    return <RealityCheckApp />;
+  }
+
   const tier = BRAND_CLARITY_TIERS.find(t => t.slug === slug);
 
   if (!tier) {
@@ -13,6 +20,7 @@ const ClarityTierPage: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center bg-brand-offwhite">
         <div className="text-center">
             <h1 className="text-6xl font-black uppercase text-brand-navy tracking-tight">Module_Error</h1>
+            <p className="font-mono text-xs text-brand-navy/50 mt-4 mb-8">SLUG: {slug}</p>
             <Link to="/clarity" className="font-mono uppercase underline mt-8 block text-brand-purple tracking-widest text-xs">Return to Grid</Link>
         </div>
       </div>

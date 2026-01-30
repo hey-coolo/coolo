@@ -1,23 +1,48 @@
 import { GoogleGenAI } from "@google/genai";
-import { SYSTEM_PROMPT } from "../constants";
 import { AuditResult } from "../types";
 
-// NOTE: In a real production app with a backend, we would keep the API key on the server.
-// Since this is a client-side demo, we rely on the injected process.env.API_KEY.
+// COOLO STRATEGY PROMPT
+const SYSTEM_PROMPT = `
+You are the COOLO Brand Strategist. You do not give generic advice. You provide a "Reality Check." Audit the provided profile based on these 5 Pillars derived from the COOLO philosophy:
+
+**The COOLO Framework:**
+1. **C - CLARITY:** (Based on "Is your brand confusing?"): Does the bio/headline explain *exactly* what they do in simple English? Or is it full of jargon? (Score 1-10)
+2. **O - ORIGIN:** (Based on "We help you reveal it"): Does this feel authentic to a human, or is it a corporate persona? (Score 1-10)
+3. **O - ONE VOICE:** (Based on "One Clear Voice"): Is the visual vibe consistent with the text tone? Do they sound like the same person? (Score 1-10)
+4. **L - LONGEVITY:** (Based on "Stop chasing trends"): Is the design timeless, or does it look like a bad mixtape of current trends? (Score 1-10)
+5. **O - OUTCOME:** (Based on "The Outcome"): Is there a clear path for the customer? Do I know what to do next? (Score 1-10)
+
+**Output Style:**
+* Be direct. No fluff.
+* If it sucks, say "This looks like a bad mixtape."
+* If it's good, say "This implies truth."
+* End with 3 "Hard Questions" the user needs to answer.
+`;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    console.warn("No API Key found. Returning mock data.");
-    return mockAudit();
+    console.error("CRITICAL: No API Key found in .env file.");
+    return {
+      totalScore: 0,
+      verdict: "CONFIGURATION ERROR",
+      pillars: [
+        { pillar: "E", name: "MISSING KEY", score: 0, critique: "The VITE_GEMINI_API_KEY is missing from your environment variables." },
+        { pillar: "R", name: "REQUIRED", score: 0, critique: "You must add the API key to .env.local to run a real audit." },
+        { pillar: "R", name: "RESTART", score: 0, critique: "After adding the key, restart the dev server." },
+        { pillar: "O", name: "OFFLINE", score: 0, critique: "The AI engine cannot connect." },
+        { pillar: "R", name: "RETRY", score: 0, critique: "Fix the config and try again." }
+      ],
+      hardQuestions: ["Do you have a Google AI Studio key?", "Is it in the root .env file?", "Did you restart the terminal?"]
+    };
   }
 
   const ai = new GoogleGenAI({ apiKey });
 
-  // Timeout promise to prevent infinite loading
+  // Increased timeout to 60s for deep analysis
   const timeout = new Promise<never>((_, reject) => 
-    setTimeout(() => reject(new Error("Analysis timed out")), 30000)
+    setTimeout(() => reject(new Error("Analysis timed out")), 60000)
   );
 
   try {
@@ -30,7 +55,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     RESEARCH STEPS (Use Google Search):
     1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery. Search for "reviews" or "features" that might describe the look. READ ALT TEXT or Captions if available in snippets.
     2.  **VOICE & BIO**: Analyze their Headline, "About Us" snippets, and Social Media bios.
-    3.  **consistency**: Do the visuals (inferred) match the words?
+    3.  **CONSISTENCY**: Do the visuals (inferred) match the words?
 
     OUTPUT:
     Return a single JSON object.
@@ -52,7 +77,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
     const fetchAudit = async () => {
       const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-2.0-flash-exp",
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_PROMPT,
@@ -64,11 +89,17 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
       const text = response.text;
       if (!text) throw new Error("Empty response from Gemini");
       
-      const raw = JSON.parse(text);
+      let raw;
+      try {
+        raw = JSON.parse(text);
+      } catch (e) {
+        console.error("JSON Parse Error:", text);
+        throw new Error("Failed to parse AI response.");
+      }
+
       const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
 
       // CALCULATE SCORE PROGRAMMATICALLY FOR CONSISTENCY
-      // We calculate the average of the pillars to get a score out of 10.
       let calculatedTotal = 0;
       let validPillarCount = 0;
       
@@ -78,12 +109,10 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         if (score > 0) validPillarCount++;
       });
 
-      // Avoid divide by zero
       const finalAverage = validPillarCount > 0 
         ? Number((calculatedTotal / validPillarCount).toFixed(1)) 
         : 0;
 
-      // Validate and Sanitize Response
       const safeResult: AuditResult = {
         totalScore: finalAverage,
         verdict: typeof raw.verdict === 'string' ? raw.verdict : "Analysis Incomplete",
@@ -91,7 +120,6 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         hardQuestions: Array.isArray(raw.hardQuestions) ? raw.hardQuestions : []
       };
 
-      // Ensure we have exactly 5 pillars if possible, or handle empty
       if (safeResult.pillars.length === 0) {
         safeResult.pillars = [
             { pillar: "C", name: "CLARITY", score: 0, critique: "Data missing." },
@@ -105,7 +133,6 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
       return safeResult;
     };
 
-    // Race between the fetch and the timeout
     return await Promise.race([fetchAudit(), timeout]);
 
   } catch (error) {
@@ -117,8 +144,8 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
           { pillar: "E", name: "ERROR", score: 0, critique: "Could not complete the audit." },
           { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL and try again." },
           { pillar: "R", name: "REFRESH", score: 0, critique: "System overloaded." },
-          { pillar: "O", name: "OFFLINE", score: 0, critique: "Internet connection may be unstable." },
-          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, contact support." }
+          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check your internet connection." },
+          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, contact hey@coolo.co.nz." }
         ],
         hardQuestions: [
           "Is the URL correct?",
@@ -127,17 +154,4 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         ]
     };
   }
-};
-
-const mockAudit = (): Promise<AuditResult> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        totalScore: 4.2,
-        verdict: "DEMO MODE / NO KEY",
-        pillars: [],
-        hardQuestions: ["Please provide a valid API Key"]
-      } as unknown as AuditResult);
-    }, 1000);
-  });
 };

@@ -45,7 +45,7 @@ const RealityCheckApp: React.FC = () => {
                     Brand Reality<br/><span className="text-brand-purple italic">Check.</span>
                     </h1>
                     <p className="mt-8 font-body text-xl text-brand-navy/60 max-w-2xl leading-relaxed">
-                    Don't guess. Measure. Drop your link below. Our <strong>Google Gemini</strong> engine will analyze your digital footprint and give you a raw COOLO Score™ based on visual and strategic integrity.
+                    Don't guess. Measure. Drop your web or socials link below. Our <strong>AI</strong> engine will analyze your digital footprint and give you a raw COOLO Score™ based on visual and strategic integrity.
                     </p>
                 </div>
 

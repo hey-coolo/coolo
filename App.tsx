@@ -4,11 +4,11 @@ import { AnimatePresence, motion, Transition } from 'framer-motion';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import PlaybookPage from './pages/PlaybookPage';
 import ClarityPage from './pages/ClarityPage';
 import FreeResourcesPage from './pages/clarity/FreeResourcesPage';
 import RealityCheckApp from './pages/clarity/RealityCheckApp';
-// import WorkbookPage from './pages/clarity/WorkbookPage'; // HIDDEN
-// import CoursePage from './pages/clarity/CoursePage';     // HIDDEN
 import ClarityTierPage from './pages/ClarityTierPage';
 import DesignPowerPage from './pages/DesignPowerPage';
 import TierDetailPage from './pages/TierDetailPage';
@@ -21,11 +21,9 @@ import TeamMemberPage from './pages/TeamMemberPage';
 import JournalPage from './pages/JournalPage';
 import DropsPage from './pages/DropsPage';
 import DropDetailPage from './pages/DropDetailPage';
-import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import JoinPage from './pages/JoinPage';
 import QAPage from './pages/QAPage';
-import PlaybookPage from './pages/PlaybookPage';
 import UnsubscribePage from './pages/Unsubscribe';
 import NotFoundPage from './pages/NotFoundPage';
 import CustomCursor from './components/CustomCursor';
@@ -90,42 +88,47 @@ const App: React.FC = () => {
                     className="w-full will-change-transform"
                   >
                     <Routes location={location}>
+                      {/* SPECIFIC ROUTES MUST COME BEFORE DYNAMIC ROUTES */}
                       <Route path="/" element={<HomePage />} />
                       <Route path="/about" element={<AboutPage />} />
                       <Route path="/playbook" element={<PlaybookPage />} />
                       
-                      <Route path="/clarity" element={<ClarityPage />} />
+                      {/* CLARITY ROUTES */}
                       <Route path="/clarity/free-resources" element={<FreeResourcesPage />} />
                       <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
-                      {/* HIDDEN UNTIL CONTENT IS READY */}
-                      {/* <Route path="/clarity/workbook" element={<WorkbookPage />} /> */}
-                      {/* <Route path="/clarity/course" element={<CoursePage />} /> */}
                       <Route path="/clarity/:slug" element={<ClarityTierPage />} />
+                      <Route path="/clarity" element={<ClarityPage />} />
                       
-                      <Route path="/design-power" element={<DesignPowerPage />} />
+                      {/* DESIGN POWER ROUTES */}
                       <Route path="/design-power/:slug" element={<TierDetailPage />} />
+                      <Route path="/design-power" element={<DesignPowerPage />} />
                       
-                      <Route path="/partnership" element={<PartnershipPage />} />
+                      {/* PARTNERSHIP ROUTES */}
                       <Route path="/partnership/:slug" element={<PartnershipDetail />} />
+                      <Route path="/partnership" element={<PartnershipPage />} />
                       
-                      <Route path="/work" element={<WorkPage />} />
+                      {/* WORK ROUTES */}
                       <Route path="/work/:slug" element={<ProjectPage />} />
+                      <Route path="/work" element={<WorkPage />} />
                       
-                      <Route path="/team" element={<TeamPage />} />
+                      {/* TEAM ROUTES */}
                       <Route path="/team/:memberSlug" element={<TeamMemberPage />} />
+                      <Route path="/team" element={<TeamPage />} />
                       
-                      <Route path="/journal" element={<JournalPage />} />
+                      {/* JOURNAL ROUTES */}
                       <Route path="/journal/:slug" element={<JournalPage />} />
+                      <Route path="/journal" element={<JournalPage />} />
                       
-                      <Route path="/drops" element={<DropsPage />} />
+                      {/* DROPS ROUTES */}
                       <Route path="/drops/:slug" element={<DropDetailPage />} />
+                      <Route path="/drops" element={<DropsPage />} />
                       
+                      {/* UTILITY ROUTES */}
                       <Route path="/contact" element={<ContactPage />} />
                       <Route path="/join" element={<JoinPage />} />
                       <Route path="/faq" element={<QAPage />} />
                       <Route path="/unsubscribe" element={<UnsubscribePage />} />
                       
-                      {/* 404 CATCH-ALL */}
                       <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                   </motion.div>
