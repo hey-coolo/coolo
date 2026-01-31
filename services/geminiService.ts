@@ -24,7 +24,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    console.error("CRITICAL: No API Key found in .env file.");
+    console.error("CRITICAL: No API Key found in environment variables.");
     return {
       totalScore: 0,
       verdict: "CONFIGURATION ERROR",
@@ -39,8 +39,9 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     };
   }
 
-  // Initialize the Web-Compatible SDK
+  // Initialize SDK
   const genAI = new GoogleGenerativeAI(apiKey);
+  // Using the stable 1.5-flash model without tools ensures 200 OK
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   // 60s Timeout
@@ -54,7 +55,11 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
     MISSION:
     Perform a ruthless "COOLO Brand Reality Check" on this URL.
-    Since you cannot browse live, infer the brand strategy from the URL structure and common brand patterns for this type of domain.
+    
+    NOTE: You are operating in INFERENCE MODE. You cannot browse the live web.
+    Analyze the URL string itself, the industry implied by the domain, and apply general knowledge about this brand (if known) or typical patterns for this type of business.
+    
+    If the brand is unknown, profile it based on the "Vibe" suggested by its name.
     
     OUTPUT:
     Return a single JSON object. 
@@ -75,7 +80,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     `;
 
     const fetchAudit = async () => {
-      // 1. Send the prompt
+      // 1. Send the prompt (No tools config to avoid 404)
       const result = await model.generateContent([
         SYSTEM_PROMPT, 
         prompt
@@ -142,6 +147,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     let errorMessage = "Could not complete the audit.";
     if (error.message?.includes("API key")) errorMessage = "Invalid API Key detected.";
     if (error.message?.includes("fetch")) errorMessage = "Browser blocked the connection (CORS/AdBlock).";
+    if (error.message?.includes("404")) errorMessage = "Model not found (API Version Mismatch).";
     
     return {
         totalScore: 0,
