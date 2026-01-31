@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { AuditResult } from "../types";
 
 // COOLO STRATEGY PROMPT
@@ -20,29 +20,32 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
+  // CORRECT WAY TO ACCESS VITE ENV VARIABLES
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    console.error("CRITICAL: No API Key found in .env file.");
+    console.error("CRITICAL: No API Key found in environment variables.");
     return {
       totalScore: 0,
       verdict: "CONFIGURATION ERROR",
       pillars: [
-        { pillar: "E", name: "MISSING KEY", score: 0, critique: "The VITE_GEMINI_API_KEY is missing from your environment variables." },
-        { pillar: "R", name: "REQUIRED", score: 0, critique: "You must add the API key to .env.local to run a real audit." },
-        { pillar: "R", name: "RESTART", score: 0, critique: "After adding the key, restart the dev server." },
+        { pillar: "E", name: "MISSING KEY", score: 0, critique: "The VITE_GEMINI_API_KEY is missing." },
+        { pillar: "R", name: "REQUIRED", score: 0, critique: "Add the API key to your Vercel Environment Variables." },
+        { pillar: "R", name: "REBUILD", score: 0, critique: "Redeploy the project after adding the key." },
         { pillar: "O", name: "OFFLINE", score: 0, critique: "The AI engine cannot connect." },
-        { pillar: "R", name: "RETRY", score: 0, critique: "Fix the config and try again." }
+        { pillar: "R", name: "RETRY", score: 0, critique: "Check Vercel Settings > Environment Variables." }
       ],
-      hardQuestions: ["Do you have a Google AI Studio key?", "Is it in the root .env file?", "Did you restart the terminal?"]
+      hardQuestions: ["Is the Key starting with 'AIza'?", "Is it named VITE_GEMINI_API_KEY?", "Did you Redeploy?"]
     };
   }
 
-  const ai = new GoogleGenAI({ apiKey });
+  // Initialize the Web-Compatible SDK
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  // 60s Timeout
+  // 45s Timeout
   const timeout = new Promise<never>((_, reject) => 
-    setTimeout(() => reject(new Error("Analysis timed out")), 60000)
+    setTimeout(() => reject(new Error("Analysis timed out")), 45000)
   );
 
   try {
@@ -50,16 +53,12 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     TARGET URL: ${url}
 
     MISSION:
-    Perform a ruthless "COOLO Brand Reality Check".
+    Perform a ruthless "COOLO Brand Reality Check" on this URL.
+    Since you cannot browse live, infer the brand strategy from the URL structure and common brand patterns for this type of domain.
     
-    RESEARCH STEPS (Use Google Search):
-    1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery. Search for "reviews" or "features" that might describe the look. READ ALT TEXT or Captions if available in snippets.
-    2.  **VOICE & BIO**: Analyze their Headline, "About Us" snippets, and Social Media bios.
-    3.  **CONSISTENCY**: Do the visuals (inferred) match the words?
-
     OUTPUT:
-    Return a single JSON object.
-    Do not include markdown formatting like \`\`\`json.
+    Return a single JSON object. 
+    Strictly format as JSON. No markdown ticks.
     
     Structure required:
     {
@@ -76,23 +75,20 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     `;
 
     const fetchAudit = async () => {
-      // Switched to stable model 'gemini-1.5-flash'
-      const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
-        contents: prompt,
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-          tools: [{ googleSearch: {} }],
-          responseMimeType: "application/json",
-        }
-      });
-
-      const text = response.text;
-      if (!text) throw new Error("Empty response from Gemini");
+      const result = await model.generateContent([
+        SYSTEM_PROMPT, 
+        prompt
+      ]);
+      
+      const response = await result.response;
+      const text = response.text();
+      
+      // Clean up markdown formatting if present (e.g. ```json ... ```)
+      const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
       
       let raw;
       try {
-        raw = JSON.parse(text);
+        raw = JSON.parse(cleanedText);
       } catch (e) {
         console.error("JSON Parse Error. Received:", text);
         throw new Error("Failed to parse AI response.");
@@ -100,7 +96,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
       const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
 
-      // CALCULATE SCORE PROGRAMMATICALLY
+      // Calculate Score
       let calculatedTotal = 0;
       let validPillarCount = 0;
       
@@ -121,6 +117,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         hardQuestions: Array.isArray(raw.hardQuestions) ? raw.hardQuestions : []
       };
 
+      // Fallback if AI hallucinates empty data
       if (safeResult.pillars.length === 0) {
         safeResult.pillars = [
             { pillar: "C", name: "CLARITY", score: 0, critique: "Data missing." },
@@ -137,24 +134,22 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     return await Promise.race([fetchAudit(), timeout]);
 
   } catch (error: any) {
-    console.error("Gemini Audit Failed - Details:", error);
+    console.error("Gemini Audit Failed:", error);
     
-    // Extract readable error message
+    // Friendly error messaging
     let errorMessage = "Could not complete the audit.";
     if (error.message?.includes("API key")) errorMessage = "Invalid API Key detected.";
-    if (error.message?.includes("fetch")) errorMessage = "Network blocked by browser/extension.";
-    if (error.status === 400) errorMessage = "Bad Request (400).";
-    if (error.status === 403) errorMessage = "Permission Denied (403). Check API Key.";
-
+    if (error.message?.includes("fetch")) errorMessage = "Browser blocked the connection.";
+    
     return {
         totalScore: 0,
         verdict: "CONNECTION FAILURE",
         pillars: [
           { pillar: "E", name: "ERROR", score: 0, critique: errorMessage },
           { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL and try again." },
-          { pillar: "R", name: "REFRESH", score: 0, critique: "System overloaded." },
           { pillar: "O", name: "OFFLINE", score: 0, critique: "Check your internet connection." },
-          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, check console logs." }
+          { pillar: "R", name: "REFRESH", score: 0, critique: "System overloaded." },
+          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, contact hey@coolo.co.nz." }
         ],
         hardQuestions: [
           "Is the URL correct?",
