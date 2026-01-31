@@ -40,7 +40,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
   const ai = new GoogleGenAI({ apiKey });
 
-  // Increased timeout to 60s for deep analysis
+  // 60s Timeout
   const timeout = new Promise<never>((_, reject) => 
     setTimeout(() => reject(new Error("Analysis timed out")), 60000)
   );
@@ -76,8 +76,9 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     `;
 
     const fetchAudit = async () => {
+      // Switched to stable model 'gemini-1.5-flash'
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash-exp",
+        model: "gemini-1.5-flash",
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_PROMPT,
@@ -93,13 +94,13 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
       try {
         raw = JSON.parse(text);
       } catch (e) {
-        console.error("JSON Parse Error:", text);
+        console.error("JSON Parse Error. Received:", text);
         throw new Error("Failed to parse AI response.");
       }
 
       const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
 
-      // CALCULATE SCORE PROGRAMMATICALLY FOR CONSISTENCY
+      // CALCULATE SCORE PROGRAMMATICALLY
       let calculatedTotal = 0;
       let validPillarCount = 0;
       
@@ -135,17 +136,25 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
     return await Promise.race([fetchAudit(), timeout]);
 
-  } catch (error) {
-    console.error("Gemini Audit Failed:", error);
+  } catch (error: any) {
+    console.error("Gemini Audit Failed - Details:", error);
+    
+    // Extract readable error message
+    let errorMessage = "Could not complete the audit.";
+    if (error.message?.includes("API key")) errorMessage = "Invalid API Key detected.";
+    if (error.message?.includes("fetch")) errorMessage = "Network blocked by browser/extension.";
+    if (error.status === 400) errorMessage = "Bad Request (400).";
+    if (error.status === 403) errorMessage = "Permission Denied (403). Check API Key.";
+
     return {
         totalScore: 0,
         verdict: "CONNECTION FAILURE",
         pillars: [
-          { pillar: "E", name: "ERROR", score: 0, critique: "Could not complete the audit." },
+          { pillar: "E", name: "ERROR", score: 0, critique: errorMessage },
           { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL and try again." },
           { pillar: "R", name: "REFRESH", score: 0, critique: "System overloaded." },
           { pillar: "O", name: "OFFLINE", score: 0, critique: "Check your internet connection." },
-          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, contact hey@coolo.co.nz." }
+          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, check console logs." }
         ],
         hardQuestions: [
           "Is the URL correct?",
