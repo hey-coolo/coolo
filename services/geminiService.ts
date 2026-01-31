@@ -20,17 +20,17 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  // CORRECT WAY TO ACCESS VITE ENV VARIABLES
+  // CORRECT ACCESS TO VITE ENV VARIABLE
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    console.error("CRITICAL: No API Key found in environment variables.");
+    console.error("CRITICAL: No API Key found in .env file.");
     return {
       totalScore: 0,
       verdict: "CONFIGURATION ERROR",
       pillars: [
         { pillar: "E", name: "MISSING KEY", score: 0, critique: "The VITE_GEMINI_API_KEY is missing." },
-        { pillar: "R", name: "REQUIRED", score: 0, critique: "Add the API key to your Vercel Environment Variables." },
+        { pillar: "R", name: "REQUIRED", score: 0, critique: "Add the API key to Vercel Environment Variables." },
         { pillar: "R", name: "REBUILD", score: 0, critique: "Redeploy the project after adding the key." },
         { pillar: "O", name: "OFFLINE", score: 0, critique: "The AI engine cannot connect." },
         { pillar: "R", name: "RETRY", score: 0, critique: "Check Vercel Settings > Environment Variables." }
@@ -43,9 +43,9 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  // 45s Timeout
+  // 60s Timeout
   const timeout = new Promise<never>((_, reject) => 
-    setTimeout(() => reject(new Error("Analysis timed out")), 45000)
+    setTimeout(() => reject(new Error("Analysis timed out")), 60000)
   );
 
   try {
@@ -75,15 +75,17 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     `;
 
     const fetchAudit = async () => {
+      // 1. Send the prompt
       const result = await model.generateContent([
         SYSTEM_PROMPT, 
         prompt
       ]);
       
+      // 2. Get text response
       const response = await result.response;
       const text = response.text();
       
-      // Clean up markdown formatting if present (e.g. ```json ... ```)
+      // 3. Clean up markdown formatting if present (e.g. ```json ... ```)
       const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
       
       let raw;
@@ -96,7 +98,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
       const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
 
-      // Calculate Score
+      // 4. Calculate Score Programmatically
       let calculatedTotal = 0;
       let validPillarCount = 0;
       
@@ -139,7 +141,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     // Friendly error messaging
     let errorMessage = "Could not complete the audit.";
     if (error.message?.includes("API key")) errorMessage = "Invalid API Key detected.";
-    if (error.message?.includes("fetch")) errorMessage = "Browser blocked the connection.";
+    if (error.message?.includes("fetch")) errorMessage = "Browser blocked the connection (CORS/AdBlock).";
     
     return {
         totalScore: 0,
