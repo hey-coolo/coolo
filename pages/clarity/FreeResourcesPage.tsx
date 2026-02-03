@@ -3,13 +3,21 @@ import AnimatedSection from '../../components/AnimatedSection';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FREE_RESOURCES } from '../../constants';
 import { Resource } from '../../types';
+import { useNavigate } from 'react-router-dom'; // ADDED THIS
 
 const FreeResourcesPage: React.FC = () => {
+  const navigate = useNavigate(); // ADDED THIS
   const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
 
   const handleOpenModal = (res: Resource) => {
+    // FIX: If it is an APP, navigate directly
+    if (res.format === 'APP') {
+        navigate(res.link);
+        return;
+    }
+    
     setSelectedRes(res);
     setStatus('idle');
     setEmail('');
@@ -71,7 +79,9 @@ const FreeResourcesPage: React.FC = () => {
                    </div>
                 </div>
                 <div className="mt-8 md:mt-0 flex items-center gap-6">
-                  <span className="font-mono text-sm uppercase font-bold tracking-widest">{res.format} / Download</span>
+                  <span className="font-mono text-sm uppercase font-bold tracking-widest">
+                    {res.format} / {res.format === 'APP' ? 'Launch' : 'Download'}
+                  </span>
                   <div className="w-12 h-[2px] bg-brand-navy group-hover:bg-brand-yellow group-hover:w-24 transition-all duration-500"></div>
                 </div>
               </button>

@@ -41,8 +41,10 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
   // Initialize SDK
   const genAI = new GoogleGenerativeAI(apiKey);
-  // Using the stable 1.5-flash model without tools ensures 200 OK
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  
+  // UPDATE: Use specific version 'gemini-1.5-flash-002' to avoid alias 404s
+  // If this fails, consider falling back to 'gemini-pro'
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-002" });
 
   // 60s Timeout
   const timeout = new Promise<never>((_, reject) => 
@@ -80,7 +82,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     `;
 
     const fetchAudit = async () => {
-      // 1. Send the prompt (No tools config to avoid 404)
+      // 1. Send the prompt
       const result = await model.generateContent([
         SYSTEM_PROMPT, 
         prompt
@@ -147,7 +149,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     let errorMessage = "Could not complete the audit.";
     if (error.message?.includes("API key")) errorMessage = "Invalid API Key detected.";
     if (error.message?.includes("fetch")) errorMessage = "Browser blocked the connection (CORS/AdBlock).";
-    if (error.message?.includes("404")) errorMessage = "Model not found (API Version Mismatch).";
+    if (error.message?.includes("404")) errorMessage = "Model not available (Try checking API Key permissions).";
     
     return {
         totalScore: 0,
