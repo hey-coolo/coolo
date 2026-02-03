@@ -20,7 +20,6 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  // CORRECT ACCESS TO VITE ENV VARIABLE
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
@@ -42,17 +41,13 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   // Initialize SDK
   const genAI = new GoogleGenerativeAI(apiKey);
   
-  // UPDATE: Use specific version 'gemini-1.5-flash-002' to avoid alias 404s
-  // If this fails, consider falling back to 'gemini-pro'
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-002" });
+  // FALLBACK SYSTEM: Try these models in order until one works
+  // 1. flash-001 (Stable pinned version)
+  // 2. flash (Generic alias)
+  // 3. pro (Fallback legacy model)
+  const modelsToTry = ["gemini-1.5-flash-001", "gemini-1.5-flash", "gemini-pro"];
 
-  // 60s Timeout
-  const timeout = new Promise<never>((_, reject) => 
-    setTimeout(() => reject(new Error("Analysis timed out")), 60000)
-  );
-
-  try {
-    const prompt = `
+  const prompt = `
     TARGET URL: ${url}
 
     MISSION:
@@ -79,55 +74,70 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
       ],
       "hardQuestions": [string, string, string]
     }
-    `;
+  `;
 
-    const fetchAudit = async () => {
-      // 1. Send the prompt
-      const result = await model.generateContent([
-        SYSTEM_PROMPT, 
-        prompt
-      ]);
-      
-      // 2. Get text response
-      const response = await result.response;
-      const text = response.text();
-      
-      // 3. Clean up markdown formatting if present (e.g. ```json ... ```)
-      const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
-      
-      let raw;
-      try {
+  try {
+    let rawText = "";
+    
+    // 1. Loop through models until one works
+    for (const modelName of modelsToTry) {
+        try {
+            console.log(`[COOLO_AI] Attempting connection with model: ${modelName}`);
+            const model = genAI.getGenerativeModel({ model: modelName });
+            
+            const result = await model.generateContent([SYSTEM_PROMPT, prompt]);
+            const response = await result.response;
+            rawText = response.text();
+            
+            // If we got here, it worked. Break the loop.
+            console.log(`[COOLO_AI] Success with ${modelName}`);
+            break; 
+        } catch (e: any) {
+            console.warn(`[COOLO_AI] Model ${modelName} failed:`, e.message);
+            // If this was the last model in the list, throw the error to the outer block
+            if (modelName === modelsToTry[modelsToTry.length - 1]) {
+                throw e;
+            }
+            // Otherwise, continue loop to next model...
+        }
+    }
+
+    // 2. Parse the result (Logic shared across all models)
+    const cleanedText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+    
+    let raw;
+    try {
         raw = JSON.parse(cleanedText);
-      } catch (e) {
-        console.error("JSON Parse Error. Received:", text);
+    } catch (e) {
+        console.error("JSON Parse Error. Received:", rawText);
         throw new Error("Failed to parse AI response.");
-      }
+    }
 
-      const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
+    const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
 
-      // 4. Calculate Score Programmatically
-      let calculatedTotal = 0;
-      let validPillarCount = 0;
-      
-      pillars.forEach((p: any) => {
+    // 3. Calculate Score Programmatically
+    let calculatedTotal = 0;
+    let validPillarCount = 0;
+    
+    pillars.forEach((p: any) => {
         const score = Number(p.score) || 0;
         calculatedTotal += score;
         if (score > 0) validPillarCount++;
-      });
+    });
 
-      const finalAverage = validPillarCount > 0 
+    const finalAverage = validPillarCount > 0 
         ? Number((calculatedTotal / validPillarCount).toFixed(1)) 
         : 0;
 
-      const safeResult: AuditResult = {
+    const safeResult: AuditResult = {
         totalScore: finalAverage,
         verdict: typeof raw.verdict === 'string' ? raw.verdict : "Analysis Incomplete",
         pillars: pillars,
         hardQuestions: Array.isArray(raw.hardQuestions) ? raw.hardQuestions : []
-      };
+    };
 
-      // Fallback if AI hallucinates empty data
-      if (safeResult.pillars.length === 0) {
+    // Fallback if AI hallucinates empty data
+    if (safeResult.pillars.length === 0) {
         safeResult.pillars = [
             { pillar: "C", name: "CLARITY", score: 0, critique: "Data missing." },
             { pillar: "O", name: "ORIGIN", score: 0, critique: "Data missing." },
@@ -135,21 +145,17 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
             { pillar: "L", name: "LONGEVITY", score: 0, critique: "Data missing." },
             { pillar: "O", name: "OUTCOME", score: 0, critique: "Data missing." }
         ];
-      }
+    }
 
-      return safeResult;
-    };
-
-    return await Promise.race([fetchAudit(), timeout]);
+    return safeResult;
 
   } catch (error: any) {
-    console.error("Gemini Audit Failed:", error);
+    console.error("Gemini Audit Failed (All Models):", error);
     
-    // Friendly error messaging
     let errorMessage = "Could not complete the audit.";
     if (error.message?.includes("API key")) errorMessage = "Invalid API Key detected.";
     if (error.message?.includes("fetch")) errorMessage = "Browser blocked the connection (CORS/AdBlock).";
-    if (error.message?.includes("404")) errorMessage = "Model not available (Try checking API Key permissions).";
+    if (error.message?.includes("404")) errorMessage = "Google AI Models Unreachable (404).";
     
     return {
         totalScore: 0,
@@ -159,7 +165,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
           { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL and try again." },
           { pillar: "O", name: "OFFLINE", score: 0, critique: "Check your internet connection." },
           { pillar: "R", name: "REFRESH", score: 0, critique: "System overloaded." },
-          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, contact hey@coolo.co.nz." }
+          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, check API Key scope in Google Cloud." }
         ],
         hardQuestions: [
           "Is the URL correct?",
