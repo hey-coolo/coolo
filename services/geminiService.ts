@@ -19,19 +19,20 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  try {
-    // We now fetch our OWN internal API endpoint
-    const response = await fetch('/api/audit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url }),
-    });
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error("Missing VITE_GEMINI_API_KEY in environment variables.");
+  }
 
-    if (!response.ok) {
-      throw new Error('Audit request failed');
-    });
+  // Use the standard stable SDK
+  const genAI = new GoogleGenerativeAI(apiKey);
+  
+  // Use the stable flash model
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-3-flash",
+    systemInstruction: SYSTEM_PROMPT
+  });
 
   const timeout = new Promise<never>((_, reject) => 
     setTimeout(() => reject(new Error("Analysis timed out (45s)")), 45000)
