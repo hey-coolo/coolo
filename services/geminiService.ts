@@ -105,18 +105,19 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     return await Promise.race([fetchAudit(), timeout]);
 
   } catch (error: any) {
-    console.error("Gemini Audit Failed:", error);
+    console.error("Audit Engine Redlined:", error);
+    
     return {
         totalScore: 0,
-        verdict: "CONNECTION FAILURE",
+        verdict: "SIGNAL LOST",
         pillars: [
-          { pillar: "E", name: "ERROR", score: 0, critique: error.message || "Audit failed." },
-          { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL." },
-          { pillar: "X", name: "VOID", score: 0, critique: "System overloaded." },
-          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check connection." },
-          { pillar: "R", name: "REPORT", score: 0, critique: "Contact support." }
+          { pillar: "E", name: "ERROR", score: 0, critique: "Google's AI is ghosting us. It's not you, it's the cloud." },
+          { pillar: "R", name: "RETRY", score: 0, critique: "Give it 30 seconds to breathe and try again." },
+          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check if your Wi-Fi is actually vibing." },
+          { pillar: "L", name: "LOGS", score: 0, critique: "System says: " + (error.message || "Unknown vibe check failure.") },
+          { pillar: "R", name: "REPORT", score: 0, critique: "Still broken? Holla at hey@coolo.co.nz." }
         ],
-        hardQuestions: ["Is the URL correct?", "Is the site accessible publicly?", "Are you online?"]
+        hardQuestions: ["Is the URL legit?", "Is the site public?", "Are you definitely online?"]
     };
   }
 };

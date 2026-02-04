@@ -24,9 +24,25 @@ export default async function handler(req: any, res: any) {
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  // Using the generic model often works best for Vercel functions to avoid versioning errors
-  // We try specific stable version first, then generic fallback
-  const modelsToTry = ["gemini-1.5-flash-001", "gemini-1.5-flash", "gemini-pro"];
+  // Specific model versions are more reliable than generic aliases
+  const modelsToTry = ["gemini-1.5-flash-002", "gemini-1.5-flash-latest", "gemini-1.5-flash"];
+
+  try {
+    let rawText = "";
+    
+    for (const modelName of modelsToTry) {
+        try {
+            const model = genAI.getGenerativeModel({ model: modelName });
+            // Use the stable generateContent method
+            const result = await model.generateContent([SYSTEM_PROMPT, prompt]);
+            const response = await result.response;
+            rawText = response.text();
+            if (rawText) break; 
+        } catch (e: any) {
+            console.warn(`Model ${modelName} failed, trying next...`);
+            if (modelName === modelsToTry[modelsToTry.length - 1]) throw e;
+        }
+    }
 
   // --- 3. EXACT PROMPTS TRANSFERRED FROM CLIENT ---
   const SYSTEM_PROMPT = `
