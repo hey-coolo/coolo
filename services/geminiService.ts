@@ -71,7 +71,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
     const fetchAudit = async () => {
       const response = await ai.models.generateContent({
-        model: "gemini-2.5-pro",
+        model: "gemini-2.5-flash",
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_PROMPT,
