@@ -40,7 +40,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     TARGET URL: ${url}
 
     MISSION:
-    Perform a ruthless "COOLO Brand Reality Check".
+    Perform a ruthless "COOLO Brand Reality Check". You are the COOLO Brand Strategist. You do not give generic advice. You provide a "Reality Check." Audit the provided profile based on these 5 Pillars derived from the COOLO philosophy:
     
     RESEARCH STEPS (Use Google Search):
     1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery. Search for "reviews" or "features" that might describe the look. READ ALT TEXT or Captions if available in snippets.
@@ -48,6 +48,10 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     3.  **consistency**: Do the visuals (inferred) match the words?
 
     OUTPUT:
+    * Be direct. No fluff.
+    * If it sucks, say "This looks like a bad mixtape."
+    * If it's good, say "This implies truth."
+    * End with 3 "Hard Questions" the user needs to answer.
     Return a single JSON object.
     Do not include markdown formatting like \`\`\`json.
     
@@ -66,9 +70,8 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     `;
 
     const fetchAudit = async () => {
-      // Using gemini-2.0-flash-exp as requested in your logic
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash-exp",
+        model: "gemini-2.5-pro",
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_PROMPT,
