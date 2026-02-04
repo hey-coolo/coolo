@@ -458,7 +458,7 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
         name: 'The Brand Reality Check', 
         subtitle: 'Free Brand Diagnostic',
         desc: "Is your brand confusing? Your customers probably think so. Use these free tools to check your pulse before you spend a dime.", 
-        cta: "Download Free Tools", 
+        cta: "Use Free Tools", 
         features: ["5-Minute Brand Audit", "The 'Hard Questions' Form", "Positioning Template", "Immediate Feedback"],
         timeline: "Instant (Self-Paced)",
         idealFor: "Founders who think they might have a branding problem."
@@ -625,7 +625,7 @@ export const FREE_RESOURCES: Resource[] = [
     { 
         id: '01', 
         title: '5-Minute Brand Reality Check', 
-        format: 'PDF', 
+        format: 'APP', 
         desc: 'Does your brand look like a bad mixtape? If your vibe is all over the place, start here.', 
         link: './clarity/reality-check' 
     },

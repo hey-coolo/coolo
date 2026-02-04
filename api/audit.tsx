@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/genai";
 
 export default async function handler(req: any, res: any) {
   // 1. Allow only POST requests
@@ -19,13 +19,13 @@ export default async function handler(req: any, res: any) {
     console.error("CRITICAL: Missing API Key on Server.");
     return res.status(500).json({ 
       error: 'Server Configuration Error',
-      details: 'API Key missing. Check Vercel Environment Variables.'
+      details: 'API Key missing. Check Environment Variables.'
     });
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
   // Specific model versions are more reliable than generic aliases
-  const modelsToTry = ["gemini-1.5-flash-002", "gemini-1.5-flash-latest", "gemini-1.5-flash"];
+  const modelsToTry = ["gemini-1.5-flash-latest"];
 
   try {
     let rawText = "";

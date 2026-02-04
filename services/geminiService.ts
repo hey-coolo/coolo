@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/genai";
 import { AuditResult } from "../types";
 
 const SYSTEM_PROMPT = `
@@ -68,7 +68,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
     const fetchAudit = async () => {
       const model = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash",
+        model: "gemini-1.5-flash-latest",
         systemInstruction: SYSTEM_PROMPT 
       });
 
@@ -113,9 +113,9 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         pillars: [
           { pillar: "E", name: "ERROR", score: 0, critique: "Google's AI is ghosting us. It's not you, it's the cloud." },
           { pillar: "R", name: "RETRY", score: 0, critique: "Give it 30 seconds to breathe and try again." },
-          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check if your Wi-Fi is actually vibing." },
+          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check if your Wi-Fi is actually working." },
           { pillar: "L", name: "LOGS", score: 0, critique: "System says: " + (error.message || "Unknown vibe check failure.") },
-          { pillar: "R", name: "REPORT", score: 0, critique: "Still broken? Holla at hey@coolo.co.nz." }
+          { pillar: "R", name: "REPORT", score: 0, critique: "Still broken? Let's us know we can run it for you at hey@coolo.co.nz." }
         ],
         hardQuestions: ["Is the URL legit?", "Is the site public?", "Are you definitely online?"]
     };
