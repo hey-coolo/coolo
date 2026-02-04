@@ -39,13 +39,13 @@ export default async function handler(req: any, res: any) {
     const genAI = new GoogleGenerativeAI(apiKey);
     
     // Use stable production model string to prevent 404
-    const modelsToTry = ["gemini-2.5-flash"];
+    const modelsToTry = ["gemini-3-flash"];
     let rawText = "";
 
     const SYSTEM_PROMPT = `
     MISSION:
     Perform a ruthless "COOLO Brand Reality Check".You are the COOLO Brand Strategist. You are NOT a cheerleader. You are a cleaner. 
-      Your job is to perform a ruthless "Reality Check" on this URL: ${url}.
+    Your job is to perform a ruthless "Reality Check" on this URL: ${url}.
       
       TONE & RULES:
       - Be Critical: We sell clarity, not kindness. 

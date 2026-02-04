@@ -19,20 +19,19 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  
-  if (!apiKey) {
-    throw new Error("Missing VITE_GEMINI_API_KEY in environment variables.");
-  }
+  try {
+    // We now fetch our OWN internal API endpoint
+    const response = await fetch('/api/audit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url }),
+    });
 
-  // Use the standard stable SDK
-  const genAI = new GoogleGenerativeAI(apiKey);
-  
-  // Use the stable flash model
-  const model = genAI.getGenerativeModel({ 
-    model: "gemini-2.5-flash",
-    systemInstruction: SYSTEM_PROMPT
-  });
+    if (!response.ok) {
+      throw new Error('Audit request failed');
+    });
 
   const timeout = new Promise<never>((_, reject) => 
     setTimeout(() => reject(new Error("Analysis timed out (45s)")), 45000)
@@ -43,12 +42,16 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     TARGET URL: ${url}
 
     MISSION:
-    Perform a ruthless "COOLO Brand Reality Check" on this URL. 
-    Analyze the implied visual vibe and messaging.
+    Perform a ruthless "COOLO Brand Reality Check".
+    
+    RESEARCH STEPS (Use Google Search):
+    1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery. Search for "reviews" or "features" that might describe the look. READ ALT TEXT or Captions if available in snippets.
+    2.  **VOICE & BIO**: Analyze their Headline, "About Us" snippets, and Social Media bios.
+    3.  **consistency**: Do the visuals (inferred) match the words?
 
     OUTPUT:
-    Return a single JSON object. 
-    Strictly format as JSON. No markdown ticks.
+    Return a single JSON object.
+    Do not include markdown formatting like \`\`\`json.
     
     Structure required:
     {
