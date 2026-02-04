@@ -1,49 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { AuditResult } from "../types";
 
-export default async function handler(req: any, res: any) {
-  // 1. CORS Headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*'); 
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
-
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const { url } = req.body;
-  if (!url) {
-    return res.status(400).json({ error: 'URL is required' });
-  }
-
-  const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({ 
-        verdict: "CONFIGURATION ERROR",
-        totalScore: 0,
-        pillars: [], 
-        hardQuestions: ["Is the API Key set in Vercel?"]
-    });
-  }
-
-  try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // Use the latest model
-    const modelsToTry = ["gemini-1.5-flash-latest", "gemini-1.5-flash-001"];
-    let rawText = "";
-
-    // --- THE HARSH PROMPT ---
-    const SYSTEM_PROMPT = `
+const SYSTEM_PROMPT = `
       You are the COOLO Brand Strategist. You are NOT a cheerleader. You are a cleaner. 
       Your job is to perform a ruthless "Reality Check" on this URL: ${url}.
       
@@ -52,7 +10,7 @@ export default async function handler(req: any, res: any) {
       - Be Skeptical: Assume the brand is generic until proven otherwise.
       - No Fluff: Do not use corporate jargon. Speak like a senior creative director.
       - Scoring: A "5" is average. A "9" is world-class (Nike/Apple). Most brands should fall between 4-7.
-      - If it sucks, say "This looks like a bad mixtape."
+      - If it sucks, say "You have work to do."
       - If it's good, say "This implies truth."
 
       EVALUATE ON THE 5 COOLO PILLARS (Score 1-10):
@@ -76,38 +34,106 @@ export default async function handler(req: any, res: any) {
       }
     `;
 
-    // Attempt model fallback
-    for (const modelName of modelsToTry) {
-        try {
-            const model = genAI.getGenerativeModel({ model: modelName });
-            const result = await model.generateContent([SYSTEM_PROMPT]);
-            const response = await result.response;
-            rawText = response.text();
-            if (rawText) break;
-        } catch (e) {
-            console.warn(`Model ${modelName} failed, trying next...`);
-        }
-    }
+export const runBrandAudit = async (url: string): Promise<AuditResult> => {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    console.error("VITE_GEMINI_API_KEY is missing");
+    return {
+        totalScore: 0,
+        verdict: "CONFIG ERROR",
+        pillars: [],
+        hardQuestions: ["Missing API Key in Vercel"]
+    };
+  }
+
+  const genAI = new GoogleGenerativeAI(apiKey);
+
+  const timeout = new Promise<never>((_, reject) => 
+    setTimeout(() => reject(new Error("Analysis timed out")), 45000)
+  );
+
+  try {
+    const prompt = `
+    TARGET URL: ${url}
+
+    MISSION:
+    Perform a ruthless "COOLO Brand Reality Check".
     
-    // Clean Markdown
-    const cleanedText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
-    const jsonResponse = JSON.parse(cleanedText);
+    RESEARCH STEPS (Use Google Search):
+    1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery.
+    2.  **VOICE & BIO**: Analyze their Headline, "About Us" snippets, and Social Media bios.
+    3.  **consistency**: Do the visuals (inferred) match the words?
 
-    // Calculate Scores Locally
-    let total = 0;
-    let count = 0;
-    if(jsonResponse.pillars) {
-        jsonResponse.pillars.forEach((p: any) => {
-            total += (p.score || 0);
-            count++;
-        });
+    OUTPUT:
+    Return a single JSON object.
+    
+    Structure required:
+    {
+      "verdict": string,
+      "pillars": [
+        { "pillar": "C", "name": "CLARITY", "score": number, "critique": string },
+        { "pillar": "O", "name": "ORIGIN", "score": number, "critique": string },
+        { "pillar": "O", "name": "ONE VOICE", "score": number, "critique": string },
+        { "pillar": "L", "name": "LONGEVITY", "score": number, "critique": string },
+        { "pillar": "O", "name": "OUTCOME", "score": number, "critique": string }
+      ],
+      "hardQuestions": [string, string, string]
     }
-    jsonResponse.totalScore = count > 0 ? Number((total / count).toFixed(1)) : 0;
+    `;
 
-    return res.status(200).json(jsonResponse);
+    const fetchAudit = async () => {
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-2.5-flash",
+        systemInstruction: SYSTEM_PROMPT 
+      });
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      
+      // Robust JSON cleaning to remove markdown formatting
+      const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      const raw = JSON.parse(cleanedText);
+
+      const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
+      let calculatedTotal = 0;
+      let validPillarCount = 0;
+      
+      pillars.forEach((p: any) => {
+        const score = Number(p.score) || 0;
+        calculatedTotal += score;
+        if (score > 0) validPillarCount++;
+      });
+
+      const finalAverage = validPillarCount > 0 
+        ? Number((calculatedTotal / validPillarCount).toFixed(1)) 
+        : 0;
+
+      return {
+        totalScore: finalAverage,
+        verdict: raw.verdict || "Analysis Incomplete",
+        pillars: pillars,
+        hardQuestions: raw.hardQuestions || []
+      };
+    };
+
+    return await Promise.race([fetchAudit(), timeout]);
 
   } catch (error: any) {
-    console.error("Gemini Audit Error:", error);
-    return res.status(500).json({ error: error.message || "Audit failed" });
+    console.error("Audit Engine Redlined:", error);
+    
+    return {
+        totalScore: 0,
+        verdict: "SIGNAL LOST",
+        pillars: [
+          { pillar: "E", name: "ERROR", score: 0, critique: "Google's AI is ghosting us. It's not you, it's the cloud." },
+          { pillar: "R", name: "RETRY", score: 0, critique: "Give it 30 seconds to breathe and try again." },
+          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check if your Wi-Fi is actually working." },
+          { pillar: "L", name: "LOGS", score: 0, critique: "System says: " + (error.message || "Unknown vibe check failure.") },
+          { pillar: "R", name: "REPORT", score: 0, critique: "Still broken? Let's us know we can run it for you at hey@coolo.co.nz." }
+        ],
+        hardQuestions: ["Is the URL legit?", "Is the site public?", "Are you definitely online?"]
+    };
   }
-}
+};

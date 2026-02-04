@@ -106,19 +106,7 @@ export default async function handler(req: any, res: any) {
     return res.status(200).json(jsonResponse);
 
   } catch (error: any) {
-    console.error("Audit Engine Redlined:", error);
-    
-    return {
-        totalScore: 0,
-        verdict: "SIGNAL LOST",
-        pillars: [
-          { pillar: "E", name: "ERROR", score: 0, critique: "Google's AI is ghosting us. It's not you, it's the cloud." },
-          { pillar: "R", name: "RETRY", score: 0, critique: "Give it 30 seconds to breathe and try again." },
-          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check if your Wi-Fi is actually working." },
-          { pillar: "L", name: "LOGS", score: 0, critique: "System says: " + (error.message || "Unknown vibe check failure.") },
-          { pillar: "R", name: "REPORT", score: 0, critique: "Still broken? Let's us know we can run it for you at hey@coolo.co.nz." }
-        ],
-        hardQuestions: ["Is the URL legit?", "Is the site public?", "Are you definitely online?"]
-    };
+    console.error("Gemini Audit Error:", error);
+    return res.status(500).json({ error: error.message || "Audit failed" });
   }
 }
