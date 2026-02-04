@@ -1,62 +1,42 @@
 import { GoogleGenAI } from "@google/genai";
+import { AuditResult } from "../types";
 
-export const SYSTEM_PROMPT = `
-You are the COOLO Brand Strategist. You do not give generic advice. You provide a "Reality Check." Audit the provided profile based on these 5 Pillars derived from the COOLO philosophy:
-
-**The COOLO Framework:**
-1. **C - CLARITY:** Does the bio/headline explain *exactly* what they do in simple English? Or is it full of jargon? (Score 1-10)
-2. **O - ORIGIN:** Does this feel authentic to a human, or is it a corporate persona? (Score 1-10)
-3. **O - ONE VOICE:** Is the visual vibe consistent with the text tone? Do they sound like the same person? (Score 1-10)
-4. **L - LONGEVITY:** Is the design timeless, or does it look like a bad mixtape of current trends? (Score 1-10)
-5. **O - OUTCOME:** Is there a clear path for the customer? Do I know what to do next? (Score 1-10)
-
-**Output Style:**
-* Be direct. No fluff.
-* If it sucks, say "This looks like a bad mixtape."
-* If it's good, say "This implies truth."
-* End with 3 "Hard Questions" the user needs to answer.
+const SYSTEM_PROMPT = `
+You are the COOLO Brand Strategist. Audit the provided website profile based on:
+1. C-CLARITY, 2. O-ORIGIN, 3. O-ONE VOICE, 4. L-LONGEVITY, 5. O-OUTCOME.
+Return JSON ONLY. Structure: { verdict: string, pillars: [{ pillar: string, name: string, score: number, critique: string }], hardQuestions: string[] }
 `;
 
-export interface AuditResult {
-  totalScore: number;
-  verdict: string;
-  pillars: { pillar: string; name: string; score: number; critique: string }[];
-  hardQuestions: string[];
-}
-
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  // Use the existing key from your Vercel env variables
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
+  // Pull from Vercel Environment Variables
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
-  if (!apiKey) {
-    throw new Error("Missing GEMINI_API_KEY");
-  }
+  if (!apiKey) throw new Error("API Key Missing");
 
-  const ai = new GoogleGenAI(apiKey);
-  const model = ai.getGenerativeModel({ 
-    model: "gemini-1.5-flash",
-    systemInstruction: SYSTEM_PROMPT 
-  });
+  const genAI = new GoogleGenAI(apiKey);
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = `TARGET URL: ${url} - Perform a ruthless audit. Return JSON only.`;
+  const prompt = `Perform a COOLO Brand Reality Check for: ${url}. Be direct and ruthless.`;
 
   try {
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      systemInstruction: SYSTEM_PROMPT,
+    });
+    
     const response = await result.response;
     const text = response.text().replace(/```json|```/gi, "").trim();
-    const raw = JSON.parse(text);
+    const data = JSON.parse(text);
 
     let total = 0;
-    raw.pillars.forEach((p: any) => total += p.score);
-    
+    data.pillars.forEach((p: any) => total += p.score);
+
     return {
-      totalScore: Number((total / 5).toFixed(1)),
-      verdict: raw.verdict,
-      pillars: raw.pillars,
-      hardQuestions: raw.hardQuestions
+      ...data,
+      totalScore: Number((total / 5).toFixed(1))
     };
   } catch (error) {
-    console.error("Audit Failed", error);
+    console.error("Gemini Error:", error);
     throw error;
   }
 };

@@ -1,5 +1,3 @@
-// types.ts
-
 export interface Project {
   id: number;
   title: string;
@@ -11,14 +9,9 @@ export interface Project {
   imageUrl: string;
   client?: string;
   featured?: boolean;
-  challenge?: string;
   role?: string;
-  outcome?: string;
   detailImages?: string[];
   story?: {
-      goal: string;
-      gap: string;
-      gamble: string;
       gain: string;
       processImages: string[];
   };
@@ -26,60 +19,11 @@ export interface Project {
 
 export type ProjectCategory = 'All' | 'Featured' | '3D Design' | 'Brand Identity' | 'Web Design' | 'Campaign' | 'Fashion' | 'Packaging' | 'Motion Design' | 'Digital Art' | 'Strategy' | 'Partnership' | 'Photography';
 
-export interface ServiceTier {
-  title: string;
-  price: string;
-  description: string;
-  cta?: string;
-  link?: string;
-  comingSoon?: boolean;
-}
-
-export interface DesignPowerTier {
-    slug: string;
-    name: string;
-    focus: string;
-    desc: string;
-    cta: string;
-    deliverables: string[];
-    timeline: string;
-    idealFor: string;
-    price?: string; 
-    faqs?: { q: string; a: string }[];
-}
-
-export interface ClarityTier {
-    slug: string;
-    name: string;
-    price?: string; 
-    subtitle: string;
-    desc: string;
-    features: string[];
-    cta: string;
-    timeline?: string;
-    idealFor?: string;
-    faqs?: { q: string; a: string }[];
-}
-
-export interface PartnershipModel {
-    slug: string;
-    title: string;
-    description: string;
-    priceLabel: string;
-    details: string;
-    idealFor: string;
-    deliverables: string[];
-    commitment: string;
-}
-
-export interface ServiceLeg {
-  id: 'brand-clarity' | 'design-power' | 'partner';
-  title: string;
-  subtitle: string;
-  hoverText: string;
-  visual: string;
-  path: string;
-  imageUrl: string;
+export interface AuditResult {
+  totalScore: number;
+  verdict: string;
+  pillars: { pillar: string; name: string; score: number; critique: string }[];
+  hardQuestions: string[];
 }
 
 export interface TeamMember {
@@ -102,30 +46,49 @@ export interface JournalPost {
     author?: string;
 }
 
-export interface Drop {
+export interface ClarityTier {
+    slug: string;
+    name: string;
+    subtitle: string;
+    desc: string;
+    features: string[];
+    cta: string;
+    timeline?: string;
+    idealFor?: string;
+    faqs?: { q: string; a: string }[];
+}
+
+export interface DesignPowerTier {
+    slug: string;
+    name: string;
+    focus: string;
+    desc: string;
+    cta: string;
+    deliverables: string[];
+    timeline: string;
+    idealFor: string;
+    faqs?: { q: string; a: string }[];
+}
+
+export interface PartnershipModel {
     slug: string;
     title: string;
     description: string;
-    imageUrl: string;
-    status: 'Live' | 'Coming Soon' | 'Sold Out';
-    category: string;
-    price: string;
-    longDescription: string;
-    features?: string[];
-    galleryImages?: string[];
+    priceLabel: string;
+    details: string;
+    idealFor: string;
+    deliverables: string[];
+    commitment: string;
 }
 
-export interface ScriptDialogue {
-  speaker: string;
-  text: string;
-}
-
-export interface Script {
-  id: number;
+export interface ServiceLeg {
+  id: 'brand-clarity' | 'design-power' | 'partner';
   title: string;
-  category: string;
-  dialogue: ScriptDialogue[];
-  overlay: string;
+  subtitle: string;
+  hoverText: string;
+  visual: string;
+  path: string;
+  imageUrl: string;
 }
 
 export interface Resource {
@@ -152,25 +115,10 @@ export interface CourseModule {
     desc: string;
 }
 
-// --- NEW AUDIT TYPES ---
-export enum AppState {
-  IDLE = 'IDLE',
-  SCANNING = 'SCANNING',
-  ANALYZING = 'ANALYZING',
-  RESULTS = 'RESULTS',
-  ERROR = 'ERROR'
-}
-
-export interface PillarScore {
-  pillar: string;
-  name: string;
-  score: number;
-  critique: string;
-}
-
-export interface AuditResult {
-  totalScore: number;
-  verdict: string;
-  pillars: PillarScore[];
-  hardQuestions: string[];
+export interface Drop {
+    slug: string;
+    title: string;
+    description: string;
+    imageUrl: string;
+    status: 'Live' | 'Coming Soon' | 'Sold Out';
 }

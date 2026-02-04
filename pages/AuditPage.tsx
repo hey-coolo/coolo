@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AnimatedSection from '../components/AnimatedSection';
-import { runBrandAudit, AuditResult } from '../services/geminiService';
-import { motion, AnimatePresence } from 'framer-motion';
+import { runBrandAudit } from '../services/geminiService';
+import { AuditResult } from '../types';
 
 const AuditPage: React.FC = () => {
   const [url, setUrl] = useState('');
@@ -12,20 +12,20 @@ const AuditPage: React.FC = () => {
 
   const handleAudit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url) return;
+    if (!url.trim()) return;
     setLoading(true);
     try {
       const data = await runBrandAudit(url);
       setResult(data);
     } catch (err) {
-      alert("Calibration failed. Check your URL and try again.");
+      alert("System Calibration Failed. Check your URL.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-brand-dark min-h-screen text-brand-offwhite selection:bg-brand-purple selection:text-white">
+    <div className="bg-brand-dark min-h-screen text-brand-offwhite selection:bg-brand-purple">
       <Header />
       <main className="container mx-auto px-8 pt-48 pb-32">
         <AnimatedSection>
@@ -35,7 +35,6 @@ const AuditPage: React.FC = () => {
               <h1 className="text-7xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-12">
                 Audit Your<br/><span className="text-transparent" style={{ WebkitTextStroke: '2px #F7F7F7' }}>Signal.</span>
               </h1>
-              
               <form onSubmit={handleAudit} className="max-w-2xl mx-auto">
                 <input 
                   type="text" 
