@@ -19,25 +19,93 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    console.error("VITE_GEMINI_API_KEY is missing");
+    return {
+        totalScore: 0,
+        verdict: "CONFIG ERROR",
+        pillars: [],
+        hardQuestions: ["Missing API Key in Vercel"]
+    };
+  }
+
+  const genAI = new GoogleGenerativeAI(apiKey);
+
+  const timeout = new Promise<never>((_, reject) => 
+    setTimeout(() => reject(new Error("Analysis timed out")), 45000)
+  );
+
   try {
-    const response = await fetch('/api/audit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url }),
-    });
+    const prompt = `
+    TARGET URL: ${url}
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Audit request failed');
+    MISSION:
+    Perform a ruthless "COOLO Brand Reality Check".
+    
+    RESEARCH STEPS (Use Google Search):
+    1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery.
+    2.  **VOICE & BIO**: Analyze their Headline, "About Us" snippets, and Social Media bios.
+    3.  **consistency**: Do the visuals (inferred) match the words?
+
+    OUTPUT:
+    Return a single JSON object.
+    
+    Structure required:
+    {
+      "verdict": string,
+      "pillars": [
+        { "pillar": "C", "name": "CLARITY", "score": number, "critique": string },
+        { "pillar": "O", "name": "ORIGIN", "score": number, "critique": string },
+        { "pillar": "O", "name": "ONE VOICE", "score": number, "critique": string },
+        { "pillar": "L", "name": "LONGEVITY", "score": number, "critique": string },
+        { "pillar": "O", "name": "OUTCOME", "score": number, "critique": string }
+      ],
+      "hardQuestions": [string, string, string]
     }
+    `;
 
-    const data: AuditResult = await response.json();
-    return data;
+    const fetchAudit = async () => {
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-2.5-flash",
+        systemInstruction: SYSTEM_PROMPT 
+      });
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      
+      // Robust JSON cleaning to remove markdown formatting
+      const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      const raw = JSON.parse(cleanedText);
+
+      const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
+      let calculatedTotal = 0;
+      let validPillarCount = 0;
+      
+      pillars.forEach((p: any) => {
+        const score = Number(p.score) || 0;
+        calculatedTotal += score;
+        if (score > 0) validPillarCount++;
+      });
+
+      const finalAverage = validPillarCount > 0 
+        ? Number((calculatedTotal / validPillarCount).toFixed(1)) 
+        : 0;
+
+      return {
+        totalScore: finalAverage,
+        verdict: raw.verdict || "Analysis Incomplete",
+        pillars: pillars,
+        hardQuestions: raw.hardQuestions || []
+      };
+    };
+
+    return await Promise.race([fetchAudit(), timeout]);
 
   } catch (error: any) {
-    console.error("Audit Service Error:", error);
+    console.error("Audit Engine Redlined:", error);
     
     return {
         totalScore: 0,
