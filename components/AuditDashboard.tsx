@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // IMPORT ADDED
 import { AuditResult } from '../types';
 
 interface AuditDashboardProps {
@@ -7,6 +8,8 @@ interface AuditDashboardProps {
 }
 
 const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
+  const navigate = useNavigate(); // HOOK ADDED
+
   return (
     <div className="max-w-6xl mx-auto pt-12">
       {/* Score Header */}
@@ -48,12 +51,13 @@ const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
           <div className="bg-brand-navy text-brand-offwhite p-12 flex flex-col justify-between items-center text-center shadow-[12px_12px_0px_0px_#FCC803]">
                <div>
                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-yellow">Rough numbers?</span>
-                   <h3 className="text-4xl md:text-5xl font-black uppercase mt-4 mb-8 leading-[0.9]">Stop Guessing.<br/>Do the Work.</h3>
+                   <h3 className="text-4xl md:text-5xl font-black uppercase mt-4 mb-8 leading-[0.9]">Stop Guessing.<br/>Fix the Signal.</h3>
                </div>
                <button 
-               onClick={() navigate('/contact')} 
-               className="bg-brand-yellow text-brand-navy px-10 py-5 font-black uppercase tracking-widest hover:bg-brand-offwhite transition-all w-full"
-               > Talk to the Humans
+                onClick={() => navigate('/contact')} 
+                className="bg-brand-yellow text-brand-navy px-10 py-5 font-black uppercase tracking-widest hover:bg-brand-offwhite transition-all w-full"
+               >
+                   Talk to the Humans
                </button>
                <button onClick={onReset} className="mt-8 font-mono text-[10px] uppercase underline opacity-40 hover:opacity-100 transition-opacity">Scrub & Restart</button>
           </div>
