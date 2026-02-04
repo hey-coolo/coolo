@@ -32,6 +32,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
   const timeout = new Promise<never>((_, reject) => 
     setTimeout(() => reject(new Error("Analysis timed out")), 45000)
