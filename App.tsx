@@ -98,9 +98,8 @@ const App: React.FC = () => {
                       {/* Unified Audit Route - Pointing to RealityCheckApp */}
                       <Route path="/audit" element={<RealityCheckApp />} />
                       <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
-                      
+
                       <Route path="/clarity/:slug" element={<ClarityTierPage />} />
-                      <Route path="/clarity" element={<ClarityPage />} />
                       
                       {/* --- DESIGN POWER ROUTES --- */}
                       <Route path="/design-power/:slug" element={<TierDetailPage />} />

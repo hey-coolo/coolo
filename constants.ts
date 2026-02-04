@@ -627,7 +627,7 @@ export const FREE_RESOURCES: Resource[] = [
         title: '5-Minute Brand Reality Check', 
         format: 'PDF', 
         desc: 'Does your brand look like a bad mixtape? If your vibe is all over the place, start here.', 
-        link: './docs/audit.pdf' 
+        link: './clarity/reality-check' 
     },
     { 
         id: '02', 

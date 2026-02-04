@@ -1,105 +1,63 @@
-import React, { useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import AnimatedSection from '../components/AnimatedSection';
-import ScanningOverlay from '../components/ScanningOverlay';
-import AuditDashboard from '../components/AuditDashboard';
-import { runBrandAudit } from '../services/geminiService';
+import React from 'react';
 import { AuditResult } from '../types';
 
-const AuditPage: React.FC = () => {
-  const [url, setUrl] = useState('');
-  const [status, setStatus] = useState<'idle' | 'scanning' | 'results'>('idle');
-  const [result, setResult] = useState<AuditResult | null>(null);
+interface AuditDashboardProps {
+  result: AuditResult;
+  onReset: () => void;
+}
 
-  const handleRunCheck = async () => {
-    if (!url.trim()) return;
-    setStatus('scanning');
-    
-    // Call the AI Service
-    try {
-        const data = await runBrandAudit(url);
-        setResult(data);
-        setStatus('results');
-    } catch (e) {
-        alert("Audit failed. Please check the URL and try again.");
-        setStatus('idle');
-    }
-  };
-
-  const handleReset = () => {
-    setUrl('');
-    setResult(null);
-    setStatus('idle');
-  };
-
+const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
   return (
-    <div className="bg-brand-offwhite min-h-screen pt-32 pb-32">
-      <div className="container mx-auto px-8">
-        <AnimatedSection>
-          <Header />
-          
-          {/* --- STATE 1: INPUT --- */}
-          {status === 'idle' && (
-            <div className="max-w-4xl mx-auto pt-24">
-                <div className="bg-white border-2 border-brand-navy p-8 md:p-16 shadow-[12px_12px_0px_0px_#0F0328]">
-                <div className="mb-12 border-b border-brand-navy/10 pb-8">
-                    <span className="font-mono text-brand-purple text-xs font-black uppercase tracking-widest block mb-4">
-                    Free Tool 01 / AI Powered
-                    </span>
-                    <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight text-brand-navy leading-[0.9]">
-                    Brand Reality<br/><span className="text-brand-purple italic">Check.</span>
-                    </h1>
-                    <p className="mt-8 font-body text-xl text-brand-navy/60 max-w-2xl leading-relaxed">
-                    Don't guess. Measure. Drop your web or socials link below. Our <strong>AI</strong> engine will analyze your digital footprint and give you a raw COOLO Score™ based on visual and strategic integrity.
-                    </p>
-                </div>
+    <div className="max-w-6xl mx-auto pt-12">
+      {/* Score Header */}
+      <div className="flex flex-col md:flex-row border-2 border-brand-navy bg-white mb-8 shadow-[12px_12px_0px_0px_#0F0328]">
+        <div className="bg-brand-navy text-brand-offwhite p-12 flex-grow">
+            <h2 className="text-4xl md:text-7xl font-black uppercase leading-none">{result.verdict}</h2>
+            <p className="font-mono text-xs uppercase tracking-widest mt-6 opacity-60">Automated Strategic Analysis</p>
+        </div>
+        <div className="bg-brand-yellow p-12 text-center border-l-2 border-brand-navy min-w-[240px] flex flex-col justify-center">
+            <span className="font-mono text-[10px] font-black uppercase tracking-widest">Overall Rating</span>
+            <div className="text-9xl font-black">{result.totalScore}<span className="text-xl">/10</span></div>
+        </div>
+      </div>
 
-                <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-yellow rounded opacity-20 group-hover:opacity-40 blur transition duration-500"></div>
-                    <div className="relative flex flex-col md:flex-row gap-4 bg-white p-2 border border-brand-navy/10">
-                    <input 
-                        type="text" 
-                        placeholder="https://www.yourbrand.com" 
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && handleRunCheck()}
-                        className="flex-grow bg-brand-navy/5 border-2 border-brand-navy/10 p-6 font-mono text-xl text-brand-navy placeholder-brand-navy/30 focus:outline-none focus:border-brand-purple transition-all"
-                    />
-                    <button 
-                        onClick={handleRunCheck}
-                        disabled={!url}
-                        className="bg-brand-navy text-brand-offwhite font-mono font-black uppercase tracking-widest px-10 py-6 hover:bg-brand-purple transition-all shadow-xl hover:shadow-none hover:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        Run Scan
-                    </button>
-                    </div>
-                </div>
-                <div className="mt-8 text-center md:text-left">
-                    <p className="font-mono text-[9px] text-brand-navy/40 uppercase tracking-widest leading-relaxed">
-                        *COOLO USES GEMINI 2.0 SEARCH GROUNDING TO ANALYZE YOUR TEXT, META TAGS, AND INFER VISUALS FROM LIVE DATA.<br/>
-                        RESULTS MAY HURT YOUR FEELINGS.
-                    </p>
-                </div>
-                </div>
-            </div>
-          )}
+      {/* Pillars Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-5 border-2 border-brand-navy bg-white mb-12">
+        {result.pillars.map((p, i) => (
+          <div key={i} className="p-8 border-b-2 md:border-b-0 md:border-r-2 last:border-0 border-brand-navy group hover:bg-brand-navy/5 transition-colors">
+            <span className="font-mono text-5xl opacity-10 font-black">{p.pillar}</span>
+            <h4 className="font-black uppercase text-xs tracking-widest mt-2">{p.name}</h4>
+            <p className="text-sm mt-6 text-brand-navy/70 leading-relaxed font-medium">{p.critique}</p>
+          </div>
+        ))}
+      </div>
 
-          {/* --- STATE 2: SCANNING --- */}
-          {status === 'scanning' && (
-            <ScanningOverlay />
-          )}
-
-          {/* --- STATE 3: RESULTS --- */}
-          {status === 'results' && result && (
-            <AuditDashboard result={result} onReset={handleReset} />
-          )}
-
-          <Footer />
-        </AnimatedSection>
+      {/* Questions & Action CTA */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="border-2 border-brand-navy p-12 bg-white">
+              <h4 className="font-mono text-[10px] uppercase font-black tracking-widest text-brand-purple mb-8">Hard Questions to Answer</h4>
+              <ul className="space-y-6">
+                  {result.hardQuestions.map((q, i) => (
+                      <li key={i} className="flex gap-4 items-start">
+                          <span className="w-6 h-6 rounded-full border border-brand-navy flex items-center justify-center text-[10px] font-bold flex-shrink-0">{i+1}</span>
+                          <p className="font-sans font-black text-xl uppercase leading-tight">{q}</p>
+                      </li>
+                  ))}
+              </ul>
+          </div>
+          <div className="bg-brand-navy text-brand-offwhite p-12 flex flex-col justify-between items-center text-center shadow-[12px_12px_0px_0px_#FCC803]">
+               <div>
+                   <span className="font-mono text-[10px] uppercase tracking-widest text-brand-yellow">Score below 8.0?</span>
+                   <h3 className="text-4xl md:text-5xl font-black uppercase mt-4 mb-8 leading-[0.9]">Stop Guessing.<br/>Start Revealing.</h3>
+               </div>
+               <button className="bg-brand-yellow text-brand-navy px-10 py-5 font-black uppercase tracking-widest hover:bg-brand-offwhite transition-all w-full">
+                   Fix the Signal
+               </button>
+               <button onClick={onReset} className="mt-8 font-mono text-[10px] uppercase underline opacity-40 hover:opacity-100 transition-opacity">Run Another Audit</button>
+          </div>
       </div>
     </div>
   );
 };
 
-export default AuditPage;
+export default AuditDashboard;
