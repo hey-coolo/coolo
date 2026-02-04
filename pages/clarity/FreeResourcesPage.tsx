@@ -1,36 +1,32 @@
 import React, { useState } from 'react';
+import AnimatedSection from '../../components/AnimatedSection';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import ResourceDelivery from '../../components/emails/ResourceDelivery';
-
-import { FREE_RESOURCES, Resource } from '../../constants';
+import { FREE_RESOURCES } from '../../constants';
+import { Resource } from '../../types';
+import { useNavigate } from 'react-router-dom'; // ADDED THIS
 
 const FreeResourcesPage: React.FC = () => {
+  const navigate = useNavigate(); // ADDED THIS
   const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
-  
-  const navigate = useNavigate();
+  const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
 
-  const handleAction = (res: Resource) => {
-    // FIX: If ID is '01' (Reality Check), go straight to tool.
+const handleAction = (res: Resource) => {
+    // If the resource is the Reality Check tool (ID 01), navigate directly
     if (res.id === '01') {
-        navigate('/audit');
-        return;
+        navigate('/clarity/reality-check'); // Use the unified audit route
+    } else {
+        // Otherwise, show the existing email collection modal
+        setSelectedRes(res);
+        setStatus('idle');
+        setEmail('');
     }
-    
-    // Default flow for other resources
-    setSelectedRes(res);
-    setStatus('idle');
-    setEmail('');
   };
 
-  const handleDownload = async (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedRes || !email) return;
-
-    setStatus('loading');
+    if (!email || !selectedRes) return;
+    setStatus('processing');
 
     try {
       const response = await fetch('/api/subscribe', {
@@ -39,99 +35,93 @@ const FreeResourcesPage: React.FC = () => {
         body: JSON.stringify({ 
             email, 
             resourceId: selectedRes.id,
-            resourceName: selectedRes.title
-        }),
+            resourceTitle: selectedRes.title,
+            downloadLink: selectedRes.link
+        })
       });
 
-      const data = await response.json();
-
       if (response.ok) {
-        setStatus('success');
-      } else {
-        setStatus('error');
-        setMessage(data.error || 'Something went wrong.');
-      }
+        setStatus('sent');
+      } else throw new Error();
     } catch (error) {
+      console.error(error);
       setStatus('error');
-      setMessage('Failed to connect to server.');
     }
   };
 
   return (
-    <div className="pt-32 pb-20 min-h-screen bg-brand-offwhite">
+    <div className="bg-brand-offwhite min-h-screen pt-48 pb-32">
       <div className="container mx-auto px-8">
-        <h1 className="text-8xl font-black uppercase mb-12">Free Game.</h1>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {FREE_RESOURCES.map((res) => (
-            <div key={res.id} className="border-2 border-brand-navy p-12 bg-white hover:shadow-[8px_8px_0px_0px_#0F0328] transition-all">
-               <span className="font-mono text-xs font-black text-brand-purple mb-4 block">{res.type}</span>
-               <h3 className="text-4xl font-black uppercase mb-4">{res.title}</h3>
-               <p className="font-body text-brand-navy/60 mb-8">{res.description}</p>
-               <button 
-                onClick={() => handleAction(res)}
-                className="w-full bg-brand-navy text-brand-offwhite py-4 font-mono font-black uppercase tracking-widest hover:bg-brand-yellow hover:text-brand-navy transition-colors"
-               >
-                 {res.action}
-               </button>
-            </div>
+        <AnimatedSection>
+          <div className="max-w-4xl">
+            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-4 block">Clarity / Leg 1.1</span>
+            <h1 className="text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] text-brand-navy">
+              Free<br/><span className="text-brand-purple italic">Intelligence.</span>
+            </h1>
+            <p className="font-body text-2xl md:text-3xl text-brand-navy/60 mt-12 leading-tight">
+              A high-end studio shouldn't keep secrets. Start with the Starter Kit to unlock the system. Use these tools to audit your current brand state before spending a dime.
+            </p>
+          </div>
+        </AnimatedSection>
+
+        <div className="mt-32 border-t border-brand-navy/10">
+          {FREE_RESOURCES.map((res, i) => (
+            <AnimatedSection key={res.id} delay={i * 100}>
+              <button 
+                onClick={() => handleOpenModal(res)}
+                className="w-full text-left group flex flex-col md:flex-row justify-between items-start md:items-center py-16 border-b border-brand-navy/10 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-700 px-4 -mx-4 cursor-pointer"
+              >
+                <div className="flex items-center gap-12">
+                   <span className="font-mono text-4xl text-brand-purple group-hover:text-brand-yellow font-black transition-colors">{res.id}</span>
+                   <div>
+                     <h3 className="text-5xl md:text-6xl font-black uppercase tracking-tight leading-none">{res.title}</h3>
+                     <p className="font-body text-xl text-brand-navy/50 group-hover:text-brand-offwhite/50 mt-4 max-w-xl transition-colors text-left">{res.desc}</p>
+                   </div>
+                </div>
+                <div className="mt-8 md:mt-0 flex items-center gap-6">
+                  <span className="font-mono text-sm uppercase font-bold tracking-widest">
+                    {res.format} / {res.format === 'APP' ? 'Launch' : 'Download'}
+                  </span>
+                  <div className="w-12 h-[2px] bg-brand-navy group-hover:bg-brand-yellow group-hover:w-24 transition-all duration-500"></div>
+                </div>
+              </button>
+            </AnimatedSection>
           ))}
         </div>
       </div>
 
       <AnimatePresence>
         {selectedRes && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-brand-navy/90 z-50 flex items-center justify-center p-8"
-            onClick={() => setSelectedRes(null)}
-          >
-            <div 
-              className="bg-white p-12 max-w-lg w-full relative border-4 border-brand-yellow"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {status === 'success' ? (
-                <div className="text-center">
-                    <h3 className="text-4xl font-black uppercase mb-4">Check your inbox.</h3>
-                    <p className="mb-8">We've sent the {selectedRes.type.toLowerCase()} to {email}.</p>
-                    <button 
-                        onClick={() => setSelectedRes(null)}
-                        className="bg-brand-navy text-brand-offwhite px-8 py-3 font-mono font-black uppercase"
-                    >
-                        Close
-                    </button>
-                </div>
-              ) : (
-                  <>
-                    <h3 className="text-3xl font-black uppercase mb-2">Get the {selectedRes.type}</h3>
-                    <p className="mb-8 text-sm opacity-60">Enter your email to receive this resource immediately.</p>
-                    
-                    <form onSubmit={handleDownload} className="space-y-4">
-                        <input 
-                            type="email" 
-                            placeholder="name@company.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full border-2 border-brand-navy p-4 font-mono focus:outline-none focus:border-brand-purple"
-                            required
-                        />
-                        <button 
-                            type="submit"
-                            disabled={status === 'loading'}
-                            className="w-full bg-brand-yellow text-brand-navy py-4 font-mono font-black uppercase tracking-widest hover:bg-brand-navy hover:text-brand-offwhite transition-colors"
-                        >
-                            {status === 'loading' ? 'Sending...' : 'Send It'}
-                        </button>
-                        {status === 'error' && (
-                            <p className="text-red-500 font-mono text-xs text-center">{message}</p>
-                        )}
-                    </form>
-                  </>
-              )}
-            </div>
-          </motion.div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-brand-navy/95 backdrop-blur-sm p-4" onClick={() => setSelectedRes(null)}>
+                <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} className="bg-brand-offwhite p-8 md:p-12 max-w-lg w-full relative border-2 border-brand-yellow shadow-[20px_20px_0px_0px_#3A0888]" onClick={(e) => e.stopPropagation()}>
+                    <button onClick={() => setSelectedRes(null)} className="absolute top-4 right-4 text-brand-navy font-mono text-xl hover:rotate-90 transition-transform">✕</button>
+                    <div className="mb-8">
+                        <span className="font-mono text-xs uppercase tracking-widest text-brand-purple font-bold block mb-2">Free Goods</span>
+                        <h3 className="text-4xl font-black uppercase tracking-tight text-brand-navy leading-none">Grab the<br/>{selectedRes.title}</h3>
+                    </div>
+                    {status === 'sent' ? (
+                        <div className="text-center py-8">
+                            <div className="w-16 h-16 bg-brand-yellow text-brand-navy rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">📬</div>
+                            <h4 className="text-2xl font-bold uppercase text-brand-navy mb-2">Check your inbox.</h4>
+                            <p className="font-body text-brand-navy/70">We've just sent the link to <strong>{email}</strong>. Check your spam if it's missing.</p>
+                            <button onClick={() => setSelectedRes(null)} className="mt-8 font-mono text-xs uppercase tracking-widest border-b border-brand-navy pb-1">Back to site</button>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleSubscribe} className="space-y-6">
+                            <p className="font-body text-brand-navy/70 leading-relaxed">Where should we send the file?</p>
+                            <input 
+                                type="email" required placeholder="YOUR@EMAIL.COM" value={email} onChange={(e) => setEmail(e.target.value)}
+                                className="w-full bg-brand-navy/5 border-b-2 border-brand-navy/20 p-4 font-mono text-sm focus:outline-none focus:border-brand-purple transition-colors placeholder-brand-navy/30 text-brand-navy"
+                            />
+                            <button type="submit" disabled={status === 'processing'} className="w-full bg-brand-navy text-brand-offwhite font-mono uppercase font-bold py-4 hover:bg-brand-purple transition-all disabled:opacity-50">
+                                {status === 'processing' ? 'Sending...' : 'Send it to me'}
+                            </button>
+                            {status === 'error' && <p className="text-red-500 font-mono text-[10px] text-center">Something went wrong. Try again?</p>}
+                            <p className="text-center font-mono text-[9px] uppercase text-brand-navy/30 tracking-tighter">Joining the crew. No spam, just value.</p>
+                        </form>
+                    )}
+                </motion.div>
+            </motion.div>
         )}
       </AnimatePresence>
     </div>
