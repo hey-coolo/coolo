@@ -12,7 +12,7 @@ const FreeResourcesPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleAction = (res: Resource) => {
-    // FIX: If it's the Reality Check (ID 01), go to the App. Otherwise, open modal.
+    // Navigate to App for ID 01, otherwise open download modal
     if (res.id === '01') {
         navigate('/clarity/reality-check');
     } else {

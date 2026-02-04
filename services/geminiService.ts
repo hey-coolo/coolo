@@ -22,7 +22,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    throw new Error("CRITICAL: VITE_GEMINI_API_KEY is missing in Vercel Environment Variables.");
+    throw new Error("VITE_GEMINI_API_KEY is missing.");
   }
 
   const ai = new GoogleGenAI({ apiKey });
@@ -106,13 +106,13 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
   } catch (error: any) {
     console.error("Gemini Audit Failed:", error);
-    // Real error object for the UI
+    // Real error object for the UI to display gracefully
     return {
         totalScore: 0,
         verdict: "SYSTEM FAILURE",
         pillars: [
-          { pillar: "E", name: "ERROR", score: 0, critique: error.message || "Unknown error occurred." },
-          { pillar: "X", name: "DETAILS", score: 0, critique: "Check Vercel logs or API Quota." },
+          { pillar: "E", name: "ERROR", score: 0, critique: error.message || "Unknown error." },
+          { pillar: "X", name: "CHECK", score: 0, critique: "Is VITE_GEMINI_API_KEY valid?" },
           { pillar: "X", name: "VOID", score: 0, critique: "Analysis aborted." },
           { pillar: "X", name: "VOID", score: 0, critique: "Analysis aborted." },
           { pillar: "X", name: "VOID", score: 0, critique: "Analysis aborted." }
@@ -120,7 +120,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         hardQuestions: [
           "Is the URL correct?",
           "Is the site publicly accessible?",
-          "Is the API Key valid?"
+          "Are you online?"
         ]
     };
   }

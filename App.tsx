@@ -8,7 +8,7 @@ import AboutPage from './pages/AboutPage';
 import PlaybookPage from './pages/PlaybookPage';
 import ClarityPage from './pages/ClarityPage';
 import FreeResourcesPage from './pages/clarity/FreeResourcesPage';
-import RealityCheckApp from './pages/clarity/RealityCheckApp'; // Kept this one
+import RealityCheckApp from './pages/clarity/RealityCheckApp';
 import ClarityTierPage from './pages/ClarityTierPage';
 import DesignPowerPage from './pages/DesignPowerPage';
 import TierDetailPage from './pages/TierDetailPage';
@@ -95,7 +95,7 @@ const App: React.FC = () => {
                       {/* --- CLARITY ROUTES --- */}
                       <Route path="/clarity/free-resources" element={<FreeResourcesPage />} />
                       
-                      {/* Using your preferred file for the Audit Tool */}
+                      {/* Unified Audit Route */}
                       <Route path="/audit" element={<RealityCheckApp />} />
                       <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
                       

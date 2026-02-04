@@ -20,7 +20,7 @@ const RealityCheckApp: React.FC = () => {
       setStatus(AuditState.RESULTS);
     } catch (e) {
       console.error(e);
-      alert("Audit Failed. Check console.");
+      alert("Audit Failed. Please try again.");
       setStatus(AuditState.IDLE);
     }
   };
