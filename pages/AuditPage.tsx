@@ -1,101 +1,89 @@
 import React, { useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import AnimatedSection from '../components/AnimatedSection';
+import ScanningOverlay from '../components/ScanningOverlay';
+import AuditDashboard from '../components/AuditDashboard';
+import { AuditResult, AuditState } from '../types';
 import { runBrandAudit } from '../services/geminiService';
-import { AuditResult } from '../types';
 
 const AuditPage: React.FC = () => {
+  const [appState, setAppState] = useState<AuditState>(AuditState.IDLE);
   const [url, setUrl] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<AuditResult | null>(null);
+  const [auditResult, setAuditResult] = useState<AuditResult | null>(null);
 
-  const handleAudit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRunCheck = async () => {
     if (!url.trim()) return;
-    setLoading(true);
+
+    setAppState(AuditState.ANALYZING);
+    
     try {
-      const data = await runBrandAudit(url);
-      setResult(data);
-    } catch (err) {
-      alert("System Calibration Failed. Check your URL.");
-    } finally {
-      setLoading(false);
+      const result = await runBrandAudit(url);
+      setAuditResult(result);
+      setAppState(AuditState.RESULTS);
+    } catch (error) {
+      alert("Audit Failed. Please check the URL or try again later.");
+      setAppState(AuditState.IDLE);
     }
   };
 
+  const handleReset = () => {
+    setUrl('');
+    setAuditResult(null);
+    setAppState(AuditState.IDLE);
+  };
+
   return (
-    <div className="bg-brand-dark min-h-screen text-brand-offwhite selection:bg-brand-purple">
-      <Header />
-      <main className="container mx-auto px-8 pt-48 pb-32">
-        <AnimatedSection>
-          {!result ? (
-            <div className="max-w-4xl mx-auto text-center">
-              <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-8 block">Internal Tool / Reality Check</span>
-              <h1 className="text-7xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-12">
-                Audit Your<br/><span className="text-transparent" style={{ WebkitTextStroke: '2px #F7F7F7' }}>Signal.</span>
-              </h1>
-              <form onSubmit={handleAudit} className="max-w-2xl mx-auto">
-                <input 
-                  type="text" 
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="ENTER_BRAND_URL.COM"
-                  className="w-full bg-transparent border-b-2 border-brand-offwhite/20 py-6 font-mono text-2xl md:text-4xl text-center focus:outline-none focus:border-brand-purple transition-colors mb-12"
-                />
-                <button 
-                  disabled={loading}
-                  className="bg-brand-offwhite text-brand-dark px-12 py-6 font-mono font-bold uppercase tracking-widest hover:bg-brand-purple hover:text-white transition-all disabled:opacity-50"
-                >
-                  {loading ? 'CALIBRATING...' : 'RUN REALITY CHECK'}
-                </button>
-              </form>
-            </div>
-          ) : (
-            <div className="max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-end border-b-2 border-brand-offwhite pb-8 mb-12 gap-8">
-                    <div>
-                        <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">{result.verdict}</h2>
-                        <p className="font-mono text-brand-purple uppercase tracking-widest mt-4">Automated Strategic Analysis</p>
-                    </div>
-                    <div className="text-right">
-                        <span className="font-mono text-xs opacity-50 block mb-2">OVERALL_RATING</span>
-                        <span className="text-8xl font-black">{result.totalScore}<span className="text-2xl opacity-30">/10</span></span>
-                    </div>
-                </div>
+    <div className="min-h-screen bg-brand-offwhite text-brand-navy pt-32 pb-32">
+      <div className="container mx-auto px-8">
+        {appState === AuditState.IDLE && (
+          <AnimatedSection>
+            <div className="flex flex-col items-center justify-center min-h-[60vh] w-full">
+              <div className="w-full max-w-3xl text-center">
+                <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold block mb-4">
+                    Tool 01 / Reality Check
+                </span>
+                <h1 className="text-7xl md:text-9xl font-black uppercase tracking-tight leading-[0.85] text-brand-navy mb-12">
+                    Audit Your<br/>
+                    <span className="text-brand-purple italic">Signal.</span>
+                </h1>
 
-                <div className="grid grid-cols-1 md:grid-cols-5 border border-brand-offwhite/20">
-                    {result.pillars.map((p) => (
-                        <div key={p.name} className="p-8 border-r border-brand-offwhite/20 last:border-0 hover:bg-brand-offwhite hover:text-brand-dark transition-all group">
-                            <span className="text-5xl font-black opacity-10 group-hover:opacity-100 mb-8 block">{p.pillar}</span>
-                            <h4 className="font-mono text-xs font-bold uppercase border-b border-current pb-2 mb-4">{p.name}</h4>
-                            <p className="text-sm font-medium leading-relaxed">{p.critique}</p>
-                            <div className="mt-8 font-mono text-xl font-bold">[{p.score}]</div>
-                        </div>
-                    ))}
+                <div className="relative group max-w-2xl mx-auto">
+                  <input
+                    type="text"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder="https://your-brand.com"
+                    className="w-full bg-transparent border-b-2 border-brand-navy/20 py-4 text-xl md:text-3xl text-center focus:outline-none focus:border-brand-purple transition-colors placeholder-brand-navy/20 font-mono text-brand-navy"
+                    onKeyDown={(e) => e.key === 'Enter' && handleRunCheck()}
+                  />
                 </div>
-
-                <div className="mt-24 grid grid-cols-1 md:grid-cols-2 gap-16">
-                    <div className="space-y-8">
-                        <h3 className="font-mono text-xs uppercase tracking-widest text-brand-purple font-black">Hard Questions</h3>
-                        {result.hardQuestions.map((q, i) => (
-                            <div key={i} className="flex gap-4 items-start">
-                                <span className="font-mono text-xs border border-brand-offwhite/30 rounded-full w-6 h-6 flex items-center justify-center shrink-0">{i+1}</span>
-                                <p className="text-2xl font-bold uppercase leading-tight italic">"{q}"</p>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="bg-brand-offwhite/5 p-12 border border-brand-offwhite/10 text-center">
-                        <p className="font-mono text-xs opacity-50 mb-4">SCORE BELOW 8.0?</p>
-                        <h4 className="text-4xl font-black uppercase mb-8">Stop Guessing.<br/>Start Revealing.</h4>
-                        <button onClick={() => setResult(null)} className="font-mono text-xs uppercase underline tracking-widest">Run Another Audit</button>
-                    </div>
+                
+                <div className="mt-12 flex justify-center">
+                  <button
+                    onClick={handleRunCheck}
+                    disabled={!url}
+                    className="bg-brand-navy text-brand-offwhite hover:bg-brand-purple disabled:opacity-50 disabled:cursor-not-allowed transition-all px-12 py-5 font-bold tracking-widest text-sm uppercase shadow-xl"
+                  >
+                    Run Reality Check
+                  </button>
                 </div>
+                
+                 <div className="mt-8 text-[10px] md:text-xs text-center opacity-40 max-w-lg mx-auto leading-relaxed font-mono">
+                    *COOLO USES GEMINI AI SEARCH GROUNDING TO ANALYZE YOUR TEXT, META TAGS, AND INFER VISUALS FROM LIVE DATA. 
+                    RESULTS MAY HURT YOUR FEELINGS.
+                </div>
+              </div>
             </div>
-          )}
-        </AnimatedSection>
-      </main>
-      <Footer />
+          </AnimatedSection>
+        )}
+
+        {(appState === AuditState.SCANNING || appState === AuditState.ANALYZING) && (
+          <ScanningOverlay status="INITIATING..." />
+        )}
+
+        {appState === AuditState.RESULTS && auditResult && (
+          <AuditDashboard result={auditResult} onReset={handleReset} />
+        )}
+      </div>
     </div>
   );
 };

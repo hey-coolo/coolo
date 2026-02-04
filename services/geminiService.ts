@@ -2,41 +2,121 @@ import { GoogleGenAI } from "@google/genai";
 import { AuditResult } from "../types";
 
 const SYSTEM_PROMPT = `
-You are the COOLO Brand Strategist. Audit the provided website profile based on:
-1. C-CLARITY, 2. O-ORIGIN, 3. O-ONE VOICE, 4. L-LONGEVITY, 5. O-OUTCOME.
-Return JSON ONLY. Structure: { verdict: string, pillars: [{ pillar: string, name: string, score: number, critique: string }], hardQuestions: string[] }
+You are the COOLO Brand Strategist. You do not give generic advice. You provide a "Reality Check." Audit the provided profile based on these 5 Pillars derived from the COOLO philosophy:
+
+**The COOLO Framework:**
+1. **C - CLARITY:** (Based on "Is your brand confusing?"): Does the bio/headline explain *exactly* what they do in simple English? Or is it full of jargon? (Score 1-10)
+2. **O - ORIGIN:** (Based on "We help you reveal it"): Does this feel authentic to a human, or is it a corporate persona? (Score 1-10)
+3. **O - ONE VOICE:** (Based on "One Clear Voice"): Is the visual vibe consistent with the text tone? Do they sound like the same person? (Score 1-10)
+4. **L - LONGEVITY:** (Based on "Stop chasing trends"): Is the design timeless, or does it look like a bad mixtape of current trends? (Score 1-10)
+5. **O - OUTCOME:** (Based on "The Outcome"): Is there a clear path for the customer? Do I know what to do next? (Score 1-10)
+
+**Output Style:**
+* Be direct. No fluff.
+* If it sucks, say "This looks like a bad mixtape."
+* If it's good, say "This implies truth."
+* End with 3 "Hard Questions" the user needs to answer.
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  // Pull from Vercel Environment Variables
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
-  if (!apiKey) throw new Error("API Key Missing");
+  if (!apiKey) {
+    console.error("No API Key found.");
+    throw new Error("API Key missing");
+  }
 
-  const genAI = new GoogleGenAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const ai = new GoogleGenAI({ apiKey });
 
-  const prompt = `Perform a COOLO Brand Reality Check for: ${url}. Be direct and ruthless.`;
+  // Timeout promise to prevent infinite loading
+  const timeout = new Promise<never>((_, reject) => 
+    setTimeout(() => reject(new Error("Analysis timed out")), 30000)
+  );
 
   try {
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      systemInstruction: SYSTEM_PROMPT,
-    });
+    const prompt = `
+    TARGET URL: ${url}
+
+    MISSION:
+    Perform a ruthless "COOLO Brand Reality Check".
     
-    const response = await result.response;
-    const text = response.text().replace(/```json|```/gi, "").trim();
-    const data = JSON.parse(text);
+    RESEARCH STEPS (Use Google Search):
+    1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery. Search for "reviews" or "features" that might describe the look. READ ALT TEXT or Captions if available in snippets.
+    2.  **VOICE & BIO**: Analyze their Headline, "About Us" snippets, and Social Media bios.
+    3.  **consistency**: Do the visuals (inferred) match the words?
 
-    let total = 0;
-    data.pillars.forEach((p: any) => total += p.score);
+    OUTPUT:
+    Return a single JSON object.
+    Do not include markdown formatting like \`\`\`json.
+    
+    Structure required:
+    {
+      "verdict": string (A punchy, one-sentence summary of the brand reality),
+      "pillars": [
+        { "pillar": "C", "name": "CLARITY", "score": number (1-10 integer), "critique": string },
+        { "pillar": "O", "name": "ORIGIN", "score": number (1-10 integer), "critique": string },
+        { "pillar": "O", "name": "ONE VOICE", "score": number (1-10 integer), "critique": string },
+        { "pillar": "L", "name": "LONGEVITY", "score": number (1-10 integer), "critique": string },
+        { "pillar": "O", "name": "OUTCOME", "score": number (1-10 integer), "critique": string }
+      ],
+      "hardQuestions": [string, string, string]
+    }
+    `;
 
-    return {
-      ...data,
-      totalScore: Number((total / 5).toFixed(1))
+    const fetchAudit = async () => {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash-exp",
+        contents: prompt,
+        config: {
+          systemInstruction: SYSTEM_PROMPT,
+          tools: [{ googleSearch: {} }],
+          responseMimeType: "application/json",
+        }
+      });
+
+      const text = response.text;
+      if (!text) throw new Error("Empty response from Gemini");
+      
+      const raw = JSON.parse(text);
+      const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
+
+      let calculatedTotal = 0;
+      let validPillarCount = 0;
+      
+      pillars.forEach((p: any) => {
+        const score = Number(p.score) || 0;
+        calculatedTotal += score;
+        if (score > 0) validPillarCount++;
+      });
+
+      const finalAverage = validPillarCount > 0 
+        ? Number((calculatedTotal / validPillarCount).toFixed(1)) 
+        : 0;
+
+      const safeResult: AuditResult = {
+        totalScore: finalAverage,
+        verdict: typeof raw.verdict === 'string' ? raw.verdict : "Analysis Incomplete",
+        pillars: pillars,
+        hardQuestions: Array.isArray(raw.hardQuestions) ? raw.hardQuestions : []
+      };
+
+      if (safeResult.pillars.length === 0) {
+        safeResult.pillars = [
+            { pillar: "C", name: "CLARITY", score: 0, critique: "Data missing." },
+            { pillar: "O", name: "ORIGIN", score: 0, critique: "Data missing." },
+            { pillar: "O", name: "ONE VOICE", score: 0, critique: "Data missing." },
+            { pillar: "L", name: "LONGEVITY", score: 0, critique: "Data missing." },
+            { pillar: "O", name: "OUTCOME", score: 0, critique: "Data missing." }
+        ];
+      }
+
+      return safeResult;
     };
+
+    return await Promise.race([fetchAudit(), timeout]);
+
   } catch (error) {
-    console.error("Gemini Error:", error);
+    console.error("Gemini Audit Failed:", error);
     throw error;
   }
 };
