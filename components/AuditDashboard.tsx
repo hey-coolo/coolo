@@ -1,122 +1,105 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import AnimatedSection from '../components/AnimatedSection';
+import ScanningOverlay from '../components/ScanningOverlay';
+import AuditDashboard from '../components/AuditDashboard';
+import { runBrandAudit } from '../services/geminiService';
 import { AuditResult } from '../types';
 
-interface AuditDashboardProps {
-  result: AuditResult;
-  onReset: () => void;
-}
+const AuditPage: React.FC = () => {
+  const [url, setUrl] = useState('');
+  const [status, setStatus] = useState<'idle' | 'scanning' | 'results'>('idle');
+  const [result, setResult] = useState<AuditResult | null>(null);
 
-const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
-  const pillars = result.pillars || [];
-  const hardQuestions = result.hardQuestions || [];
+  const handleRunCheck = async () => {
+    if (!url.trim()) return;
+    setStatus('scanning');
+    
+    // Call the AI Service
+    try {
+        const data = await runBrandAudit(url);
+        setResult(data);
+        setStatus('results');
+    } catch (e) {
+        alert("Audit failed. Please check the URL and try again.");
+        setStatus('idle');
+    }
+  };
+
+  const handleReset = () => {
+    setUrl('');
+    setResult(null);
+    setStatus('idle');
+  };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 animate-[fadeIn_0.5s_ease-out]">
-      
-      {/* BRAND REPORT HEADER */}
-      <div className="flex flex-col md:flex-row border-t-2 border-brand-navy mb-8">
-        <div className="p-4 border-r border-brand-navy/10 md:w-32 flex items-center justify-center">
-            <span className="text-[10px] tracking-widest uppercase rotate-0 md:-rotate-90 whitespace-nowrap opacity-50">
-                Reality Check v2.0
-            </span>
-        </div>
-        <div className="p-4 md:p-8 flex-grow">
-            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-[0.9] mb-4 text-brand-navy">
-                {result.verdict}
-            </h1>
-            <div className="h-1 w-24 bg-brand-purple mb-4"></div>
-            <p className="text-xs md:text-sm font-mono opacity-60 uppercase tracking-widest text-brand-navy">
-                Automated Strategic Analysis
-            </p>
-        </div>
-        <div className="p-4 md:p-8 md:w-64 border-l border-brand-navy/10 flex flex-col justify-center items-center md:items-end bg-brand-navy/5">
-            <span className="text-xs font-bold tracking-widest mb-1 opacity-50 text-brand-navy">OVERALL RATING</span>
-            <div className="flex items-baseline text-brand-navy">
-                <span className="text-6xl md:text-7xl font-bold leading-none">
-                    {result.totalScore}
-                </span>
-                <span className="text-xl opacity-50 ml-2 font-light">/10</span>
-            </div>
-        </div>
-      </div>
-
-      {/* PILLARS GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-5 border-2 border-brand-navy">
-        {pillars.length > 0 ? (
-          pillars.map((pillar, idx) => (
-            <div 
-                key={idx} 
-                className="group relative border-b md:border-b-0 md:border-r border-brand-navy/10 last:border-r-0 p-6 flex flex-col justify-between min-h-[320px] hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300"
-            >
-              <div>
-                  <div className="flex justify-between items-start mb-8">
-                    <span className="text-5xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">
-                        {pillar.pillar}
+    <div className="bg-brand-offwhite min-h-screen pt-32 pb-32">
+      <div className="container mx-auto px-8">
+        <AnimatedSection>
+          <Header />
+          
+          {/* --- STATE 1: INPUT --- */}
+          {status === 'idle' && (
+            <div className="max-w-4xl mx-auto pt-24">
+                <div className="bg-white border-2 border-brand-navy p-8 md:p-16 shadow-[12px_12px_0px_0px_#0F0328]">
+                <div className="mb-12 border-b border-brand-navy/10 pb-8">
+                    <span className="font-mono text-brand-purple text-xs font-black uppercase tracking-widest block mb-4">
+                    Free Tool 01 / AI Powered
                     </span>
-                    <div className="border border-current px-2 py-1 text-sm font-mono font-bold">
-                        {pillar.score}
-                    </div>
-                  </div>
-                  <h3 className="text-sm font-bold tracking-[0.2em] mb-4 uppercase border-b border-current pb-2 inline-block">
-                    {pillar.name}
-                  </h3>
-                  <p className="text-sm leading-relaxed opacity-80 font-medium">
-                    {pillar.critique}
-                  </p>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="col-span-5 p-12 text-center opacity-50">No data available.</div>
-        )}
-      </div>
+                    <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight text-brand-navy leading-[0.9]">
+                    Brand Reality<br/><span className="text-brand-purple italic">Check.</span>
+                    </h1>
+                    <p className="mt-8 font-body text-xl text-brand-navy/60 max-w-2xl leading-relaxed">
+                    Don't guess. Measure. Drop your web or socials link below. Our <strong>AI</strong> engine will analyze your digital footprint and give you a raw COOLO Score™ based on visual and strategic integrity.
+                    </p>
+                </div>
 
-      {/* FOOTER ACTION AREA */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border-x-2 border-b-2 border-brand-navy mt-8 md:mt-0">
-        
-        {/* HARD QUESTIONS */}
-        <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-brand-navy/10">
-          <h3 className="text-xs font-bold tracking-widest mb-8 opacity-50 uppercase text-brand-navy">
-            Hard Questions to Answer
-          </h3>
-          <ul className="space-y-6">
-            {hardQuestions.map((q, i) => (
-                <li key={i} className="flex gap-4">
-                  <span className="font-mono text-xs border border-brand-navy/30 w-6 h-6 flex items-center justify-center rounded-full flex-shrink-0 mt-1 text-brand-navy">
-                      {i + 1}
-                  </span>
-                  <span className="text-lg leading-tight font-medium text-brand-navy">{q}</span>
-                </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* CTA */}
-        <div className="p-8 md:p-12 flex flex-col justify-center items-center text-center bg-brand-navy/5 relative overflow-hidden">
-            <div className="relative z-10">
-                <p className="text-xs font-mono mb-4 opacity-50 text-brand-navy">SCORE BELOW 8.0?</p>
-                <h3 className="text-3xl font-bold mb-8 uppercase max-w-sm mx-auto text-brand-navy">
-                    Stop Guessing.<br/>Start Revealing.
-                </h3>
-                <div className="flex flex-col gap-4 w-full max-w-xs mx-auto">
-                    <a 
-                        href="/contact" 
-                        className="bg-brand-navy text-brand-offwhite py-4 px-6 font-bold tracking-widest hover:bg-brand-purple transition-colors uppercase text-sm"
-                    >
-                        Work With Coolo
-                    </a>
+                <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-yellow rounded opacity-20 group-hover:opacity-40 blur transition duration-500"></div>
+                    <div className="relative flex flex-col md:flex-row gap-4 bg-white p-2 border border-brand-navy/10">
+                    <input 
+                        type="text" 
+                        placeholder="https://www.yourbrand.com" 
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleRunCheck()}
+                        className="flex-grow bg-brand-navy/5 border-2 border-brand-navy/10 p-6 font-mono text-xl text-brand-navy placeholder-brand-navy/30 focus:outline-none focus:border-brand-purple transition-all"
+                    />
                     <button 
-                        onClick={onReset}
-                        className="text-xs tracking-widest underline decoration-brand-navy/30 hover:decoration-brand-navy text-brand-navy opacity-60 hover:opacity-100 transition-all uppercase"
+                        onClick={handleRunCheck}
+                        disabled={!url}
+                        className="bg-brand-navy text-brand-offwhite font-mono font-black uppercase tracking-widest px-10 py-6 hover:bg-brand-purple transition-all shadow-xl hover:shadow-none hover:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Run Another Audit
+                        Run Scan
                     </button>
+                    </div>
+                </div>
+                <div className="mt-8 text-center md:text-left">
+                    <p className="font-mono text-[9px] text-brand-navy/40 uppercase tracking-widest leading-relaxed">
+                        *COOLO USES GEMINI 2.0 SEARCH GROUNDING TO ANALYZE YOUR TEXT, META TAGS, AND INFER VISUALS FROM LIVE DATA.<br/>
+                        RESULTS MAY HURT YOUR FEELINGS.
+                    </p>
+                </div>
                 </div>
             </div>
-        </div>
+          )}
+
+          {/* --- STATE 2: SCANNING --- */}
+          {status === 'scanning' && (
+            <ScanningOverlay />
+          )}
+
+          {/* --- STATE 3: RESULTS --- */}
+          {status === 'results' && result && (
+            <AuditDashboard result={result} onReset={handleReset} />
+          )}
+
+          <Footer />
+        </AnimatedSection>
       </div>
     </div>
   );
 };
 
-export default AuditDashboard;
+export default AuditPage;

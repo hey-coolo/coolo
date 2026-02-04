@@ -1,51 +1,56 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 import AnimatedSection from '../../components/AnimatedSection';
 import ScanningOverlay from '../../components/ScanningOverlay';
 import AuditDashboard from '../../components/AuditDashboard';
 import { runBrandAudit } from '../../services/geminiService';
-import { AuditResult } from '../../types';
+import { AuditResult, AuditState } from '../../types';
 
 const RealityCheckApp: React.FC = () => {
   const [url, setUrl] = useState('');
-  const [status, setStatus] = useState<'idle' | 'scanning' | 'results'>('idle');
+  const [status, setStatus] = useState<AuditState>(AuditState.IDLE);
   const [result, setResult] = useState<AuditResult | null>(null);
 
   const handleRunCheck = async () => {
     if (!url.trim()) return;
-    setStatus('scanning');
+    setStatus(AuditState.ANALYZING);
     
-    // Call the AI Service
-    const data = await runBrandAudit(url);
-    
-    setResult(data);
-    setStatus('results');
+    try {
+      const data = await runBrandAudit(url);
+      setResult(data);
+      setStatus(AuditState.RESULTS);
+    } catch (e) {
+      alert("Calibration failed. Please check the URL.");
+      setStatus(AuditState.IDLE);
+    }
   };
 
   const handleReset = () => {
     setUrl('');
     setResult(null);
-    setStatus('idle');
+    setStatus(AuditState.IDLE);
   };
 
   return (
     <div className="bg-brand-offwhite min-h-screen pt-32 pb-32">
       <div className="container mx-auto px-8">
         <AnimatedSection>
+          {/* We assume Header/Footer are handled by Layout or imported here if standalone page structure is desired. 
+              Based on App.tsx, Header is global, but we can keep local structure clean. */}
           
-          {/* --- STATE 1: INPUT --- */}
-          {status === 'idle' && (
-            <div className="max-w-4xl mx-auto">
+          {status === AuditState.IDLE && (
+            <div className="max-w-4xl mx-auto pt-12">
                 <div className="bg-white border-2 border-brand-navy p-8 md:p-16 shadow-[12px_12px_0px_0px_#0F0328]">
                 <div className="mb-12 border-b border-brand-navy/10 pb-8">
                     <span className="font-mono text-brand-purple text-xs font-black uppercase tracking-widest block mb-4">
-                    Free Tool 01 / AI Powered
+                    Internal Tool 01
                     </span>
                     <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight text-brand-navy leading-[0.9]">
                     Brand Reality<br/><span className="text-brand-purple italic">Check.</span>
                     </h1>
                     <p className="mt-8 font-body text-xl text-brand-navy/60 max-w-2xl leading-relaxed">
-                    Don't guess. Measure. Drop your web or socials link below. Our <strong>AI</strong> engine will analyze your digital footprint and give you a raw COOLO Score™ based on visual and strategic integrity.
+                    Don't guess. Measure. Drop your link below. Our AI engine (Gemini 2.0) will analyze your digital footprint using live search grounding.
                     </p>
                 </div>
 
@@ -69,23 +74,21 @@ const RealityCheckApp: React.FC = () => {
                     </button>
                     </div>
                 </div>
-                <div className="mt-8 text-center md:text-left">
-                    <p className="font-mono text-[9px] text-brand-navy/40 uppercase tracking-widest leading-relaxed">
-                        *COOLO USES GEMINI 2.0 SEARCH GROUNDING TO ANALYZE YOUR TEXT, META TAGS, AND INFER VISUALS FROM LIVE DATA.<br/>
-                        RESULTS MAY HURT YOUR FEELINGS.
+                
+                <div className="mt-8">
+                    <p className="font-mono text-[9px] text-brand-navy/40 uppercase tracking-widest">
+                        * RESULTS MAY HURT YOUR FEELINGS.
                     </p>
                 </div>
                 </div>
             </div>
           )}
 
-          {/* --- STATE 2: SCANNING --- */}
-          {status === 'scanning' && (
-            <ScanningOverlay />
+          {(status === AuditState.SCANNING || status === AuditState.ANALYZING) && (
+            <ScanningOverlay status="PROCESSING" />
           )}
 
-          {/* --- STATE 3: RESULTS --- */}
-          {status === 'results' && result && (
+          {status === AuditState.RESULTS && result && (
             <AuditDashboard result={result} onReset={handleReset} />
           )}
 
