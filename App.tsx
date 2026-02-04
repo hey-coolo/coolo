@@ -92,7 +92,9 @@ const App: React.FC = () => {
                       <Route path="/about" element={<AboutPage />} />
                       <Route path="/playbook" element={<PlaybookPage />} />
                       
+                      
                       {/* --- CLARITY ROUTES --- */}
+                      <Route path="/clarity" element={<ClarityPage />} />
                       <Route path="/clarity/free-resources" element={<FreeResourcesPage />} />
                       
                       {/* Unified Audit Route - Pointing to RealityCheckApp */}
