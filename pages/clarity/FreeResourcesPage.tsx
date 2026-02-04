@@ -11,12 +11,12 @@ const FreeResourcesPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
 
-const handleAction = (res: Resource) => {
+  const handleAction = (res: Resource) => {
     // If the resource is the Reality Check tool (ID 01), navigate directly
     if (res.id === '01') {
-        navigate('/audit'); // Use the unified audit route
+        navigate('/audit'); 
     } else {
-        // Otherwise, show the existing email collection modal
+        // Otherwise, show the email collection modal
         setSelectedRes(res);
         setStatus('idle');
         setEmail('');
@@ -68,7 +68,7 @@ const handleAction = (res: Resource) => {
           {FREE_RESOURCES.map((res, i) => (
             <AnimatedSection key={res.id} delay={i * 100}>
               <button 
-                onClick={() => handleOpenModal(res)}
+                onClick={() => handleAction(res)}
                 className="w-full text-left group flex flex-col md:flex-row justify-between items-start md:items-center py-16 border-b border-brand-navy/10 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-700 px-4 -mx-4 cursor-pointer"
               >
                 <div className="flex items-center gap-12">

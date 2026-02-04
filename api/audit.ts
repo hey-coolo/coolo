@@ -38,8 +38,8 @@ export default async function handler(req: any, res: any) {
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // FIX: Use 'gemini-1.5-flash-latest' to resolve the v1beta 404 error
-    const modelsToTry = ["gemini-1.5-flash-latest", "gemini-1.5-flash-001"];
+    // Use stable production model string to prevent 404
+    const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-001"];
     let rawText = "";
 
     const SYSTEM_PROMPT = `

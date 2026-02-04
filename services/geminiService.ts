@@ -32,7 +32,6 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
   const timeout = new Promise<never>((_, reject) => 
     setTimeout(() => reject(new Error("Analysis timed out")), 45000)
@@ -69,7 +68,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
     const fetchAudit = async () => {
       const model = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash-latest",
+        model: "gemini-1.5-flash",
         systemInstruction: SYSTEM_PROMPT 
       });
 
@@ -77,7 +76,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
       const response = await result.response;
       const text = response.text();
       
-      // Fix: Robust JSON cleaning to remove markdown formatting
+      // Robust JSON cleaning to remove markdown formatting
       const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
       const raw = JSON.parse(cleanedText);
 
