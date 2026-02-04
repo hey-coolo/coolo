@@ -68,7 +68,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
     const fetchAudit = async () => {
       const model = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-pro-002",
+        model: "gemini-2.5-flash",
         systemInstruction: SYSTEM_PROMPT 
       });
 
