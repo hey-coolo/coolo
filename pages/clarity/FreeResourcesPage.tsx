@@ -12,15 +12,8 @@ const FreeResourcesPage: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
 
   const handleAction = (res: Resource) => {
-    // If the resource is the Reality Check tool (ID 01), navigate directly
     if (res.id === '01') {
-        navigate('/audit'); // Use the unified audit route
-    } else {
-        // Otherwise, show the existing email collection modal
-        setSelectedRes(res);
-        setStatus('idle');
-        setEmail('');
-    }
+      navigate('/audit');
   };
 
   const handleSubscribe = async (e: React.FormEvent) => {
