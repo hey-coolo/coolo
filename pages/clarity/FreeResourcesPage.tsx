@@ -14,9 +14,9 @@ const FreeResourcesPage: React.FC = () => {
   const handleAction = (res: Resource) => {
     // If the resource is the Reality Check tool (ID 01), navigate directly
     if (res.id === '01') {
-        navigate('/audit'); 
+        navigate('/audit'); // Use the unified audit route
     } else {
-        // Otherwise, show the email collection modal
+        // Otherwise, show the existing email collection modal
         setSelectedRes(res);
         setStatus('idle');
         setEmail('');
