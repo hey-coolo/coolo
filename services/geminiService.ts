@@ -1,6 +1,7 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { AuditResult } from "../types";
 
+// COOLO STRATEGY PROMPT
 const SYSTEM_PROMPT = `
 You are the COOLO Brand Strategist. You do not give generic advice. You provide a "Reality Check." Audit the provided profile based on these 5 Pillars derived from the COOLO philosophy:
 
@@ -19,24 +20,35 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  // 1. Get Key Safe for Vite
+  // CORRECT ACCESS TO VITE ENV VARIABLE
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    console.error("VITE_GEMINI_API_KEY is missing");
+    console.error("CRITICAL: No API Key found in environment variables.");
     return {
-        totalScore: 0,
-        verdict: "CONFIG ERROR",
-        pillars: [],
-        hardQuestions: ["Missing API Key in Vercel"]
+      totalScore: 0,
+      verdict: "CONFIGURATION ERROR",
+      pillars: [
+        { pillar: "E", name: "MISSING KEY", score: 0, critique: "The VITE_GEMINI_API_KEY is missing." },
+        { pillar: "R", name: "REQUIRED", score: 0, critique: "Add the API key to Vercel Environment Variables." },
+        { pillar: "R", name: "REBUILD", score: 0, critique: "Redeploy the project after adding the key." },
+        { pillar: "O", name: "OFFLINE", score: 0, critique: "The AI engine cannot connect." },
+        { pillar: "R", name: "RETRY", score: 0, critique: "Check Vercel Settings > Environment Variables." }
+      ],
+      hardQuestions: ["Is the Key starting with 'AIza'?", "Is it named VITE_GEMINI_API_KEY?", "Did you Redeploy?"]
     };
   }
 
-  const ai = new GoogleGenAI({ apiKey });
+  // Initialize SDK
+  const genAI = new GoogleGenerativeAI(apiKey);
+  
+  // UPDATE: Use specific version 'gemini-1.5-flash-002' to avoid alias 404s
+  // If this fails, consider falling back to 'gemini-pro'
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-002" });
 
-  // 2. Timeout Wrapper
+  // 60s Timeout
   const timeout = new Promise<never>((_, reject) => 
-    setTimeout(() => reject(new Error("Analysis timed out")), 45000)
+    setTimeout(() => reject(new Error("Analysis timed out")), 60000)
   );
 
   try {
@@ -44,16 +56,16 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     TARGET URL: ${url}
 
     MISSION:
-    Perform a ruthless "COOLO Brand Reality Check".
+    Perform a ruthless "COOLO Brand Reality Check" on this URL.
     
-    RESEARCH STEPS (Use Google Search):
-    1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery. Search for "reviews" or "features" that might describe the look. READ ALT TEXT or Captions if available in snippets.
-    2.  **VOICE & BIO**: Analyze their Headline, "About Us" snippets, and Social Media bios.
-    3.  **consistency**: Do the visuals (inferred) match the words?
-
+    NOTE: You are operating in INFERENCE MODE. You cannot browse the live web.
+    Analyze the URL string itself, the industry implied by the domain, and apply general knowledge about this brand (if known) or typical patterns for this type of business.
+    
+    If the brand is unknown, profile it based on the "Vibe" suggested by its name.
+    
     OUTPUT:
-    Return a single JSON object.
-    Do not include markdown formatting like \`\`\`json.
+    Return a single JSON object. 
+    Strictly format as JSON. No markdown ticks.
     
     Structure required:
     {
@@ -70,23 +82,30 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     `;
 
     const fetchAudit = async () => {
-      // 3. Call Gemini 2.0 Flash with Search
-      const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash-exp",
-        contents: prompt,
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-          tools: [{ googleSearch: {} }],
-          responseMimeType: "application/json",
-        }
-      });
-
-      const text = response.text;
-      if (!text) throw new Error("Empty response from Gemini");
+      // 1. Send the prompt
+      const result = await model.generateContent([
+        SYSTEM_PROMPT, 
+        prompt
+      ]);
       
-      const raw = JSON.parse(text);
+      // 2. Get text response
+      const response = await result.response;
+      const text = response.text();
+      
+      // 3. Clean up markdown formatting if present (e.g. ```json ... ```)
+      const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      
+      let raw;
+      try {
+        raw = JSON.parse(cleanedText);
+      } catch (e) {
+        console.error("JSON Parse Error. Received:", text);
+        throw new Error("Failed to parse AI response.");
+      }
+
       const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
 
+      // 4. Calculate Score Programmatically
       let calculatedTotal = 0;
       let validPillarCount = 0;
       
@@ -107,40 +126,44 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         hardQuestions: Array.isArray(raw.hardQuestions) ? raw.hardQuestions : []
       };
 
-      // Fallback for malformed AI response
+      // Fallback if AI hallucinates empty data
       if (safeResult.pillars.length === 0) {
         safeResult.pillars = [
-            { pillar: "C", name: "CLARITY", score: 0, critique: "AI returned no data." },
-            { pillar: "O", name: "ORIGIN", score: 0, critique: "AI returned no data." },
-            { pillar: "O", name: "ONE VOICE", score: 0, critique: "AI returned no data." },
-            { pillar: "L", name: "LONGEVITY", score: 0, critique: "AI returned no data." },
-            { pillar: "O", name: "OUTCOME", score: 0, critique: "AI returned no data." }
+            { pillar: "C", name: "CLARITY", score: 0, critique: "Data missing." },
+            { pillar: "O", name: "ORIGIN", score: 0, critique: "Data missing." },
+            { pillar: "O", name: "ONE VOICE", score: 0, critique: "Data missing." },
+            { pillar: "L", name: "LONGEVITY", score: 0, critique: "Data missing." },
+            { pillar: "O", name: "OUTCOME", score: 0, critique: "Data missing." }
         ];
       }
 
       return safeResult;
     };
 
-    // 4. Race against timeout
     return await Promise.race([fetchAudit(), timeout]);
 
   } catch (error: any) {
     console.error("Gemini Audit Failed:", error);
-    // 5. CRITICAL: Return an error object instead of throwing
-    // This ensures the UI *always* shows the dashboard (even if it's an error state)
+    
+    // Friendly error messaging
+    let errorMessage = "Could not complete the audit.";
+    if (error.message?.includes("API key")) errorMessage = "Invalid API Key detected.";
+    if (error.message?.includes("fetch")) errorMessage = "Browser blocked the connection (CORS/AdBlock).";
+    if (error.message?.includes("404")) errorMessage = "Model not available (Try checking API Key permissions).";
+    
     return {
         totalScore: 0,
         verdict: "CONNECTION FAILURE",
         pillars: [
-          { pillar: "E", name: "ERROR", score: 0, critique: error.message || "Audit failed." },
-          { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL." },
-          { pillar: "X", name: "VOID", score: 0, critique: "System overloaded." },
-          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check connection." },
-          { pillar: "R", name: "REPORT", score: 0, critique: "Contact support." }
+          { pillar: "E", name: "ERROR", score: 0, critique: errorMessage },
+          { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL and try again." },
+          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check your internet connection." },
+          { pillar: "R", name: "REFRESH", score: 0, critique: "System overloaded." },
+          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, contact hey@coolo.co.nz." }
         ],
         hardQuestions: [
           "Is the URL correct?",
-          "Is the site publicly accessible?",
+          "Is the site accessible publicly?",
           "Are you online?"
         ]
     };
