@@ -19,13 +19,11 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  // FIX: Use Vite-compatible environment variable access
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    console.warn("No API Key found. Returning mock data.");
-    // In production, this should likely throw an error or handle gracefully
-    throw new Error("Missing API Key");
+    console.error("No API Key found.");
+    throw new Error("API Key missing");
   }
 
   const ai = new GoogleGenAI({ apiKey });
@@ -40,7 +38,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     TARGET URL: ${url}
 
     MISSION:
-    Perform a ruthless "COOLO Brand Reality Check". You are the COOLO Brand Strategist. You do not give generic advice. You provide a "Reality Check." Audit the provided profile based on these 5 Pillars derived from the COOLO philosophy:
+    Perform a ruthless "COOLO Brand Reality Check".
     
     RESEARCH STEPS (Use Google Search):
     1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery. Search for "reviews" or "features" that might describe the look. READ ALT TEXT or Captions if available in snippets.
@@ -48,10 +46,6 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     3.  **consistency**: Do the visuals (inferred) match the words?
 
     OUTPUT:
-    * Be direct. No fluff.
-    * If it sucks, say "This looks like a bad mixtape."
-    * If it's good, say "This implies truth."
-    * End with 3 "Hard Questions" the user needs to answer.
     Return a single JSON object.
     Do not include markdown formatting like \`\`\`json.
     
@@ -75,7 +69,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_PROMPT,
-          tools: [{ googleSearch: {} }], // Search grounding enabled
+          tools: [{ googleSearch: {} }],
           responseMimeType: "application/json",
         }
       });
@@ -86,7 +80,6 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
       const raw = JSON.parse(text);
       const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
 
-      // CALCULATE SCORE PROGRAMMATICALLY FOR CONSISTENCY
       let calculatedTotal = 0;
       let validPillarCount = 0;
       
@@ -96,12 +89,10 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         if (score > 0) validPillarCount++;
       });
 
-      // Avoid divide by zero
       const finalAverage = validPillarCount > 0 
         ? Number((calculatedTotal / validPillarCount).toFixed(1)) 
         : 0;
 
-      // Validate and Sanitize Response
       const safeResult: AuditResult = {
         totalScore: finalAverage,
         verdict: typeof raw.verdict === 'string' ? raw.verdict : "Analysis Incomplete",
@@ -109,7 +100,6 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         hardQuestions: Array.isArray(raw.hardQuestions) ? raw.hardQuestions : []
       };
 
-      // Ensure we have exactly 5 pillars if possible, or handle empty
       if (safeResult.pillars.length === 0) {
         safeResult.pillars = [
             { pillar: "C", name: "CLARITY", score: 0, critique: "Data missing." },
@@ -123,12 +113,11 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
       return safeResult;
     };
 
-    // Race between the fetch and the timeout
     return await Promise.race([fetchAudit(), timeout]);
 
   } catch (error) {
     console.error("Gemini Audit Failed:", error);
-    // Return graceful error state instead of crashing
+    // Return error state instead of crashing
     return {
         totalScore: 0,
         verdict: "CONNECTION FAILURE",
