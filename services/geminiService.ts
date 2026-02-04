@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { AuditResult } from "../types";
 
 const SYSTEM_PROMPT = `
@@ -22,15 +22,20 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    console.error("No API Key found.");
-    throw new Error("API Key missing");
+    throw new Error("Missing VITE_GEMINI_API_KEY in environment variables.");
   }
 
-  const ai = new GoogleGenAI({ apiKey });
+  // Use the standard stable SDK
+  const genAI = new GoogleGenerativeAI(apiKey);
+  
+  // Use the stable flash model
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-2.5-flash",
+    systemInstruction: SYSTEM_PROMPT
+  });
 
-  // Timeout promise to prevent infinite loading
   const timeout = new Promise<never>((_, reject) => 
-    setTimeout(() => reject(new Error("Analysis timed out")), 30000)
+    setTimeout(() => reject(new Error("Analysis timed out (45s)")), 45000)
   );
 
   try {
@@ -38,16 +43,12 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     TARGET URL: ${url}
 
     MISSION:
-    Perform a ruthless "COOLO Brand Reality Check".
-    
-    RESEARCH STEPS (Use Google Search):
-    1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery. Search for "reviews" or "features" that might describe the look. READ ALT TEXT or Captions if available in snippets.
-    2.  **VOICE & BIO**: Analyze their Headline, "About Us" snippets, and Social Media bios.
-    3.  **consistency**: Do the visuals (inferred) match the words?
+    Perform a ruthless "COOLO Brand Reality Check" on this URL. 
+    Analyze the implied visual vibe and messaging.
 
     OUTPUT:
-    Return a single JSON object.
-    Do not include markdown formatting like \`\`\`json.
+    Return a single JSON object. 
+    Strictly format as JSON. No markdown ticks.
     
     Structure required:
     {
@@ -64,20 +65,23 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     `;
 
     const fetchAudit = async () => {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: prompt,
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-          tools: [{ googleSearch: {} }],
-          responseMimeType: "application/json",
-        }
-      });
-
-      const text = response.text;
-      if (!text) throw new Error("Empty response from Gemini");
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
       
-      const raw = JSON.parse(text);
+      if (!text) throw new Error("Empty response from AI");
+
+      // CLEAN THE RESPONSE: Remove markdown code blocks if present
+      const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      
+      let raw;
+      try {
+        raw = JSON.parse(cleanedText);
+      } catch (e) {
+        console.error("JSON Parse Error. Raw Text:", text);
+        throw new Error("Failed to read AI response. Please try again.");
+      }
+
       const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
 
       let calculatedTotal = 0;
@@ -101,13 +105,14 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
       };
 
       if (safeResult.pillars.length === 0) {
-        safeResult.pillars = [
+         // Create empty pillars if missing
+         safeResult.pillars = [
             { pillar: "C", name: "CLARITY", score: 0, critique: "Data missing." },
             { pillar: "O", name: "ORIGIN", score: 0, critique: "Data missing." },
             { pillar: "O", name: "ONE VOICE", score: 0, critique: "Data missing." },
             { pillar: "L", name: "LONGEVITY", score: 0, critique: "Data missing." },
             { pillar: "O", name: "OUTCOME", score: 0, critique: "Data missing." }
-        ];
+         ];
       }
 
       return safeResult;
@@ -115,23 +120,23 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
 
     return await Promise.race([fetchAudit(), timeout]);
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gemini Audit Failed:", error);
-    // Return error state instead of crashing
+    // Return a functional error object so the UI shows *something* other than a white screen
     return {
         totalScore: 0,
-        verdict: "CONNECTION FAILURE",
+        verdict: "SYSTEM ERROR",
         pillars: [
-          { pillar: "E", name: "ERROR", score: 0, critique: "Could not complete the audit." },
+          { pillar: "E", name: "ERROR", score: 0, critique: error.message || "Unknown error." },
           { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL and try again." },
-          { pillar: "R", name: "REFRESH", score: 0, critique: "System overloaded." },
-          { pillar: "O", name: "OFFLINE", score: 0, critique: "Internet connection may be unstable." },
-          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, contact support." }
+          { pillar: "O", name: "OFFLINE", score: 0, critique: "Connection unstable." },
+          { pillar: "X", name: "VOID", score: 0, critique: "Audit failed." },
+          { pillar: "X", name: "VOID", score: 0, critique: "Audit failed." }
         ],
         hardQuestions: [
           "Is the URL correct?",
-          "Is the site accessible publicly?",
-          "Are you online?"
+          "Is VITE_GEMINI_API_KEY set?",
+          "Are you connected?"
         ]
     };
   }
