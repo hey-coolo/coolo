@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default async function handler(req: any, res: any) {
   // 1. Allow only POST requests
@@ -115,9 +115,20 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 
     return res.status(200).json(jsonResponse);
 
-  } catch (error: any) {
-    console.error("Audit API Failed:", error);
-    // Return JSON error so the frontend doesn't choke on HTML (Unexpected token A...)
-    return res.status(500).json({ error: "Analysis Failed", details: error.message });
+} catch (error: any) {
+    console.error("Audit Service Error:", error);
+    
+    return {
+        totalScore: 0,
+        verdict: "SIGNAL LOST",
+        pillars: [
+          { pillar: "E", name: "ERROR", score: 0, critique: "Google's AI is ghosting us. It's not you, it's the cloud." },
+          { pillar: "R", name: "RETRY", score: 0, critique: "Take a breath, hit refresh in 30 seconds." },
+          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check if your Wi-Fi is actually vibing." },
+          { pillar: "L", name: "LOGS", score: 0, critique: "System says: " + (error.message || "Unknown vibe failure.") },
+          { pillar: "R", name: "REPORT", score: 0, critique: "Still broken? Holla at hey@coolo.co.nz." }
+        ],
+        hardQuestions: ["Is the URL legit?", "Is the site public?", "Are you definitely online?"]
+    };
   }
-}
+};

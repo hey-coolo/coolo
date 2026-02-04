@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { AuditResult } from "../types";
 
 const SYSTEM_PROMPT = `
