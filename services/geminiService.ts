@@ -1,61 +1,62 @@
-import { AuditResult } from "../types";
+import { GoogleGenAI } from "@google/genai";
+
+export const SYSTEM_PROMPT = `
+You are the COOLO Brand Strategist. You do not give generic advice. You provide a "Reality Check." Audit the provided profile based on these 5 Pillars derived from the COOLO philosophy:
+
+**The COOLO Framework:**
+1. **C - CLARITY:** Does the bio/headline explain *exactly* what they do in simple English? Or is it full of jargon? (Score 1-10)
+2. **O - ORIGIN:** Does this feel authentic to a human, or is it a corporate persona? (Score 1-10)
+3. **O - ONE VOICE:** Is the visual vibe consistent with the text tone? Do they sound like the same person? (Score 1-10)
+4. **L - LONGEVITY:** Is the design timeless, or does it look like a bad mixtape of current trends? (Score 1-10)
+5. **O - OUTCOME:** Is there a clear path for the customer? Do I know what to do next? (Score 1-10)
+
+**Output Style:**
+* Be direct. No fluff.
+* If it sucks, say "This looks like a bad mixtape."
+* If it's good, say "This implies truth."
+* End with 3 "Hard Questions" the user needs to answer.
+`;
+
+export interface AuditResult {
+  totalScore: number;
+  verdict: string;
+  pillars: { pillar: string; name: string; score: number; critique: string }[];
+  hardQuestions: string[];
+}
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
+  // Use the existing key from your Vercel env variables
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
+  
+  if (!apiKey) {
+    throw new Error("Missing GEMINI_API_KEY");
+  }
+
+  const ai = new GoogleGenAI(apiKey);
+  const model = ai.getGenerativeModel({ 
+    model: "gemini-1.5-flash",
+    systemInstruction: SYSTEM_PROMPT 
+  });
+
+  const prompt = `TARGET URL: ${url} - Perform a ruthless audit. Return JSON only.`;
+
   try {
-    // 1. Call our own internal API (Bypasses AdBlockers & CORS)
-    const response = await fetch('/api/audit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url })
-    });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text().replace(/```json|```/gi, "").trim();
+    const raw = JSON.parse(text);
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.details || data.error || 'Server error');
-    }
-
-    // 2. Map the raw data to our types
-    const pillars = Array.isArray(data.pillars) ? data.pillars : [];
-    
-    // Calculate Average Score
     let total = 0;
-    let count = 0;
-    pillars.forEach((p: any) => {
-      if (Number(p.score) > 0) {
-        total += Number(p.score);
-        count++;
-      }
-    });
+    raw.pillars.forEach((p: any) => total += p.score);
     
-    const finalScore = count > 0 ? Number((total / count).toFixed(1)) : 0;
-
     return {
-      totalScore: finalScore,
-      verdict: data.verdict || "Analysis Complete",
-      pillars: pillars,
-      hardQuestions: data.hardQuestions || []
+      totalScore: Number((total / 5).toFixed(1)),
+      verdict: raw.verdict,
+      pillars: raw.pillars,
+      hardQuestions: raw.hardQuestions
     };
-
-  } catch (error: any) {
-    console.error("Audit Service Error:", error);
-    
-    // Fallback Result for UI
-    return {
-        totalScore: 0,
-        verdict: "SYSTEM OVERLOAD",
-        pillars: [
-          { pillar: "E", name: "ERROR", score: 0, critique: "The connection was blocked or timed out." },
-          { pillar: "R", name: "RETRY", score: 0, critique: "Try refreshing the page." },
-          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check your internet connection." },
-          { pillar: "L", name: "LOGS", score: 0, critique: error.message || "Unknown error" },
-          { pillar: "R", name: "REPORT", score: 0, critique: "Contact hey@coolo.co.nz if this persists." }
-        ],
-        hardQuestions: [
-          "Is the URL correct?",
-          "Are you online?",
-          "Did the server wake up?"
-        ]
-    };
+  } catch (error) {
+    console.error("Audit Failed", error);
+    throw error;
   }
 };

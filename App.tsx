@@ -30,6 +30,7 @@ import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
 import StickerSystem from './components/StickerSystem';
+import AuditPage from './pages/AuditPage';
 
 const pageVariants = {
   initial: { opacity: 0, scale: 0.99, y: 10 },
@@ -98,6 +99,7 @@ const App: React.FC = () => {
                       <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
                       {/* Catch CamelCase (Safety) */}
                       <Route path="/clarity/RealityCheckApp" element={<RealityCheckApp />} />
+                      <Route path="/audit" element={<AuditPage />} />
                       
                       {/* Dynamic Route comes last */}
                       <Route path="/clarity/:slug" element={<ClarityTierPage />} />
