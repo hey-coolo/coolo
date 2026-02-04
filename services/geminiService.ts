@@ -1,32 +1,148 @@
+import { GoogleGenAI } from "@google/genai";
 import { AuditResult } from "../types";
 
+const SYSTEM_PROMPT = `
+You are the COOLO Brand Strategist. You do not give generic advice. You provide a "Reality Check." Audit the provided profile based on these 5 Pillars derived from the COOLO philosophy:
+
+**The COOLO Framework:**
+1. **C - CLARITY:** (Based on "Is your brand confusing?"): Does the bio/headline explain *exactly* what they do in simple English? Or is it full of jargon? (Score 1-10)
+2. **O - ORIGIN:** (Based on "We help you reveal it"): Does this feel authentic to a human, or is it a corporate persona? (Score 1-10)
+3. **O - ONE VOICE:** (Based on "One Clear Voice"): Is the visual vibe consistent with the text tone? Do they sound like the same person? (Score 1-10)
+4. **L - LONGEVITY:** (Based on "Stop chasing trends"): Is the design timeless, or does it look like a bad mixtape of current trends? (Score 1-10)
+5. **O - OUTCOME:** (Based on "The Outcome"): Is there a clear path for the customer? Do I know what to do next? (Score 1-10)
+
+**Output Style:**
+* Be direct. No fluff.
+* If it sucks, say "This looks like a bad mixtape."
+* If it's good, say "This implies truth."
+* End with 3 "Hard Questions" the user needs to answer.
+`;
+
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  try {
-    const response = await fetch('/api/audit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Server Error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data as AuditResult;
-
-  } catch (error) {
-    console.error("Audit Service Failed:", error);
-    // Return a fallback error object so the UI doesn't crash
+  // 1. Get Key Safe for Vite
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    console.error("VITE_GEMINI_API_KEY is missing");
     return {
-      totalScore: 0,
-      verdict: "CONNECTION FAILURE",
-      pillars: [
-        { pillar: "E", name: "ERROR", score: 0, critique: "Could not connect to Audit Server." },
+        totalScore: 0,
+        verdict: "CONFIG ERROR",
+        pillars: [],
+        hardQuestions: ["Missing API Key in Vercel"]
+    };
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+
+  // 2. Timeout Wrapper
+  const timeout = new Promise<never>((_, reject) => 
+    setTimeout(() => reject(new Error("Analysis timed out")), 45000)
+  );
+
+  try {
+    const prompt = `
+    TARGET URL: ${url}
+
+    MISSION:
+    Perform a ruthless "COOLO Brand Reality Check".
+    
+    RESEARCH STEPS (Use Google Search):
+    1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery. Search for "reviews" or "features" that might describe the look. READ ALT TEXT or Captions if available in snippets.
+    2.  **VOICE & BIO**: Analyze their Headline, "About Us" snippets, and Social Media bios.
+    3.  **consistency**: Do the visuals (inferred) match the words?
+
+    OUTPUT:
+    Return a single JSON object.
+    Do not include markdown formatting like \`\`\`json.
+    
+    Structure required:
+    {
+      "verdict": string (A punchy, one-sentence summary of the brand reality),
+      "pillars": [
+        { "pillar": "C", "name": "CLARITY", "score": number (1-10 integer), "critique": string },
+        { "pillar": "O", "name": "ORIGIN", "score": number (1-10 integer), "critique": string },
+        { "pillar": "O", "name": "ONE VOICE", "score": number (1-10 integer), "critique": string },
+        { "pillar": "L", "name": "LONGEVITY", "score": number (1-10 integer), "critique": string },
+        { "pillar": "O", "name": "OUTCOME", "score": number (1-10 integer), "critique": string }
       ],
-      hardQuestions: ["Are you online?", "Is the API configured?"]
+      "hardQuestions": [string, string, string]
+    }
+    `;
+
+    const fetchAudit = async () => {
+      // 3. Call Gemini 2.0 Flash with Search
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash-exp",
+        contents: prompt,
+        config: {
+          systemInstruction: SYSTEM_PROMPT,
+          tools: [{ googleSearch: {} }],
+          responseMimeType: "application/json",
+        }
+      });
+
+      const text = response.text;
+      if (!text) throw new Error("Empty response from Gemini");
+      
+      const raw = JSON.parse(text);
+      const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
+
+      let calculatedTotal = 0;
+      let validPillarCount = 0;
+      
+      pillars.forEach((p: any) => {
+        const score = Number(p.score) || 0;
+        calculatedTotal += score;
+        if (score > 0) validPillarCount++;
+      });
+
+      const finalAverage = validPillarCount > 0 
+        ? Number((calculatedTotal / validPillarCount).toFixed(1)) 
+        : 0;
+
+      const safeResult: AuditResult = {
+        totalScore: finalAverage,
+        verdict: typeof raw.verdict === 'string' ? raw.verdict : "Analysis Incomplete",
+        pillars: pillars,
+        hardQuestions: Array.isArray(raw.hardQuestions) ? raw.hardQuestions : []
+      };
+
+      // Fallback for malformed AI response
+      if (safeResult.pillars.length === 0) {
+        safeResult.pillars = [
+            { pillar: "C", name: "CLARITY", score: 0, critique: "AI returned no data." },
+            { pillar: "O", name: "ORIGIN", score: 0, critique: "AI returned no data." },
+            { pillar: "O", name: "ONE VOICE", score: 0, critique: "AI returned no data." },
+            { pillar: "L", name: "LONGEVITY", score: 0, critique: "AI returned no data." },
+            { pillar: "O", name: "OUTCOME", score: 0, critique: "AI returned no data." }
+        ];
+      }
+
+      return safeResult;
+    };
+
+    // 4. Race against timeout
+    return await Promise.race([fetchAudit(), timeout]);
+
+  } catch (error: any) {
+    console.error("Gemini Audit Failed:", error);
+    // 5. CRITICAL: Return an error object instead of throwing
+    // This ensures the UI *always* shows the dashboard (even if it's an error state)
+    return {
+        totalScore: 0,
+        verdict: "CONNECTION FAILURE",
+        pillars: [
+          { pillar: "E", name: "ERROR", score: 0, critique: error.message || "Audit failed." },
+          { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL." },
+          { pillar: "X", name: "VOID", score: 0, critique: "System overloaded." },
+          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check connection." },
+          { pillar: "R", name: "REPORT", score: 0, critique: "Contact support." }
+        ],
+        hardQuestions: [
+          "Is the URL correct?",
+          "Is the site publicly accessible?",
+          "Are you online?"
+        ]
     };
   }
 };

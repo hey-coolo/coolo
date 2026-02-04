@@ -12,17 +12,16 @@ const RealityCheckApp: React.FC = () => {
 
   const handleRunCheck = async () => {
     if (!url.trim()) return;
+    
+    // 1. Start Scanning
     setStatus(AuditState.ANALYZING);
     
-    try {
-      const data = await runBrandAudit(url);
-      setResult(data);
-      setStatus(AuditState.RESULTS);
-    } catch (e) {
-      console.error(e);
-      alert("Audit Failed. Check console.");
-      setStatus(AuditState.IDLE);
-    }
+    // 2. Run Audit (The service now handles ALL errors and returns a valid object)
+    const data = await runBrandAudit(url);
+    
+    // 3. Show Results (Success or Failure)
+    setResult(data);
+    setStatus(AuditState.RESULTS);
   };
 
   const handleReset = () => {
@@ -48,7 +47,7 @@ const RealityCheckApp: React.FC = () => {
                     Brand Reality<br/><span className="text-brand-purple italic">Check.</span>
                     </h1>
                     <p className="mt-8 font-body text-xl text-brand-navy/60 max-w-2xl leading-relaxed">
-                    Don't guess. Measure. Drop your link below. Our AI engine will analyze your digital footprint using live search grounding.
+                    Don't guess. Measure. Drop your link below. Our AI engine (Gemini 2.0) will analyze your digital footprint using live search grounding.
                     </p>
                 </div>
 
@@ -87,7 +86,7 @@ const RealityCheckApp: React.FC = () => {
             <ScanningOverlay status="PROCESSING" />
           )}
 
-          {/* --- STATE 3: RESULTS --- */}
+          {/* --- STATE 3: RESULTS (RENDERED BY DASHBOARD) --- */}
           {status === AuditState.RESULTS && result && (
             <AuditDashboard result={result} onReset={handleReset} />
           )}
