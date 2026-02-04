@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // IMPORT ADDED
+import { useNavigate } from 'react-router-dom';
 import { AuditResult } from '../types';
 
 interface AuditDashboardProps {
@@ -8,7 +8,7 @@ interface AuditDashboardProps {
 }
 
 const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
-  const navigate = useNavigate(); // HOOK ADDED
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-6xl mx-auto pt-12">
@@ -18,9 +18,10 @@ const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
             <h2 className="text-4xl md:text-7xl font-black uppercase leading-none">{result.verdict}</h2>
             <p className="font-mono text-xs uppercase tracking-widest mt-6 opacity-60">Deep Dive Analysis // System Active</p>
         </div>
-        <div className="bg-brand-yellow p-12 text-center border-l-2 border-brand-navy min-w-[240px] flex flex-col justify-center">
+        {/* FIX: border-t-2 for mobile separation, border-l-2 for desktop separation */}
+        <div className="bg-brand-yellow p-12 text-center border-t-2 md:border-t-0 md:border-l-2 border-brand-navy min-w-[240px] flex flex-col justify-center">
             <span className="font-mono text-[10px] font-black uppercase tracking-widest">The Vibe Score</span>
-            <div className="text-9xl font-black">{result.totalScore}<span className="text-xl">/10</span></div>
+            <div className="text-9xl font-black leading-none mt-4 md:mt-0">{result.totalScore}<span className="text-xl">/10</span></div>
         </div>
       </div>
 
