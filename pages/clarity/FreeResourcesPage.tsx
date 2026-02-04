@@ -11,16 +11,16 @@ const FreeResourcesPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
 
-  const handleOpenModal = (res: Resource) => {
-    // FIX: If it is an APP, navigate directly
-    if (res.format === 'APP') {
-        navigate(res.link);
-        return;
+const handleAction = (res: Resource) => {
+    // If the resource is the Reality Check tool (ID 01), navigate directly
+    if (res.id === '01') {
+        navigate('/clarity/reality-check'); // Use the unified audit route
+    } else {
+        // Otherwise, show the existing email collection modal
+        setSelectedRes(res);
+        setStatus('idle');
+        setEmail('');
     }
-    
-    setSelectedRes(res);
-    setStatus('idle');
-    setEmail('');
   };
 
   const handleSubscribe = async (e: React.FormEvent) => {

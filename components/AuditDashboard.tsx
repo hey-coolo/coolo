@@ -51,8 +51,9 @@ const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-yellow">Rough numbers?</span>
                    <h3 className="text-4xl md:text-5xl font-black uppercase mt-4 mb-8 leading-[0.9]">Stop Guessing.<br/>Do the Work.</h3>
                </div>
-               <button className="bg-brand-yellow text-brand-navy px-10 py-5 font-black uppercase tracking-widest hover:bg-brand-offwhite transition-all w-full">
-                   Talk to the Humans
+               <button onClick={() => navigate('/contact')} className="bg-brand-yellow text-brand-navy px-10 py-5 font-black uppercase tracking-widest hover:bg-brand-offwhite transition-all w-full"
+               >
+                Talk to the Humans
                </button>
                <button onClick={onReset} className="mt-8 font-mono text-[10px] uppercase underline opacity-40 hover:opacity-100 transition-opacity">Scrub & Restart</button>
           </div>

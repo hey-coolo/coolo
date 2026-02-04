@@ -2,9 +2,9 @@
 
 # COOLO
 
-> **STATUS:** sys_boot_V2.0_ALPHA
+> **STATUS:** sys_boot_V1.2_BETA
 > **STATE:** ready_to_engage  
-> **LOC:** Mount Maunganui, NZ (Est. 2024)
+> **LOC:** Mount Maunganui, NZ (Est. 2023)
 
 ![Coolo Preview]('./asset/images/site-preview-1.png')
 

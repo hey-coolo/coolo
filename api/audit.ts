@@ -24,8 +24,7 @@ export default async function handler(req: any, res: any) {
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  // Specific model versions are more reliable than generic aliases
-  const modelsToTry = ["gemini-1.5-flash-latest"];
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
   try {
     let rawText = "";
@@ -90,8 +89,7 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
       "hardQuestions": [string, string, string]
     }
   `;
-  // ----------------------------------------
-
+  
   try {
     let rawText = "";
     let errorLog = "";

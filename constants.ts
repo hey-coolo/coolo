@@ -393,8 +393,8 @@ export const NAV_LINKS = [
     name: 'Clarity', 
     path: '/clarity',
     subLinks: [
-      { name: 'Free Resources', path: '/clarity/free-resources' },
-      { name: 'Brand Reality Check', path: '/audit' } 
+        { name: 'Brand Reality Check', path: '/clarity/reality-check'},
+        { name: 'Free Resources', path: '/clarity/free-resources' }
     ]
   },
   { 
@@ -456,10 +456,10 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     { 
         slug: 'the-reality-check',
         name: 'The Brand Reality Check', 
-        subtitle: 'Free Brand Diagnostic',
+        subtitle: 'Brand Diagnostic',
         desc: "Is your brand confusing? Your customers probably think so. Use these free tools to check your pulse before you spend a dime.", 
         cta: "Use Free Tools", 
-        features: ["5-Minute Brand Audit", "The 'Hard Questions' Form", "Positioning Template", "Immediate Feedback"],
+        features: ["AI Powered Brand Audit", "The 'Hard Questions' Form", "Positioning Template", "Immediate Feedback"],
         timeline: "Instant (Self-Paced)",
         idealFor: "Founders who think they might have a branding problem."
     },
