@@ -43,20 +43,35 @@ export default async function handler(req: any, res: any) {
     let rawText = "";
 
     const SYSTEM_PROMPT = `
-      You are the COOLO Brand Strategist. Perform a "Reality Check" on: ${url}.
-      Tone: Casual, direct, Coolo. If it sucks, say "This looks like a bad mixtape."
+      You are the COOLO Brand Strategist. You are NOT a cheerleader. You are a cleaner. 
+      Your job is to perform a ruthless "Reality Check" on this URL: ${url}.
       
-      OUTPUT JSON FORMAT ONLY:
+      TONE & RULES:
+      - Be Critical: We sell clarity, not kindness. 
+      - Be Skeptical: Assume the brand is generic until proven otherwise.
+      - No Fluff: Do not use corporate jargon. Speak like a senior creative director.
+      - Scoring: A "5" is average. A "9" is world-class (Nike/Apple). Most brands should fall between 4-7.
+      - If it sucks, say "This looks like a bad mixtape."
+      - If it's good, say "This implies truth."
+
+      EVALUATE ON THE 5 COOLO PILLARS (Score 1-10):
+      1. C - CLARITY: Does the bio/headline explain EXACTLY what they do in simple English? Or is it jargon?
+      2. O - ORIGIN: Does it feel authentic to a human? Or is it a corporate mask?
+      3. O - ONE VOICE: Is the visual vibe consistent with the text tone?
+      4. L - LONGEVITY: Is the design timeless? Or is it chasing a fading trend?
+      5. O - OUTCOME: Is there a clear path for the customer? Do I know what to do next?
+      
+      OUTPUT JSON FORMAT ONLY (Do not use Markdown code blocks):
       {
-        "verdict": "Punchy one-sentence summary",
+        "verdict": "A savage, one-sentence summary of the brand state.",
         "pillars": [
-          { "pillar": "C", "name": "CLARITY", "score": 5, "critique": "Explanation..." },
-          { "pillar": "O", "name": "ORIGIN", "score": 5, "critique": "Explanation..." },
-          { "pillar": "O", "name": "ONE VOICE", "score": 5, "critique": "Explanation..." },
-          { "pillar": "L", "name": "LONGEVITY", "score": 5, "critique": "Explanation..." },
-          { "pillar": "O", "name": "OUTCOME", "score": 5, "critique": "Explanation..." }
+          { "pillar": "C", "name": "CLARITY", "score": 5, "critique": "Specific, harsh feedback." },
+          { "pillar": "O", "name": "ORIGIN", "score": 5, "critique": "Specific, harsh feedback." },
+          { "pillar": "O", "name": "ONE VOICE", "score": 5, "critique": "Specific, harsh feedback." },
+          { "pillar": "L", "name": "LONGEVITY", "score": 5, "critique": "Specific, harsh feedback." },
+          { "pillar": "O", "name": "OUTCOME", "score": 5, "critique": "Specific, harsh feedback." }
         ],
-        "hardQuestions": ["Question 1?", "Question 2?", "Question 3?"]
+        "hardQuestions": ["A difficult question they are avoiding?", "Another hard question?", "Final hard truth?"]
       }
     `;
 
@@ -91,7 +106,19 @@ export default async function handler(req: any, res: any) {
     return res.status(200).json(jsonResponse);
 
   } catch (error: any) {
-    console.error("Gemini Audit Error:", error);
-    return res.status(500).json({ error: error.message || "Audit failed" });
+    console.error("Audit Engine Redlined:", error);
+    
+    return {
+        totalScore: 0,
+        verdict: "SIGNAL LOST",
+        pillars: [
+          { pillar: "E", name: "ERROR", score: 0, critique: "Google's AI is ghosting us. It's not you, it's the cloud." },
+          { pillar: "R", name: "RETRY", score: 0, critique: "Give it 30 seconds to breathe and try again." },
+          { pillar: "O", name: "OFFLINE", score: 0, critique: "Check if your Wi-Fi is actually working." },
+          { pillar: "L", name: "LOGS", score: 0, critique: "System says: " + (error.message || "Unknown vibe check failure.") },
+          { pillar: "R", name: "REPORT", score: 0, critique: "Still broken? Let's us know we can run it for you at hey@coolo.co.nz." }
+        ],
+        hardQuestions: ["Is the URL legit?", "Is the site public?", "Are you definitely online?"]
+    };
   }
 }
