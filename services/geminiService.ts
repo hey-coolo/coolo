@@ -56,11 +56,8 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   );
 
   try {
-    const prompt = `
-    TARGET URL: ${url}
-
-    MISSION:
-    Perform a ruthless "COOLO Brand Reality Check".
+    const SYSTEM_PROMPT= `
+    MISSION: Perform a ruthless "COOLO Brand Reality Check".
     
     RESEARCH STEPS (Use Google Search):
     1.  **VISUALS & VIBE**: Look for descriptions of their website design, logo, colors, and imagery.
