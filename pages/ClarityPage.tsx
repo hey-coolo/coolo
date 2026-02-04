@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Add useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { BRAND_CLARITY_TIERS, FREE_RESOURCES } from '../constants';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Resource } from '../types';
 
 const ClarityPage: React.FC = () => {
-  const navigate = useNavigate(); // Initialize navigate
   const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
+  const navigate = useNavigate();
 
-  const handleOpenModal = (res: Resource) => {
-    // If it's the app, just go there.
-    if (res.format === 'APP') {
-        navigate(res.link);
-        return;
+  const handleAction = (res: Resource) => {
+    // FIX: Navigates to app for ID 01, otherwise opens modal
+    if (res.id === '01') {
+        navigate('/clarity/reality-check');
+    } else {
+        setSelectedRes(res);
+        setStatus('idle');
+        setEmail('');
     }
-    setSelectedRes(res);
-    setStatus('idle');
-    setEmail('');
   };
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -81,7 +81,7 @@ const ClarityPage: React.FC = () => {
                     {FREE_RESOURCES.map((res, i) => (
                         <AnimatedSection key={res.id} delay={i * 100} className="h-full">
                             <button 
-                                onClick={() => handleOpenModal(res)}
+                                onClick={() => handleAction(res)}
                                 className="group w-full text-left border border-brand-navy/10 p-8 h-full bg-white hover:bg-brand-navy transition-all duration-500 flex flex-col shadow-sm hover:shadow-xl"
                             >
                                 <span className="font-mono text-xs uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold mb-4 block">Tool 0{res.id}</span>
@@ -89,7 +89,9 @@ const ClarityPage: React.FC = () => {
                                 <p className="font-body text-sm text-brand-navy/60 group-hover:text-brand-offwhite/60 mb-8">{res.desc}</p>
                                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-brand-navy/5 w-full group-hover:border-brand-offwhite/10">
                                     <span className="font-mono text-[10px] uppercase font-bold text-brand-navy group-hover:text-brand-offwhite">{res.format}</span>
-                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-purple group-hover:text-brand-yellow underline decoration-2 underline-offset-4">{res.format === 'APP' ? 'Launch' : 'Get it'} &rarr;</span>
+                                    <span className="font-mono text-[10px] uppercase font-bold text-brand-purple group-hover:text-brand-yellow underline decoration-2 underline-offset-4">
+                                        {res.id === '01' ? 'Launch' : 'Get it'} &rarr;
+                                    </span>
                                 </div>
                             </button>
                         </AnimatedSection>

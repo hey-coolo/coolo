@@ -3,24 +3,23 @@ import AnimatedSection from '../../components/AnimatedSection';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FREE_RESOURCES } from '../../constants';
 import { Resource } from '../../types';
-import { useNavigate } from 'react-router-dom'; // ADDED THIS
+import { Link, useNavigate } from 'react-router-dom';
 
 const FreeResourcesPage: React.FC = () => {
-  const navigate = useNavigate(); // ADDED THIS
   const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
+  const navigate = useNavigate();
 
-  const handleOpenModal = (res: Resource) => {
-    // FIX: If it is an APP, navigate directly
-    if (res.format === 'APP') {
-        navigate(res.link);
-        return;
+  const handleAction = (res: Resource) => {
+    // FIX: If it's the Reality Check (ID 01), go to the App. Otherwise, open modal.
+    if (res.id === '01') {
+        navigate('/clarity/reality-check');
+    } else {
+        setSelectedRes(res);
+        setStatus('idle');
+        setEmail('');
     }
-    
-    setSelectedRes(res);
-    setStatus('idle');
-    setEmail('');
   };
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -68,7 +67,7 @@ const FreeResourcesPage: React.FC = () => {
           {FREE_RESOURCES.map((res, i) => (
             <AnimatedSection key={res.id} delay={i * 100}>
               <button 
-                onClick={() => handleOpenModal(res)}
+                onClick={() => handleAction(res)}
                 className="w-full text-left group flex flex-col md:flex-row justify-between items-start md:items-center py-16 border-b border-brand-navy/10 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-700 px-4 -mx-4 cursor-pointer"
               >
                 <div className="flex items-center gap-12">
@@ -80,7 +79,7 @@ const FreeResourcesPage: React.FC = () => {
                 </div>
                 <div className="mt-8 md:mt-0 flex items-center gap-6">
                   <span className="font-mono text-sm uppercase font-bold tracking-widest">
-                    {res.format} / {res.format === 'APP' ? 'Launch' : 'Download'}
+                      {res.id === '01' ? 'Launch Tool' : `${res.format} / Download`}
                   </span>
                   <div className="w-12 h-[2px] bg-brand-navy group-hover:bg-brand-yellow group-hover:w-24 transition-all duration-500"></div>
                 </div>

@@ -19,20 +19,17 @@ You are the COOLO Brand Strategist. You do not give generic advice. You provide 
 `;
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  // FIX: Use Vite-compatible environment variable access
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
-    console.warn("No API Key found. Returning mock data.");
-    // In production, this should likely throw an error or handle gracefully
-    throw new Error("Missing API Key");
+    throw new Error("CRITICAL: VITE_GEMINI_API_KEY is missing in Vercel Environment Variables.");
   }
 
   const ai = new GoogleGenAI({ apiKey });
 
-  // Timeout promise to prevent infinite loading
+  // 45s Timeout for deep search
   const timeout = new Promise<never>((_, reject) => 
-    setTimeout(() => reject(new Error("Analysis timed out")), 30000)
+    setTimeout(() => reject(new Error("Analysis timed out (45s)")), 45000)
   );
 
   try {
@@ -66,13 +63,12 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     `;
 
     const fetchAudit = async () => {
-      // Using gemini-2.0-flash-exp as requested in your logic
       const response = await ai.models.generateContent({
         model: "gemini-2.0-flash-exp",
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_PROMPT,
-          tools: [{ googleSearch: {} }], // Search grounding enabled
+          tools: [{ googleSearch: {} }],
           responseMimeType: "application/json",
         }
       });
@@ -83,7 +79,6 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
       const raw = JSON.parse(text);
       const pillars = Array.isArray(raw.pillars) ? raw.pillars : [];
 
-      // CALCULATE SCORE PROGRAMMATICALLY FOR CONSISTENCY
       let calculatedTotal = 0;
       let validPillarCount = 0;
       
@@ -93,12 +88,10 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         if (score > 0) validPillarCount++;
       });
 
-      // Avoid divide by zero
       const finalAverage = validPillarCount > 0 
         ? Number((calculatedTotal / validPillarCount).toFixed(1)) 
         : 0;
 
-      // Validate and Sanitize Response
       const safeResult: AuditResult = {
         totalScore: finalAverage,
         verdict: typeof raw.verdict === 'string' ? raw.verdict : "Analysis Incomplete",
@@ -106,40 +99,28 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         hardQuestions: Array.isArray(raw.hardQuestions) ? raw.hardQuestions : []
       };
 
-      // Ensure we have exactly 5 pillars if possible, or handle empty
-      if (safeResult.pillars.length === 0) {
-        safeResult.pillars = [
-            { pillar: "C", name: "CLARITY", score: 0, critique: "Data missing." },
-            { pillar: "O", name: "ORIGIN", score: 0, critique: "Data missing." },
-            { pillar: "O", name: "ONE VOICE", score: 0, critique: "Data missing." },
-            { pillar: "L", name: "LONGEVITY", score: 0, critique: "Data missing." },
-            { pillar: "O", name: "OUTCOME", score: 0, critique: "Data missing." }
-        ];
-      }
-
       return safeResult;
     };
 
-    // Race between the fetch and the timeout
     return await Promise.race([fetchAudit(), timeout]);
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gemini Audit Failed:", error);
-    // Return graceful error state instead of crashing
+    // Real error object for the UI
     return {
         totalScore: 0,
-        verdict: "CONNECTION FAILURE",
+        verdict: "SYSTEM FAILURE",
         pillars: [
-          { pillar: "E", name: "ERROR", score: 0, critique: "Could not complete the audit." },
-          { pillar: "R", name: "RETRY", score: 0, critique: "Please check the URL and try again." },
-          { pillar: "R", name: "REFRESH", score: 0, critique: "System overloaded." },
-          { pillar: "O", name: "OFFLINE", score: 0, critique: "Internet connection may be unstable." },
-          { pillar: "R", name: "REPORT", score: 0, critique: "If this persists, contact support." }
+          { pillar: "E", name: "ERROR", score: 0, critique: error.message || "Unknown error occurred." },
+          { pillar: "X", name: "DETAILS", score: 0, critique: "Check Vercel logs or API Quota." },
+          { pillar: "X", name: "VOID", score: 0, critique: "Analysis aborted." },
+          { pillar: "X", name: "VOID", score: 0, critique: "Analysis aborted." },
+          { pillar: "X", name: "VOID", score: 0, critique: "Analysis aborted." }
         ],
         hardQuestions: [
           "Is the URL correct?",
-          "Is the site accessible publicly?",
-          "Are you online?"
+          "Is the site publicly accessible?",
+          "Is the API Key valid?"
         ]
     };
   }

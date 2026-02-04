@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 import AnimatedSection from '../../components/AnimatedSection';
 import ScanningOverlay from '../../components/ScanningOverlay';
 import AuditDashboard from '../../components/AuditDashboard';
@@ -21,7 +19,8 @@ const RealityCheckApp: React.FC = () => {
       setResult(data);
       setStatus(AuditState.RESULTS);
     } catch (e) {
-      alert("Calibration failed. Please check the URL.");
+      console.error(e);
+      alert("Audit Failed. Check console.");
       setStatus(AuditState.IDLE);
     }
   };
@@ -33,18 +32,17 @@ const RealityCheckApp: React.FC = () => {
   };
 
   return (
-    <div className="bg-brand-offwhite min-h-screen pt-32 pb-32">
+    <div className="pt-32 pb-32 w-full min-h-screen">
       <div className="container mx-auto px-8">
         <AnimatedSection>
-          {/* We assume Header/Footer are handled by Layout or imported here if standalone page structure is desired. 
-              Based on App.tsx, Header is global, but we can keep local structure clean. */}
           
+          {/* --- STATE 1: INPUT --- */}
           {status === AuditState.IDLE && (
             <div className="max-w-4xl mx-auto pt-12">
                 <div className="bg-white border-2 border-brand-navy p-8 md:p-16 shadow-[12px_12px_0px_0px_#0F0328]">
                 <div className="mb-12 border-b border-brand-navy/10 pb-8">
                     <span className="font-mono text-brand-purple text-xs font-black uppercase tracking-widest block mb-4">
-                    Internal Tool 01
+                    Tool 01 / Live Search Grounding
                     </span>
                     <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight text-brand-navy leading-[0.9]">
                     Brand Reality<br/><span className="text-brand-purple italic">Check.</span>
@@ -84,10 +82,12 @@ const RealityCheckApp: React.FC = () => {
             </div>
           )}
 
+          {/* --- STATE 2: SCANNING --- */}
           {(status === AuditState.SCANNING || status === AuditState.ANALYZING) && (
             <ScanningOverlay status="PROCESSING" />
           )}
 
+          {/* --- STATE 3: RESULTS --- */}
           {status === AuditState.RESULTS && result && (
             <AuditDashboard result={result} onReset={handleReset} />
           )}
