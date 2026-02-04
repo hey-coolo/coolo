@@ -3,10 +3,10 @@ import AnimatedSection from '../../components/AnimatedSection';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FREE_RESOURCES } from '../../constants';
 import { Resource } from '../../types';
-import { useNavigate } from 'react-router-dom'; // ADDED THIS
+import { useNavigate } from 'react-router-dom';
 
 const FreeResourcesPage: React.FC = () => {
-  const navigate = useNavigate(); // ADDED THIS
+  const navigate = useNavigate();
   const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
@@ -14,7 +14,7 @@ const FreeResourcesPage: React.FC = () => {
 const handleAction = (res: Resource) => {
     // If the resource is the Reality Check tool (ID 01), navigate directly
     if (res.id === '01') {
-        navigate('/clarity/reality-check'); // Use the unified audit route
+        navigate('/audit'); // Use the unified audit route
     } else {
         // Otherwise, show the existing email collection modal
         setSelectedRes(res);
