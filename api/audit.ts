@@ -39,7 +39,7 @@ export default async function handler(req: any, res: any) {
     const genAI = new GoogleGenerativeAI(apiKey);
     
     // Use stable production model string to prevent 404
-    const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-001"];
+    const modelsToTry = ["gemini-1.5-pro-002"];
     let rawText = "";
 
     const SYSTEM_PROMPT = `
