@@ -169,7 +169,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
         ],
         hardQuestions: [
           "Is the URL correct?",
-          "Is VITE_GEMINI_API_KEY set?",
+          "Is this a real business?",
           "Are you connected?"
         ]
     };

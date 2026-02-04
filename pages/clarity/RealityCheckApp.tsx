@@ -47,7 +47,7 @@ const RealityCheckApp: React.FC = () => {
                     Brand Reality<br/><span className="text-brand-purple italic">Check.</span>
                     </h1>
                     <p className="mt-8 font-body text-xl text-brand-navy/60 max-w-2xl leading-relaxed">
-                    Don't guess. Measure. Drop your link below. Our AI engine will analyze your digital footprint using live search grounding.
+                    Stop guessing your communication moves. Measure it instead. Drop your link below. Our AI engine will analyze your digital footprint using live search grounding.
                     </p>
                 </div>
 
@@ -74,7 +74,7 @@ const RealityCheckApp: React.FC = () => {
                 
                 <div className="mt-8">
                     <p className="font-mono text-[9px] text-brand-navy/40 uppercase tracking-widest">
-                        * RESULTS MAY HURT YOUR FEELINGS.
+                        * RESULTS WILL HURT YOUR FEELINGS.
                     </p>
                 </div>
                 </div>

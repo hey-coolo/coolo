@@ -39,7 +39,7 @@ export default async function handler(req: any, res: any) {
     const genAI = new GoogleGenerativeAI(apiKey);
     
     // Use stable production model string to prevent 404
-    const modelsToTry = ["gemini-2.5-flash"];
+    const modelsToTry = ["gemini-2.5-pro"];
     let rawText = "";
 
     const SYSTEM_PROMPT = `
@@ -47,7 +47,7 @@ export default async function handler(req: any, res: any) {
     Perform a ruthless "COOLO Brand Reality Check".You are the COOLO Brand Strategist. You are NOT a cheerleader. You are a cleaner. 
     Your job is to perform a ruthless "Reality Check" on this URL: ${url}.
       
-      TONE & RULES:
+    TONE & RULES:
       - Be Critical: We sell clarity, not kindness. 
       - Be Skeptical: Assume the brand is generic until proven otherwise.
       - No Fluff: Do not use corporate jargon. Speak like a senior creative director.
@@ -55,21 +55,21 @@ export default async function handler(req: any, res: any) {
       - If it sucks, say "This looks like a bad mixtape."
       - If it's good, say "This implies truth."
 
-      SCORING CALIBRATION (STRICT BELL CURVE):
+    SCORING CALIBRATION (STRICT BELL CURVE):
       - 1-3 (Broken/Amateur): Confusing, ugly, or clearly DIY.
       - 4-6 (The Average): Functional, standard, safe. THIS IS WHERE 80% OF BRANDS LIVE. If it looks like a template, it is a 4 or 5.
       - 7-8 (Strong): Polished, distinct, strategic. A very good professional brand.
       - 9-10 (World Class): Cultural icon status (Nike, Apple, Liquid Death). ALMOST IMPOSSIBLE TO ACHIEVE.
       - DO NOT INFLATE SCORES. Being "nice" helps no one.
 
-      EVALUATE ON THE 5 COOLO PILLARS:
+    EVALUATE ON THE 5 COOLO PILLARS:
       1. C - CLARITY: Does the bio/headline explain EXACTLY what they do in simple English? Or is it jargon?
       2. O - ORIGIN: Does it feel authentic to a human? Or is it a corporate mask?
       3. O - ONE VOICE: Is the visual vibe consistent with the text tone?
       4. L - LONGEVITY: Is the design timeless? Or is it chasing a fading trend?
       5. O - OUTCOME: Is there a clear path for the customer? Do I know what to do next?
       
-      OUTPUT JSON FORMAT ONLY (Do not use Markdown code blocks):
+    OUTPUT JSON FORMAT ONLY (Do not use Markdown code blocks):
       {
         "verdict": "A savage, one-sentence summary of the brand state.",
         "pillars": [
