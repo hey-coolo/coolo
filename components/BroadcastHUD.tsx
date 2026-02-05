@@ -70,9 +70,6 @@ const BroadcastHUD: React.FC = () => {
           <div className="font-mono text-xl md:text-3xl font-bold tracking-widest tabular-nums leading-none">
               {time}
           </div>
-          <div className="font-mono text-[9px] text-right uppercase tracking-[0.2em] opacity-50 mt-1">
-              TC_GENERATOR
-          </div>
       </div>
     </div>
   );
