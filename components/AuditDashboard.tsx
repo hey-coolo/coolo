@@ -18,7 +18,6 @@ const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
             <h2 className="text-4xl md:text-7xl font-black uppercase leading-none">{result.verdict}</h2>
             <p className="font-mono text-xs uppercase tracking-widest mt-6 opacity-60">Deep Dive Analysis // System Active</p>
         </div>
-        {/* FIX: border-t-2 for mobile separation, border-l-2 for desktop separation */}
         <div className="bg-brand-yellow p-12 text-center border-t-2 md:border-t-0 md:border-l-2 border-brand-navy min-w-[240px] flex flex-col justify-center">
             <span className="font-mono text-[10px] font-black uppercase tracking-widest">The Vibe Score</span>
             <div className="text-9xl font-black leading-none mt-4 md:mt-0">{result.totalScore}<span className="text-xl">/10</span></div>
@@ -26,10 +25,17 @@ const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
       </div>
 
       {/* Pillars Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-5 border-2 border-brand-navy bg-white mb-12">
+      {/* FIX: Switched to lg:grid-cols-5 to prevent overflow on tablets */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 border-2 border-brand-navy bg-white mb-12">
         {result.pillars.map((p, i) => (
-          <div key={i} className="p-8 border-b-2 md:border-b-0 md:border-r-2 last:border-0 border-brand-navy group hover:bg-brand-navy/5 transition-colors">
-            <span className="font-mono text-5xl opacity-10 font-black">{p.pillar}</span>
+          <div key={i} className="p-8 border-b-2 lg:border-b-0 lg:border-r-2 last:border-0 border-brand-navy group hover:bg-brand-navy/5 transition-colors">
+            <div className="flex justify-between items-start">
+              <span className="font-mono text-5xl opacity-10 font-black">{p.pillar}</span>
+              {/* RESTORED: Individual Pillar Score */}
+              <div className="font-mono font-black text-xl text-brand-navy">
+                {p.score}<span className="text-sm opacity-40">/10</span>
+              </div>
+            </div>
             <h4 className="font-black uppercase text-xs tracking-widest mt-2">{p.name}</h4>
             <p className="text-sm mt-6 text-brand-navy/70 leading-relaxed font-medium">{p.critique}</p>
           </div>
