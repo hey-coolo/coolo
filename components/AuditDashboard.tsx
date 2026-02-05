@@ -15,13 +15,13 @@ const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
       {/* Score Header */}
       <div className="flex flex-col md:flex-row border-2 border-brand-navy bg-white mb-8 shadow-[12px_12px_0px_0px_#0F0328]">
         <div className="bg-brand-navy text-brand-offwhite p-8 md:p-12 flex-grow">
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase leading-none">{result.verdict}</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase leading-none">{result.verdict}</h2>
             <p className="font-mono text-xs uppercase tracking-widest mt-6 opacity-60">Deep Dive Analysis // System Active</p>
         </div>
         
         <div className="bg-brand-yellow p-8 md:p-12 text-center border-t-2 md:border-t-0 md:border-l-2 border-brand-navy min-w-[200px] md:min-w-[280px] flex flex-col justify-center flex-shrink-0">
             <span className="font-mono text-[10px] font-black uppercase tracking-widest block mb-2">The Vibe Score</span>
-            <div className="text-6xl md:text-7xl lg:text-8xl font-black leading-none flex justify-center items-baseline gap-1">
+            <div className="text-5xl md:text-6xl lg:text-7xl font-black leading-none flex justify-center items-baseline gap-1">
               {result.totalScore}
               <span className="text-lg md:text-xl opacity-60">/10</span>
             </div>
