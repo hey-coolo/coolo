@@ -1,18 +1,17 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { TEAM_MEMBERS } from '../constants';
-import { TeamMember } from '../types';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowLeft, Crosshair, Cpu, Zap, Disc, PenTool, Coffee, Anchor } from 'lucide-react';
+import { TEAM_MEMBERS, PROJECTS } from '../constants';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Crosshair, Cpu, Zap, Disc, PenTool, Coffee, Anchor, Linkedin, Instagram, Grid } from 'lucide-react';
 
 // --- 1. LOCAL "FUN" DATA (EXTENDING THE CMS) ---
-// This injects the "MDQ/Video Game" personality without needing a backend change yet.
 const MEMBER_EXTRAS: Record<string, any> = {
   franco: {
     class: "Visual Architect",
     level: "Lvl. 99",
     status: "HEAVY_RENDERING",
     signatureMove: "The No-Magic Deconstruction",
+    linkedin: "https://www.linkedin.com/", // UPDATE THIS
     loadout: [
       { icon: <Cpu size={18} />, name: "Cinema 4D" },
       { icon: <Zap size={18} />, name: "Octane" },
@@ -24,6 +23,13 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { label: "Chaos", val: 85 },
       { label: "Technical", val: 92 },
       { label: "Patience", val: 40 }
+    ],
+    // MOCK GALLERY (Replace with real team photos or IG feed images)
+    gallery: [
+       PROJECTS[0].imageUrl,
+       PROJECTS[1].imageUrl,
+       PROJECTS[2].imageUrl,
+       PROJECTS[3].imageUrl
     ]
   },
   ariana: {
@@ -31,6 +37,7 @@ const MEMBER_EXTRAS: Record<string, any> = {
     level: "Lvl. 99",
     status: "SYSTEM_OPTIMAL",
     signatureMove: "Chaos Containment Field",
+    linkedin: "https://www.linkedin.com/", // UPDATE THIS
     loadout: [
       { icon: <Anchor size={18} />, name: "Logic" },
       { icon: <PenTool size={18} />, name: "Strategy" },
@@ -42,6 +49,12 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { label: "Execution", val: 95 },
       { label: "Client Love", val: 100 },
       { label: "BS Tolerance", val: 10 }
+    ],
+    gallery: [
+       PROJECTS[4].imageUrl,
+       PROJECTS[5].imageUrl,
+       PROJECTS[6].imageUrl,
+       PROJECTS[7].imageUrl
     ]
   }
 };
@@ -61,7 +74,6 @@ const StatBar = ({ label, value, delay }: { label: string, value: number, delay:
                 transition={{ duration: 1, delay: delay, ease: "circOut" }}
                 className="h-full bg-brand-purple relative"
             >
-                {/* Glitch decoration on the bar */}
                 <div className="absolute right-0 top-0 bottom-0 w-[2px] bg-brand-yellow"></div>
             </motion.div>
         </div>
@@ -73,7 +85,7 @@ const InventoryItem = ({ icon, name }: { icon: React.ReactNode, name: string }) 
         <div className="text-brand-navy group-hover:scale-110 transition-transform duration-300">
             {icon}
         </div>
-        <span className="font-mono text-[8px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-2">
+        <span className="font-mono text-[8px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-2 text-center w-full px-1">
             {name}
         </span>
     </div>
@@ -94,7 +106,7 @@ const TeamMemberPage: React.FC = () => {
   }
 
   const member = TEAM_MEMBERS[memberSlug];
-  const extras = MEMBER_EXTRAS[memberSlug] || MEMBER_EXTRAS['franco']; // Fallback
+  const extras = MEMBER_EXTRAS[memberSlug] || MEMBER_EXTRAS['franco'];
   
   // Logic for "Next Member" (Circular)
   const memberKeys = Object.keys(TEAM_MEMBERS);
@@ -142,7 +154,7 @@ const TeamMemberPage: React.FC = () => {
                                 <span className="font-mono text-[9px] text-white bg-red-600 px-1 animate-pulse">LIVE FEED</span>
                             </div>
                             <div className="font-mono text-[9px] text-white/70 uppercase tracking-widest text-right">
-                                CAM_A // 12mm<br/>
+                                CAM_A // 16mm<br/>
                                 ISO 400
                             </div>
                         </div>
@@ -222,18 +234,42 @@ const TeamMemberPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* 5. Comms Button */}
+                {/* 5. VISUAL EVIDENCE (IG Feed Placeholder) */}
+                <div className="mb-16">
+                    <div className="flex justify-between items-end mb-6 border-b border-brand-navy/10 pb-2">
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 font-bold">
+                            [04] Visual Evidence
+                        </span>
+                        <div className="flex gap-4">
+                            {member.instagram && (
+                                <a href={`https://instagram.com/${member.instagram}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 font-mono text-[9px] uppercase text-brand-navy hover:text-brand-purple font-bold">
+                                    <Instagram size={10} /> IG Feed
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        {extras.gallery.map((src: string, i: number) => (
+                            <div key={i} className="aspect-square bg-brand-navy overflow-hidden relative group">
+                                <img src={src} alt="" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                <div className="absolute inset-0 bg-brand-purple/20 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-multiply"></div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* 6. Comms Button (LINKEDIN) */}
                 <div className="mt-12">
-                    <Link to="/contact" className="block w-full bg-brand-navy text-white font-mono text-xl uppercase font-bold py-6 text-center hover:bg-brand-purple transition-all shadow-[8px_8px_0px_#FCC803] hover:shadow-none hover:translate-x-1 hover:translate-y-1 group">
-                        Initiate Comms with {member.name}
-                    </Link>
+                    <a href={extras.linkedin} target="_blank" rel="noopener noreferrer" className="block w-full bg-brand-navy text-white font-mono text-xl uppercase font-bold py-6 text-center hover:bg-[#0077B5] transition-all shadow-[8px_8px_0px_#FCC803] hover:shadow-none hover:translate-x-1 hover:translate-y-1 group">
+                        <span className="flex items-center justify-center gap-3">
+                            <Linkedin size={20} />
+                            Connect on Network
+                        </span>
+                    </a>
                     <div className="mt-4 flex justify-between items-center px-2">
-                        <span className="font-mono text-[9px] uppercase text-brand-navy/40">Secure Line // Encrypted</span>
-                        {member.instagram && (
-                            <a href={`https://instagram.com/${member.instagram}`} target="_blank" rel="noreferrer" className="font-mono text-[9px] uppercase text-brand-navy hover:text-brand-purple font-bold underline">
-                                @{member.instagram}
-                            </a>
-                        )}
+                        <span className="font-mono text-[9px] uppercase text-brand-navy/40">Secure Line // Professional</span>
+                        <span className="font-mono text-[9px] uppercase text-brand-navy/40">Response Time: &lt; 24h</span>
                     </div>
                 </div>
 
@@ -245,7 +281,7 @@ const TeamMemberPage: React.FC = () => {
       <Link to={`/team/${nextSlug}`} className="block mt-24 md:mt-32 border-t-2 border-brand-navy bg-white group hover:bg-brand-navy hover:text-white transition-colors duration-500">
           <div className="container mx-auto px-8 py-16 flex justify-between items-center">
               <div>
-                  <span className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2 block">Next Human</span>
+                  <span className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2 block">Next Operative</span>
                   <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none group-hover:translate-x-4 transition-transform duration-300">
                       {nextMember.name}
                   </h2>

@@ -7,9 +7,9 @@ import { TEAM_MEMBERS } from '../constants';
 // --- CAMCORDER FRAME COMPONENT ---
 const CamcorderFrame: React.FC<{ children: React.ReactNode; name: string; role: string }> = ({ children, name, role }) => {
     return (
-        <div className="relative group overflow-hidden border-2 border-brand-navy bg-brand-navy">
+        <div className="relative group overflow-hidden bg-brand-navy border-2 border-brand-navy shadow-xl hover:shadow-2xl transition-all duration-500">
             {/* 1. The Source Image */}
-            <div className="relative z-0 opacity-80 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-105 transform ease-out">
+            <div className="relative z-0 opacity-90 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-105 transform ease-out">
                 {children}
             </div>
 
@@ -17,19 +17,16 @@ const CamcorderFrame: React.FC<{ children: React.ReactNode; name: string; role: 
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
 
             {/* 3. The Viewfinder UI */}
-            <div className="absolute inset-4 border border-white/30 pointer-events-none z-10 flex flex-col justify-between p-4">
+            <div className="absolute inset-4 border border-white/20 pointer-events-none z-10 flex flex-col justify-between p-4">
                 
                 {/* Top Data */}
-                <div className="flex justify-between items-start font-mono text-[10px] text-white uppercase tracking-widest drop-shadow-md">
+                <div className="flex justify-between items-start font-mono text-[10px] text-white/80 uppercase tracking-widest drop-shadow-md">
                     <div className="flex flex-col gap-1">
-                        <span className="bg-red-600 text-white px-1 font-bold animate-pulse">● REC</span>
+                        <span className="text-red-500 font-bold animate-pulse">● REC</span>
                         <span>ISO 800</span>
-                        <span>F/2.8</span>
                     </div>
                     <div className="text-right">
                         <span>[ 16:9 ]</span>
-                        <br/>
-                        <span>SP MODE</span>
                     </div>
                 </div>
 
@@ -43,10 +40,10 @@ const CamcorderFrame: React.FC<{ children: React.ReactNode; name: string; role: 
 
                 {/* Bottom Data (Name Tag) */}
                 <div className="mt-auto">
-                    <div className="bg-brand-yellow text-brand-navy inline-block px-2 py-1 font-mono text-xs font-black uppercase tracking-widest mb-2 transform group-hover:-translate-y-1 transition-transform">
+                    <div className="bg-brand-yellow text-brand-navy inline-block px-2 py-1 font-mono text-[10px] font-black uppercase tracking-widest mb-3 transform group-hover:-translate-y-1 transition-transform">
                         {role}
                     </div>
-                    <h3 className="text-5xl md:text-7xl font-black uppercase text-white leading-none tracking-tighter drop-shadow-lg group-hover:skew-x-[-2deg] transition-transform">
+                    <h3 className="text-5xl md:text-7xl font-black uppercase text-white leading-[0.8] tracking-tighter drop-shadow-lg group-hover:skew-x-[-2deg] transition-transform">
                         {name}
                     </h3>
                 </div>
@@ -91,13 +88,15 @@ const TeamPage: React.FC = () => {
         {/* --- TEAM GRID: BROADCAST MONITORS --- */}
         <section>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+                
+                {/* 1. EXISTING MEMBERS */}
                 {Object.entries(TEAM_MEMBERS).map(([slug, member], index) => (
                     <AnimatedSection key={slug} delay={index * 150}>
                         <Link 
                             to={`/team/${slug}`}
                             onMouseEnter={() => setHoveredMember(slug)}
                             onMouseLeave={() => setHoveredMember(null)}
-                            className="block"
+                            className="block group"
                         >
                             {/* Visual Monitor */}
                             <CamcorderFrame name={member.name} role={member.title}>
@@ -120,7 +119,7 @@ const TeamPage: React.FC = () => {
                                     </span>
                                     <span className={`w-3 h-3 rounded-full ${hoveredMember === slug ? 'bg-green-500 animate-pulse' : 'bg-brand-navy/20'}`}></span>
                                 </div>
-                                <p className="font-body text-lg leading-tight text-brand-navy/80 line-clamp-3">
+                                <p className="font-body text-lg leading-tight text-brand-navy/80 line-clamp-3 group-hover:text-brand-navy transition-colors">
                                     {member.bio[0]} {member.bio[1]}
                                 </p>
                                 <div className="mt-4 flex items-center gap-2 group-hover:gap-4 transition-all">
@@ -133,33 +132,61 @@ const TeamPage: React.FC = () => {
                         </Link>
                     </AnimatedSection>
                 ))}
-            </div>
-        </section>
 
-        {/* --- FOOTER: JOIN THE CREW --- */}
-        <section className="mt-32 md:mt-48 border-2 border-brand-navy p-12 bg-white relative overflow-hidden group">
-            {/* Background Kinetic Text */}
-            <div className="absolute inset-0 opacity-5 pointer-events-none flex flex-col justify-center items-center overflow-hidden">
-                 <div className="whitespace-nowrap text-[20vw] font-black uppercase text-brand-navy leading-none animate-marquee">
-                    JOIN THE HUMANS JOIN THE HUMANS JOIN THE HUMANS
-                 </div>
-            </div>
+                {/* 2. RECRUITMENT SLOT (NO SIGNAL) */}
+                <AnimatedSection delay={300}>
+                    <Link to="/join" className="block group h-full">
+                        <div className="aspect-[4/5] bg-[#1a1a1a] border-2 border-brand-navy/20 relative overflow-hidden flex flex-col justify-center items-center text-center group-hover:border-brand-purple transition-colors duration-500">
+                            
+                            {/* Static Noise Animation */}
+                            <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] animate-pulse"></div>
+                            
+                            <div className="relative z-10 p-8">
+                                <div className="mb-6 w-16 h-16 border-2 border-dashed border-white/20 rounded-full flex items-center justify-center mx-auto group-hover:border-brand-purple group-hover:scale-110 transition-all">
+                                    <span className="text-2xl text-white/20 group-hover:text-brand-purple">+</span>
+                                </div>
+                                
+                                <h3 className="text-4xl md:text-5xl font-black uppercase text-white/20 tracking-tighter mb-4 group-hover:text-brand-purple transition-colors">
+                                    SIGNAL<br/>LOST
+                                </h3>
+                                
+                                <span className="font-mono text-[10px] uppercase tracking-widest text-white/40 bg-white/5 px-3 py-1">
+                                    Looking for Seniors
+                                </span>
+                            </div>
 
-            <div className="relative z-10 text-center">
-                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tight text-brand-navy mb-8">
-                    Need More<br/><span className="text-brand-purple">Firepower?</span>
-                </h2>
-                <p className="font-body text-xl md:text-2xl text-brand-navy/60 max-w-2xl mx-auto mb-12">
-                    We are always looking for senior talent to join the network. No juniors. No hand-holding.
-                </p>
-                <div className="flex flex-col md:flex-row gap-6 justify-center">
-                    <Link to="/contact" className="bg-brand-navy text-white font-mono uppercase font-bold px-10 py-5 hover:bg-brand-purple transition-all shadow-[8px_8px_0px_#FCC803] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-                        Hire The Humans
+                            {/* Viewfinder UI */}
+                            <div className="absolute inset-4 border border-white/10 pointer-events-none flex flex-col justify-between p-2">
+                                <div className="flex justify-between text-[8px] font-mono text-white/30 uppercase tracking-widest">
+                                    <span>NO INPUT</span>
+                                    <span>--:--:--</span>
+                                </div>
+                                <div className="text-right text-[8px] font-mono text-white/30 uppercase tracking-widest">
+                                    WAITING FOR CONNECTION
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Data Stream (Join) */}
+                        <div className="mt-6 border-t-2 border-brand-navy/20 pt-4 group-hover:border-brand-purple transition-colors">
+                            <div className="flex justify-between items-baseline mb-4">
+                                <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy/40 group-hover:text-brand-purple transition-colors">
+                                    // RECRUITMENT_CHANNEL
+                                </span>
+                                <span className="w-3 h-3 rounded-full bg-brand-navy/10 group-hover:bg-brand-purple animate-pulse"></span>
+                            </div>
+                            <p className="font-body text-lg leading-tight text-brand-navy/60">
+                                Are you the next human? We are looking for high-end talent to join the network.
+                            </p>
+                            <div className="mt-4 flex items-center gap-2 group-hover:gap-4 transition-all">
+                                <span className="font-mono text-xs uppercase font-bold tracking-widest border border-brand-navy text-brand-navy px-2 py-1 group-hover:bg-brand-purple group-hover:text-white group-hover:border-brand-purple transition-colors">
+                                    INITIATE UPLOAD
+                                </span>
+                            </div>
+                        </div>
                     </Link>
-                    <Link to="/join" className="border-2 border-brand-navy text-brand-navy font-mono uppercase font-bold px-10 py-5 hover:bg-brand-navy hover:text-white transition-all">
-                        Join The Roster
-                    </Link>
-                </div>
+                </AnimatedSection>
+
             </div>
         </section>
 

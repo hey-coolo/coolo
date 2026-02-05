@@ -383,7 +383,7 @@ export const NAV_LINKS = [
     name: 'Studio', 
     path: '/about',
     subLinks: [
-      { name: 'The Unit', path: '/team' },
+      { name: 'The Humans', path: '/team' },
       { name: 'Playbook', path: '/playbook' },
       { name: 'Join Us', path: '/join' },
       { name: 'Drops', path: '/drops' }
