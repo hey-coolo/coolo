@@ -11,7 +11,7 @@ const STICKER_ASSETS = [
   '/assets/stickers/sticker_smile coolito.svg',
   '/assets/stickers/sticker_worldwide.svg',
   '/assets/stickers/sticker_logo.svg',
-  ];
+];
 
 interface Sticker {
   id: number;
@@ -138,10 +138,11 @@ const StickerSystem: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* --- THE TRIGGER --- */}
-      <div className="fixed bottom-14 left-8 z-[1000] flex flex-col items-center gap-4 group">
+      {/* --- THE TRIGGER (CENTERED) --- */}
+      {/* Moved from left-8 to left-1/2 -translate-x-1/2 to avoid Overlap with BroadcastHUD */}
+      <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[1000] flex flex-col items-center gap-4 group">
         
-        {/* Clear Button */}
+        {/* Clear Button - Pops UP */}
         {stickers.length > 0 && (
             <button 
                 onClick={clearDeck}
@@ -160,10 +161,12 @@ const StickerSystem: React.FC = () => {
           <StickerIcon size={24} className="group-active:rotate-12 transition-transform" />
         </button>
         
-        {/* Tooltip */}
-        <span className="font-mono text-[9px] uppercase tracking-widest bg-brand-navy text-brand-offwhite px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity absolute left-16 bottom-4 whitespace-nowrap pointer-events-none rounded-sm">
-            Click to Scatter
-        </span>
+        {/* Tooltip - Now Centered Above */}
+        {stickers.length === 0 && (
+            <span className="font-mono text-[9px] uppercase tracking-widest bg-brand-navy text-brand-offwhite px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity absolute -top-10 whitespace-nowrap pointer-events-none rounded-sm">
+                [ CLICK TO DEPLOY ]
+            </span>
+        )}
 
       </div>
     </>
