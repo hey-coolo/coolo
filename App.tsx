@@ -42,6 +42,25 @@ const pageTransition: Transition = {
   ease: [0.19, 1, 0.22, 1],
 };
 
+const NoiseOverlay = () => (
+    <div className="pointer-events-none fixed inset-0 z-[9998] opacity-[0.03] mix-blend-overlay">
+        <svg
+            className="h-full w-full"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <filter id="noiseFilter">
+                <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.80"
+                    numOctaves="3"
+                    stitchTiles="stitch"
+                />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+        </svg>
+    </div>
+);
+
 const App: React.FC = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(() => {
@@ -59,8 +78,9 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="bg-brand-offwhite font-body text-brand-navy min-h-screen flex flex-col antialiased selection:bg-brand-yellow">
+    <div className="bg-brand-offwhite font-body text-brand-navy min-h-screen flex flex-col antialiased selection:bg-brand-yellow relative">
       <CustomCursor />
+      <NoiseOverlay />
       
       <AnimatePresence mode="wait">
         {loading && <Loader key="loader" onEnter={handleEnter} />}
