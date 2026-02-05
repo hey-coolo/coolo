@@ -281,7 +281,7 @@ const TeamMemberPage: React.FC = () => {
       <Link to={`/team/${nextSlug}`} className="block mt-24 md:mt-32 border-t-2 border-brand-navy bg-white group hover:bg-brand-navy hover:text-white transition-colors duration-500">
           <div className="container mx-auto px-8 py-16 flex justify-between items-center">
               <div>
-                  <span className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2 block">Next Operative</span>
+                  <span className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2 block">Next Human</span>
                   <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none group-hover:translate-x-4 transition-transform duration-300">
                       {nextMember.name}
                   </h2>
