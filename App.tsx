@@ -30,36 +30,30 @@ import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
 import StickerSystem from './components/StickerSystem';
+import BroadcastHUD from './components/BroadcastHUD';
 
 const pageVariants = {
-  initial: { opacity: 0, scale: 0.99, y: 10 },
-  in: { opacity: 1, scale: 1, y: 0 },
-  out: { opacity: 0, scale: 1.01, y: -10 },
+  initial: { 
+    opacity: 0, 
+    filter: "blur(8px) grayscale(100%)", // Glitch Start
+    scale: 1.02
+  },
+  in: { 
+    opacity: 1, 
+    filter: "blur(0px) grayscale(0%)",
+    scale: 1 
+  },
+  out: { 
+    opacity: 0, 
+    filter: "blur(4px) grayscale(100%) brightness(1.5)", // Glitch End
+    scale: 0.99 
+  },
 };
 
 const pageTransition: Transition = {
-  duration: 0.8,
-  ease: [0.19, 1, 0.22, 1],
+  duration: 0.6,
+  ease: [0.25, 0.1, 0.25, 1.0], // Kinetic snap
 };
-
-const NoiseOverlay = () => (
-    <div className="pointer-events-none fixed inset-0 z-[9998] opacity-[0.03] mix-blend-overlay">
-        <svg
-            className="h-full w-full"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <filter id="noiseFilter">
-                <feTurbulence
-                    type="fractalNoise"
-                    baseFrequency="0.80"
-                    numOctaves="3"
-                    stitchTiles="stitch"
-                />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-        </svg>
-    </div>
-);
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -78,9 +72,31 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="bg-brand-offwhite font-body text-brand-navy min-h-screen flex flex-col antialiased selection:bg-brand-yellow relative">
+    <div className="bg-[#EAEAEA] font-body text-brand-navy min-h-screen flex flex-col antialiased selection:bg-brand-purple selection:text-white relative overflow-x-hidden">
+      {/* GLOBAL CSS FOR SCANLINES (Digital Dirt) */}
+      <style>{`
+        .scanlines {
+          position: fixed;
+          top: 0; left: 0; width: 100vw; height: 100vh;
+          background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.02));
+          background-size: 100% 4px;
+          pointer-events: none;
+          z-index: 9998;
+          animation: scanmove 20s linear infinite;
+        }
+        @keyframes scanmove {
+          0% { background-position: 0 0; }
+          100% { background-position: 0 100%; }
+        }
+      `}</style>
+
+      {/* Layer 1: Scanlines */}
+      <div className="scanlines"></div>
+
+      {/* Layer 2: Broadcast HUD */}
+      {!loading && <BroadcastHUD />}
+
       <CustomCursor />
-      <NoiseOverlay />
       
       <AnimatePresence mode="wait">
         {loading && <Loader key="loader" onEnter={handleEnter} />}
@@ -112,12 +128,10 @@ const App: React.FC = () => {
                       <Route path="/about" element={<AboutPage />} />
                       <Route path="/playbook" element={<PlaybookPage />} />
                       
-                      
                       {/* --- CLARITY ROUTES --- */}
                       <Route path="/clarity" element={<ClarityPage />} />
                       <Route path="/clarity/free-resources" element={<FreeResourcesPage />} />
                       
-                      {/* Unified Audit Route - Pointing to RealityCheckApp */}
                       <Route path="/audit" element={<RealityCheckApp />} />
                       <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
 

@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Project } from '../types';
@@ -46,13 +45,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className = '' }) =>
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      data-cursor-text="CASE STUDY"
-      className={`group relative block overflow-hidden bg-brand-navy/5 border border-brand-navy/5 ${className} cursor-none transition-shadow hover:shadow-2xl`}
+      data-cursor-text="OPEN FILE"
+      className={`group relative block overflow-hidden bg-brand-navy/5 border border-brand-navy/5 ${className} cursor-none`}
     >
       <motion.div 
         className="h-full w-full bg-brand-navy/10"
         style={{ x: moveX, y: moveY, scale: 1.05 }}
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ 
+            scale: 1.02,
+            filter: ["blur(0px)", "blur(2px)", "blur(0px)"], // The "Focus Hunt" Effect
+            transition: { duration: 0.4, ease: "easeInOut" }
+        }}
         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
       >
         <img 
@@ -67,25 +70,24 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className = '' }) =>
       
       <div className="absolute inset-0 bg-brand-navy/0 group-hover:bg-brand-navy/20 transition-colors duration-500 z-10 pointer-events-none" />
       
-      <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col justify-end z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      {/* Dossier Label Style Overlay */}
+      <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
             <div className="flex justify-between items-end">
-                <div className="bg-brand-navy p-4">
-                    <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-brand-yellow font-bold block mb-2">
-                        {project.category}
+                <div>
+                    {/* "Label Maker" Style Tag */}
+                    <span className="inline-block bg-brand-yellow text-brand-navy px-1 py-0.5 font-mono text-[9px] uppercase tracking-widest font-bold mb-2">
+                        SECTOR: {project.category}
                     </span>
-                    <h3 className="text-3xl font-black uppercase text-brand-offwhite leading-none tracking-tight">
+                    <h3 className="text-3xl font-black uppercase text-brand-offwhite leading-none tracking-tight drop-shadow-md">
                         {project.title}
                     </h3>
-                </div>
-                <div className="hidden md:flex w-16 h-16 bg-brand-yellow text-brand-navy items-center justify-center">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </div>
             </div>
         </div>
       </div>
       
-      <div className="absolute top-6 right-6 font-mono text-[8px] uppercase tracking-[0.4em] text-brand-navy/40 pointer-events-none z-20 font-bold">
+      <div className="absolute top-4 right-4 bg-brand-navy/90 text-brand-offwhite px-2 py-1 font-mono text-[8px] uppercase tracking-widest pointer-events-none z-20 font-bold backdrop-blur-sm">
         REF_0{project.id}
       </div>
     </Link>
