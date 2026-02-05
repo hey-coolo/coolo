@@ -24,7 +24,7 @@ const BroadcastHUD: React.FC = () => {
   return (
     <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden mix-blend-difference select-none text-[#F7F7F7]">
       {/* 1. Safe Area Border (The Viewfinder) */}
-      <div className="absolute inset-4 md:inset-8 border border-white/20 rounded-xl opacity-50"></div>
+      <div className="absolute inset-2 md:inset-4 border border-white/20 rounded-xl opacity-50"></div>
       
       {/* 2. Crosshairs */}
       <div className="absolute top-1/2 left-1/2 w-4 h-4 -translate-x-1/2 -translate-y-1/2">
