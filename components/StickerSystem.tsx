@@ -139,7 +139,7 @@ const StickerSystem: React.FC = () => {
       </div>
 
       {/* --- THE TRIGGER --- */}
-      <div className="fixed bottom-19 left-8 z-[1000] flex flex-col items-center gap-4 group">
+      <div className="fixed bottom-14 left-8 z-[1000] flex flex-col items-center gap-4 group">
         
         {/* Clear Button */}
         {stickers.length > 0 && (
