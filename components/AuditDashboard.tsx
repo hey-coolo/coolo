@@ -14,24 +14,26 @@ const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
     <div className="max-w-6xl mx-auto pt-12">
       {/* Score Header */}
       <div className="flex flex-col md:flex-row border-2 border-brand-navy bg-white mb-8 shadow-[12px_12px_0px_0px_#0F0328]">
-        <div className="bg-brand-navy text-brand-offwhite p-12 flex-grow">
-            <h2 className="text-4xl md:text-7xl font-black uppercase leading-none">{result.verdict}</h2>
+        <div className="bg-brand-navy text-brand-offwhite p-8 md:p-12 flex-grow">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase leading-none">{result.verdict}</h2>
             <p className="font-mono text-xs uppercase tracking-widest mt-6 opacity-60">Deep Dive Analysis // System Active</p>
         </div>
-        <div className="bg-brand-yellow p-12 text-center border-t-2 md:border-t-0 md:border-l-2 border-brand-navy min-w-[240px] flex flex-col justify-center">
-            <span className="font-mono text-[10px] font-black uppercase tracking-widest">The Vibe Score</span>
-            <div className="text-9xl font-black leading-none mt-4 md:mt-0">{result.totalScore}<span className="text-xl">/10</span></div>
+        
+        <div className="bg-brand-yellow p-8 md:p-12 text-center border-t-2 md:border-t-0 md:border-l-2 border-brand-navy min-w-[200px] md:min-w-[280px] flex flex-col justify-center flex-shrink-0">
+            <span className="font-mono text-[10px] font-black uppercase tracking-widest block mb-2">The Vibe Score</span>
+            <div className="text-6xl md:text-7xl lg:text-8xl font-black leading-none flex justify-center items-baseline gap-1">
+              {result.totalScore}
+              <span className="text-lg md:text-xl opacity-60">/10</span>
+            </div>
         </div>
       </div>
 
       {/* Pillars Grid */}
-      {/* FIX: Switched to lg:grid-cols-5 to prevent overflow on tablets */}
       <div className="grid grid-cols-1 lg:grid-cols-5 border-2 border-brand-navy bg-white mb-12">
         {result.pillars.map((p, i) => (
           <div key={i} className="p-8 border-b-2 lg:border-b-0 lg:border-r-2 last:border-0 border-brand-navy group hover:bg-brand-navy/5 transition-colors">
             <div className="flex justify-between items-start">
               <span className="font-mono text-5xl opacity-10 font-black">{p.pillar}</span>
-              {/* RESTORED: Individual Pillar Score */}
               <div className="font-mono font-black text-xl text-brand-navy">
                 {p.score}<span className="text-sm opacity-40">/10</span>
               </div>
