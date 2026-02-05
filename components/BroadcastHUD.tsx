@@ -67,7 +67,7 @@ const BroadcastHUD: React.FC = () => {
 
       {/* 6. Bottom Right: Timecode */}
       <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12">
-          <div className="font-mono text-xl md:text-3xl font-bold tracking-widest tabular-nums leading-none">
+          <div className="font-mono text-xl md:text-2xl font-bold tracking-widest tabular-nums leading-none">
               {time}
           </div>
       </div>
