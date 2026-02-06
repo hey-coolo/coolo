@@ -30,29 +30,30 @@ import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
 import StickerSystem from './components/StickerSystem';
-import BroadcastHUD from './components/BroadcastHUD';
+
+// Removed BroadcastHUD import
 
 const pageVariants = {
   initial: { 
     opacity: 0, 
-    filter: "blur(8px) grayscale(100%)", // Glitch Start
-    scale: 1.02
+    filter: "blur(8px)", // Simple clean blur
+    scale: 1.01
   },
   in: { 
     opacity: 1, 
-    filter: "blur(0px) grayscale(0%)",
+    filter: "blur(0px)",
     scale: 1 
   },
   out: { 
     opacity: 0, 
-    filter: "blur(4px) grayscale(100%) brightness(1.5)", // Glitch End
+    filter: "blur(4px)",
     scale: 0.99 
   },
 };
 
 const pageTransition: Transition = {
-  duration: 0.6,
-  ease: [0.25, 0.1, 0.25, 1.0], // Kinetic snap
+  duration: 0.5,
+  ease: [0.25, 0.1, 0.25, 1.0], 
 };
 
 const App: React.FC = () => {
@@ -73,29 +74,7 @@ const App: React.FC = () => {
 
   return (
     <div className="bg-[#EAEAEA] font-body text-brand-navy min-h-screen flex flex-col antialiased selection:bg-brand-purple selection:text-white relative overflow-x-hidden">
-      {/* GLOBAL CSS FOR SCANLINES (Digital Dirt) */}
-      <style>{`
-        .scanlines {
-          position: fixed;
-          top: 0; left: 0; width: 100vw; height: 100vh;
-          background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.02));
-          background-size: 100% 4px;
-          pointer-events: none;
-          z-index: 9998;
-          animation: scanmove 20s linear infinite;
-        }
-        @keyframes scanmove {
-          0% { background-position: 0 0; }
-          100% { background-position: 0 100%; }
-        }
-      `}</style>
-
-      {/* Layer 1: Scanlines */}
-      <div className="scanlines"></div>
-
-      {/* Layer 2: Broadcast HUD */}
-      {!loading && <BroadcastHUD />}
-
+      
       <CustomCursor />
       
       <AnimatePresence mode="wait">
@@ -106,7 +85,7 @@ const App: React.FC = () => {
           <motion.div
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
-             transition={{ duration: 1, ease: "easeOut" }}
+             transition={{ duration: 0.8, ease: "easeOut" }}
              className="flex flex-col min-h-screen"
           >
               <StickerSystem />

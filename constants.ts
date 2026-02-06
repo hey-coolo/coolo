@@ -14,9 +14,6 @@ export const ASSETS = {
 };
 
 export const PROJECTS: Project[] = [
-  // ... (Keep existing project data unchanged, omitting for brevity, copy previous content here if needed or assume it remains the same)
-  // ... Note: In a real scenario I would output the full file, but based on "Do not change code that is not affected", I am focusing on the NAV_LINKS change below.
-  // ... However, the prompt requires full file context. I will provide the full file with the small change.
   {
     id: 1,
     title: 'UNMPLYNMT',
@@ -425,28 +422,28 @@ export const NAV_LINKS = [
 export const SERVICE_LEGS: ServiceLeg[] = [
   {
     id: 'brand-clarity',
-    title: 'I Need Brand Clarity',
-    subtitle: 'The No Magic Formula™',
-    hoverText: 'Strategic deconstruction for high-growth brands.',
-    visual: 'Minimalist Strategy',
+    title: 'I am Confused',
+    subtitle: 'Brand Strategy',
+    hoverText: 'We fix your story so people actually listen.',
+    visual: 'Logic First',
     path: '/clarity',
     imageUrl: ASSETS.services.clarity
   },
   {
     id: 'design-power',
-    title: 'I Need Design Power',
-    subtitle: 'The Creative Method™',
-    hoverText: 'Identity, 3D, and Webflow builds.',
-    visual: 'High-End Execution',
+    title: 'I look average',
+    subtitle: 'Design Execution',
+    hoverText: 'Identity, 3D, and Webflow. High-res only.',
+    visual: 'Visual Power',
     path: '/design-power',
     imageUrl: ASSETS.services.designPower
   },
   {
     id: 'partner',
-    title: 'I Need a Creative Partner',
-    subtitle: 'Technical Partnership',
-    hoverText: 'Elite white-label unit for senior agencies.',
-    visual: 'Scale Ops',
+    title: 'I need a partner',
+    subtitle: 'For Agencies',
+    hoverText: 'We become your senior design unit.',
+    visual: 'Scale Up',
     path: '/partnership',
     imageUrl: ASSETS.services.partnership
   }
@@ -455,43 +452,43 @@ export const SERVICE_LEGS: ServiceLeg[] = [
 export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     { 
         slug: 'the-reality-check',
-        name: 'The Brand Reality Check', 
+        name: 'The Reality Check', 
         subtitle: 'Brand Diagnostic',
-        desc: "Is your brand confusing? Your customers probably think so. Use these free tools to check your pulse before you spend a dime.", 
-        cta: "Use Free Tools", 
-        features: ["AI Powered Brand Audit", "The 'Hard Questions' Form", "Positioning Template", "Immediate Feedback"],
-        timeline: "Instant (Self-Paced)",
-        idealFor: "Founders who think they might have a branding problem."
+        desc: "Does your brand make sense? Or is it a mess? Use our free tools to check your pulse before you spend money.", 
+        cta: "Check Yourself", 
+        features: ["AI Brand Audit", "The Hard Questions", "Instant Feedback"],
+        timeline: "Instant",
+        idealFor: "Founders who suspect their branding is weak."
     },
     { 
         slug: 'brand-garage-guide',
-        name: 'The Brand Garage Guide', 
-        subtitle: 'The DIY Brand Voice Kit ($99)',
-        desc: "You aren't ready to hire us yet? Cool. Stop guessing and use our guide to define your story yourself. Simple English.", 
+        name: 'The Garage Guide', 
+        subtitle: 'DIY Brand Kit',
+        desc: "Not ready to hire us? Fine. Don't guess. Use our guide to fix your story yourself. Simple English.", 
         cta: "Get the Guide", 
-        features: ["7-Day Plan", "Target Audience Tools", "Brand Voice Cheatsheet", "No Video Fluff (Content Generation)"],
-        timeline: "1 Week (Self-Paced)",
-        idealFor: "DIY Founders ready to move out of 'Garage Mode'."
+        features: ["7-Day Plan", "No-BS templates", "Target Audience fix"],
+        timeline: "1 Week (DIY)",
+        idealFor: "Bootstrappers ready to stop looking like amateurs."
     },
     { 
         slug: 'strategy-sessions',
         name: 'The Strategy Sessions', 
-        subtitle: 'No Magic Formula™',
-        desc: "We sit down. We talk. We fix the confusion. Two sessions to find your truth and write the Playbook that guides your business.", 
+        subtitle: 'We fix it for you',
+        desc: "We sit down. We talk. We find the problem. We write the Playbook that guides your whole business.", 
         cta: "Book a Chat", 
-        features: ["2x Strategy Calls", "The Brand Playbook", "Your Brad Cheat Codes", "Easy Messaging"],
+        features: ["2x Strategy Calls", "The Brand Playbook", "Your Messaging Cheat Codes"],
         timeline: "2–4 Weeks",
-        idealFor: "Business owners tired of generic marketing."
+        idealFor: "Business owners tired of confusing marketing."
     },
     { 
         slug: 'creative-partner',
         name: 'The Creative Partner',
-        subtitle: 'Senior Guidance / Support',
-        desc: "Ongoing strategic partnership. We join your executive team as the 'Creative Brain'.", 
-        cta: "Work With Us", 
-        features: ["Visual Identity Design", "Website & Content Direction", "Monthly Creative Support", "Quality Control"],
-        timeline: "Ongoing",
-        idealFor: "Brands that want to look professional, 24/7."
+        subtitle: 'Ongoing Support',
+        desc: "We join your team. We become the 'Creative Brain' that keeps you looking sharp every month.", 
+        cta: "Partner Up", 
+        features: ["Visual Design", "Web Updates", "Quality Control"],
+        timeline: "Monthly",
+        idealFor: "Brands that can't afford to look bad."
     }
 ];
 
@@ -499,84 +496,84 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
     {
         slug: "the-basics",
         name: "The Basics",
-        focus: "Identity Only",
-        desc: "You have a business, but you look like a hobby. We fix that. A sharp, professional logo and color system that makes you look expensive.",
-        cta: "Get the Look",
-        deliverables: ["Primary & Secondary Logos", "Color Palette & Type System", "The 'Rulebook' (Brand Guidelines)", "Social Media Starter"],
+        focus: "Just the Logo",
+        desc: "You have a business, but you look like a hobby. We fix that. A sharp logo and colors to make you look expensive.",
+        cta: "Get Sharp",
+        deliverables: ["Logo System", "Color & Type", "The Rulebook"],
         timeline: "2–4 Weeks",
-        idealFor: "New founders who are embarrassed to hand out their business card."
+        idealFor: "New founders embarrassed by their business card."
     },
     {
         slug: "the-campaign",
         name: "The Campaign",
-        focus: "Identity & Story",
-        desc: "A logo isn't enough. You need to say something. We build your identity AND the ads, content, and concepts you need to actually launch.",
-        cta: "Start Speaking",
-        deliverables: ["Everything in 'The Basics'", "Campaign Concepts", "Ad Mockups & Key Artwork", "Brand Applications", "Copywriting Headlines"],
+        focus: "Launch Time",
+        desc: "A logo isn't enough. You need to sell. We build the ads, the visuals, and the story to launch your product.",
+        cta: "Start Selling",
+        deliverables: ["Ad Mockups", "Campaign Concept", "Copywriting Headlines"],
         timeline: "4–5 Weeks",
-        idealFor: "Brands ready to launch a product or run ads."
+        idealFor: "Brands ready to run ads."
     },
     {
         slug: "the-website",
         name: "The Website",
-        focus: "Identity & Website",
-        desc: "Your only real estate. We build custom sites that move, breathe, and actually convert visitors into customers. No templates.",
-        cta: "Build the HQ",
-        deliverables: ["Everything in 'The Basics'", "Custom Website", "Webflow CMS", "Mobile Optimized", "CMS Training (Easy Edit)"],
+        focus: "Your HQ",
+        desc: "We build custom sites that actually convert visitors into cash. No templates. Webflow only.",
+        cta: "Build It",
+        deliverables: ["Custom Web Design", "Webflow Dev", "Responsive Ready", "CMS Training"],
         timeline: "6–8 Weeks",
-        idealFor: "Scale-ups who have outgrown their DIY Squarespace site."
+        idealFor: "Scale-ups who outgrew Squarespace."
     },
     {
         slug: "the-full-flex",
         name: "The Full Flex",
-        focus: "The Creative Method™",
-        desc: "The nuclear option. We build and rebuild everything. Identity, Website, Product Visuals, and Content Direction. The complete transformation.",
+        focus: "Everything",
+        desc: "The nuclear option. We rebuild everything. Identity, Website, 3D, Strategy. The complete transformation.",
         cta: "Go All In",
-        deliverables: ["Full Identity System", "Webflow Website", "Social Media Templates", "Product Renders", "Photography Direction"],
+        deliverables: ["Full Identity", "Webflow Site", "3D Renders", "Strategy"],
         timeline: "10–12 Weeks",
-        idealFor: "Established players ready to dominate the niche."
+        idealFor: "Players ready to dominate."
     }
 ];
 
 export const PARTNERSHIP_MODELS: PartnershipModel[] = [
     {
         slug: 'scale',
-        title: 'Scale Partnership',
-        description: 'Elite white-label unit for senior agencies.',
+        title: 'For Agencies',
+        description: 'We are your secret weapon.',
         priceLabel: 'Flat Fee',
-        details: "We plug into your agency process as the 'Design Power' unit. You handle account management; we handle the craft.",
-        idealFor: "Agencies needing high-end 3D and Webflow expertise.",
-        deliverables: ["3D Visuals", "UI/UX Design", "Webflow Dev"],
-        commitment: "Project-based"
+        details: "You sell the project. We do the design. You take the credit. We don't care, as long as the work is good.",
+        idealFor: "Agencies needing better design power.",
+        deliverables: ["3D Visuals", "Webflow Builds"],
+        commitment: "Per Project"
     },
     {
         slug: 'fractional-cd',
         title: 'Fractional CD',
-        description: 'Executive creative leadership for in-house teams.',
+        description: 'Your brain for rent.',
         priceLabel: 'Monthly',
-        details: "We act as your Creative Director, managing your internal team and external vendors to ensure zero visual drift.",
-        idealFor: "Scale-ups with junior designers needing senior direction.",
-        deliverables: ["Creative Direction", "Review Protocols", "Hiring Specs"],
-        commitment: "3 Months Min."
+        details: "We act as your Creative Director. We manage your juniors and vendors so you don't have to.",
+        idealFor: "Startups with messy design teams.",
+        deliverables: ["Direction", "Quality Control"],
+        commitment: "3 Months Min"
     },
     {
         slug: 'project-spike',
-        title: 'Project Spike',
-        description: 'Short-term high-intensity creative sprints.',
-        priceLabel: 'Project-based',
-        details: "A surgical creative strike. We solve one specific complex problem in a high-speed sprint.",
-        idealFor: "Brands needing a specific high-impact campaign or launch site.",
-        deliverables: ["Sprinted Asset Pack", "Technical Build"],
+        title: 'The Spike',
+        description: 'Fast and loud.',
+        priceLabel: 'Fixed Price',
+        details: "A surgical strike. We solve one hard visual problem in a very short time.",
+        idealFor: "Brands needing a creative assets for yesterday.",
+        deliverables: ["High-End Assets"],
         commitment: "2-4 Weeks"
     },
     {
         slug: 'equity',
-        title: 'Venture Unit',
-        description: 'High-risk, high-reward strategic partnership.',
+        title: 'Equity',
+        description: 'High risk, high reward.',
         priceLabel: 'Equity + Fee',
-        details: "We invest our design power into early-stage ventures with massive technical or market potential.",
-        idealFor: "Pre-seed/Seed founders with world-class products and zero design.",
-        deliverables: ["Full Brand Launch", "Product Design", "Pitch Deck V1"],
+        details: "If your idea is world-changing, we invest our design time for a piece of the pie.",
+        idealFor: "Pre-seed founders with great tech but zero vibes.",
+        deliverables: ["Full Brand Launch"],
         commitment: "Long-term"
     }
 ];
@@ -588,59 +585,59 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = [
 export const JOURNAL_POSTS: JournalPost[] = [
   {
     slug: "script-01-micromanagement",
-    title: "The Trust Cycle",
+    title: "Why Clients Micromanage",
     date: "2024.11.12",
     imageUrl: './assets/journal/script-01.webp',
-    excerpt: "Why micromanagement is actually a symptom of a failed strategy phase.",
-    tags: ["Process", "Clients", "Intel"],
+    excerpt: "It's not them. It's you. Micromanagement is a symptom of bad strategy.",
+    tags: ["Process", "Clients"],
     readTime: "4 min read",
     author: "Franco",
-    content: "Micromanagement happens when trust is broken or never built. We build trust through a rigid strategy process that makes subjective arguments impossible."
+    content: "Micromanagement happens when trust is broken. We build trust by having a rigid process. If you can explain 'Why', they won't ask 'Can we make it blue?'."
   },
   {
     slug: "3d-as-strategic-asset",
-    title: "3D as a Strategic Asset",
+    title: "3D isn't just candy",
     date: "2024.10.05",
     imageUrl: './assets/journal/script-02.webp',
-    excerpt: "Moving 3D from 'cool render' to 'conversion tool'.",
-    tags: ["3D", "E-commerce", "Strategy"],
+    excerpt: "Stop using 3D to look cool. Use it to sell products.",
+    tags: ["3D", "Strategy"],
     readTime: "6 min read",
     author: "Franco",
-    content: "3D visualization isn't just about eye candy. For product-led brands, it's about control. Lighting, materials, and angles that are impossible in physical shoots become repeatable, modular assets."
+    content: "For product brands, 3D desing is about control. Perfect lighting, perfect angles, every time. It's cheaper than a photoshoot and looks 10x more expensive."
   },
   {
     slug: "no-magic-formula-logic",
-    title: "The Logic of No Magic",
+    title: "The Magic is a Lie",
     date: "2024.09.20",
     imageUrl: './assets/journal/script-03.webp',
-    excerpt: "Why we killed the 'Creative Guru' trope to save our clients' money.",
-    tags: ["Business", "Operations", "Fluff"],
+    excerpt: "Designing by 'feeling' is dangerous. Design by logic.",
+    tags: ["Business", "Fluff"],
     readTime: "5 min read",
     author: "Franco",
-    content: "The 'Creative Guru' model is dangerous. It relies on inspiration, which is fickle. We rely on logic, which is defensible. If your strategy can't survive a stress test of 'Why?', it's just decoration."
+    content: "The 'Creative Guru' is dead. We rely on logic. If your strategy can't survive a basic stress test, it's just decoration."
   }
 ];
 
 export const FREE_RESOURCES: Resource[] = [
     { 
         id: '01', 
-        title: '5-Minute Brand Reality Check', 
+        title: 'Brand Reality Check', 
         format: 'APP', 
-        desc: 'Does your brand look like a bad mixtape? If your vibe is all over the place, start here.', 
+        desc: 'Is your brand a mess? Use this free tool to find out.', 
         link: './clarity/reality-check' 
     },
     { 
         id: '02', 
-        title: 'The No Magic Questionnaire', 
+        title: 'The Hard Questions', 
         format: 'PDF', 
-        desc: 'The exact questions we ask when the meter is running. Steal our process and diagnose yourself.', 
+        desc: 'The exact questions we ask clients. Steal our process.', 
         link: './docs/questionnaire.pdf' 
     },
     { 
         id: '03', 
         title: 'The Cheat Sheet', 
         format: 'PDF', 
-        desc: 'A one-page template. If you can’t explain your business here, you are trying too hard.', 
+        desc: 'If you can’t explain your business on one page, you are trying too hard.', 
         link: './docs/positioning.pdf' 
     }
 ];
@@ -654,7 +651,7 @@ export const QA_DATA = [
           a: "Please, no. Agencies have timesheets, account managers, and ping-pong tables to hide the burnout. We are a Studio. It’s just us (Franco & Ariana). We do the work. We answer the emails. We give a damn."
       },
       {
-          q: 'Why the 90s aesthetic?',
+          q: 'Why the 90/00s vibes?',
           a: "It was the last time the world felt real. No AI, no algorithms, just raw creativity and good music. We bring that analog soul—tactile, honest, impermanent—into the digital work we do."
       },
       {
