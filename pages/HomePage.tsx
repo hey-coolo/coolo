@@ -220,7 +220,7 @@ const BrandHero: React.FC = () => {
                         <div className="md:text-center font-mono">
                              <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
                              <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
-                                A specialized senior unit for ambitious founders and agencies. Two experts. One system.
+                                A specialized senior team for ambitious founders and agencies. Two experts. One system.
                              </p>
                         </div>
 
@@ -295,8 +295,8 @@ const ServiceRouter: React.FC = () => {
         <section className="bg-brand-offwhite border-b-2 border-brand-navy relative z-40 overflow-hidden">
              <div className="grid grid-cols-1 lg:grid-cols-3">
                 {SERVICE_LEGS.map((leg, index) => {
-                    const titleParts = leg.title.match(/^(I Need)\s+(.*)$/i);
-                    const prefix = titleParts ? titleParts[1] : 'I Need';
+                    const titleParts = leg.title.match(/^(We help you with)\s+(.*)$/i);
+                    const prefix = titleParts ? titleParts[1] : 'We help you with';
                     const mainTitle = titleParts ? titleParts[2] : leg.title;
 
                     return (
@@ -335,7 +335,7 @@ const ServiceRouter: React.FC = () => {
                                     {leg.hoverText}
                                 </p>
                                 <span className="inline-block font-mono text-sm uppercase font-bold tracking-widest border-b-2 border-brand-purple group-hover:border-brand-yellow pb-1 group-hover:text-brand-yellow transition-colors text-brand-purple">
-                                    Let's Go
+                                    More Info
                                 </span>
                             </div>
                         </Link>
