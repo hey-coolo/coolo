@@ -22,7 +22,7 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { label: "Vision", val: 98 },
       { label: "Chaos", val: 80 },
       { label: "Technical", val: 92 },
-      { label: "Patience", val: 72 }
+      { label: "Patience", val: 64 }
     ],
     // These files must exist in public/assets/team/gallery/
     galleryImages: [
