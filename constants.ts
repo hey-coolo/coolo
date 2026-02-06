@@ -354,15 +354,14 @@ export const PROJECTS: Project[] = [
 ];
 
 export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
-  franco: {
+    franco: {
     name: 'Franco',
     title: 'Creative Director',
     imageUrl: ASSETS.team.franco, 
     instagram: 'what.the.franco',
     bio: [
-      "The Brains. Franco specializes in Strategy, Art Direction, and 3D Vision.",
-      "His 'No Magic Formula' approach strips away the fluff to reveal the raw narrative of a brand.",
-      "With over a decade in high-end design, he leads the creative soul of COOLO from Mount Maunganui."
+      "Franco isn't here to sell you a dream; he's here to build the engine. As the Visual Architect, he bridges the gap between 'strategic thinking' and 'high-end execution.' He believes there is no magic formula—just rigorous logic, stripped of corporate fluff and rebuilt with raw narrative.",
+      "With over a decade of obsessing over pixels, 3D renders, and brand voice, he leads the creative output from the edge of the world in Mount Maunganui. He runs on black coffee, 90s hip-hop, and the belief that if you can't explain your brand simply, you don't understand it yet."
     ],
   },
   ariana: {
@@ -371,9 +370,8 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
     imageUrl: ASSETS.team.ariana, 
     instagram: 'ariarmndo',
     bio: [
-      "The Engine. Ariana manages execution, logistics, and client sanity.",
-      "She ensures the vision is grounded in reality and delivered with surgical precision.",
-      "The backbone of COOLO's efficiency."
+      "Ideas are cheap. Execution is everything. Ariana is the 'Ops Commander' who ensures that the vision actually hits the pavement. While the creative side pushes for chaos, she pushes for clarity, logistics, and client sanity.",
+      "She manages the timelines, the budgets, and the reality checks that keep a project from drifting into the void. If Franco is the noise, Ariana is the signal. She operates with surgical precision to ensure that what we promise is exactly what we ship."
     ],
   }
 };
