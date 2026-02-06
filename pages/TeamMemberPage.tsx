@@ -1,10 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { TEAM_MEMBERS } from '../constants';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowLeft, ArrowUpRight, Cpu, Zap, Disc, Coffee, Anchor, PenTool, Linkedin, Instagram, Mail } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, ArrowUpRight, Cpu, Zap, Disc, PenTool, Coffee, Anchor, Linkedin, Instagram, Mail } from 'lucide-react';
 
-// --- 1. LOCAL DATA ---
+// --- 1. LOCAL DATA (The Fun Stuff) ---
 const MEMBER_EXTRAS: Record<string, any> = {
   franco: {
     class: "Visual Architect",
@@ -18,11 +18,18 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { icon: <Disc size={16} />, name: "90s Hip Hop" },
       { icon: <Coffee size={16} />, name: "Black Coffee" }
     ],
+    stats: [
+      { label: "Vision", val: 98 },
+      { label: "Chaos", val: 85 },
+      { label: "Technical", val: 92 },
+      { label: "Patience", val: 40 }
+    ],
+    // These files must exist in public/assets/team/gallery/
     galleryImages: [
-        'franco01.webp',
-        'franco02.webp',
-        'franco03.webp',
-        'franco04.webp'
+        '/public/assets/team/gallery/franco01.webp',
+        '/public/assets/team/gallery/franco02.webp',
+        '/public/assets/team/gallery/franco03.webp',
+        '/public/assets/team/gallery/franco04.webp'
     ]
   },
   ariana: {
@@ -37,48 +44,60 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { icon: <Disc size={16} />, name: "Indie Pop" },
       { icon: <Coffee size={16} />, name: "Long Black" }
     ],
+    stats: [
+      { label: "Order", val: 100 },
+      { label: "Execution", val: 95 },
+      { label: "Client Love", val: 100 },
+      { label: "BS Tolerance", val: 10 }
+    ],
     galleryImages: [
-        'ariana01.webp',
-        'ariana02.webp',
-        'ariana03.webp',
-        'ariana04.webp'
+        '/public/assets/team/gallery/ariana01.webp',
+        '/public/assets/team/gallery/ariana02.webp',
+        '/public/assets/team/gallery/ariana03.webp',
+        '/public/assets/team/gallery/ariana04.webp'
     ]
   }
 };
 
 // --- 2. COMPONENTS ---
 
-const HorizontalGallery = ({ images }: { images: string[] }) => {
-    const scrollRef = useRef<HTMLDivElement>(null);
+const InfiniteGallery = ({ images }: { images: string[] }) => {
+  // Quadruple images to ensure seamless loop on large screens
+  const loopImages = [...images, ...images, ...images, ...images];
 
-    return (
-        <div className="w-full overflow-x-auto hide-scrollbar cursor-grab active:cursor-grabbing pb-8 -mx-4 md:-mx-8 px-4 md:px-8">
-            <div className="flex gap-4 md:gap-8 w-max">
-                {images.map((img, i) => (
-                    <motion.div 
-                        key={i}
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: i * 0.1 }}
-                        className="relative w-[80vw] md:w-[40vw] aspect-[4/5] md:aspect-[3/4] flex-shrink-0 bg-brand-navy overflow-hidden group"
-                    >
-                        <img 
-                            src={`/assets/team/gallery/${img}`} 
-                            alt={`Gallery ${i}`}
-                            className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700"
-                            draggable={false}
-                            onError={(e) => {
-                                e.currentTarget.src = 'https://placehold.co/800x1000/EAEAEA/0F0328?text=NO+SIGNAL';
-                            }}
-                        />
-                        <div className="absolute top-4 left-4 bg-brand-navy/80 text-white px-2 py-1 font-mono text-[9px] uppercase tracking-widest backdrop-blur-sm">
-                            RAW_0{i+1}
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
-        </div>
-    );
+  return (
+    <div className="w-full overflow-hidden border-y-2 border-brand-navy bg-brand-navy py-0 relative z-0 mt-8 mb-16">
+        {/* Grain Overlay */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none z-10"></div>
+        
+        <motion.div 
+            className="flex"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ 
+                duration: 30, // Adjust speed here (higher = slower)
+                ease: "linear", 
+                repeat: Infinity 
+            }}
+        >
+            {loopImages.map((img, i) => (
+                <div key={i} className="relative w-[60vw] md:w-[25vw] aspect-[3/4] flex-shrink-0 border-r-2 border-brand-navy grayscale contrast-125 hover:grayscale-0 transition-all duration-500 group">
+                    <img 
+                        src={`/assets/team/gallery/${img}`} 
+                        alt={`Gallery ${i}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                            // Fallback purely for dev if files aren't uploaded yet
+                            e.currentTarget.src = 'https://placehold.co/600x800/0F0328/FFFFFF?text=NO+SIGNAL';
+                        }}
+                    />
+                    <div className="absolute top-4 left-4 bg-brand-navy/90 text-white px-2 py-1 font-mono text-[9px] uppercase tracking-widest backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                        RAW_0{i+1}
+                    </div>
+                </div>
+            ))}
+        </motion.div>
+    </div>
+  );
 };
 
 const LinkRow = ({ label, href, icon, external = false }: { label: string, href: string, icon: React.ReactNode, external?: boolean }) => (
@@ -86,7 +105,7 @@ const LinkRow = ({ label, href, icon, external = false }: { label: string, href:
         href={href} 
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
-        className="flex items-center justify-between py-6 border-b border-brand-navy/10 group hover:border-brand-navy transition-colors cursor-pointer"
+        className="flex items-center justify-between py-6 border-b border-brand-navy/10 group hover:bg-white transition-all cursor-pointer px-2 -mx-2"
     >
         <div className="flex items-center gap-4">
             <div className="text-brand-navy/40 group-hover:text-brand-purple transition-colors">
@@ -103,7 +122,7 @@ const LinkRow = ({ label, href, icon, external = false }: { label: string, href:
 const InternalLinkRow = ({ label, to, icon }: { label: string, to: string, icon: React.ReactNode }) => (
     <Link 
         to={to} 
-        className="flex items-center justify-between py-6 border-b border-brand-navy/10 group hover:border-brand-navy transition-colors cursor-pointer"
+        className="flex items-center justify-between py-6 border-b border-brand-navy/10 group hover:bg-white transition-all cursor-pointer px-2 -mx-2"
     >
         <div className="flex items-center gap-4">
             <div className="text-brand-navy/40 group-hover:text-brand-purple transition-colors">
@@ -118,9 +137,27 @@ const InternalLinkRow = ({ label, to, icon }: { label: string, to: string, icon:
 );
 
 const LoadoutBadge = ({ icon, name }: { icon: React.ReactNode, name: string }) => (
-    <div className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-brand-navy/10 rounded-full">
+    <div className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-brand-navy/10 shadow-sm hover:border-brand-purple transition-colors cursor-help">
         <div className="text-brand-purple">{icon}</div>
-        <span className="font-mono text-[9px] uppercase tracking-widest font-bold">{name}</span>
+        <span className="font-mono text-[9px] uppercase tracking-widest font-bold text-brand-navy">{name}</span>
+    </div>
+);
+
+const StatBar = ({ label, value }: { label: string, value: number }) => (
+    <div className="mb-6">
+        <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest mb-2 text-brand-navy/60">
+            <span className="font-bold">{label}</span>
+            <span>{value}%</span>
+        </div>
+        <div className="h-1 w-full bg-brand-navy/10">
+            <motion.div 
+                initial={{ width: 0 }}
+                whileInView={{ width: `${value}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: "circOut" }}
+                className="h-full bg-brand-navy"
+            />
+        </div>
     </div>
 );
 
@@ -156,101 +193,115 @@ const TeamMemberPage: React.FC = () => {
     <div className="bg-[#EAEAEA] min-h-screen pt-32 pb-0 overflow-x-hidden selection:bg-brand-purple selection:text-white">
       
       <div className="container mx-auto px-6 md:px-8">
-        
-        {/* --- 1. HEADER (EDITORIAL) --- */}
-        <div className="mb-16 md:mb-24">
-            <Link to="/team" className="inline-flex items-center gap-2 font-mono text-xs uppercase font-bold text-brand-navy/40 hover:text-brand-purple transition-colors mb-8">
-                <ArrowLeft size={14} /> Back to Humans
-            </Link>
+        {/* Nav */}
+        <Link to="/team" className="inline-flex items-center gap-2 font-mono text-xs uppercase font-bold text-brand-navy/40 hover:text-brand-purple transition-colors mb-12">
+            <ArrowLeft size={14} /> Back to Humans
+        </Link>
+      </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                <div className="lg:col-span-8">
-                    <span className="font-mono text-[10px] uppercase tracking-widest bg-brand-purple text-white px-2 py-1 mb-6 inline-block font-bold">
+      {/* --- 1. HERO: INFINITE LOOP --- */}
+      <InfiniteGallery images={extras.galleryImages} />
+
+      <div className="container mx-auto px-6 md:px-8">
+        
+        {/* --- 2. IDENTITY HEADER --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24 border-b-2 border-brand-navy/10 pb-12">
+            <div className="lg:col-span-8">
+                <div className="flex items-center gap-4 mb-6">
+                    <span className="font-mono text-[10px] uppercase tracking-widest bg-brand-purple text-white px-2 py-1 font-bold">
                         {extras.class}
                     </span>
-                    <h1 className="text-8xl md:text-[14vw] font-black uppercase tracking-tighter leading-[0.8] text-brand-navy mb-8">
-                        {member.name}
-                    </h1>
-                    <div className="flex flex-wrap gap-4">
+                    <span className="font-mono text-[10px] uppercase tracking-widest border border-brand-navy/20 px-2 py-1 font-bold text-brand-navy/60">
+                        {extras.level}
+                    </span>
+                </div>
+                <h1 className="text-8xl md:text-[12vw] font-black uppercase tracking-tighter leading-[0.8] text-brand-navy mb-8">
+                    {member.name}
+                </h1>
+            </div>
+            <div className="lg:col-span-4 lg:text-right flex flex-col justify-end">
+                <p className="font-mono text-xs uppercase tracking-widest text-brand-navy/60 leading-relaxed">
+                    Current Status: <span className="text-brand-navy font-bold animate-pulse">{extras.status}</span> <br/>
+                    Location: Mount Maunganui
+                </p>
+            </div>
+        </div>
+
+        {/* --- 3. INTELLIGENCE GRID --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-32">
+            
+            {/* Left Column: Bio & Ability */}
+            <div className="lg:col-span-7 space-y-12">
+                <div>
+                    <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-6">
+                        // Transmission Log
+                    </h3>
+                    {member.bio.map((p, i) => (
+                        <p key={i} className="font-body text-xl md:text-2xl leading-relaxed text-brand-navy font-light mb-6">
+                            {p}
+                        </p>
+                    ))}
+                </div>
+                
+                <div className="p-8 bg-white border border-brand-navy/10">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple mb-2 block font-bold">Special Ability</span>
+                    <h4 className="text-3xl font-black uppercase text-brand-navy tracking-tight leading-none">{extras.signatureMove}</h4>
+                </div>
+            </div>
+
+            {/* Right Column: Stats, Loadout, Links */}
+            <div className="lg:col-span-5 space-y-16">
+                
+                {/* Stats */}
+                <div>
+                    <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8 border-b border-brand-navy/10 pb-2">
+                        Attributes
+                    </h3>
+                    {extras.stats.map((s: any) => (
+                        <StatBar key={s.label} label={s.label} value={s.val} />
+                    ))}
+                </div>
+
+                {/* Loadout */}
+                <div>
+                    <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8 border-b border-brand-navy/10 pb-2">
+                        Daily Loadout
+                    </h3>
+                    <div className="flex flex-wrap gap-3">
                         {extras.loadout.map((item: any, i: number) => (
                             <LoadoutBadge key={i} icon={item.icon} name={item.name} />
                         ))}
                     </div>
                 </div>
-                <div className="lg:col-span-4 lg:pt-12">
-                    <p className="font-body text-2xl leading-tight text-brand-navy/80 font-light">
-                        {member.bio[0]}
-                    </p>
-                </div>
-            </div>
-        </div>
 
-        {/* --- 2. HORIZONTAL HERO SCROLL (THE "HUMAN" GALLERY) --- */}
-        <div className="mb-24">
-            <HorizontalGallery images={extras.galleryImages} />
-            <div className="flex justify-between items-center mt-4 px-1">
-                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/40 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                    Live Feed
-                </span>
-                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/40">
-                    Scroll to View &rarr;
-                </span>
-            </div>
-        </div>
-
-        {/* --- 3. INTEL & CONNECTIONS --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-32">
-            
-            {/* Extended Bio */}
-            <div className="lg:col-span-7 space-y-8">
-                <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8">
-                    // Transmission Log
-                </h3>
-                {member.bio.slice(1).map((p, i) => (
-                    <p key={i} className="font-body text-xl md:text-2xl leading-relaxed text-brand-navy/80 font-light">
-                        {p}
-                    </p>
-                ))}
-                
-                <div className="pt-12">
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 mb-2 block">Signature Move</span>
-                    <h4 className="text-3xl md:text-4xl font-black uppercase text-brand-navy tracking-tight">{extras.signatureMove}</h4>
-                </div>
-            </div>
-
-            {/* Link List (The Clean Stack) */}
-            <div className="lg:col-span-5">
-                <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8">
-                    // Connect & Deploy
-                </h3>
-                
-                <div className="flex flex-col border-t border-brand-navy/10">
-                    {/* LinkedIn */}
-                    <LinkRow 
-                        label="LinkedIn Profile" 
-                        href={extras.linkedin} 
-                        icon={<Linkedin size={20} />} 
-                        external 
-                    />
-                    
-                    {/* Instagram (If exists) */}
-                    {member.instagram && (
+                {/* Link List */}
+                <div>
+                    <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-4">
+                        // Connect & Deploy
+                    </h3>
+                    <div className="flex flex-col border-t border-brand-navy/10">
                         <LinkRow 
-                            label="Visual Feed" 
-                            href={`https://instagram.com/${member.instagram}`} 
-                            icon={<Instagram size={20} />} 
+                            label="LinkedIn Profile" 
+                            href={extras.linkedin} 
+                            icon={<Linkedin size={20} />} 
                             external 
                         />
-                    )}
-
-                    {/* Email / Contact */}
-                    <InternalLinkRow 
-                        label="Deploy on Project" 
-                        to="/contact" 
-                        icon={<Mail size={20} />} 
-                    />
+                        {member.instagram && (
+                            <LinkRow 
+                                label="Instagram Feed" 
+                                href={`https://instagram.com/${member.instagram}`} 
+                                icon={<Instagram size={20} />} 
+                                external 
+                            />
+                        )}
+                        <InternalLinkRow 
+                            label="Deploy on Project" 
+                            to="/contact" 
+                            icon={<Mail size={20} />} 
+                        />
+                    </div>
                 </div>
+
             </div>
         </div>
 
