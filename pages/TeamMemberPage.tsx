@@ -25,7 +25,12 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { label: "Patience", val: 72 }
     ],
     // These files will be loaded from /assets/team/gallery/
-    galleryImages: ['franco01.webp', 'franco02.webp', 'franco03.webp', 'franco04.webp', 'franco05.webp']
+    galleryImages: [
+        'public/assets/team/gallery/franco01.webp', 
+        'public/assets/team/gallery/franco02.webp',
+        'public/assets/team/gallery/franco03.webp', 
+        'public/assets/team/gallery/franco04.webp'  
+    ]
   },
   ariana: {
     class: "Ops Commander",
@@ -45,7 +50,12 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { label: "Client Love", val: 98 },
       { label: "BS Tolerance", val: 75 }
     ],
-    galleryImages: ['ariana01.webp', 'ariana02.webp', 'ariana03.webp', 'ariana04.webp', 'ariana05.webp']
+    galleryImages: [
+        'public/assets/team/gallery/ariana01.webp',
+        'public/assets/team/gallery/ariana02.webp',
+        'public/assets/team/gallery/ariana03.webp',
+        'public/assets/team/gallery/ariana04.webp'
+    ]
   }
 };
 
