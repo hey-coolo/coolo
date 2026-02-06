@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { TEAM_MEMBERS } from '../constants';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Cpu, Zap, Disc, PenTool, Coffee, Anchor, Linkedin, Instagram, ArrowUpRight, Camera } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowLeft, ArrowUpRight, Cpu, Zap, Disc, Coffee, Anchor, PenTool, Linkedin, Instagram, Mail } from 'lucide-react';
 
-// --- 1. LOCAL DATA (The Fun Stuff) ---
+// --- 1. LOCAL DATA ---
 const MEMBER_EXTRAS: Record<string, any> = {
   franco: {
     class: "Visual Architect",
@@ -13,18 +13,11 @@ const MEMBER_EXTRAS: Record<string, any> = {
     signatureMove: "The No-Magic Deconstruction",
     linkedin: "https://www.linkedin.com/in/whatthefranco/",
     loadout: [
-      { icon: <Cpu size={18} />, name: "Cinema 4D" },
-      { icon: <Zap size={18} />, name: "Octane" },
-      { icon: <Disc size={18} />, name: "90s Hip Hop" },
-      { icon: <Coffee size={18} />, name: "Black Coffee" }
+      { icon: <Cpu size={16} />, name: "Cinema 4D" },
+      { icon: <Zap size={16} />, name: "Octane" },
+      { icon: <Disc size={16} />, name: "90s Hip Hop" },
+      { icon: <Coffee size={16} />, name: "Black Coffee" }
     ],
-    stats: [
-      { label: "Vision", val: 98 },
-      { label: "Chaos", val: 85 },
-      { label: "Technical", val: 92 },
-      { label: "Patience", val: 40 }
-    ],
-    // The code expects these files to exist in /public/assets/team/gallery/
     galleryImages: [
         'franco01.webp',
         'franco02.webp',
@@ -39,16 +32,10 @@ const MEMBER_EXTRAS: Record<string, any> = {
     signatureMove: "Chaos Containment Field",
     linkedin: "https://www.linkedin.com/in/arianaarmando/",
     loadout: [
-      { icon: <Anchor size={18} />, name: "Logic" },
-      { icon: <PenTool size={18} />, name: "Strategy" },
-      { icon: <Disc size={18} />, name: "Indie Pop" },
-      { icon: <Coffee size={18} />, name: "Long Black" }
-    ],
-    stats: [
-      { label: "Order", val: 100 },
-      { label: "Execution", val: 95 },
-      { label: "Client Love", val: 100 },
-      { label: "BS Tolerance", val: 10 }
+      { icon: <Anchor size={16} />, name: "Logic" },
+      { icon: <PenTool size={16} />, name: "Strategy" },
+      { icon: <Disc size={16} />, name: "Indie Pop" },
+      { icon: <Coffee size={16} />, name: "Long Black" }
     ],
     galleryImages: [
         'ariana01.webp',
@@ -61,31 +48,79 @@ const MEMBER_EXTRAS: Record<string, any> = {
 
 // --- 2. COMPONENTS ---
 
-const StatBar = ({ label, value }: { label: string, value: number }) => (
-    <div className="mb-6">
-        <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest mb-2 text-brand-navy">
-            <span className="font-bold">{label}</span>
-            <span>{value}%</span>
+const HorizontalGallery = ({ images }: { images: string[] }) => {
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    return (
+        <div className="w-full overflow-x-auto hide-scrollbar cursor-grab active:cursor-grabbing pb-8 -mx-4 md:-mx-8 px-4 md:px-8">
+            <div className="flex gap-4 md:gap-8 w-max">
+                {images.map((img, i) => (
+                    <motion.div 
+                        key={i}
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: i * 0.1 }}
+                        className="relative w-[80vw] md:w-[40vw] aspect-[4/5] md:aspect-[3/4] flex-shrink-0 bg-brand-navy overflow-hidden group"
+                    >
+                        <img 
+                            src={`/assets/team/gallery/${img}`} 
+                            alt={`Gallery ${i}`}
+                            className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700"
+                            draggable={false}
+                            onError={(e) => {
+                                e.currentTarget.src = 'https://placehold.co/800x1000/EAEAEA/0F0328?text=NO+SIGNAL';
+                            }}
+                        />
+                        <div className="absolute top-4 left-4 bg-brand-navy/80 text-white px-2 py-1 font-mono text-[9px] uppercase tracking-widest backdrop-blur-sm">
+                            RAW_0{i+1}
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
         </div>
-        <div className="h-1 w-full bg-brand-navy/10">
-            <motion.div 
-                initial={{ width: 0 }}
-                whileInView={{ width: `${value}%` }}
-                transition={{ duration: 1.5, ease: "circOut" }}
-                className="h-full bg-brand-purple"
-            />
+    );
+};
+
+const LinkRow = ({ label, href, icon, external = false }: { label: string, href: string, icon: React.ReactNode, external?: boolean }) => (
+    <a 
+        href={href} 
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        className="flex items-center justify-between py-6 border-b border-brand-navy/10 group hover:border-brand-navy transition-colors cursor-pointer"
+    >
+        <div className="flex items-center gap-4">
+            <div className="text-brand-navy/40 group-hover:text-brand-purple transition-colors">
+                {icon}
+            </div>
+            <span className="font-mono text-sm md:text-base uppercase tracking-widest font-bold text-brand-navy group-hover:translate-x-2 transition-transform duration-300">
+                {label}
+            </span>
         </div>
-    </div>
+        <ArrowUpRight size={18} className="text-brand-navy/20 group-hover:text-brand-purple group-hover:rotate-45 transition-all duration-300" />
+    </a>
 );
 
-const LoadoutItem = ({ icon, name }: { icon: React.ReactNode, name: string }) => (
-    <div className="flex items-center gap-4 p-4 border border-brand-navy/10 bg-white hover:border-brand-purple transition-colors group">
-        <div className="text-brand-navy/60 group-hover:text-brand-purple transition-colors">
-            {icon}
+const InternalLinkRow = ({ label, to, icon }: { label: string, to: string, icon: React.ReactNode }) => (
+    <Link 
+        to={to} 
+        className="flex items-center justify-between py-6 border-b border-brand-navy/10 group hover:border-brand-navy transition-colors cursor-pointer"
+    >
+        <div className="flex items-center gap-4">
+            <div className="text-brand-navy/40 group-hover:text-brand-purple transition-colors">
+                {icon}
+            </div>
+            <span className="font-mono text-sm md:text-base uppercase tracking-widest font-bold text-brand-navy group-hover:translate-x-2 transition-transform duration-300">
+                {label}
+            </span>
         </div>
-        <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy">
-            {name}
-        </span>
+        <ArrowUpRight size={18} className="text-brand-navy/20 group-hover:text-brand-purple group-hover:rotate-45 transition-all duration-300" />
+    </Link>
+);
+
+const LoadoutBadge = ({ icon, name }: { icon: React.ReactNode, name: string }) => (
+    <div className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-brand-navy/10 rounded-full">
+        <div className="text-brand-purple">{icon}</div>
+        <span className="font-mono text-[9px] uppercase tracking-widest font-bold">{name}</span>
     </div>
 );
 
@@ -101,7 +136,7 @@ const TeamMemberPage: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center bg-[#EAEAEA]">
         <div className="text-center">
             <h1 className="text-6xl font-black uppercase text-brand-navy">Agent Missing</h1>
-            <Link to="/about" className="font-mono uppercase underline mt-8 block text-brand-purple">Return to Base</Link>
+            <Link to="/team" className="font-mono uppercase underline mt-8 block text-brand-purple">Return to Roster</Link>
         </div>
       </div>
     );
@@ -110,7 +145,7 @@ const TeamMemberPage: React.FC = () => {
   const member = TEAM_MEMBERS[memberSlug];
   const extras = MEMBER_EXTRAS[memberSlug] || MEMBER_EXTRAS['franco'];
   
-  // Navigation Logic
+  // Navigation
   const memberKeys = Object.keys(TEAM_MEMBERS);
   const currentIndex = memberKeys.indexOf(memberSlug);
   const nextIndex = (currentIndex + 1) % memberKeys.length;
@@ -118,155 +153,119 @@ const TeamMemberPage: React.FC = () => {
   const nextMember = TEAM_MEMBERS[nextSlug];
 
   return (
-    <div className="bg-[#EAEAEA] min-h-screen pt-32 pb-0 overflow-x-hidden">
+    <div className="bg-[#EAEAEA] min-h-screen pt-32 pb-0 overflow-x-hidden selection:bg-brand-purple selection:text-white">
       
       <div className="container mx-auto px-6 md:px-8">
         
-        {/* --- 1. HEADER & HERO --- */}
-        <div className="mb-24">
-            <Link to="/team" className="inline-flex items-center gap-2 font-mono text-xs uppercase font-bold text-brand-navy/40 hover:text-brand-purple transition-colors mb-12">
+        {/* --- 1. HEADER (EDITORIAL) --- */}
+        <div className="mb-16 md:mb-24">
+            <Link to="/team" className="inline-flex items-center gap-2 font-mono text-xs uppercase font-bold text-brand-navy/40 hover:text-brand-purple transition-colors mb-8">
                 <ArrowLeft size={14} /> Back to Humans
             </Link>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-end">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
                 <div className="lg:col-span-8">
-                    <span className="inline-block bg-brand-purple text-white px-2 py-1 font-mono text-[10px] uppercase tracking-widest font-bold mb-6">
+                    <span className="font-mono text-[10px] uppercase tracking-widest bg-brand-purple text-white px-2 py-1 mb-6 inline-block font-bold">
                         {extras.class}
                     </span>
                     <h1 className="text-8xl md:text-[14vw] font-black uppercase tracking-tighter leading-[0.8] text-brand-navy mb-8">
                         {member.name}
                     </h1>
-                    <p className="font-mono text-xs md:text-sm uppercase tracking-widest text-brand-navy/60 max-w-lg leading-relaxed">
-                        Status: <span className="text-brand-navy font-bold">{extras.status}</span> <br/>
-                        Clearance: {extras.level}
-                    </p>
-                </div>
-                {/* Hero Image - The "Mugshot" */}
-                <div className="lg:col-span-4">
-                    <div className="aspect-[3/4] bg-brand-navy relative overflow-hidden grayscale contrast-125">
-                        <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover opacity-90" />
-                        <div className="absolute inset-0 border-[1px] border-white/20 m-4 pointer-events-none"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div className="w-full h-[2px] bg-brand-navy/10 mb-24"></div>
-
-        {/* --- 2. INTEL & LOADOUT --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-32">
-            
-            {/* Bio Section */}
-            <div className="lg:col-span-7">
-                <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8">
-                    // Transmission Log
-                </h3>
-                <div className="space-y-8">
-                    {member.bio.map((p, i) => (
-                        <p key={i} className="font-body text-2xl md:text-3xl leading-tight text-brand-navy font-light">
-                            {p}
-                        </p>
-                    ))}
-                </div>
-                
-                {/* Signature Move */}
-                <div className="mt-16 p-8 bg-white border-l-4 border-brand-purple">
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 mb-2 block">Special Ability</span>
-                    <h4 className="text-2xl font-black uppercase text-brand-navy tracking-tight">{extras.signatureMove}</h4>
-                </div>
-            </div>
-
-            {/* Stats & Tools */}
-            <div className="lg:col-span-5 space-y-16">
-                <div>
-                    <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8 border-b border-brand-navy/10 pb-2">
-                        Attributes
-                    </h3>
-                    {extras.stats.map((s: any) => (
-                        <StatBar key={s.label} label={s.label} value={s.val} />
-                    ))}
-                </div>
-
-                <div>
-                    <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8 border-b border-brand-navy/10 pb-2">
-                        Daily Loadout
-                    </h3>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-wrap gap-4">
                         {extras.loadout.map((item: any, i: number) => (
-                            <LoadoutItem key={i} icon={item.icon} name={item.name} />
+                            <LoadoutBadge key={i} icon={item.icon} name={item.name} />
                         ))}
                     </div>
                 </div>
+                <div className="lg:col-span-4 lg:pt-12">
+                    <p className="font-body text-2xl leading-tight text-brand-navy/80 font-light">
+                        {member.bio[0]}
+                    </p>
+                </div>
             </div>
         </div>
 
-        {/* --- 3. VISUAL EVIDENCE (The Gallery) --- */}
-        <div className="mb-32">
-            <div className="flex justify-between items-end mb-12">
-                <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tight text-brand-navy leading-none">
-                    Visual<br/>Evidence.
-                </h2>
-                {member.instagram && (
-                    <a href={`https://instagram.com/${member.instagram}`} target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-2 font-mono text-xs uppercase font-bold text-brand-purple hover:text-brand-navy transition-colors">
-                        <Instagram size={14} /> Follow Signal <ArrowUpRight size={14} />
-                    </a>
-                )}
+        {/* --- 2. HORIZONTAL HERO SCROLL (THE "HUMAN" GALLERY) --- */}
+        <div className="mb-24">
+            <HorizontalGallery images={extras.galleryImages} />
+            <div className="flex justify-between items-center mt-4 px-1">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/40 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    Live Feed
+                </span>
+                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/40">
+                    Scroll to View &rarr;
+                </span>
             </div>
+        </div>
 
-            {/* Gallery Grid - Clean, large, impactful */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {extras.galleryImages && extras.galleryImages.map((imgName: string, i: number) => (
-                    <div key={i} className="aspect-[4/5] bg-brand-navy/5 overflow-hidden relative group">
-                        {/* Note: Path assumes files are in /public/assets/team/gallery/ */}
-                        <img 
-                            src={`/assets/team/gallery/${imgName}`} 
-                            alt={`Evidence ${i}`} 
-                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                            onError={(e) => {
-                                // Fallback if file doesn't exist yet
-                                e.currentTarget.src = 'https://placehold.co/600x800/EAEAEA/0F0328?text=NO+SIGNAL';
-                            }}
-                        />
-                        <div className="absolute top-4 right-4 bg-brand-navy text-white px-2 py-1 font-mono text-[9px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                            IMG_0{i+1}
-                        </div>
-                    </div>
+        {/* --- 3. INTEL & CONNECTIONS --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-32">
+            
+            {/* Extended Bio */}
+            <div className="lg:col-span-7 space-y-8">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8">
+                    // Transmission Log
+                </h3>
+                {member.bio.slice(1).map((p, i) => (
+                    <p key={i} className="font-body text-xl md:text-2xl leading-relaxed text-brand-navy/80 font-light">
+                        {p}
+                    </p>
                 ))}
+                
+                <div className="pt-12">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 mb-2 block">Signature Move</span>
+                    <h4 className="text-3xl md:text-4xl font-black uppercase text-brand-navy tracking-tight">{extras.signatureMove}</h4>
+                </div>
             </div>
-        </div>
 
-        {/* --- 4. ACTION BAR (LinkedIn & Contact) --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border-y-2 border-brand-navy mb-32">
-            <a 
-                href={extras.linkedin} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="group flex flex-col justify-center items-center py-16 px-8 bg-brand-navy hover:bg-[#0077B5] transition-colors duration-300 text-white"
-            >
-                <Linkedin size={48} className="mb-6 opacity-50 group-hover:opacity-100 transition-opacity" />
-                <h3 className="font-mono text-sm uppercase tracking-widest font-bold">Connect on Network</h3>
-            </a>
-            <Link 
-                to="/contact" 
-                className="group flex flex-col justify-center items-center py-16 px-8 bg-white hover:bg-brand-purple hover:text-white transition-colors duration-300 border-l-0 md:border-l-2 border-brand-navy"
-            >
-                <div className="mb-6 font-mono text-4xl group-hover:rotate-12 transition-transform">⚡</div>
-                <h3 className="font-mono text-sm uppercase tracking-widest font-bold text-brand-navy group-hover:text-white">Deploy on Project</h3>
-            </Link>
+            {/* Link List (The Clean Stack) */}
+            <div className="lg:col-span-5">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8">
+                    // Connect & Deploy
+                </h3>
+                
+                <div className="flex flex-col border-t border-brand-navy/10">
+                    {/* LinkedIn */}
+                    <LinkRow 
+                        label="LinkedIn Profile" 
+                        href={extras.linkedin} 
+                        icon={<Linkedin size={20} />} 
+                        external 
+                    />
+                    
+                    {/* Instagram (If exists) */}
+                    {member.instagram && (
+                        <LinkRow 
+                            label="Visual Feed" 
+                            href={`https://instagram.com/${member.instagram}`} 
+                            icon={<Instagram size={20} />} 
+                            external 
+                        />
+                    )}
+
+                    {/* Email / Contact */}
+                    <InternalLinkRow 
+                        label="Deploy on Project" 
+                        to="/contact" 
+                        icon={<Mail size={20} />} 
+                    />
+                </div>
+            </div>
         </div>
 
       </div>
 
       {/* --- NEXT OPERATOR FOOTER --- */}
-      <Link to={`/team/${nextSlug}`} className="block bg-white group hover:bg-brand-yellow transition-colors duration-500 border-t-2 border-brand-navy">
-          <div className="container mx-auto px-8 py-24 flex justify-between items-center">
+      <Link to={`/team/${nextSlug}`} className="block border-t-2 border-brand-navy bg-white group hover:bg-brand-navy hover:text-white transition-colors duration-500">
+          <div className="container mx-auto px-6 md:px-8 py-24 flex justify-between items-center">
               <div>
-                  <span className="font-mono text-xs uppercase tracking-widest opacity-50 mb-4 block text-brand-navy">Next Operative</span>
-                  <h2 className="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none text-brand-navy group-hover:translate-x-6 transition-transform duration-500">
+                  <span className="font-mono text-xs uppercase tracking-widest opacity-50 mb-4 block">Next Human</span>
+                  <h2 className="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none group-hover:translate-x-6 transition-transform duration-500">
                       {nextMember.name}
                   </h2>
               </div>
-              <div className="hidden md:flex w-24 h-24 rounded-full border-2 border-brand-navy items-center justify-center group-hover:bg-brand-navy group-hover:text-white transition-colors">
+              <div className="hidden md:flex w-24 h-24 rounded-full border-2 border-current items-center justify-center opacity-20 group-hover:opacity-100 transition-opacity">
                   <span className="font-mono text-2xl font-bold">→</span>
               </div>
           </div>
