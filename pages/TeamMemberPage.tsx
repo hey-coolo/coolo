@@ -13,7 +13,7 @@ const MEMBER_EXTRAS: Record<string, any> = {
     signatureMove: "Eyeballing symmetry",
     linkedin: "https://www.linkedin.com/in/whatthefranco/",
     loadout: [
-      { icon: <Cpu size={16} />, name: "Any Design Software" },
+      { icon: <Cpu size={16} />, name: "Cinema 4D" },
       { icon: <Zap size={16} />, name: "Octane" },
       { icon: <Disc size={16} />, name: "Daft Punk" },
       { icon: <Coffee size={16} />, name: "Black Coffee" }
@@ -24,11 +24,12 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { label: "Technical", val: 92 },
       { label: "Patience", val: 72 }
     ],
+    // These files must exist in public/assets/team/gallery/
     galleryImages: [
-        'public/assets/team/gallery/franco01.webp', 
-        'public/assets/team/gallery/franco02.webp',
-        'public/assets/team/gallery/franco03.webp', 
-        'public/assets/team/gallery/franco04.webp'  
+        'franco01.webp',
+        'franco02.webp',
+        'franco03.webp',
+        'franco04.webp'
     ]
   },
   ariana: {
@@ -50,10 +51,10 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { label: "BS Tolerance", val: 75 }
     ],
     galleryImages: [
-        'public/assets/team/gallery/ariana01.webp',
-        'public/assets/team/gallery/ariana02.webp',
-        'public/assets/team/gallery/ariana03.webp',
-        'public/assets/team/gallery/ariana04.webp'
+        'ariana01.webp',
+        'ariana02.webp',
+        'ariana03.webp',
+        'ariana04.webp'
     ]
   }
 };
@@ -77,7 +78,14 @@ const InfiniteMarquee = ({ images }: { images: string[] }) => {
             >
                 {loopImages.map((img, i) => (
                     <div key={`t-${i}`} className="w-[40vh] aspect-[3/4] flex-shrink-0 grayscale contrast-125">
-                        <img src={cleanPath(img)} className="w-full h-full object-cover" alt="" />
+                        <img 
+                            src={`/assets/team/gallery/${img}`} 
+                            className="w-full h-full object-cover" 
+                            alt=""
+                            onError={(e) => {
+                                e.currentTarget.src = 'https://placehold.co/600x800/EAEAEA/0F0328?text=NO+SIGNAL';
+                            }} 
+                        />
                     </div>
                 ))}
             </motion.div>
@@ -90,7 +98,14 @@ const InfiniteMarquee = ({ images }: { images: string[] }) => {
             >
                 {loopImages.map((img, i) => (
                     <div key={`b-${i}`} className="w-[40vh] aspect-[3/4] flex-shrink-0 grayscale contrast-125">
-                        <img src={cleanPath(img)} className="w-full h-full object-cover" alt="" />
+                        <img 
+                            src={`/assets/team/gallery/${img}`} 
+                            className="w-full h-full object-cover" 
+                            alt=""
+                            onError={(e) => {
+                                e.currentTarget.src = 'https://placehold.co/600x800/EAEAEA/0F0328?text=NO+SIGNAL';
+                            }}
+                        />
                     </div>
                 ))}
             </motion.div>
@@ -173,7 +188,8 @@ const TeamMemberPage: React.FC = () => {
     <div className="bg-[#EAEAEA] min-h-screen pt-0 pb-0 overflow-x-hidden selection:bg-brand-purple selection:text-white">
       
       {/* --- 1. HERO: ENDLESS BROADCAST --- */}
-      <div className="relative w-full h-[85vh] flex flex-col items-center justify-center bg-[#EAEAEA] overflow-hidden border-b-2 border-brand-navy">
+      <div className="relative w-full h-[90vh] flex flex-col items-center justify-center bg-[#EAEAEA] overflow-hidden border-b-2 border-brand-navy">
+          
           {/* Background Loop */}
           <InfiniteMarquee images={extras.galleryImages} />
           
@@ -186,7 +202,7 @@ const TeamMemberPage: React.FC = () => {
                   {member.name}
               </h1>
               <div className="mt-6 md:mt-10">
-                  <span className="inline-block bg-brand-navy text-white px-4 py-2 font-mono text-xs md:text-sm uppercase tracking-[0.2em] font-bold shadow-[4px_4px_0px_#FCC803]">
+                  <span className="inline-block bg-brand-navy text-white px-3 py-1 font-mono text-xs md:text-sm uppercase tracking-[0.2em] font-bold shadow-[4px_4px_0px_#FCC803]">
                       {member.title}
                   </span>
               </div>
@@ -206,12 +222,12 @@ const TeamMemberPage: React.FC = () => {
           </Link>
       </div>
 
-      {/* --- 3. EDITORIAL PROFILE (New Main Section) --- */}
+      {/* --- 3. EDITORIAL PROFILE --- */}
       <section className="py-24 md:py-32 border-b-2 border-brand-navy/10">
           <div className="container mx-auto px-6 md:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-start">
                   
-                  {/* LEFT: THE MAIN PORTRAIT (Magazine Style) */}
+                  {/* LEFT: THE MAIN PORTRAIT */}
                   <div className="relative">
                       <div className="aspect-[3/4] bg-brand-navy overflow-hidden border-2 border-brand-navy shadow-[12px_12px_0px_rgba(15,3,40,0.1)] group">
                           <img 
@@ -232,15 +248,15 @@ const TeamMemberPage: React.FC = () => {
                       </div>
                   </div>
 
-                  {/* RIGHT: THE NARRATIVE (Editorial Typography) */}
+                  {/* RIGHT: THE NARRATIVE */}
                   <div className="flex flex-col justify-center h-full pt-8 lg:pt-0">
                       <div className="mb-12">
                           <span className="font-mono text-xs uppercase tracking-widest text-brand-purple font-bold mb-4 block">
                               // Identity Confirmed
                           </span>
                           
-                          {/* Render paragraphs with styling */}
-                          {member.bio.map((paragraph, index) => (
+                          {/* Render paragraphs */}
+                          {member.bio.map((paragraph: string, index: number) => (
                               <p 
                                   key={index} 
                                   className={`
@@ -270,7 +286,7 @@ const TeamMemberPage: React.FC = () => {
           </div>
       </section>
 
-      {/* --- 4. THE TECH SPECS (Grid) --- */}
+      {/* --- 4. THE TECH SPECS --- */}
       <section className="py-24 bg-white">
           <div className="container mx-auto px-6 md:px-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-24">

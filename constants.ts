@@ -360,8 +360,9 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
     imageUrl: ASSETS.team.franco, 
     instagram: 'what.the.franco',
     bio: [
-      "Franco isn't here to sell you a dream; he's here to build the engine. As the Visual Architect, he bridges the gap between 'strategic thinking' and 'high-end execution.' He believes there is no magic formula—just rigorous logic, stripped of corporate fluff and rebuilt with raw narrative.",
-      "With over a decade of obsessing over pixels, 3D renders, and brand voice, he leads the creative output from the edge of the world in Mount Maunganui. He runs on black coffee, 90s hip-hop, and the belief that if you can't explain your brand simply, you don't understand it yet."
+      "Anyone can make things look 'nice.' Franco makes them matter. He operates at the intersection of brutal strategy and high-end visual chaos. He’s the one asking the uncomfortable questions about why you exist before he even touches a pixel.",
+      "As the Visual Architect, he treats brand building less like a painting and more like architecture—building systems that are durable, scalable, and unmistakably distinct. He believes there is no magic formula—just rigorous logic, stripped of corporate fluff.",
+      "While Ariana keeps the train on the tracks, Franco is the one shoveling coal into the engine, pushing the aesthetic edges and ensuring the work doesn't just 'fit in'—it dominates. He sells clarity, not decoration."
     ],
   },
   ariana: {
@@ -370,8 +371,9 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
     imageUrl: ASSETS.team.ariana, 
     instagram: 'ariarmndo',
     bio: [
-      "Ideas are cheap. Execution is everything. Ariana is the 'Ops Commander' who ensures that the vision actually hits the pavement. While the creative side pushes for chaos, she pushes for clarity, logistics, and client sanity.",
-      "She manages the timelines, the budgets, and the reality checks that keep a project from drifting into the void. If Franco is the noise, Ariana is the signal. She operates with surgical precision to ensure that what we promise is exactly what we ship."
+      "Ideas are everywhere. Everyone has them. What actually matters is making them real. That’s where Ariana comes in. She’s the person who makes sure the work moves forward instead of living in a Google Doc forever.",
+      "While the creative side is pushing ideas, testing edges, and occasionally overcomplicating things, she’s bringing clarity—what’s happening, when it’s happening, and how we’re actually going to pull it off. She runs the timelines, budgets, and logistics that keep projects grounded in reality.",
+      "If Franco is the chaos and creative momentum, Ariana is the structure that turns it into something real. She makes sure what we promise is clear, achievable, and delivered properly—no surprises, no stress, no fluff."
     ],
   }
 };
