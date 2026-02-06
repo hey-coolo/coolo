@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { TEAM_MEMBERS, PROJECTS } from '../constants';
+import { TEAM_MEMBERS } from '../constants';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Crosshair, Cpu, Zap, Disc, PenTool, Coffee, Anchor, Linkedin, Instagram, Grid } from 'lucide-react';
+import { ArrowLeft, Cpu, Zap, Disc, PenTool, Coffee, Anchor, Linkedin, Instagram, ArrowUpRight, Camera } from 'lucide-react';
 
-// --- 1. LOCAL "FUN" DATA (EXTENDING THE CMS) ---
+// --- 1. LOCAL DATA (The Fun Stuff) ---
 const MEMBER_EXTRAS: Record<string, any> = {
   franco: {
     class: "Visual Architect",
     level: "Lvl. 99",
     status: "HEAVY_RENDERING",
     signatureMove: "The No-Magic Deconstruction",
-    linkedin: "https://www.linkedin.com/", // UPDATE THIS
+    linkedin: "https://www.linkedin.com/in/whatthefranco/",
     loadout: [
       { icon: <Cpu size={18} />, name: "Cinema 4D" },
       { icon: <Zap size={18} />, name: "Octane" },
       { icon: <Disc size={18} />, name: "90s Hip Hop" },
-      { icon: <Coffee size={18} />, name: "Flat White" }
+      { icon: <Coffee size={18} />, name: "Black Coffee" }
     ],
     stats: [
       { label: "Vision", val: 98 },
@@ -24,12 +24,12 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { label: "Technical", val: 92 },
       { label: "Patience", val: 40 }
     ],
-    // MOCK GALLERY (Replace with real team photos or IG feed images)
-    gallery: [
-       PROJECTS[0].imageUrl,
-       PROJECTS[1].imageUrl,
-       PROJECTS[2].imageUrl,
-       PROJECTS[3].imageUrl
+    // The code expects these files to exist in /public/assets/team/gallery/
+    galleryImages: [
+        'franco01.webp',
+        'franco02.webp',
+        'franco03.webp',
+        'franco04.webp'
     ]
   },
   ariana: {
@@ -37,7 +37,7 @@ const MEMBER_EXTRAS: Record<string, any> = {
     level: "Lvl. 99",
     status: "SYSTEM_OPTIMAL",
     signatureMove: "Chaos Containment Field",
-    linkedin: "https://www.linkedin.com/", // UPDATE THIS
+    linkedin: "https://www.linkedin.com/in/arianaarmando/",
     loadout: [
       { icon: <Anchor size={18} />, name: "Logic" },
       { icon: <PenTool size={18} />, name: "Strategy" },
@@ -50,42 +50,40 @@ const MEMBER_EXTRAS: Record<string, any> = {
       { label: "Client Love", val: 100 },
       { label: "BS Tolerance", val: 10 }
     ],
-    gallery: [
-       PROJECTS[4].imageUrl,
-       PROJECTS[5].imageUrl,
-       PROJECTS[6].imageUrl,
-       PROJECTS[7].imageUrl
+    galleryImages: [
+        'ariana01.webp',
+        'ariana02.webp',
+        'ariana03.webp',
+        'ariana04.webp'
     ]
   }
 };
 
 // --- 2. COMPONENTS ---
 
-const StatBar = ({ label, value, delay }: { label: string, value: number, delay: number }) => (
-    <div className="mb-4">
-        <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest mb-1 text-brand-navy/60">
-            <span>{label}</span>
+const StatBar = ({ label, value }: { label: string, value: number }) => (
+    <div className="mb-6">
+        <div className="flex justify-between font-mono text-[10px] uppercase tracking-widest mb-2 text-brand-navy">
+            <span className="font-bold">{label}</span>
             <span>{value}%</span>
         </div>
-        <div className="h-3 w-full bg-brand-navy/10 border border-brand-navy/20 p-[1px]">
+        <div className="h-1 w-full bg-brand-navy/10">
             <motion.div 
                 initial={{ width: 0 }}
                 whileInView={{ width: `${value}%` }}
-                transition={{ duration: 1, delay: delay, ease: "circOut" }}
-                className="h-full bg-brand-purple relative"
-            >
-                <div className="absolute right-0 top-0 bottom-0 w-[2px] bg-brand-yellow"></div>
-            </motion.div>
+                transition={{ duration: 1.5, ease: "circOut" }}
+                className="h-full bg-brand-purple"
+            />
         </div>
     </div>
 );
 
-const InventoryItem = ({ icon, name }: { icon: React.ReactNode, name: string }) => (
-    <div className="aspect-square border border-brand-navy/20 bg-white flex flex-col items-center justify-center gap-2 group hover:border-brand-purple hover:bg-brand-purple/5 transition-colors cursor-help">
-        <div className="text-brand-navy group-hover:scale-110 transition-transform duration-300">
+const LoadoutItem = ({ icon, name }: { icon: React.ReactNode, name: string }) => (
+    <div className="flex items-center gap-4 p-4 border border-brand-navy/10 bg-white hover:border-brand-purple transition-colors group">
+        <div className="text-brand-navy/60 group-hover:text-brand-purple transition-colors">
             {icon}
         </div>
-        <span className="font-mono text-[8px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-2 text-center w-full px-1">
+        <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy">
             {name}
         </span>
     </div>
@@ -94,6 +92,10 @@ const InventoryItem = ({ icon, name }: { icon: React.ReactNode, name: string }) 
 const TeamMemberPage: React.FC = () => {
   const { memberSlug } = useParams<{ memberSlug: string }>();
   
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [memberSlug]);
+
   if (!memberSlug || !(memberSlug in TEAM_MEMBERS)) {
      return (
       <div className="min-h-screen flex items-center justify-center bg-[#EAEAEA]">
@@ -108,7 +110,7 @@ const TeamMemberPage: React.FC = () => {
   const member = TEAM_MEMBERS[memberSlug];
   const extras = MEMBER_EXTRAS[memberSlug] || MEMBER_EXTRAS['franco'];
   
-  // Logic for "Next Member" (Circular)
+  // Navigation Logic
   const memberKeys = Object.keys(TEAM_MEMBERS);
   const currentIndex = memberKeys.indexOf(memberSlug);
   const nextIndex = (currentIndex + 1) % memberKeys.length;
@@ -116,178 +118,156 @@ const TeamMemberPage: React.FC = () => {
   const nextMember = TEAM_MEMBERS[nextSlug];
 
   return (
-    <div className="bg-[#EAEAEA] min-h-screen pt-24 md:pt-32 pb-0 overflow-x-hidden selection:bg-brand-yellow selection:text-brand-navy">
+    <div className="bg-[#EAEAEA] min-h-screen pt-32 pb-0 overflow-x-hidden">
       
-      {/* --- KINETIC BACKGROUND --- */}
-      <div className="fixed top-1/2 left-0 w-full -translate-y-1/2 opacity-[0.03] pointer-events-none select-none overflow-hidden z-0">
-          <div className="whitespace-nowrap text-[30vw] font-black uppercase leading-none text-brand-navy animate-marquee">
-              {member.name} {member.name} {member.name}
-          </div>
-      </div>
-
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
+      <div className="container mx-auto px-6 md:px-8">
         
-        {/* --- NAV BAR --- */}
-        <div className="flex justify-between items-center mb-12 md:mb-24 border-b-2 border-brand-navy/10 pb-6">
-            <Link to="/about" className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-brand-navy hover:text-brand-purple transition-colors group">
-                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                <span>Return to Roster</span>
+        {/* --- 1. HEADER & HERO --- */}
+        <div className="mb-24">
+            <Link to="/team" className="inline-flex items-center gap-2 font-mono text-xs uppercase font-bold text-brand-navy/40 hover:text-brand-purple transition-colors mb-12">
+                <ArrowLeft size={14} /> Back to Humans
             </Link>
-            <div className="font-mono text-[10px] uppercase tracking-widest bg-brand-navy text-white px-2 py-1">
-                OPERATIVE: {String(currentIndex + 1).padStart(2, '0')}
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-end">
+                <div className="lg:col-span-8">
+                    <span className="inline-block bg-brand-purple text-white px-2 py-1 font-mono text-[10px] uppercase tracking-widest font-bold mb-6">
+                        {extras.class}
+                    </span>
+                    <h1 className="text-8xl md:text-[14vw] font-black uppercase tracking-tighter leading-[0.8] text-brand-navy mb-8">
+                        {member.name}
+                    </h1>
+                    <p className="font-mono text-xs md:text-sm uppercase tracking-widest text-brand-navy/60 max-w-lg leading-relaxed">
+                        Status: <span className="text-brand-navy font-bold">{extras.status}</span> <br/>
+                        Clearance: {extras.level}
+                    </p>
+                </div>
+                {/* Hero Image - The "Mugshot" */}
+                <div className="lg:col-span-4">
+                    <div className="aspect-[3/4] bg-brand-navy relative overflow-hidden grayscale contrast-125">
+                        <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover opacity-90" />
+                        <div className="absolute inset-0 border-[1px] border-white/20 m-4 pointer-events-none"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-            
-            {/* --- LEFT: VISUALS (The Mugshot) --- */}
-            <div className="lg:col-span-5 sticky top-32">
-                <div className="relative border-2 border-brand-navy bg-brand-navy shadow-[12px_12px_0px_#0F0328]">
-                    {/* The Image */}
-                    <div className="relative aspect-[3/4] overflow-hidden grayscale contrast-125 hover:grayscale-0 transition-all duration-700 group">
-                        <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover" />
-                        
-                        {/* Overlay UI */}
-                        <div className="absolute inset-0 border-[1px] border-white/20 m-4 pointer-events-none flex flex-col justify-between p-4">
-                            <div className="flex justify-between">
-                                <Crosshair className="text-white opacity-50 animate-spin-slow" size={24} />
-                                <span className="font-mono text-[9px] text-white bg-red-600 px-1 animate-pulse">LIVE FEED</span>
-                            </div>
-                            <div className="font-mono text-[9px] text-white/70 uppercase tracking-widest text-right">
-                                CAM_A // 16mm<br/>
-                                ISO 400
-                            </div>
-                        </div>
-                    </div>
+        <div className="w-full h-[2px] bg-brand-navy/10 mb-24"></div>
 
-                    {/* The Label */}
-                    <div className="bg-white border-t-2 border-brand-navy p-6 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-2 opacity-10">
-                            <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
-                        </div>
-                        <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.8] text-brand-navy relative z-10">
-                            {member.name}
-                        </h1>
-                        <div className="mt-4 flex flex-wrap gap-2">
-                            <span className="font-mono text-[10px] uppercase bg-brand-purple text-white px-2 py-1 font-bold">{extras.class}</span>
-                            <span className="font-mono text-[10px] uppercase border border-brand-navy/20 px-2 py-1 font-bold text-brand-navy/60">{extras.level}</span>
-                        </div>
-                    </div>
+        {/* --- 2. INTEL & LOADOUT --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-32">
+            
+            {/* Bio Section */}
+            <div className="lg:col-span-7">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8">
+                    // Transmission Log
+                </h3>
+                <div className="space-y-8">
+                    {member.bio.map((p, i) => (
+                        <p key={i} className="font-body text-2xl md:text-3xl leading-tight text-brand-navy font-light">
+                            {p}
+                        </p>
+                    ))}
+                </div>
+                
+                {/* Signature Move */}
+                <div className="mt-16 p-8 bg-white border-l-4 border-brand-purple">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 mb-2 block">Special Ability</span>
+                    <h4 className="text-2xl font-black uppercase text-brand-navy tracking-tight">{extras.signatureMove}</h4>
                 </div>
             </div>
 
-            {/* --- RIGHT: DATA (The Dossier) --- */}
-            <div className="lg:col-span-7 bg-[#EAEAEA]/80 backdrop-blur-sm">
-                
-                {/* 1. Status Block */}
-                <div className="mb-12 border-b-2 border-brand-navy pb-12">
-                    <span className="font-mono text-xs uppercase tracking-widest text-brand-purple font-bold mb-4 block">Current Status</span>
-                    <div className="text-3xl md:text-5xl font-black uppercase text-brand-navy leading-none tracking-tight">
-                        "{extras.status}"
-                    </div>
+            {/* Stats & Tools */}
+            <div className="lg:col-span-5 space-y-16">
+                <div>
+                    <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8 border-b border-brand-navy/10 pb-2">
+                        Attributes
+                    </h3>
+                    {extras.stats.map((s: any) => (
+                        <StatBar key={s.label} label={s.label} value={s.val} />
+                    ))}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-                    {/* 2. Bio Stream */}
-                    <div className="md:col-span-2">
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 font-bold mb-4 block border-b border-brand-navy/10 pb-2">
-                            [01] Transmission Log
-                        </span>
-                        <div className="space-y-6">
-                            {member.bio.map((p, i) => (
-                                <p key={i} className="font-body text-xl leading-relaxed text-brand-navy/90">
-                                    {p}
-                                </p>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* 3. Stats (The RPG Element) */}
-                    <div>
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 font-bold mb-6 block border-b border-brand-navy/10 pb-2">
-                            [02] Attributes
-                        </span>
-                        <div className="pr-4">
-                            {extras.stats.map((s: any, i: number) => (
-                                <StatBar key={s.label} label={s.label} value={s.val} delay={i * 0.1} />
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* 4. Loadout (The Inventory) */}
-                    <div>
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 font-bold mb-6 block border-b border-brand-navy/10 pb-2">
-                            [03] Loadout
-                        </span>
-                        <div className="grid grid-cols-2 gap-2">
-                            {extras.loadout.map((item: any, i: number) => (
-                                <InventoryItem key={i} icon={item.icon} name={item.name} />
-                            ))}
-                        </div>
-                        
-                        <div className="mt-8">
-                            <span className="font-mono text-[9px] uppercase tracking-widest text-brand-purple font-bold mb-2 block">Special Ability</span>
-                            <div className="border border-brand-purple/20 bg-brand-purple/5 p-3">
-                                <span className="font-black text-brand-navy uppercase text-sm block">{extras.signatureMove}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* 5. VISUAL EVIDENCE (IG Feed Placeholder) */}
-                <div className="mb-16">
-                    <div className="flex justify-between items-end mb-6 border-b border-brand-navy/10 pb-2">
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 font-bold">
-                            [04] Visual Evidence
-                        </span>
-                        <div className="flex gap-4">
-                            {member.instagram && (
-                                <a href={`https://instagram.com/${member.instagram}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 font-mono text-[9px] uppercase text-brand-navy hover:text-brand-purple font-bold">
-                                    <Instagram size={10} /> IG Feed
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        {extras.gallery.map((src: string, i: number) => (
-                            <div key={i} className="aspect-square bg-brand-navy overflow-hidden relative group">
-                                <img src={src} alt="" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                                <div className="absolute inset-0 bg-brand-purple/20 opacity-0 group-hover:opacity-100 transition-opacity mix-blend-multiply"></div>
-                            </div>
+                <div>
+                    <h3 className="font-mono text-xs uppercase tracking-widest text-brand-navy/40 font-bold mb-8 border-b border-brand-navy/10 pb-2">
+                        Daily Loadout
+                    </h3>
+                    <div className="grid grid-cols-2 gap-4">
+                        {extras.loadout.map((item: any, i: number) => (
+                            <LoadoutItem key={i} icon={item.icon} name={item.name} />
                         ))}
                     </div>
                 </div>
-
-                {/* 6. Comms Button (LINKEDIN) */}
-                <div className="mt-12">
-                    <a href={extras.linkedin} target="_blank" rel="noopener noreferrer" className="block w-full bg-brand-navy text-white font-mono text-xl uppercase font-bold py-6 text-center hover:bg-[#0077B5] transition-all shadow-[8px_8px_0px_#FCC803] hover:shadow-none hover:translate-x-1 hover:translate-y-1 group">
-                        <span className="flex items-center justify-center gap-3">
-                            <Linkedin size={20} />
-                            Connect on Network
-                        </span>
-                    </a>
-                    <div className="mt-4 flex justify-between items-center px-2">
-                        <span className="font-mono text-[9px] uppercase text-brand-navy/40">Secure Line // Professional</span>
-                        <span className="font-mono text-[9px] uppercase text-brand-navy/40">Response Time: &lt; 24h</span>
-                    </div>
-                </div>
-
             </div>
         </div>
+
+        {/* --- 3. VISUAL EVIDENCE (The Gallery) --- */}
+        <div className="mb-32">
+            <div className="flex justify-between items-end mb-12">
+                <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tight text-brand-navy leading-none">
+                    Visual<br/>Evidence.
+                </h2>
+                {member.instagram && (
+                    <a href={`https://instagram.com/${member.instagram}`} target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-2 font-mono text-xs uppercase font-bold text-brand-purple hover:text-brand-navy transition-colors">
+                        <Instagram size={14} /> Follow Signal <ArrowUpRight size={14} />
+                    </a>
+                )}
+            </div>
+
+            {/* Gallery Grid - Clean, large, impactful */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {extras.galleryImages && extras.galleryImages.map((imgName: string, i: number) => (
+                    <div key={i} className="aspect-[4/5] bg-brand-navy/5 overflow-hidden relative group">
+                        {/* Note: Path assumes files are in /public/assets/team/gallery/ */}
+                        <img 
+                            src={`/assets/team/gallery/${imgName}`} 
+                            alt={`Evidence ${i}`} 
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                            onError={(e) => {
+                                // Fallback if file doesn't exist yet
+                                e.currentTarget.src = 'https://placehold.co/600x800/EAEAEA/0F0328?text=NO+SIGNAL';
+                            }}
+                        />
+                        <div className="absolute top-4 right-4 bg-brand-navy text-white px-2 py-1 font-mono text-[9px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                            IMG_0{i+1}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        {/* --- 4. ACTION BAR (LinkedIn & Contact) --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border-y-2 border-brand-navy mb-32">
+            <a 
+                href={extras.linkedin} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group flex flex-col justify-center items-center py-16 px-8 bg-brand-navy hover:bg-[#0077B5] transition-colors duration-300 text-white"
+            >
+                <Linkedin size={48} className="mb-6 opacity-50 group-hover:opacity-100 transition-opacity" />
+                <h3 className="font-mono text-sm uppercase tracking-widest font-bold">Connect on Network</h3>
+            </a>
+            <Link 
+                to="/contact" 
+                className="group flex flex-col justify-center items-center py-16 px-8 bg-white hover:bg-brand-purple hover:text-white transition-colors duration-300 border-l-0 md:border-l-2 border-brand-navy"
+            >
+                <div className="mb-6 font-mono text-4xl group-hover:rotate-12 transition-transform">⚡</div>
+                <h3 className="font-mono text-sm uppercase tracking-widest font-bold text-brand-navy group-hover:text-white">Deploy on Project</h3>
+            </Link>
+        </div>
+
       </div>
 
       {/* --- NEXT OPERATOR FOOTER --- */}
-      <Link to={`/team/${nextSlug}`} className="block mt-24 md:mt-32 border-t-2 border-brand-navy bg-white group hover:bg-brand-navy hover:text-white transition-colors duration-500">
-          <div className="container mx-auto px-8 py-16 flex justify-between items-center">
+      <Link to={`/team/${nextSlug}`} className="block bg-white group hover:bg-brand-yellow transition-colors duration-500 border-t-2 border-brand-navy">
+          <div className="container mx-auto px-8 py-24 flex justify-between items-center">
               <div>
-                  <span className="font-mono text-xs uppercase tracking-widest opacity-50 mb-2 block">Next Human</span>
-                  <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none group-hover:translate-x-4 transition-transform duration-300">
+                  <span className="font-mono text-xs uppercase tracking-widest opacity-50 mb-4 block text-brand-navy">Next Operative</span>
+                  <h2 className="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-none text-brand-navy group-hover:translate-x-6 transition-transform duration-500">
                       {nextMember.name}
                   </h2>
               </div>
-              <div className="hidden md:block font-mono text-sm font-bold uppercase tracking-widest">
-                  Select &rarr;
+              <div className="hidden md:flex w-24 h-24 rounded-full border-2 border-brand-navy items-center justify-center group-hover:bg-brand-navy group-hover:text-white transition-colors">
+                  <span className="font-mono text-2xl font-bold">→</span>
               </div>
           </div>
       </Link>
