@@ -54,46 +54,40 @@ const TimeDisplay = () => {
 
 const Footer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
-  
-  // Hide the "Start the Grind" section on the Contact page to avoid redundancy
-  const showGrindSection = location.pathname !== '/contact';
 
   return (
     <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden border-t-2 border-brand-offwhite/10">
       
-      {/* --- START THE GRIND SECTION (Hidden on Contact Page) --- */}
-      {showGrindSection && (
-          <div className="bg-brand-offwhite text-brand-navy">
-            <div className="container mx-auto px-8 py-24 md:py-32">
-                
-                {/* Main CTA */}
-                <div className="flex flex-col items-center text-center">
-                    <span className="font-mono text-sm uppercase text-brand-purple tracking-widest mb-8">
-                        Ready to evolve?
-                    </span>
-                    <h2 className="text-6xl md:text-[14vw] font-black uppercase tracking-tight text-brand-navy leading-[0.85] flex flex-col md:block items-center">
-                        <span>START THE</span>
-                        <br className="hidden md:block"/>
-                        <span 
-                            className="text-brand-purple inline-block origin-left md:ml-8" 
-                            style={{ transform: 'skewX(-20deg)' }}
-                        >
-                            GRIND.
-                        </span>
-                    </h2>
-                    
-                    <Link 
-                        to="/contact" 
-                        className="inline-block mt-16 text-3xl md:text-5xl font-sans font-black hover:text-brand-purple transition-colors duration-300 underline decoration-brand-yellow decoration-4 underline-offset-8"
+      {/* --- ENTER THE STUDIO SECTION (Now showing globally) --- */}
+      <div className="bg-brand-offwhite text-brand-navy">
+        <div className="container mx-auto px-8 py-24 md:py-32">
+            
+            {/* Main CTA */}
+            <div className="flex flex-col items-center text-center">
+                <span className="font-mono text-sm uppercase text-brand-purple tracking-widest mb-8">
+                    Ready to evolve?
+                </span>
+                <h2 className="text-6xl md:text-[14vw] font-black uppercase tracking-tight text-brand-navy leading-[0.85] flex flex-col md:block items-center">
+                    <span>ENTER THE</span>
+                    <br className="hidden md:block"/>
+                    <span 
+                        className="text-brand-purple inline-block origin-left md:ml-8" 
+                        style={{ transform: 'skewX(-20deg)' }}
                     >
-                        hey@coolo.co.nz
-                    </Link>
-                </div>
-
+                        STUDIO.
+                    </span>
+                </h2>
+                
+                <Link 
+                    to="/contact" 
+                    className="inline-block mt-16 text-3xl md:text-5xl font-sans font-black hover:text-brand-purple transition-colors duration-300 underline decoration-brand-yellow decoration-4 underline-offset-8"
+                >
+                    hey@coolo.co.nz
+                </Link>
             </div>
-          </div>
-      )}
+
+        </div>
+      </div>
 
       {/* --- STANDARD FOOTER GRID --- */}
       <div className="container mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 border-t border-brand-offwhite/10">

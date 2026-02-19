@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 import BrandLogo from './BrandLogo';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false); // Mobile menu state
+  const [expandedMenu, setExpandedMenu] = useState<string | null>(null); // Mobile sub-menu toggle
   const location = useLocation();
   
   const isHome = location.pathname === '/';
@@ -30,6 +31,7 @@ const Header: React.FC = () => {
   // Close mobile menu on route change
   useEffect(() => {
     setIsOpen(false);
+    setExpandedMenu(null); // Reset sub-menu on route change
   }, [location]);
 
   // Lock body scroll when mobile menu is open
@@ -40,6 +42,10 @@ const Header: React.FC = () => {
       document.body.style.overflow = 'unset';
     }
   }, [isOpen]);
+
+  const toggleSubMenu = (menuName: string) => {
+    setExpandedMenu(expandedMenu === menuName ? null : menuName);
+  };
 
   return (
     <>
@@ -128,40 +134,64 @@ const Header: React.FC = () => {
                     <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-brand-yellow rounded-full blur-[100px]"></div>
                 </div>
 
-                <div className="flex flex-col items-center gap-8 relative z-10 w-full">
+                <div className="flex flex-col items-center gap-6 relative z-10 w-full mt-12">
                     {NAV_LINKS.map((link, i) => (
                         <motion.div
                             key={link.name}
                             initial={{ opacity: 0, y: 40 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 + (i * 0.05), duration: 0.5, ease: "easeOut" }}
-                            className="w-full text-center"
+                            className="w-full flex flex-col items-center"
                         >
-                            <NavLink 
-                                to={link.path}
-                                onClick={() => setIsOpen(false)}
-                                className={({ isActive }) => `block font-black text-4xl uppercase tracking-tighter transition-colors mb-2 ${
-                                    isActive ? 'text-brand-yellow' : 'text-brand-offwhite hover:text-brand-yellow'
-                                }`}
-                            >
-                                {link.name}
-                            </NavLink>
+                            <div className="flex items-center justify-center gap-4">
+                                <NavLink 
+                                    to={link.path}
+                                    onClick={() => setIsOpen(false)}
+                                    className={({ isActive }) => `block font-black text-4xl uppercase tracking-tighter transition-colors ${
+                                        isActive ? 'text-brand-yellow' : 'text-brand-offwhite hover:text-brand-yellow'
+                                    }`}
+                                >
+                                    {link.name}
+                                </NavLink>
+                                
+                                {/* Sub-menu toggle button */}
+                                {link.subLinks && (
+                                    <button 
+                                        onClick={() => toggleSubMenu(link.name)}
+                                        className="text-brand-offwhite/50 hover:text-brand-yellow transition-colors p-2"
+                                    >
+                                        <ChevronDown 
+                                            size={24} 
+                                            className={`transition-transform duration-300 ${expandedMenu === link.name ? 'rotate-180 text-brand-yellow' : ''}`}
+                                        />
+                                    </button>
+                                )}
+                            </div>
                             
-                            {/* Mobile Sublinks */}
-                            {link.subLinks && (
-                                <div className="flex flex-col gap-2 mb-4">
-                                    {link.subLinks.map(sub => (
-                                        <Link 
-                                            key={sub.name}
-                                            to={sub.path}
-                                            onClick={() => setIsOpen(false)}
-                                            className="font-mono text-xs uppercase tracking-widest text-brand-offwhite/50 hover:text-brand-white"
-                                        >
-                                            {sub.name}
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
+                            {/* Mobile Sublinks Accordion */}
+                            <AnimatePresence>
+                                {link.subLinks && expandedMenu === link.name && (
+                                    <motion.div 
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        className="overflow-hidden w-full"
+                                    >
+                                        <div className="flex flex-col items-center gap-4 py-4 mt-2 border-t border-brand-offwhite/10 w-3/4 mx-auto">
+                                            {link.subLinks.map(sub => (
+                                                <Link 
+                                                    key={sub.name}
+                                                    to={sub.path}
+                                                    onClick={() => setIsOpen(false)}
+                                                    className="font-mono text-sm uppercase tracking-widest text-brand-offwhite/60 hover:text-brand-white"
+                                                >
+                                                    {sub.name}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </motion.div>
                     ))}
                     
@@ -169,7 +199,7 @@ const Header: React.FC = () => {
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
-                        className="mt-8 flex flex-col items-center gap-8 w-full border-t border-brand-offwhite/10 pt-12"
+                        className="mt-4 flex flex-col items-center gap-8 w-full border-t border-brand-offwhite/10 pt-10"
                     >
                         <Link 
                             to="/contact" 

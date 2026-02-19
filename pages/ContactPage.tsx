@@ -13,6 +13,9 @@ const ContactPage: React.FC = () => {
     vibe: '',
     message: ''
   });
+  
+  // State for FAQ Accordion
+  const [openFaq, setOpenFaq] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,13 +38,16 @@ const ContactPage: React.FC = () => {
 
       if (response.ok) {
         setStatus('success');
-        // window.scrollTo({ top: 0, behavior: 'smooth' }); // Optional depending on UX refactor
       } else {
         throw new Error('API Error');
       }
     } catch (error) {
       setStatus('error');
     }
+  };
+
+  const toggleFaq = (id: string) => {
+    setOpenFaq(openFaq === id ? null : id);
   };
 
   const inputClass = "bg-transparent border-b-2 border-brand-navy/20 text-brand-navy font-mono text-xl md:text-2xl focus:border-brand-purple focus:outline-none placeholder-brand-navy/30 w-full py-6 transition-all duration-300";
@@ -160,9 +166,9 @@ const ContactPage: React.FC = () => {
             </div>
         </AnimatedSection>
         
-        {/* --- FAQ SECTION --- */}
+        {/* --- FAQ SECTION (Accordion Style) --- */}
         <AnimatedSection>
-            <div className="mt-40 border-t border-brand-navy/10 pt-24 max-w-6xl mx-auto">
+            <div className="mt-40 border-t border-brand-navy/10 pt-24 max-w-5xl mx-auto">
                 <header className="mb-24 text-left">
                     <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold block mb-4">
                         The Fine Print
@@ -176,33 +182,53 @@ const ContactPage: React.FC = () => {
                     </p>
                 </header>
 
-                <div className="space-y-32">
+                <div className="space-y-16">
                     {QA_DATA.map((section, i) => (
-                        <div key={i} className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                            <div className="lg:col-span-4">
-                                <div className="sticky top-32">
-                                    <h3 className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-4">
-                                        {String(i + 1).padStart(2, '0')} / {section.category}
-                                    </h3>
-                                    <div className="h-[2px] w-12 bg-brand-navy/20"></div>
-                                </div>
-                            </div>
+                        <div key={i} className="pt-8 border-t-2 border-brand-navy">
+                            <h3 className="font-mono text-brand-navy uppercase tracking-widest text-sm font-bold mb-8">
+                                {String(i + 1).padStart(2, '0')} / {section.category}
+                            </h3>
                             
-                            <div className="lg:col-span-8 space-y-20">
-                                {section.questions.map((item, j) => (
-                                    <AnimatedSection delay={j * 0.1} key={j}>
-                                        <div className="group">
-                                            <h4 className="text-3xl md:text-5xl font-black uppercase mb-6 italic text-brand-navy group-hover:text-brand-purple transition-colors duration-300">
-                                                "{item.q}"
-                                            </h4>
-                                            <div className="border-l-4 border-brand-purple/20 pl-6 md:pl-8 group-hover:border-brand-purple transition-colors duration-300">
-                                                <p className="font-body text-lg md:text-2xl leading-relaxed text-brand-navy/80">
-                                                    {item.a}
-                                                </p>
-                                            </div>
+                            <div className="space-y-2">
+                                {section.questions.map((item, j) => {
+                                    const faqId = `${i}-${j}`;
+                                    const isExpanded = openFaq === faqId;
+
+                                    return (
+                                        <div 
+                                            key={j} 
+                                            className="group border-b border-brand-navy/10 last:border-0"
+                                        >
+                                            <button 
+                                                onClick={() => toggleFaq(faqId)}
+                                                className="w-full text-left py-6 flex justify-between items-center gap-6 cursor-pointer focus:outline-none"
+                                            >
+                                                <h4 className={`text-2xl md:text-4xl font-black uppercase italic transition-colors duration-300 ${isExpanded ? 'text-brand-purple' : 'text-brand-navy group-hover:text-brand-purple'}`}>
+                                                    "{item.q}"
+                                                </h4>
+                                                <span className="text-4xl text-brand-navy font-mono flex-shrink-0 opacity-50 group-hover:opacity-100 transition-opacity">
+                                                    {isExpanded ? '-' : '+'}
+                                                </span>
+                                            </button>
+                                            <AnimatePresence>
+                                                {isExpanded && (
+                                                    <motion.div
+                                                        initial={{ height: 0, opacity: 0 }}
+                                                        animate={{ height: 'auto', opacity: 1 }}
+                                                        exit={{ height: 0, opacity: 0 }}
+                                                        className="overflow-hidden"
+                                                    >
+                                                        <div className="pb-8 pt-2 pl-4 md:pl-8 border-l-4 border-brand-purple/50">
+                                                            <p className="font-body text-lg md:text-xl leading-relaxed text-brand-navy/80">
+                                                                {item.a}
+                                                            </p>
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
                                         </div>
-                                    </AnimatedSection>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                     ))}
