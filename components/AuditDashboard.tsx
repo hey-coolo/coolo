@@ -12,29 +12,120 @@ const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
   const navigate = useNavigate();
 
   const handleDownloadPDF = () => {
-    // Basic structural layout for the PDF (can be expanded with custom fonts/branding later)
     const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 20;
+
+    // Helper function for the brutalist footer
+    const addFooter = (doc: jsPDF, pageNum: number) => {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8);
+        doc.setTextColor(0, 0, 0); 
+        doc.text("COOLO.CO.NZ", margin, pageHeight - 15);
+        doc.text("HEY@COOLO.CO.NZ", pageWidth - margin, pageHeight - 15, { align: "right" });
+        doc.text(`--- PAGE ${pageNum} ---`, pageWidth / 2, pageHeight - 15, { align: "center" });
+    };
+
+    let pageNum = 1;
+
+    // --- PAGE 1: COVER & VERDICT ---
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.text("COOLO_FREE BRAND AUDIT", margin, margin);
     
-    doc.setFontSize(22);
-    doc.text("Brand Reality Check - Summary", 20, 20);
+    doc.setFontSize(40);
+    doc.text("REALITY", margin, 45);
+    doc.text("CHECK.", margin, 60);
+
+    doc.setLineWidth(1);
+    doc.line(margin, 70, pageWidth - margin, 70);
+
+    doc.setFontSize(14);
+    doc.text("THE VERDICT:", margin, 90);
+    doc.setFont("helvetica", "normal");
+    const splitVerdict = doc.splitTextToSize(result.verdict, pageWidth - margin * 2);
+    doc.text(splitVerdict, margin, 100);
+
+    let yPos = 100 + (splitVerdict.length * 7) + 15;
     
-    doc.setFontSize(16);
-    doc.text(`Verdict: ${result.verdict}`, 20, 35);
-    doc.text(`Vibe Score: ${result.totalScore} / 10`, 20, 45);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text("THE VIBE SCORE:", margin, yPos);
+    doc.setFontSize(50);
+    doc.text(`${result.totalScore} / 10`, margin, yPos + 18);
+
+    addFooter(doc, pageNum);
+
+    // --- PAGE 2: PILLARS ---
+    doc.addPage();
+    pageNum++;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.text("COOLO_FREE BRAND AUDIT // PILLARS", margin, margin);
     
-    doc.setFontSize(12);
-    let yPos = 60;
+    yPos = 40;
     result.pillars.forEach((p) => {
-        doc.text(`[${p.pillar}] ${p.name}: ${p.score}/10`, 20, yPos);
-        yPos += 10;
+        // Page break logic if pillars run too long
+        if (yPos > pageHeight - 40) {
+            addFooter(doc, pageNum);
+            doc.addPage();
+            pageNum++;
+            yPos = 40;
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(10);
+            doc.text("COOLO_FREE BRAND AUDIT // PILLARS", margin, margin);
+        }
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+        doc.text(`${p.pillar.toUpperCase()} — ${p.name.toUpperCase()} [ ${p.score}/10 ]`, margin, yPos);
         
-        // Split long critique text so it wraps in the PDF
-        const splitCritique = doc.splitTextToSize(p.critique, 170);
-        doc.text(splitCritique, 20, yPos);
-        yPos += (splitCritique.length * 7) + 5; 
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+        const splitCritique = doc.splitTextToSize(p.critique, pageWidth - margin * 2);
+        doc.text(splitCritique, margin, yPos + 8);
+        
+        yPos += 8 + (splitCritique.length * 5) + 15;
+        
+        doc.setLineWidth(0.2);
+        doc.line(margin, yPos - 10, pageWidth - margin, yPos - 10);
     });
 
-    doc.save("coolo-brand-audit.pdf");
+    addFooter(doc, pageNum);
+
+    // --- PAGE 3: HARD TRUTHS ---
+    doc.addPage();
+    pageNum++;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.text("COOLO_FREE BRAND AUDIT // THE HARD TRUTHS", margin, margin);
+    
+    doc.setFontSize(24);
+    doc.text("THE HARD QUESTIONS.", margin, 40);
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text("Read your answers back. If it feels messy, that's normal.", margin, 50);
+    doc.text("If you don't know the answers to these, you're guessing.", margin, 56);
+
+    yPos = 75;
+    result.hardQuestions.forEach((q, i) => {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        const splitQ = doc.splitTextToSize(`0${i+1} / ${q.toUpperCase()}`, pageWidth - margin * 2);
+        doc.text(splitQ, margin, yPos);
+        yPos += (splitQ.length * 6) + 12;
+    });
+
+    // Final CTA at the bottom of the last page
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text("CLARITY TAKES WORK.", margin, yPos + 10);
+
+    addFooter(doc, pageNum);
+
+    // Save the styled doc
+    doc.save(`coolo-reality-check.pdf`);
   };
 
   return (

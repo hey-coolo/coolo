@@ -94,9 +94,9 @@ const TierDetailPage: React.FC = () => {
                 )}
                 
                 <div className="mt-24 p-12 border border-brand-navy/10 bg-brand-navy/5">
-                    <h4 className="font-mono text-xs uppercase tracking-widest text-brand-navy font-bold mb-4">The Senior Standard</h4>
+                    <h4 className="font-mono text-xs uppercase tracking-widest text-brand-navy font-bold mb-4">Humans in the Machine Standard</h4>
                     <p className="font-body text-lg text-brand-navy/70 leading-relaxed max-w-2xl">
-                        Every pixel and frame is handled by Franco and Ariana. No juniors. No outsourcing. High-resolution design power delivered directly into your brand engine.
+                        We build the systems, but we aren't robots. We're in the trenches with you. We use our tools and experience to unblock your brand so you can stop stressing and start moving.
                     </p>
                 </div>
             </div>
