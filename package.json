@@ -19,7 +19,8 @@
     "lucide-react": "^0.475.0",
     "@google/generative-ai": "latest",
     "@google/genai": "latest",
-    "react-helmet-async": "^2.0.4"
+    "react-helmet-async": "^2.0.4",
+    "jspdf": "^2.5.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

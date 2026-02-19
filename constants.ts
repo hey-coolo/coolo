@@ -400,6 +400,7 @@ export const NAV_LINKS = [
     subLinks: [
       { name: 'The Basics', path: '/design-power/the-basics' },
       { name: 'The Campaign', path: '/design-power/the-campaign' },
+      { name: 'The Content', path: '/design-power/the-content' },
       { name: 'The Website', path: '/design-power/the-website' },
       { name: 'The Full Flex', path: '/design-power/the-full-flex' }
     ]
@@ -496,10 +497,10 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
     {
         slug: "the-basics",
         name: "The Basics",
-        focus: "Just the Logo",
-        desc: "You have a business, but you look like a hobby. We fix that. A sharp logo and colors to make you look expensive.",
+        focus: "Just the Basic to Look the Part",
+        desc: "You have a business, but you still look like a hobby-ish. We help fix that. A sharp logo and colours to make you look PRO.",
         cta: "Get Sharp",
-        deliverables: ["Logo System", "Color & Type", "The Rulebook"],
+        deliverables: ["Logo System", "Colour & Type", "Mini-Rulebook"],
         timeline: "2–4 Weeks",
         idealFor: "New founders embarrassed by their business card."
     },
@@ -507,17 +508,27 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
         slug: "the-campaign",
         name: "The Campaign",
         focus: "Launch Time",
-        desc: "A logo isn't enough. You need to sell. We build the ads, the visuals, and the story to launch your product.",
+        desc: "A logo isn't enough. You need to sell. We build the ads, the visuals, and the story to launch your products.",
         cta: "Start Selling",
         deliverables: ["Ad Mockups", "Campaign Concept", "Copywriting Headlines"],
         timeline: "4–5 Weeks",
         idealFor: "Brands ready to run ads."
     },
     {
+        slug: "the-content",
+        name: "The Content",
+        focus: "Face Time",
+        desc: "Now that we got you visual identity signed off we start moving the pieces. You need to present. We build the system, and the visuals story to show up, consistently, everyday on your Social channels.",
+        cta: "Show Yourself",
+        deliverables: ["Feed Vibes", "Storytelling Concept", "Captions builders", "SM Design Template"],
+        timeline: "2–4 Weeks",
+        idealFor: "Brands ready to show up."
+    },
+    {
         slug: "the-website",
         name: "The Website",
         focus: "Your HQ",
-        desc: "We build custom sites that actually convert visitors into cash. No templates. Webflow only.",
+        desc: "We build cool sites that convert visitors into customers with cash to spend. No templates. Custom made or Webflow dev.",
         cta: "Build It",
         deliverables: ["Custom Web Design", "Webflow Dev", "Responsive Ready", "CMS Training"],
         timeline: "6–8 Weeks",

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jsPDF } from 'jspdf';
 import { AuditResult } from '../types';
 
 interface AuditDashboardProps {
@@ -9,6 +10,32 @@ interface AuditDashboardProps {
 
 const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
   const navigate = useNavigate();
+
+  const handleDownloadPDF = () => {
+    // Basic structural layout for the PDF (can be expanded with custom fonts/branding later)
+    const doc = new jsPDF();
+    
+    doc.setFontSize(22);
+    doc.text("Brand Reality Check - Summary", 20, 20);
+    
+    doc.setFontSize(16);
+    doc.text(`Verdict: ${result.verdict}`, 20, 35);
+    doc.text(`Vibe Score: ${result.totalScore} / 10`, 20, 45);
+    
+    doc.setFontSize(12);
+    let yPos = 60;
+    result.pillars.forEach((p) => {
+        doc.text(`[${p.pillar}] ${p.name}: ${p.score}/10`, 20, yPos);
+        yPos += 10;
+        
+        // Split long critique text so it wraps in the PDF
+        const splitCritique = doc.splitTextToSize(p.critique, 170);
+        doc.text(splitCritique, 20, yPos);
+        yPos += (splitCritique.length * 7) + 5; 
+    });
+
+    doc.save("coolo-brand-audit.pdf");
+  };
 
   return (
     <div className="max-w-6xl mx-auto pt-12">
@@ -62,12 +89,22 @@ const AuditDashboard: React.FC<AuditDashboardProps> = ({ result, onReset }) => {
                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-yellow">Rough numbers? Score below 8.0?</span>
                    <h3 className="text-4xl md:text-5xl font-black uppercase mt-4 mb-8 leading-[0.9]">Stop Guessing.<br/>Do the Work.</h3>
                </div>
-               <button 
-                onClick={() => navigate('/contact')} 
-                className="bg-brand-yellow text-brand-navy px-10 py-5 font-black uppercase tracking-widest hover:bg-brand-offwhite transition-all w-full"
-               >
-                   Talk to the Humans
-               </button>
+               
+               <div className="w-full flex flex-col gap-4 mt-auto">
+                 <button 
+                  onClick={() => navigate('/contact')} 
+                  className="bg-brand-yellow text-brand-navy px-10 py-5 font-black uppercase tracking-widest hover:bg-brand-offwhite transition-all w-full"
+                 >
+                     Talk to the Humans
+                 </button>
+                 <button 
+                  onClick={handleDownloadPDF} 
+                  className="border-2 border-brand-yellow text-brand-yellow px-10 py-5 font-black uppercase tracking-widest hover:bg-brand-yellow hover:text-brand-navy transition-all w-full"
+                 >
+                     Download Summary
+                 </button>
+               </div>
+               
                <button onClick={onReset} className="mt-8 font-mono text-[10px] uppercase underline opacity-40 hover:opacity-100 transition-opacity">Scrub & Restart</button>
           </div>
       </div>
