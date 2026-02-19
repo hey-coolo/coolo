@@ -417,7 +417,6 @@ export const NAV_LINKS = [
   },
   { name: 'Work', path: '/work' },
   { name: 'Journal', path: '/journal' },
-  { name: 'FAQ', path: '/faq' },
 ];
 
 export const SERVICE_LEGS: ServiceLeg[] = [

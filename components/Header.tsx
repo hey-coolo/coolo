@@ -92,9 +92,6 @@ const Header: React.FC = () => {
             </div>
           ))}
           <div className="flex items-center space-x-4 ml-6">
-              <span className={`font-mono text-[9px] uppercase tracking-widest opacity-40 px-3 py-1.5 border border-current rounded-md font-bold transition-opacity hover:opacity-100 ${isLightText ? 'text-brand-offwhite border-brand-offwhite/30' : 'text-brand-navy border-brand-navy/10 bg-brand-navy/5'}`}>
-                  V2.1_BETA
-              </span>
               <Link to="/contact" className={`font-mono text-[10px] uppercase tracking-[0.2em] px-8 py-3 transition-all duration-500 font-bold border ${isLightText ? 'border-brand-offwhite text-brand-offwhite hover:bg-brand-offwhite hover:text-brand-navy drop-shadow-sm' : 'bg-brand-purple text-brand-offwhite border-brand-purple hover:bg-brand-yellow hover:text-brand-navy hover:border-brand-yellow shadow-xl'}`}>
                 Inquire
               </Link>
@@ -174,9 +171,6 @@ const Header: React.FC = () => {
                         transition={{ delay: 0.5 }}
                         className="mt-8 flex flex-col items-center gap-8 w-full border-t border-brand-offwhite/10 pt-12"
                     >
-                        <span className="font-mono text-[9px] uppercase tracking-widest text-brand-offwhite/50 border border-brand-offwhite/20 px-3 py-1 rounded">
-                            V2.0_ALPHA
-                        </span>
                         <Link 
                             to="/contact" 
                             onClick={() => setIsOpen(false)}

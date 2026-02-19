@@ -23,7 +23,6 @@ import DropsPage from './pages/DropsPage';
 import DropDetailPage from './pages/DropDetailPage';
 import ContactPage from './pages/ContactPage';
 import JoinPage from './pages/JoinPage';
-import QAPage from './pages/QAPage';
 import UnsubscribePage from './pages/Unsubscribe';
 import NotFoundPage from './pages/NotFoundPage';
 import CustomCursor from './components/CustomCursor';
@@ -31,29 +30,15 @@ import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
 import StickerSystem from './components/StickerSystem';
 
-// Removed BroadcastHUD import
-
 const pageVariants = {
-  initial: { 
-    opacity: 0, 
-    filter: "blur(8px)", // Simple clean blur
-    scale: 1.01
-  },
-  in: { 
-    opacity: 1, 
-    filter: "blur(0px)",
-    scale: 1 
-  },
-  out: { 
-    opacity: 0, 
-    filter: "blur(4px)",
-    scale: 0.99 
-  },
+  initial: { opacity: 0, scale: 0.99, y: 10 },
+  in: { opacity: 1, scale: 1, y: 0 },
+  out: { opacity: 0, scale: 1.01, y: -10 },
 };
 
 const pageTransition: Transition = {
-  duration: 0.5,
-  ease: [0.25, 0.1, 0.25, 1.0], 
+  duration: 0.8,
+  ease: [0.19, 1, 0.22, 1],
 };
 
 const App: React.FC = () => {
@@ -73,8 +58,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#EAEAEA] font-body text-brand-navy min-h-screen flex flex-col antialiased selection:bg-brand-purple selection:text-white relative overflow-x-hidden">
-      
+    <div className="bg-brand-offwhite font-body text-brand-navy min-h-screen flex flex-col antialiased selection:bg-brand-yellow">
       <CustomCursor />
       
       <AnimatePresence mode="wait">
@@ -85,7 +69,7 @@ const App: React.FC = () => {
           <motion.div
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
-             transition={{ duration: 0.8, ease: "easeOut" }}
+             transition={{ duration: 1, ease: "easeOut" }}
              className="flex flex-col min-h-screen"
           >
               <StickerSystem />
@@ -107,10 +91,12 @@ const App: React.FC = () => {
                       <Route path="/about" element={<AboutPage />} />
                       <Route path="/playbook" element={<PlaybookPage />} />
                       
+                      
                       {/* --- CLARITY ROUTES --- */}
                       <Route path="/clarity" element={<ClarityPage />} />
                       <Route path="/clarity/free-resources" element={<FreeResourcesPage />} />
                       
+                      {/* Unified Audit Route - Pointing to RealityCheckApp */}
                       <Route path="/audit" element={<RealityCheckApp />} />
                       <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
 
@@ -143,7 +129,6 @@ const App: React.FC = () => {
                       {/* --- UTILITY ROUTES --- */}
                       <Route path="/contact" element={<ContactPage />} />
                       <Route path="/join" element={<JoinPage />} />
-                      <Route path="/faq" element={<QAPage />} />
                       <Route path="/unsubscribe" element={<UnsubscribePage />} />
                       
                       <Route path="*" element={<NotFoundPage />} />

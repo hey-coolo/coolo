@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AnimatedSection from '../components/AnimatedSection';
 import { motion, AnimatePresence } from 'framer-motion';
+import { QA_DATA } from '../constants';
 
 const ContactPage: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -34,7 +35,7 @@ const ContactPage: React.FC = () => {
 
       if (response.ok) {
         setStatus('success');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // window.scrollTo({ top: 0, behavior: 'smooth' }); // Optional depending on UX refactor
       } else {
         throw new Error('API Error');
       }
@@ -60,12 +61,12 @@ const ContactPage: React.FC = () => {
                             Let's Start<br/>Something.
                         </h1>
                         <p className="mt-8 text-xl text-brand-navy/60 max-w-xl font-medium">
-                            Have a vision? A struggle? A dream? Tell us what's on your mind.
+                            Have a vision? A struggle? A dream? Tell us what's on your mind. Drop us a line below or grab a time on our calendar.
                         </p>
                     </header>
                 )}
 
-                <div className={`relative transition-all duration-500 ${status === 'success' ? '' : 'bg-white border border-brand-navy/10 p-8 md:p-16 shadow-xl'}`}>
+                <div className={`relative transition-all duration-500 mb-24 ${status === 'success' ? '' : 'bg-white border border-brand-navy/10 p-8 md:p-16 shadow-xl'}`}>
                     <AnimatePresence mode="wait">
                         {status === 'success' ? (
                             <motion.div
@@ -145,11 +146,70 @@ const ContactPage: React.FC = () => {
                         )}
                     </AnimatePresence>
                 </div>
+
+                {/* --- CALENDAR INTEGRATION PLACEHOLDER --- */}
+                <div className="mt-16 bg-brand-purple/5 border border-brand-purple/20 p-8 md:p-12 text-center rounded-sm">
+                    <h3 className="text-3xl font-black uppercase mb-4 text-brand-navy">Or Book a Time</h3>
+                    <p className="font-body text-lg text-brand-navy/70 mb-8 max-w-lg mx-auto">
+                        Skip the forms and jump straight into a call. Find a time that works for you.
+                    </p>
+                    <button className="bg-brand-purple text-brand-offwhite px-8 py-4 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy transition-colors">
+                        Open Calendar
+                    </button>
+                </div>
+            </div>
+        </AnimatedSection>
+        
+        {/* --- FAQ SECTION --- */}
+        <AnimatedSection>
+            <div className="mt-40 border-t border-brand-navy/10 pt-24 max-w-6xl mx-auto">
+                <header className="mb-24 text-left">
+                    <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold block mb-4">
+                        The Fine Print
+                    </span>
+                    <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tight text-brand-navy leading-[0.9]">
+                        The <span className="text-brand-purple italic">Truth.</span>
+                    </h2>
+                    <p className="font-body text-xl md:text-2xl text-brand-navy/70 mt-8 leading-tight max-w-3xl">
+                        You have questions. We have honest answers. <br/>
+                        No corporate jargon. No sales fluff. Just the raw data on how we work, what we charge, and why we do it.
+                    </p>
+                </header>
+
+                <div className="space-y-32">
+                    {QA_DATA.map((section, i) => (
+                        <div key={i} className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                            <div className="lg:col-span-4">
+                                <div className="sticky top-32">
+                                    <h3 className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-4">
+                                        {String(i + 1).padStart(2, '0')} / {section.category}
+                                    </h3>
+                                    <div className="h-[2px] w-12 bg-brand-navy/20"></div>
+                                </div>
+                            </div>
+                            
+                            <div className="lg:col-span-8 space-y-20">
+                                {section.questions.map((item, j) => (
+                                    <AnimatedSection delay={j * 0.1} key={j}>
+                                        <div className="group">
+                                            <h4 className="text-3xl md:text-5xl font-black uppercase mb-6 italic text-brand-navy group-hover:text-brand-purple transition-colors duration-300">
+                                                "{item.q}"
+                                            </h4>
+                                            <div className="border-l-4 border-brand-purple/20 pl-6 md:pl-8 group-hover:border-brand-purple transition-colors duration-300">
+                                                <p className="font-body text-lg md:text-2xl leading-relaxed text-brand-navy/80">
+                                                    {item.a}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </AnimatedSection>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </AnimatedSection>
       </main>
-      
-    
     </div>
   );
 };
