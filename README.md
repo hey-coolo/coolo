@@ -1,4 +1,4 @@
-© 2024—Present COOLO. Mount Maunganui.
+© 2025—Present COOLO. Mount Maunganui, BOP, NZ.
 
 # COOLO
 
@@ -10,9 +10,9 @@
 
 ## // MISSION_PROTOCOL
 
-**Brand Strategy + Visual Design Execution.**
+**Brand Strategy + Visual Design Power.**
 
-[coolo.co.nz](https://coolo.co.nz) is a digital experience designed to strip away the noise. It features a minimalist, terminal-inspired interface with interactive cursor sketching capabilities, allowing users to engage directly with the viewport canvas.
+[coolo.co.nz](https://coolo.co.nz) is a boutique brand design studio helping emerging brands make better creative decisions. We believe design only matters when it means something. We don't chase trends or sell hype; just becuase these are cool. We focus on building the frameworks that help brands escape "DIY mode" and start moving with guts, clarity, and style.
 
 ## // SYSTEM_ARCHITECTURE
 * **Google Studio:** Concept Idea
