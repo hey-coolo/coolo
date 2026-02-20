@@ -4,35 +4,35 @@ import Footer from '../components/Footer';
 import AnimatedSection from '../components/AnimatedSection';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// --- NEW FAQ COPY ---
+// --- PLAIN ENGLISH FAQS FOR BIZ OWNERS ---
 const CONTACT_FAQS = [
   {
-    q: "Do you just design logos and websites?",
-    a: "No. A logo is just a badge if there is no thinking behind it. We start with Brand Strategy to define who you actually are, and then move into Design Execution to build the systems we’ve imagined together. We build brands that last."
+    q: "Do you just make logos and websites?",
+    a: "We do, but we always start with the strategy first. A logo doesn't mean much if it doesn't attract your ideal customers. We figure out exactly who you are, and then we build the design, website, and content to match."
   },
   {
     q: "Will my project be handed off to a junior designer?",
-    a: "Never. That is the classic agency bait-and-switch. When you work with COOLO, you are working with experienced creatives. The people you talk to in the kickoff meeting are the hands actually doing the work."
+    a: "Never. That’s a classic agency trick. With us, the experienced people you talk to in the first meeting are the exact same hands doing the actual work on your business."
   },
   {
-    q: "What do we actually get at the end of this?",
-    a: "You don't just get a zipped folder of assets and a \"good luck.\" Depending on the scope, we build out \"Brand Culture\" Workbooks and Playbooks so your team actually knows how to use the systems we build."
+    q: "What do we actually get at the end of the project?",
+    a: "You don't just get a zipped folder of files and a 'good luck.' We build simple guides and rulebooks so you and your team know exactly how to use your new brand, website, and designs in the real world."
   },
   {
-    q: "Do I own the files at the end?",
-    a: "You own the final brand. Once the last invoice is paid, you get all the final, ready-to-use assets and the full rights to use them. What we keep are our raw working files—the messy background layers. You own the finished product, we keep our tools."
+    q: "Do I own the files when we are done?",
+    a: "Yes. Once the final invoice is paid, you own the finished brand, the website, and all the ready-to-use files. You have full rights to use them however you want to grow your business."
   },
   {
-    q: "Can you turn this around in a couple of weeks?",
-    a: "If you want rushed, trend-chasing work, we aren't the right fit. We come from a time when you had to get it right on the first take. We set realistic timelines because the hardest thing to do is keep it simple, and that takes time."
+    q: "Can you finish my project in a couple of weeks?",
+    a: "Good work takes time. If you need something rushed out the door to chase a quick trend, we aren't the right fit. We set realistic timelines so we can get it right the first time."
   },
   {
-    q: "What is it like working with you?",
-    a: "We treat our process like an Open Studio Door. It’s a workspace, not a museum where everything is hidden behind glass. You will see the wireframes, the raw files, and the layers as we build. We share our perspective, not a rulebook."
+    q: "What is it like working with you during the process?",
+    a: "We keep the doors open. We don't disappear for weeks and come back with a 'big reveal.' We show you our progress, rough drafts, and ideas along the way so we make sure we are always on the same page."
   },
   {
-    q: "Do you work with startups or just established brands?",
-    a: "Both. We don't filter by company size; we filter by mindset. We like working with real people. We build relationships first, and the business follows the trust. If you care about the craft as much as we do, we will figure out the rest."
+    q: "Do you work with new startups or just established companies?",
+    a: "Both. We care more about your mindset than your company size. If you value good work and want to build a real relationship to grow your business, we can figure out the rest."
   }
 ];
 
@@ -361,16 +361,19 @@ const ContactPage: React.FC = () => {
             </div>
         </AnimatedSection>
         
-        {/* --- FAQ SECTION (Ultra Minimal) --- */}
+        {/* --- FAQ SECTION (Plain English, Clear Editorial) --- */}
         <AnimatedSection>
             <div className="mt-40 xl:mt-64 pt-24 border-t-[1px] border-brand-navy">
                 <header className="mb-24 text-left max-w-4xl">
                     <p className="font-mono uppercase tracking-widest text-xs font-bold mb-8">
-                        02 / The Fine Print
+                        02 / Clear Answers
                     </p>
                     <h2 className="text-[12vw] md:text-[9rem] font-black uppercase tracking-tighter leading-[0.8] m-0">
-                        The<br/>Truth.
+                        The<br/>Details.
                     </h2>
+                    <p className="mt-12 text-xl md:text-2xl font-medium leading-relaxed max-w-2xl opacity-80">
+                        No agency jargon. Just straight answers about money, files, timelines, and what you actually get when we work together.
+                    </p>
                 </header>
 
                 <div className="space-y-0 border-t-[1px] border-brand-navy">
