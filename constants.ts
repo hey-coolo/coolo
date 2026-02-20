@@ -517,7 +517,7 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
         slug: "the-content",
         name: "The Content",
         focus: "Face Time",
-        desc: "Now that we got you visual identity signed off we start moving the pieces. You need presence. We build the system, and the visuals story to show up, consistently, everyday on your Social channels.",
+        desc: "Your visual identity is signed off. Now, you need presence. We build the system and the stories so your brand shows up consistently across all your brands touch-points.",
         cta: "Show Yourself",
         deliverables: ["Feed Vibes", "Storytelling Concept", "Captions builders", "SM Design Template"],
         timeline: "2–4 Weeks",
