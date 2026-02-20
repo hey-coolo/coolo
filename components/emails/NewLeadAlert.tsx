@@ -1,4 +1,4 @@
-import { Body, Container, Head, Heading, Html, Img, Preview, Section, Text, Tailwind, Row, Column } from "@react-email/components";
+import { Body, Container, Head, Heading, Html, Preview, Section, Text, Tailwind, Row, Column } from "@react-email/components";
 import * as React from "react";
 
 const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://coolo.co.nz";
@@ -6,12 +6,14 @@ const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "
 interface NewLeadAlertProps {
   name: string;
   email: string;
-  vibe: string;
-  message: string;
+  company?: string;
+  situation?: string;
+  needs?: string[];
   budget?: string;
+  message?: string;
 }
 
-export const NewLeadAlert = ({ name, email, vibe, message, budget }: NewLeadAlertProps) => {
+export const NewLeadAlert = ({ name, email, company, situation, needs, budget, message }: NewLeadAlertProps) => {
   return (
     <Html>
       <Tailwind
@@ -37,7 +39,7 @@ export const NewLeadAlert = ({ name, email, vibe, message, budget }: NewLeadAler
             @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Space+Mono:wght@400;700&display=swap');
           `}</style>
         </Head>
-        <Preview>New Lead: {name}</Preview>
+        <Preview>New Lead: {name} {company ? `(${company})` : ''}</Preview>
         <Body className="bg-brand-offwhite font-sans my-auto mx-auto px-4 py-12">
           <Container className="mx-auto w-full max-w-[600px]">
             
@@ -60,6 +62,18 @@ export const NewLeadAlert = ({ name, email, vibe, message, budget }: NewLeadAler
                     <Text className="text-brand-navy font-sans text-[16px] font-bold m-0">{name}</Text>
                   </Column>
                 </Row>
+                
+                {company && (
+                  <Row className="border-b border-brand-navy/10 py-3">
+                    <Column className="w-[100px]">
+                      <Text className="text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">COMPANY</Text>
+                    </Column>
+                    <Column>
+                      <Text className="text-brand-navy font-sans text-[16px] font-bold m-0">{company}</Text>
+                    </Column>
+                  </Row>
+                )}
+
                 <Row className="border-b border-brand-navy/10 py-3">
                   <Column className="w-[100px]">
                     <Text className="text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">EMAIL</Text>
@@ -68,32 +82,50 @@ export const NewLeadAlert = ({ name, email, vibe, message, budget }: NewLeadAler
                     <Text className="text-brand-navy font-sans text-[16px] font-bold m-0">{email}</Text>
                   </Column>
                 </Row>
-                <Row className="border-b border-brand-navy/10 py-3">
-                  <Column className="w-[100px]">
-                    <Text className="text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">VIBE</Text>
-                  </Column>
-                  <Column>
-                    <Text className="text-brand-navy font-sans text-[16px] font-bold m-0">{vibe}</Text>
-                  </Column>
-                </Row>
-                {budget && (
-                <Row className="border-b border-brand-navy/10 py-3">
-                  <Column className="w-[100px]">
-                    <Text className="text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">BUDGET</Text>
-                  </Column>
-                  <Column>
-                    <Text className="text-brand-navy font-sans text-[16px] font-bold m-0">{budget}</Text>
-                  </Column>
-                </Row>
+
+                {needs && needs.length > 0 && (
+                  <Row className="border-b border-brand-navy/10 py-3">
+                    <Column className="w-[100px]">
+                      <Text className="text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">NEEDS</Text>
+                    </Column>
+                    <Column>
+                      <Text className="text-brand-navy font-sans text-[16px] font-bold m-0">{needs.join(' / ')}</Text>
+                    </Column>
+                  </Row>
                 )}
-                <Row className="border-b-2 border-brand-navy py-3">
-                  <Column className="w-[100px] align-top">
-                    <Text className="text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">MSG</Text>
-                  </Column>
-                  <Column>
-                    <Text className="text-brand-navy font-sans text-[16px] font-medium m-0 opacity-80">"{message}"</Text>
-                  </Column>
-                </Row>
+
+                {budget && (
+                  <Row className="border-b border-brand-navy/10 py-3">
+                    <Column className="w-[100px]">
+                      <Text className="text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0">BUDGET</Text>
+                    </Column>
+                    <Column>
+                      <Text className="text-brand-navy font-sans text-[16px] font-bold m-0">{budget}</Text>
+                    </Column>
+                  </Row>
+                )}
+
+                {situation && (
+                  <Row className="border-b border-brand-navy/10 py-3">
+                    <Column className="w-[100px] align-top">
+                      <Text className="text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0 pt-1">SITUATION</Text>
+                    </Column>
+                    <Column>
+                      <Text className="text-brand-navy font-sans text-[16px] font-medium m-0 opacity-80 pt-1">"{situation}"</Text>
+                    </Column>
+                  </Row>
+                )}
+
+                {message && (
+                  <Row className="border-b-2 border-brand-navy py-3">
+                    <Column className="w-[100px] align-top">
+                      <Text className="text-brand-purple font-mono text-[10px] uppercase tracking-widest m-0 pt-1">BRIEF</Text>
+                    </Column>
+                    <Column>
+                      <Text className="text-brand-navy font-sans text-[16px] font-medium m-0 opacity-80 pt-1">"{message}"</Text>
+                    </Column>
+                  </Row>
+                )}
               </Section>
 
             </Section>

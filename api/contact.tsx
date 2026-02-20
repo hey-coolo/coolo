@@ -8,8 +8,12 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   
-  const { name, email, vibe, budget, message } = req.body;
-  if (!email || !name) return res.status(400).json({ error: 'Name and email are required.' });
+  // Destructure the new payload from the updated ContactPage
+  const { firstName, lastName, email, company, situation, needs, budget, message } = req.body;
+  
+  if (!email || !firstName) return res.status(400).json({ error: 'Name and email are required.' });
+
+  const fullName = `${firstName} ${lastName}`.trim();
 
   try {
     // 1. Add to Crew (Contacts)
@@ -17,7 +21,8 @@ export default async function handler(req: any, res: any) {
       try {
         await resend.contacts.create({
           email: email,
-          firstName: name.split(' ')[0],
+          firstName: firstName,
+          lastName: lastName,
           unsubscribed: false,
           audienceId: process.env.RESEND_AUDIENCE_ID,
         });
@@ -30,7 +35,7 @@ export default async function handler(req: any, res: any) {
       to: [email],
       reply_to: 'hey@coolo.co.nz', 
       subject: 'Talk soon // COOLO',
-      react: MissionReceivedEmail({ name }),
+      react: MissionReceivedEmail({ name: firstName }),
     });
 
     // 3. Stylized brief receipt to hey@coolo.co.nz (INTERNAL ALERT)
@@ -38,8 +43,16 @@ export default async function handler(req: any, res: any) {
       from: 'COOLO Bot <system@coolo.co.nz>', 
       to: ['hey@coolo.co.nz'],
       reply_to: email, 
-      subject: `New Lead Brief: ${name} (${vibe})`,
-      react: NewLeadAlert({ name, email, vibe, budget, message }),
+      subject: `New Brief: ${fullName} / ${company || 'Independent'}`,
+      react: NewLeadAlert({ 
+        name: fullName, 
+        email, 
+        company, 
+        situation, 
+        needs, 
+        budget, 
+        message 
+      }),
     });
 
     await Promise.all([emailRequest, adminRequest]);
