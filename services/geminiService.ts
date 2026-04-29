@@ -44,7 +44,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   
   // Use the stable flash model
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-2.5-pro",
+    model: "gemini-3.1-pro",
     systemInstruction: SYSTEM_PROMPT
   });
 
