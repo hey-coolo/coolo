@@ -30,7 +30,16 @@ EVALUATE ON THE 5 COOLO PILLARS:
       3. O - ONE VOICE: Is the visual vibe consistent with the text tone?
       4. L - LONGEVITY: Is the design timeless? Or is it chasing a fading trend?
       5. O - OUTCOME: Is there a clear path for the customer? Do I know what to do next?
-`;
+
+FINAL VERDICT (MANDATORY):
+      You must classify the brand as one of the following:
+      1. Invisible (generic, forgettable)
+      2. Functional (works but replaceable)
+      3. Distinct (recognizable, has an edge)
+      4. Magnetic (pulls people in, rare)
+      5. No hedging. Pick one."
+';
+
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
@@ -44,7 +53,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   
   // Use the stable flash model
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-3.1-pro",
+    model: "gemini-3-flash-preview",
     systemInstruction: SYSTEM_PROMPT
   });
 
