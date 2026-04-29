@@ -37,8 +37,8 @@ FINAL VERDICT (MANDATORY):
       2. Functional (works but replaceable)
       3. Distinct (recognizable, has an edge)
       4. Magnetic (pulls people in, rare)
-      5. No hedging. Pick one."
-';
+      5. No hedging. Pick one.
+`;
 
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
@@ -53,7 +53,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
   
   // Use the stable flash model
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-3-flash-preview",
+    model: "gemini-3-flash",
     systemInstruction: SYSTEM_PROMPT
   });
 
