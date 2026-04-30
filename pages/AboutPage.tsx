@@ -25,26 +25,6 @@ const AboutPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
-        {/* Playbook Link - Locked State */}
-        <section className="py-12 border-t border-brand-navy/10">
-            <AnimatedSection>
-                <Link to="/playbook" className="group block border-2 border-brand-navy p-12 bg-white hover:bg-brand-navy transition-all duration-500">
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <div className="flex items-center gap-2 mb-2">
-                                <svg className="w-4 h-4 text-brand-purple group-hover:text-brand-yellow transition-colors" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
-                                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">Internal Tools / Restricted</span>
-                            </div>
-                            <h3 className="text-4xl font-black uppercase tracking-tight text-brand-navy group-hover:text-brand-offwhite">Access Agency Playbook &rarr;</h3>
-                        </div>
-                        <div className="hidden md:block w-32 h-32 border-l border-brand-navy/10 group-hover:border-brand-offwhite/10 relative">
-                             <div className="absolute inset-0 flex items-center justify-center font-mono text-6xl group-hover:text-brand-offwhite transition-colors">*</div>
-                        </div>
-                    </div>
-                </Link>
-            </AnimatedSection>
-        </section>
-
         {/* Narrative / History */}
         <section className="pb-32 grid grid-cols-1 lg:grid-cols-12 gap-16 border-t border-brand-navy/10 pt-24">
             <div className="lg:col-span-5">
@@ -55,17 +35,17 @@ const AboutPage: React.FC = () => {
             <div className="lg:col-span-7 space-y-12 text-xl md:text-2xl font-light text-brand-navy/80 leading-relaxed">
                 <AnimatedSection delay={100}>
                     <p>
-                        COOLO was founded on the belief that <strong className="font-bold text-brand-navy">clarity is the ultimate sophistication.</strong> We are here to help brands, businesses, and organizations find their soul—the raw truth of who they are.
+                        COOLO was founded on the belief that <strong className="font-bold text-brand-navy">clarity is the ultimate sophistication.</strong> We are here to help brands, businesses, and organizations find their soul.
                     </p>
                 </AnimatedSection>
                 <AnimatedSection delay={200}>
                     <p>
-                        We don't believe in "filler" design. We believe in high-resolution communication that reflects deep integrity. Our mission is to help you develop an unmistakable taste for design, ensuring every touchpoint of your brand feels deliberate, technical, and soulful.
+                        We don't believe in "template" design. Our mission is to help you develop a great taste for design, ensuring every touchpoint of your brand feels right, well-designed, and intentional.
                     </p>
                 </AnimatedSection>
                 <AnimatedSection delay={300}>
                     <p>
-                        Operating from Mount Maunganui, we provide a senior unit model. We partner with founders, internal teams, and ambitious agencies to refine the signal and eliminate the noise. No bloat. Just deep focus.
+                        Operating from <strong className="font-bold text-brand-navy"></strong>Mount Maunganui</strong>, we provide a senior creative process model. We partner with founders, and agencies to refine the message and eliminate the noise.
                     </p>
                 </AnimatedSection>
             </div>
@@ -98,11 +78,11 @@ const AboutPage: React.FC = () => {
                     <div>
                         <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-4 block">The Crew</span>
                         <h2 className="text-7xl md:text-[10vw] font-black uppercase tracking-tight leading-[0.9] text-brand-navy">
-                            The Unit
+                            This is Us
                         </h2>
                     </div>
                     <p className="max-w-md font-mono text-xs uppercase tracking-widest text-brand-navy/60 leading-relaxed text-right">
-                        You get the Brains and the Engine. <br/>Direct access to the senior unit.
+                        You get the Brains and the Engine. <br/>Direct access to us.
                     </p>
                 </div>
             </AnimatedSection>
@@ -158,11 +138,11 @@ const AboutPage: React.FC = () => {
                         </div>
              
                          <h3 className="text-5xl md:text-6xl font-black uppercase tracking-tight text-brand-navy mb-4 group-hover:text-brand-purple transition-colors">
-                          Join<br/>The Unit
+                          Join<br/>The Team
                          </h3>
              
                          <p className="font-mono text-xs uppercase tracking-widest text-brand-navy/60 max-w-xs mx-auto leading-relaxed">
-                             Seeking Senior Creatives<br/>& Specialists
+                             Seeking Senior Creatives<br/>& Talent
                          </p>
 
                          <span className="inline-block mt-8 border-b-2 border-brand-purple pb-1 font-mono text-xs uppercase font-bold text-brand-purple tracking-widest group-hover:text-brand-navy group-hover:border-brand-navy transition-all">
