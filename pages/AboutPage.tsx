@@ -41,7 +41,7 @@ const AboutPage: React.FC = () => {
                 </AnimatedSection>
                 <AnimatedSection delay={300}>
                     <p>
-                        Operating from <strong className="font-bold text-brand-navy"></strong>Mount Maunganui</strong>, we provide a senior creative process model. We partner with founders, and agencies to refine the message and eliminate the noise.
+                        Operating from Mount Maunganui, we provide a senior creative process model. We partner with founders, and agencies to refine the message and eliminate the noise.
                     </p>
                 </AnimatedSection>
             </div>
