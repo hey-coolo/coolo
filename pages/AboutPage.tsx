@@ -148,25 +148,7 @@ const AboutPage: React.FC = () => {
                        </div>
                   </Link>
                 </AnimatedSection>
-                {/* NEW CLIENT CTA - REALITY CHECK */}
-        <AnimatedSection className="px-6 md:px-12 py-32 bg-white text-black text-center rounded-t-[3rem] mt-12">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight">
-              If your brand feels off, you probably already know it.
-            </h2>
-            <p className="text-xl md:text-2xl text-gray-600 mb-12 font-medium">
-              Start with a Reality Check.<br />
-              <span className="text-black">Simple. Human. Directional.</span>
-            </p>
-            <Button 
-              to="clarity/reality-check" 
-              variant="primary"
-              className="bg-black text-white hover:bg-gray-900 px-10 py-5 text-lg rounded-full"
-            >
-              Take the Reality Check
-            </Button>
-          </div>
-        </AnimatedSection>
+                
             </div>
         </section>
 
