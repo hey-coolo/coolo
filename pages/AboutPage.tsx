@@ -16,7 +16,7 @@ const AboutPage: React.FC = () => {
                 <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black block">Identity & Essence</span>
             </div>
             <h1 className="text-brand-navy text-8xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.9] mt-8">
-              The Architecture<br/><span className="text-brand-purple italic">of Soul.</span>
+              Humans<br/><span className="text-brand-purple italic">in the Machine</span>
             </h1>
           </header>
         </AnimatedSection>
@@ -75,11 +75,11 @@ const AboutPage: React.FC = () => {
                     <div>
                         <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-4 block">The Crew</span>
                         <h2 className="text-7xl md:text-[10vw] font-black uppercase tracking-tight leading-[0.9] text-brand-navy">
-                            This is Us
+                            The Humans
                         </h2>
                     </div>
                     <p className="max-w-md font-mono text-xs uppercase tracking-widest text-brand-navy/60 leading-relaxed text-right">
-                        You'll work directly with us. No layers. No handoffs. <br/>Just clear thinking and honest feedback.
+                        You'll work directly with us. No handoffs.<br/>Clear thinking and honest feedback.
                     </p>
                 </div>
             </AnimatedSection>
