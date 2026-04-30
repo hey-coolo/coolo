@@ -16,7 +16,7 @@ const AboutPage: React.FC = () => {
                 <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black block">Identity & Essence</span>
             </div>
             <h1 className="text-brand-navy text-8xl md:text-[14vw] font-black uppercase tracking-tight leading-[0.9] mt-8">
-              Humans<br/><span className="text-brand-purple italic">in the Machine</span>
+              Humans in<br/><span className="text-brand-purple italic">the Machine</span>
             </h1>
           </header>
         </AnimatedSection>
