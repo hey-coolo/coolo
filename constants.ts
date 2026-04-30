@@ -354,7 +354,7 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
     franco: {
     name: 'Franco',
     title: 'Creative Director',
-    blur:'Spots what feels off without sugarcoating it.'
+    blur:'Spots what feels off without sugarcoating it.',
     imageUrl: ASSETS.team.franco, 
     instagram: 'what.the.franco',
     bio: [
