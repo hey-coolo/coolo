@@ -31,17 +31,18 @@ const AboutPage: React.FC = () => {
             <div className="lg:col-span-7 space-y-12 text-xl md:text-2xl font-light text-brand-navy/80 leading-relaxed">
                 <AnimatedSection delay={100}>
                     <p>
-                        COOLO was founded on the belief that <strong className="font-bold text-brand-navy">clarity is the ultimate sophistication.</strong> We are here to help brands, businesses, and organizations find their soul.
+                        Most brands don't have a design problem.<strong className="font-bold text-brand-navy">They have a clarity problem.</strong> That's where we start. We are here to help clarify what you do and how you say it.
                     </p>
                 </AnimatedSection>
                 <AnimatedSection delay={200}>
                     <p>
-                        We don't believe in "template" design. Our mission is to help you develop a great taste for design, ensuring every touchpoint of your brand feels right, well-designed, and intentional.
+                        We don't use templates. Our mission is to help you fix what's not fully landing: your message, your positioning, and how your brand shows up.
                     </p>
                 </AnimatedSection>
                 <AnimatedSection delay={300}>
                     <p>
                         Operating from Mount Maunganui, we provide a senior creative process model. We partner with founders, and agencies to refine the message and eliminate the noise.
+                        We keep seeing the same pattern: good businesses, badly explained or designed. That's why and what COOLO is built to fix.
                     </p>
                 </AnimatedSection>
             </div>
@@ -51,10 +52,10 @@ const AboutPage: React.FC = () => {
         <section className="py-32 border-t-2 border-brand-navy">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
                 {[
-                    { t: "Deep Clarity", d: "We help you find your center. If your brand doesn't have a soul, it doesn't have a future." },
-                    { t: "Design Power", d: "Precision is non-negotiable. We build high-end visual systems that command respect." },
-                    { t: "Soulful Logic", d: "Strategy isn't cold; it's the bridge between what you do and who you truly are." },
-                    { t: "The Slow Burn", d: "We build for longevity. Our systems are designed to outlast trends and cultivate taste." }
+                    { t: "Deep Clarity", d: "If people don't understand you quickly, they move on. We fix that." },
+                    { t: "Design Power", d: "Your visuals should carry weight, not decoration." },
+                    { t: "Soulful Logic", d: "Strategy connects what you do to how people perceive you." },
+                    { t: "The Slow Burn", d: "We build brands that still make sense in 3 years, not just today." }
                 ].map((val, i) => (
                     <AnimatedSection key={val.t} delay={i * 100} className="h-full">
                         <div className="border-r-2 border-bottom-2 border-brand-navy p-12 h-full hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-500 group">
@@ -78,7 +79,7 @@ const AboutPage: React.FC = () => {
                         </h2>
                     </div>
                     <p className="max-w-md font-mono text-xs uppercase tracking-widest text-brand-navy/60 leading-relaxed text-right">
-                        You get the Brains and the Engine. <br/>Direct access to us.
+                        You'll work directly with us. No layers. No handoffs. <br/>Just clear thinking and honest feedback.
                     </p>
                 </div>
             </AnimatedSection>
