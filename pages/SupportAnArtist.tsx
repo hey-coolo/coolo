@@ -6,7 +6,7 @@ import { Drop } from '../types';
 
 const DropCard: React.FC<{ drop: Drop }> = ({ drop }) => {
     return (
-        <Link to={`/drops/${drop.slug}`} className="block group bg-white border border-brand-dark/10 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-brand-dark/10 hover:-translate-y-1">
+        <Link to={`/support-an-artist/${drop.slug}`} className="block group bg-white border border-brand-dark/10 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-brand-dark/10 hover:-translate-y-1">
             <div className="overflow-hidden aspect-square relative">
                 <img src={drop.imageUrl} alt={drop.title} className="w-full h-full object-cover transition-transform duration-500 ease-custom-ease group-hover:scale-105" />
                  <span className="absolute top-4 right-4 font-mono text-xs uppercase text-brand-light bg-brand-dark px-2 py-1 rounded">

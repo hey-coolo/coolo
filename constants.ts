@@ -383,7 +383,7 @@ export const NAV_LINKS = [
     subLinks: [
       { name: 'The Humans', path: '/team' },
       { name: 'Join Us', path: '/join' },
-      { name: 'Support an Artist', path: '/support-an-artist' }
+      { name: 'Support An Artist', path: '/support-an-artist' }
     ]
   }, 
   { 
@@ -391,6 +391,10 @@ export const NAV_LINKS = [
     path: '/clarity',
     subLinks: [
         { name: 'Brand Reality Check', path: '/clarity/reality-check'},
+        { name: 'Where are you right now', path: '/clarity/the-brand-state'},
+        { name: 'Brand Self-help Book', path: '/clarity/brand-therapy'},
+        { name: 'The Strategy Sessions', path: '/clarity/strategy-sessions'},        
+        { name: 'The Creative voice in your head', path: '/clarity/creative-partner'},
         { name: 'Free Resources', path: '/clarity/free-resources' }
     ]
   },
@@ -399,10 +403,10 @@ export const NAV_LINKS = [
     path: '/design-power',
     subLinks: [
       { name: 'The Basics', path: '/design-power/the-basics' },
-      { name: 'The Campaign', path: '/design-power/the-campaign' },
+      { name: 'The Campaign', path: '/design-power/the-basics-plus' },
       { name: 'The Content', path: '/design-power/the-content' },
       { name: 'The Website', path: '/design-power/the-website' },
-      { name: 'The Full Max Top', path: '/design-power/the-full-max-top' }
+      { name: 'The Full Max Top', path: '/design-power/the-full-flex' }
     ]
   },
   { 
@@ -464,7 +468,7 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
         name: 'Brand Self-help Book', 
         subtitle: 'A begginers guide to brand strategy',
         desc: "Designed for entrepreneurs and marketers. Easy guide to find your brand story.", 
-        cta: "Get the Guide", 
+        cta: "Go to Therapy", 
         features: ["7-Day Plan", "No-BS templates", "Target Audience fix"],
         timeline: "1-2 Weeks (at one's own pace)",
         idealFor: "Entrepreneurs ready to stop looking like amateurs."
@@ -481,7 +485,7 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     },
     { 
         slug: 'creative-partner',
-        name: 'The Creative vocie in your head',
+        name: 'The Creative voice in your head',
         subtitle: 'Ongoing Support',
         desc: "We join the team. We become the 'creative little voice' that keeps you looking good every month.", 
         cta: "Partner Up", 
