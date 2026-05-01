@@ -381,9 +381,8 @@ export const NAV_LINKS = [
     path: '/about',
     subLinks: [
       { name: 'The Humans', path: '/team' },
-      { name: 'Playbook', path: '/playbook' },
       { name: 'Join Us', path: '/join' },
-      { name: 'Drops', path: '/drops' }
+      { name: 'Support an Artist', path: '/support-an-artist' }
     ]
   }, 
   { 
@@ -402,7 +401,7 @@ export const NAV_LINKS = [
       { name: 'The Campaign', path: '/design-power/the-campaign' },
       { name: 'The Content', path: '/design-power/the-content' },
       { name: 'The Website', path: '/design-power/the-website' },
-      { name: 'The Full Flex', path: '/design-power/the-full-flex' }
+      { name: 'The Full Max Top', path: '/design-power/the-full-max-top' }
     ]
   },
   { 
@@ -422,28 +421,28 @@ export const NAV_LINKS = [
 export const SERVICE_LEGS: ServiceLeg[] = [
   {
     id: 'brand-clarity',
-    title: 'I am Confused',
+    title: 'Find your message',
     subtitle: 'Brand Strategy',
-    hoverText: 'We fix your story so people actually listen.',
-    visual: 'Logic First',
+    hoverText: 'We help you build your story so people actually care.',
+    visual: 'Strategy First, Brand Storytelling, Reality Check',
     path: '/clarity',
     imageUrl: ASSETS.services.clarity
   },
   {
     id: 'design-power',
-    title: 'I look average',
-    subtitle: 'Design Execution',
-    hoverText: 'Identity, 3D, and Webflow. High-res only.',
+    title: 'An average looking brand',
+    subtitle: 'Design Clarity',
+    hoverText: 'Identity, Web Design, Social Media Mood, Product Visualization, 3D Generalist.',
     visual: 'Visual Power',
     path: '/design-power',
     imageUrl: ASSETS.services.designPower
   },
   {
     id: 'partner',
-    title: 'I need a partner',
-    subtitle: 'For Agencies',
-    hoverText: 'We become your senior design unit.',
-    visual: 'Scale Up',
+    title: 'Design back-bone power.',
+    subtitle: 'For Agencies and Studios',
+    hoverText: 'We become your senior creative partners.',
+    visual: 'Scale Up, Move Faster, Deliver Better',
     path: '/partnership',
     imageUrl: ASSETS.services.partnership
   }
@@ -451,40 +450,40 @@ export const SERVICE_LEGS: ServiceLeg[] = [
 
 export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     { 
-        slug: 'the-reality-check',
-        name: 'The Reality Check', 
+        slug: 'the-brand-state',
+        name: 'Where are you right now', 
         subtitle: 'Brand Diagnostic',
         desc: "Does your brand make sense? Or is it a mess? Use our free tools to check your pulse before you spend money.", 
-        cta: "Check Yourself", 
-        features: ["AI Brand Audit", "The Hard Questions", "Instant Feedback"],
+        cta: "Diagnose Your Brand", 
+        features: ["AI Brand Audit", "The Hard Questions", "Instant Feedback", "1:1 session discovery", "45-min videocall"],
         timeline: "Instant",
-        idealFor: "Founders who suspect their branding is weak."
+        idealFor: "Founders who think their brand message is weak, and it looks meh."
     },
     { 
-        slug: 'brand-garage-guide',
-        name: 'The Garage Guide', 
-        subtitle: 'DIY Brand Kit',
-        desc: "Not ready to hire us? Fine. Don't guess. Use our guide to fix your story yourself. Simple English.", 
+        slug: 'brand-therapy',
+        name: 'Brand Self-help Book', 
+        subtitle: 'A begginers guide to brand strategy',
+        desc: "Designed for entrepreneurs and marketers. Easy guide to find your brand story.", 
         cta: "Get the Guide", 
         features: ["7-Day Plan", "No-BS templates", "Target Audience fix"],
-        timeline: "1 Week (DIY)",
-        idealFor: "Bootstrappers ready to stop looking like amateurs."
+        timeline: "1-2 Weeks (at one's own pace)",
+        idealFor: "Entrepreneurs ready to stop looking like amateurs."
     },
     { 
         slug: 'strategy-sessions',
         name: 'The Strategy Sessions', 
-        subtitle: 'We fix it for you',
-        desc: "We sit down. We talk. We find the problem. We write the Playbook that guides your whole business.", 
-        cta: "Book a Chat", 
-        features: ["2x Strategy Calls", "The Brand Playbook", "Your Messaging Cheat Codes"],
-        timeline: "2–4 Weeks",
-        idealFor: "Business owners tired of confusing marketing."
+        subtitle: 'We define your voice and message',
+        desc: "We sit down. We talk. We listen to you to find the 'problem'. We write the blueprint that'll guide your whole brand and business.", 
+        cta: "Book a Call", 
+        features: ["2x Strategy Calls", "Message Blueprint", "Your Brand Code", ""],
+        timeline: "2-4 Weeks",
+        idealFor: "Business owners tired of confusing marketing with products and communication."
     },
     { 
         slug: 'creative-partner',
-        name: 'The Creative Partner',
+        name: 'The Creative vocie in your head',
         subtitle: 'Ongoing Support',
-        desc: "We join your team. We become the 'Creative Brain' that keeps you looking sharp every month.", 
+        desc: "We join the team. We become the 'creative little voice' that keeps you looking good every month.", 
         cta: "Partner Up", 
         features: ["Visual Design", "Web Updates", "Quality Control"],
         timeline: "Monthly",
@@ -496,42 +495,42 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
     {
         slug: "the-basics",
         name: "The Basics",
-        focus: "Just the Basic to Look the Part",
-        desc: "You have a business, but you still look like a hobby-ish. We help fix that. A sharp logo and colours to make you look PRO.",
-        cta: "Get Sharp",
+        focus: "Just the Basic. A logo, some colors and a few fonts picked it for you.",
+        desc: "You have a business, but you still look like a childrens drawing. We help you fix that. Actually, we can't stand business looking that bad. A sharp logo and colours to make you look PRO.",
+        cta: "Start Looking PRO Now",
         deliverables: ["Logo System", "Colour & Type", "Mini-Rulebook"],
-        timeline: "2–4 Weeks",
-        idealFor: "New founders embarrassed by their business card."
+        timeline: "2-4 Weeks",
+        idealFor: "New founders embarrassed of their own business card."
     },
     {
-        slug: "the-campaign",
-        name: "The Campaign",
-        focus: "Launch Time",
+        slug: "the-basics-plus",
+        name: "The Basics Plus Pro Max",
+        focus: "Let's make it properly, shall we?",
         desc: "A logo isn't enough. You need to sell. We build the ads, the visuals, and the story to launch your products.",
         cta: "Start Selling",
-        deliverables: ["Ad Mockups", "Campaign Concept", "Copywriting Headlines"],
-        timeline: "4–5 Weeks",
-        idealFor: "Brands ready to run ads."
+        deliverables: ["Brand Applications", "Creative Direction", "Ads Mockups"],
+        timeline: "4-5 Weeks",
+        idealFor: "Brands ready to run the show."
     },
     {
         slug: "the-content",
-        name: "The Content",
-        focus: "Face Time",
-        desc: "Your visual identity is signed off. Now, you need presence. We build the system and the stories so your brand shows up consistently across all your brands touch-points.",
-        cta: "Show Yourself",
-        deliverables: ["Feed Vibes", "Storytelling Concept", "Captions builders", "SM Design Template"],
-        timeline: "2–4 Weeks",
-        idealFor: "Brands ready to show up."
+        name: "The Content Strategy",
+        focus: "Time to Show Up",
+        desc: "Your visual identity is looking great. Now, you need to be there for them everyday. We build the system and the stories so your brand shows up consistently across all your brands touch-points.",
+        cta: "I'M Ready to Show Up",
+        deliverables: ["Look & Feed Vibes", "Storytelling Direction", "Content Ideas", "Design Template"],
+        timeline: "3-5 Weeks",
+        idealFor: "Brand owners ready to show up."
     },
     {
         slug: "the-website",
         name: "The Website",
-        focus: "Your HQ",
-        desc: "We build cool sites that convert visitors into customers with cash to spend. No templates. Custom made or Webflow dev.",
-        cta: "Build It",
+        focus: "Your Digital Store Front",
+        desc: "We build above average websites that make your visitors turn into loyal customers with mony, mony... to spend. No templates. Custom made design developed in Webflow.",
+        cta: "Get Me A Cool Website",
         deliverables: ["Custom Web Design", "Webflow Dev", "Responsive Ready", "CMS Training"],
-        timeline: "6–8 Weeks",
-        idealFor: "Scale-ups who outgrew Squarespace."
+        timeline: "6-8 Weeks",
+        idealFor: "Business with strong foundation that still behind in digital formats."
     },
     {
         slug: "the-full-flex",
@@ -540,7 +539,7 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
         desc: "The nuclear option. We rebuild everything. Identity, Website, 3D, Strategy. The complete transformation.",
         cta: "Go All In",
         deliverables: ["Full Identity", "Webflow Site", "3D Renders", "Strategy"],
-        timeline: "10–12 Weeks",
+        timeline: "10-12 Weeks",
         idealFor: "Players ready to dominate."
     }
 ];
