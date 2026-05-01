@@ -28,10 +28,11 @@ const DropsPage: React.FC = () => {
       <AnimatedSection>
         <section className="py-24 md:py-48 text-center">
           <h1 className="font-sans text-6xl md:text-8xl font-black uppercase tracking-tighter">
-            Our Playground
+            Support An Artist
           </h1>
           <p className="font-body text-lg md:text-xl mt-8 max-w-3xl mx-auto text-brand-muted">
-            Beyond client work, we build our own stuff. Drops are standalone mini-brands, creative experiments, and limited-run products where we explore new ideas.
+            The creative industry loves to pay artists in "reach" and "opportunities." We think that's garbage. Support An Artist is our commercial engine designed to put money directly into the hands of the people making the culture.
+            Limited-run drops, designed by independent artists, backed by COOLO. You get cult-level goods. They get the funding to keep creating.
           </p>
         </section>
       </AnimatedSection>

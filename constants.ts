@@ -403,10 +403,10 @@ export const NAV_LINKS = [
     path: '/design-power',
     subLinks: [
       { name: 'The Basics', path: '/design-power/the-basics' },
-      { name: 'The Campaign', path: '/design-power/the-basics-plus' },
-      { name: 'The Content', path: '/design-power/the-content' },
-      { name: 'The Website', path: '/design-power/the-website' },
-      { name: 'The Full Max Top', path: '/design-power/the-full-flex' }
+      { name: 'The Basics Pro Plus Max', path: '/design-power/the-basics-plus' },
+      { name: 'The Content Strat', path: '/design-power/the-content' },
+      { name: 'The Website Owner', path: '/design-power/the-website' },
+      { name: 'The Full Flex', path: '/design-power/the-full-flex' }
     ]
   },
   { 
