@@ -122,7 +122,7 @@ const DropsPage: React.FC = () => {
                     {/* E-comm Checkout hook (Ready for Stripe / Shopify Buy Button / POD API) */}
                     <div className="space-y-4">
                       <button 
-                        className="w-full py-5 bg-brand-offwhite text-brand-dark font-sans font-dark uppercase tracking-widest text-lg hover:bg-brand-accent hover:text-brand-offwhite transition-colors duration-300 flex items-center justify-center gap-3"
+                        className="w-full py-5 bg-brand-dark text-brand-offwhite font-sans font-dark uppercase tracking-widest text-lg hover:bg-brand-offwhite hover:text-brand-dark transition-colors duration-300 flex items-center justify-center gap-3"
                         onClick={() => alert(`POD Integration Hook: Trigger checkout for ${drop.title}`)}
                       >
                         FUND THE ARTIST — ADD TO CART
