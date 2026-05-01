@@ -376,6 +376,7 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
 };
 
 export const NAV_LINKS = [
+  { name: 'Work', path: '/work' },
   { 
     name: 'Studio', 
     path: '/about',
@@ -414,7 +415,6 @@ export const NAV_LINKS = [
       { name: 'Equity', path: '/partnership/equity' }
     ]
   },
-  { name: 'Work', path: '/work' },
   { name: 'Journal', path: '/journal' },
 ];
 
