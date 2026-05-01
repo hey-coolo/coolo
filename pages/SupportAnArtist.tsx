@@ -6,22 +6,22 @@ import AnimatedSection from '../components/AnimatedSection';
 const ACTIVE_DROPS = [
   {
     id: '01',
-    artist: 'PABLO ROCHA',
-    location: 'BUENOS AIRES',
-    title: 'THE UNMPLYMNT HEAVYWEIGHT',
+    artist: 'elFranco',
+    location: 'Tauranga',
+    title: 'THE UNMPLYMNT',
     description: 'No mass production. No cheap blanks. Designed to be lived in, worn out, and beaten up. Made from 100% recycled industrial cotton. Brutalist typography. Zero compromises.',
-    scarcity: 'STRICTLY LIMITED TO 100 UNITS. NEVER REPRINTED.',
-    price: '120.00',
+    scarcity: 'STRICTLY LIMITED TO 50 UNITS. NEVER REPRINTED.',
+    price: '160.00',
     currency: 'NZD',
-    image: '/assets/cases/unmplymnt/Hero.webp',
+    image: '/assets/cases/unmplymnt/Hero.webp', // Placeholder using existing asset
   },
   {
     id: '02',
-    artist: 'STUDIO COOLO',
-    location: 'MOUNT MAUNGANUI',
-    title: 'THE CARTEL HOODIE',
-    description: 'Built for the trenches. 450gsm heavyweight fleece. Drop shoulder fit with distressed screen printing. If you know, you know.',
-    scarcity: 'ONLY 50 MINTED. NO RESTOCKS.',
+    artist: 'Lariana',
+    location: 'Tauranga',
+    title: 'THE FLOWER POWER HOODIE',
+    description: 'Built for the world. 450gsm heavyweight fleece. Drop shoulder fit with distressed screen printing. If you know, you know.',
+    scarcity: 'ONLY 30 MINTED. NO RESTOCKS.',
     price: '150.00',
     currency: 'NZD',
     image: '/assets/cases/the-cartridges/Hero.webp', // Placeholder using existing asset
@@ -93,7 +93,7 @@ const DropsPage: React.FC = () => {
                       />
                     </div>
                     {/* Scarcity / Live Tag */}
-                    <div className="absolute top-6 left-6 font-mono text-sm font-bold bg-brand-accent text-brand-offwhite px-3 py-1 uppercase tracking-widest">
+                    <div className="absolute top-6 left-6 font-mono text-sm font-bold text-brand-dark px-3 py-1 uppercase tracking-widest">
                       LIVE DROP {drop.id}
                     </div>
                   </div>
@@ -103,7 +103,7 @@ const DropsPage: React.FC = () => {
                     <div className="font-mono text-xs md:text-sm font-bold text-brand-muted mb-4 tracking-widest uppercase">
                       GUEST ARTIST {drop.id}: {drop.artist} // LOCATION: {drop.location}
                     </div>
-                    <h2 className="font-sans text-5xl md:text-7xl font-black uppercase tracking-tight text-brand-offwhite mb-6 leading-none">
+                    <h2 className="font-sans text-5xl md:text-7xl font-black uppercase tracking-tight text-brand-dark mb-6 leading-none">
                       {drop.title}
                     </h2>
                     <div className="font-body text-lg text-brand-muted space-y-4 mb-8">
@@ -111,7 +111,7 @@ const DropsPage: React.FC = () => {
                     </div>
                     
                     {/* Scarcity Injector */}
-                    <div className="font-mono text-sm md:text-base font-bold text-brand-offwhite bg-brand-dark inline-block px-4 py-2 mb-10 w-max uppercase tracking-widest">
+                    <div className="font-mono text-sm md:text-base font-bold text-brand-dark inline-block px-4 py-2 mb-10 w-max uppercase tracking-widest">
                       {drop.scarcity}
                     </div>
 
@@ -122,7 +122,7 @@ const DropsPage: React.FC = () => {
                     {/* E-comm Checkout hook (Ready for Stripe / Shopify Buy Button / POD API) */}
                     <div className="space-y-4">
                       <button 
-                        className="w-full py-5 bg-brand-dark text-brand-light font-sans font-black uppercase tracking-widest text-lg hover:bg-brand-accent hover:text-brand-dark transition-colors duration-300 flex items-center justify-center gap-3"
+                        className="w-full py-5 bg-brand-offwhite text-brand-dark font-sans font-dark uppercase tracking-widest text-lg hover:bg-brand-accent hover:text-brand-offwhite transition-colors duration-300 flex items-center justify-center gap-3"
                         onClick={() => alert(`POD Integration Hook: Trigger checkout for ${drop.title}`)}
                       >
                         FUND THE ARTIST — ADD TO CART
