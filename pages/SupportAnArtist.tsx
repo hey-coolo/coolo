@@ -70,7 +70,7 @@ const DropsPage: React.FC = () => {
               </p>
               <p>
                 When you buy here, you aren't just buying a hoodie, or a print. You are funding an independent artist.
-              </p>s
+              </p>
             </div>
           </AnimatedSection>
         </div>
