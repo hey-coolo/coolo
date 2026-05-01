@@ -46,7 +46,7 @@ const DropsPage: React.FC = () => {
               Limited-run drops, designed for independent artists, backed by COOLO. You get exclusive goods. Artist get the funding to keep creating.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#active-drops" className="inline-flex items-center justify-center px-8 py-4 bg-brand-dark text-brand-light font-sans font-bold uppercase tracking-widest text-sm hover:bg-brand-accent hover:text-brand-dark transition-colors duration-300">
+              <a href="#active-drops" className="inline-flex items-center justify-center px-8 py-4 bg-brand-dark text-brand-offwhite font-sans font-bold uppercase tracking-widest text-sm hover:bg-brand-accent hover:text-brand-dark transition-colors duration-300">
                 VIEW CURRENT DROPS
               </a>
             </div>
@@ -93,7 +93,7 @@ const DropsPage: React.FC = () => {
                       />
                     </div>
                     {/* Scarcity / Live Tag */}
-                    <div className="absolute top-6 left-6 font-mono text-sm font-bold bg-brand-accent text-brand-dark px-3 py-1 uppercase tracking-widest">
+                    <div className="absolute top-6 left-6 font-mono text-sm font-bold bg-brand-accent text-brand-offwhite px-3 py-1 uppercase tracking-widest">
                       LIVE DROP {drop.id}
                     </div>
                   </div>
@@ -103,7 +103,7 @@ const DropsPage: React.FC = () => {
                     <div className="font-mono text-xs md:text-sm font-bold text-brand-muted mb-4 tracking-widest uppercase">
                       GUEST ARTIST {drop.id}: {drop.artist} // LOCATION: {drop.location}
                     </div>
-                    <h2 className="font-sans text-5xl md:text-7xl font-black uppercase tracking-tight text-brand-dark mb-6 leading-none">
+                    <h2 className="font-sans text-5xl md:text-7xl font-black uppercase tracking-tight text-brand-offwhite mb-6 leading-none">
                       {drop.title}
                     </h2>
                     <div className="font-body text-lg text-brand-muted space-y-4 mb-8">
@@ -111,7 +111,7 @@ const DropsPage: React.FC = () => {
                     </div>
                     
                     {/* Scarcity Injector */}
-                    <div className="font-mono text-sm md:text-base font-bold text-brand-accent bg-brand-dark inline-block px-4 py-2 mb-10 w-max uppercase tracking-widest">
+                    <div className="font-mono text-sm md:text-base font-bold text-brand-offwhite bg-brand-dark inline-block px-4 py-2 mb-10 w-max uppercase tracking-widest">
                       {drop.scarcity}
                     </div>
 
@@ -147,9 +147,9 @@ const DropsPage: React.FC = () => {
               ARE YOU THE NEXT ARTIST?
             </h2>
             <p className="font-body text-xl md:text-2xl mb-12 max-w-2xl mx-auto leading-relaxed">
-              We are always looking for dangerous ideas. If your work is sharp enough, we’ll fund it, build it, and launch it with you.
+              We are always looking for dangerous ideas. If your work is sharp enough, we'll fund it, build it, and launch it with you.
             </p>
-            <Link to="/contact" className="inline-flex items-center justify-center px-12 py-5 bg-brand-dark text-brand-light font-sans font-black uppercase tracking-widest text-lg hover:bg-black transition-colors duration-300">
+            <Link to="/contact" className="inline-flex items-center justify-center px-12 py-5 bg-brand-dark text-brand-offwhite font-sans font-black uppercase tracking-widest text-lg hover:bg-black transition-colors duration-300">
               PITCH YOUR DROP
             </Link>
           </AnimatedSection>
