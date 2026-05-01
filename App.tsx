@@ -19,8 +19,8 @@ import ProjectPage from './pages/ProjectPage';
 import TeamPage from './pages/TeamPage';
 import TeamMemberPage from './pages/TeamMemberPage';
 import JournalPage from './pages/JournalPage';
-import DropsPage from './pages/DropsPage';
-import DropDetailPage from './pages/DropDetailPage';
+import DropsPage from './pages/SupportAnArtist';
+import DropDetailPage from './pages/SupportAnArtistDetailPage';
 import ContactPage from './pages/ContactPage';
 import JoinPage from './pages/JoinPage';
 import UnsubscribePage from './pages/Unsubscribe';
@@ -123,8 +123,8 @@ const App: React.FC = () => {
                       <Route path="/journal" element={<JournalPage />} />
                       
                       {/* --- DROPS ROUTES --- */}
-                      <Route path="/drops/:slug" element={<DropDetailPage />} />
-                      <Route path="/drops" element={<DropsPage />} />
+                      <Route path="/support-an-artist/:slug" element={<DropDetailPage />} />
+                      <Route path="/support-an-artist" element={<DropsPage />} />
                       
                       {/* --- UTILITY ROUTES --- */}
                       <Route path="/contact" element={<ContactPage />} />
