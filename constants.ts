@@ -425,7 +425,7 @@ export const NAV_LINKS = [
 export const SERVICE_LEGS: ServiceLeg[] = [
   {
     id: 'brand-clarity',
-    title: 'Get your story straight.',
+    title: 'Get your story straight',
     subtitle: 'Creative Strategy',
     hoverText: 'Everyone sounds like everyone else. We find the "real" in what you do so people actually get it.',
     visual: 'Strategy, Brand Storytelling, Reality Check',
@@ -434,7 +434,7 @@ export const SERVICE_LEGS: ServiceLeg[] = [
   },
   {
     id: 'design-power',
-    title: 'Stop using generic templates.',
+    title: 'Stop using generic templates',
     subtitle: 'Visual Systems',
     hoverText: 'A tool is just a tool, but generic templates are a trap. We build custom visual systems with actual taste, so you stop looking like everyone else.',
     visual: 'Identity, Web Design, Socials Look&Grid, Product Vis, 3D Generalist, Ad Concepts',
@@ -443,7 +443,7 @@ export const SERVICE_LEGS: ServiceLeg[] = [
   },
   {
     id: 'partner',
-    title: 'Extra brainpower.',
+    title: 'Extra brainpower',
     subtitle: 'Agency Support/Studio Partnership',
     hoverText: 'Scale your studio without the permanent salary. High-end creative bandwidth for when you need to move faster and deliver better work.',
     visual: 'Scale Up, Move Faster, Deliver Better',
