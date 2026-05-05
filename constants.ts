@@ -437,13 +437,13 @@ export const SERVICE_LEGS: ServiceLeg[] = [
     title: 'Stop using generic templates',
     subtitle: 'Visual Systems',
     hoverText: 'A tool is just a tool, but generic templates are a trap. We build custom visual systems with actual taste, so you stop looking like everyone else.',
-    visual: 'Identity, Web Design, Socials Look&Grid, Product Vis, 3D Generalist, Ad Concepts',
+    visual: 'Brand Identity, Web Design, Socials, Product Vis, Art Direction',
     path: '/design-power',
     imageUrl: ASSETS.services.designPower
   },
   {
     id: 'partner',
-    title: 'Extra brainpower',
+    title: 'More brainpower',
     subtitle: 'Agency Support/Studio Partnership',
     hoverText: 'Scale your studio without the permanent salary. High-end creative bandwidth for when you need to move faster and deliver better work.',
     visual: 'Scale Up, Move Faster, Deliver Better',
