@@ -295,7 +295,7 @@ const ServiceRouter: React.FC = () => {
         <section className="bg-brand-offwhite border-b-2 border-brand-navy relative z-40 overflow-hidden">
              <div className="grid grid-cols-1 lg:grid-cols-3">
                 {SERVICE_LEGS.map((leg, index) => {
-                    const titleParts = leg.title.match(/^(We help you with)\s+(.*)$/i);
+                    const titleParts = leg.title.match(/^(We help you)\s+(.*)$/i);
                     const prefix = titleParts ? titleParts[1] : 'We help you with';
                     const mainTitle = titleParts ? titleParts[2] : leg.title;
 

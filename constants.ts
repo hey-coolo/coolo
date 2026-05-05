@@ -434,7 +434,7 @@ export const SERVICE_LEGS: ServiceLeg[] = [
   },
   {
     id: 'design-power',
-    title: 'An average looking brand',
+    title: 'Get your brand look & feel',
     subtitle: 'Design Clarity',
     hoverText: 'Identity, Web Design, Social Media Mood, Product Visualization, 3D Generalist.',
     visual: 'Visual Power',
@@ -443,7 +443,7 @@ export const SERVICE_LEGS: ServiceLeg[] = [
   },
   {
     id: 'partner',
-    title: 'Design back-bone power.',
+    title: 'Graphic design back-bone power.',
     subtitle: 'For Agencies and Studios',
     hoverText: 'We become your senior creative partners.',
     visual: 'Scale Up, Move Faster, Deliver Better',
