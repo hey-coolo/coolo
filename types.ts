@@ -111,6 +111,7 @@ export interface Drop {
     longDescription: string;
     features?: string[];
     galleryImages?: string[];
+    variants?: DropVariant[];
 }
 
 export interface ScriptDialogue {

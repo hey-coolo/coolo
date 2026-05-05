@@ -1,20 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
-import { DROPS } from '../constants';
 import { ArrowLeft } from 'lucide-react';
+import { Drop, DropVariant } from '../types';
 
 const SupportAnArtistDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const [selectedSize, setSelectedSize] = useState<string>('');
+  const [drop, setDrop] = useState<Drop | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedVariant, setSelectedVariant] = useState<DropVariant | null>(null);
   const [isAdding, setIsAdding] = useState(false);
-  
-  const drop = DROPS.find(d => d.slug === slug);
 
   useEffect(() => {
       window.scrollTo(0, 0);
+      
+      const fetchProduct = async () => {
+          setIsLoading(true);
+          try {
+              const res = await fetch(`/api/products?id=${slug}`);
+              if (!res.ok) throw new Error('Not found');
+              const data = await res.json();
+              setDrop(data);
+              
+              // Auto-select the first available variant if they exist
+              if (data.variants && data.variants.length > 0) {
+                  const firstAvailable = data.variants.find((v: DropVariant) => v.available);
+                  if (firstAvailable) setSelectedVariant(firstAvailable);
+              }
+          } catch (error) {
+              console.error(error);
+          } finally {
+              setIsLoading(false);
+          }
+      };
+
+      if (slug) fetchProduct();
   }, [slug]);
+
+  const handleCheckout = async () => {
+      if (drop?.variants && drop.variants.length > 0 && !selectedVariant) {
+          alert("Please select an option.");
+          return;
+      }
+      setIsAdding(true);
+      
+      try {
+          const res = await fetch('/api/checkout', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                  slug: drop?.slug, 
+                  size: selectedVariant?.title || 'OS', 
+                  price: selectedVariant?.price || drop?.price,
+                  variantId: selectedVariant?.id
+              })
+          });
+          const data = await res.json();
+          if (data.url) {
+              window.location.href = data.url; 
+          } else {
+              alert("Checkout intent recorded. Waiting for Stripe configuration.");
+              setIsAdding(false);
+          }
+      } catch (err) {
+          console.error(err);
+          setIsAdding(false);
+      }
+  };
+
+  if (isLoading) {
+      return (
+          <div className="min-h-screen pt-48 flex justify-center bg-brand-offwhite">
+              <span className="font-mono uppercase tracking-widest font-bold text-brand-navy/50 animate-pulse">Syncing data...</span>
+          </div>
+      );
+  }
 
   if (!drop) {
       return (
@@ -26,33 +86,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
           </div>
       );
   }
-
-  const handleCheckout = async () => {
-      if (drop.category === 'Apparel' && !selectedSize) {
-          alert("Please select a size.");
-          return;
-      }
-      setIsAdding(true);
-      
-      try {
-          // This will hook into our API route (Step 4)
-          const res = await fetch('/api/checkout', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ slug: drop.slug, size: selectedSize, price: drop.price })
-          });
-          const data = await res.json();
-          if (data.url) {
-              window.location.href = data.url; // Redirect to Stripe Checkout
-          } else {
-              alert("Checkout simulation complete. (API not fully wired)");
-              setIsAdding(false);
-          }
-      } catch (err) {
-          console.error(err);
-          setIsAdding(false);
-      }
-  };
 
   return (
     <div className="bg-brand-offwhite min-h-screen pt-32 pb-32">
@@ -71,11 +104,9 @@ const SupportAnArtistDetailPage: React.FC = () => {
             <div className="lg:col-span-7 space-y-6">
                 <AnimatedSection>
                     <div className="aspect-[4/5] md:aspect-square bg-brand-navy/5 border border-brand-navy/5 overflow-hidden">
-                        <img 
-                            src={drop.imageUrl} 
-                            alt={drop.title} 
-                            className="w-full h-full object-cover"
-                        />
+                        {drop.imageUrl && (
+                            <img src={drop.imageUrl} alt={drop.title} className="w-full h-full object-cover" />
+                        )}
                     </div>
                 </AnimatedSection>
                 
@@ -104,7 +135,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
                                 {drop.title}
                             </h1>
                             <div className="text-3xl font-sans font-bold text-brand-navy">
-                                ${drop.price} <span className="text-lg text-brand-navy/40">NZD</span>
+                                ${selectedVariant ? selectedVariant.price : drop.price} <span className="text-lg text-brand-navy/40">NZD</span>
                             </div>
                         </div>
                     </AnimatedSection>
@@ -115,22 +146,25 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </div>
                     </AnimatedSection>
 
-                    {/* Sizing (If Apparel) */}
-                    {drop.category === 'Apparel' && (
+                    {/* Sizing / Variants (Dynamic from API) */}
+                    {drop.variants && drop.variants.length > 0 && (
                         <AnimatedSection delay={200}>
                             <div>
                                 <div className="flex justify-between items-center mb-4">
-                                    <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy/50">Select Size</span>
-                                    <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-purple cursor-pointer hover:underline">Size Guide</span>
+                                    <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy/50">Select Option</span>
                                 </div>
-                                <div className="grid grid-cols-4 gap-3">
-                                    {['S', 'M', 'L', 'XL'].map(size => (
+                                <div className="grid grid-cols-3 gap-3">
+                                    {drop.variants.map(variant => (
                                         <button 
-                                            key={size}
-                                            onClick={() => setSelectedSize(size)}
-                                            className={`py-4 font-mono text-sm uppercase font-bold border transition-all ${selectedSize === size ? 'bg-brand-navy text-white border-brand-navy' : 'border-brand-navy/20 bg-transparent text-brand-navy hover:border-brand-navy'}`}
+                                            key={variant.id}
+                                            onClick={() => setSelectedVariant(variant)}
+                                            disabled={!variant.available}
+                                            className={`py-4 px-2 font-mono text-xs uppercase font-bold border transition-all ${
+                                                !variant.available ? 'opacity-30 cursor-not-allowed border-brand-navy/10' :
+                                                selectedVariant?.id === variant.id ? 'bg-brand-navy text-white border-brand-navy' : 'border-brand-navy/20 bg-transparent text-brand-navy hover:border-brand-navy'
+                                            }`}
                                         >
-                                            {size}
+                                            {variant.title}
                                         </button>
                                     ))}
                                 </div>
