@@ -425,27 +425,27 @@ export const NAV_LINKS = [
 export const SERVICE_LEGS: ServiceLeg[] = [
   {
     id: 'brand-clarity',
-    title: 'Find your message',
-    subtitle: 'Brand Strategy',
-    hoverText: 'We help you build your story so people actually care.',
-    visual: 'Strategy First, Brand Storytelling, Reality Check',
+    title: 'Get your story straight.',
+    subtitle: 'Creative Strategy',
+    hoverText: 'Everyone sounds like everyone else. We find the "real" in what you do so people actually get it.',
+    visual: 'Strategy, Brand Storytelling, Reality Check',
     path: '/clarity',
     imageUrl: ASSETS.services.clarity
   },
   {
     id: 'design-power',
-    title: 'Get your brand look & feel',
-    subtitle: 'Design Clarity',
-    hoverText: 'Identity, Web Design, Social Media Mood, Product Visualization, 3D Generalist.',
-    visual: 'Visual Power',
+    title: 'Stop using generic templates.',
+    subtitle: 'Visual Systems',
+    hoverText: 'A tool is just a tool, but generic templates are a trap. We build custom visual systems with actual taste, so you stop looking like everyone else.',
+    visual: 'Identity, Web Design, Socials Look&Grid, Product Vis, 3D Generalist, Ad Concepts',
     path: '/design-power',
     imageUrl: ASSETS.services.designPower
   },
   {
     id: 'partner',
-    title: 'Graphic design back-bone power.',
-    subtitle: 'For Agencies and Studios',
-    hoverText: 'We become your senior creative partners.',
+    title: 'Extra brainpower.',
+    subtitle: 'Agency Support/Studio Partnership',
+    hoverText: 'Scale your studio without the permanent salary. High-end creative bandwidth for when you need to move faster and deliver better work.',
     visual: 'Scale Up, Move Faster, Deliver Better',
     path: '/partnership',
     imageUrl: ASSETS.services.partnership
