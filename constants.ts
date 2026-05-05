@@ -726,7 +726,71 @@ export const QA_DATA = [
   }
 ];
 
-export const DROPS: Drop[] = [];
+export const DROPS: Drop[] = [
+  {
+    slug: 'unmplymnt-heavyweight-hoodie',
+    title: 'Grade A Heavyweight',
+    category: 'Apparel',
+    status: 'Live',
+    price: '150.00',
+    description: 'No mass production. No cheap blanks. Designed to be lived in, worn out, and beaten up. Made from 100% recycled industrial cotton.',
+    longDescription: 'This isn’t just a hoodie; it’s a uniform for the creative workforce. We stripped away the polish and embraced "Typographic Brutality." Featuring dropped shoulders, raw hems, and a vintage wash patina that only gets better with time.',
+    imageUrl: '/assets/cases/unmplymnt/detail-5.webp',
+    galleryImages: [
+      '/assets/cases/unmplymnt/detail-1.webp',
+      '/assets/cases/unmplymnt/process-5.png',
+      '/assets/cases/unmplymnt/detail-5.webp'
+    ],
+    features: ['450gsm Heavyweight Fleece', 'Boxy, Drop-shoulder fit', 'Distressed screen printing', 'Strictly limited to 50 units']
+  },
+  {
+    slug: 'unmplymnt-work-shorts',
+    title: 'Work Shorts',
+    category: 'Apparel',
+    status: 'Live',
+    price: '95.00',
+    description: 'Heavy-duty twill. Repair ready. Built for the studio, the skatepark, and the site.',
+    longDescription: 'Constructed from heavy-duty industrial twill, these shorts are designed to take a beating. Double-stitched seams, reinforced pockets, and a slightly oversized fit for maximum mobility. The aesthetic is pure utility.',
+    imageUrl: '/assets/cases/unmplymnt/process-12.png',
+    galleryImages: [
+      '/assets/cases/unmplymnt/process-12.png',
+      '/assets/cases/unmplymnt/detail-11.png'
+    ],
+    features: ['12oz Industrial Twill', 'Reinforced knee and seat', 'Custom branded hardware', 'No restocks']
+  },
+  {
+    slug: 'unmplymnt-tote-bag',
+    title: 'The Daily Haul Tote',
+    category: 'Accessories',
+    status: 'Live',
+    price: '45.00',
+    description: 'Throw your laptop, your sketches, and your life in it. Heavy canvas built to last.',
+    longDescription: 'A tote bag that doesn\'t feel like a cheap giveaway. Made from ultra-thick 14oz canvas, it stands up on its own. Features an internal zip pocket for your keys and a wide gusset for actual usability.',
+    imageUrl: '/assets/cases/unmplymnt/detail-2.webp',
+    galleryImages: [
+      '/assets/cases/unmplymnt/detail-2.webp',
+      '/assets/cases/unmplymnt/detail-3.webp',
+      '/assets/cases/unmplymnt/detail-6.webp'
+    ],
+    features: ['14oz Heavy Cotton Canvas', 'Internal zip pocket', 'Screen printed branding', 'Reinforced straps']
+  },
+  {
+    slug: 'unmplymnt-bucket-hat',
+    title: 'The Reversible Bucket',
+    category: 'Headwear',
+    status: 'Coming Soon',
+    price: '55.00',
+    description: 'Two sides. Zero compromises. The ultimate summer studio accessory.',
+    longDescription: 'Designed for the Tauranga sun. One side features our signature brutalist typography pattern, the other is a stark, solid black with a minimalist embroidered logo. Choose your vibe.',
+    imageUrl: '/assets/cases/unmplymnt/process-6.png',
+    galleryImages: [
+      '/assets/cases/unmplymnt/process-6.png',
+      '/assets/cases/unmplymnt/process-7.png'
+    ],
+    features: ['100% Cotton Twill', 'Fully reversible design', 'Embroidered detailing', 'Limited to 30 units']
+  }
+];
+
 export const SCRIPTS_DATA: Script[] = [
     {
         id: 1,
