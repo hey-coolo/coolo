@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { ArrowLeft } from 'lucide-react';
 import { Drop, DropVariant } from '../types';
+import { DROPS } from '../constants'; // Direct import for ultimate fallback
 
 const SupportAnArtistDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -19,17 +20,29 @@ const SupportAnArtistDetailPage: React.FC = () => {
           setIsLoading(true);
           try {
               const res = await fetch(`/api/products?id=${slug}`);
-              if (!res.ok) throw new Error('Not found');
+              if (!res.ok) throw new Error('API request failed');
               const data = await res.json();
-              setDrop(data);
               
-              // Auto-select the first available variant if they exist
-              if (data.variants && data.variants.length > 0) {
-                  const firstAvailable = data.variants.find((v: DropVariant) => v.available);
-                  if (firstAvailable) setSelectedVariant(firstAvailable);
+              if (data && data.slug) {
+                  setDrop(data);
+                  // Auto-select the first available variant if they exist
+                  if (data.variants && data.variants.length > 0) {
+                      const firstAvailable = data.variants.find((v: DropVariant) => v.available);
+                      if (firstAvailable) setSelectedVariant(firstAvailable);
+                  }
+              } else {
+                  throw new Error("Invalid payload format");
               }
           } catch (error) {
-              console.error(error);
+              console.error("API error, checking local constants for drop:", error);
+              const localDrop = DROPS.find(d => d.slug === slug);
+              if (localDrop) {
+                  setDrop(localDrop);
+                  if (localDrop.variants && localDrop.variants.length > 0) {
+                      const firstAvailable = localDrop.variants.find(v => v.available);
+                      if (firstAvailable) setSelectedVariant(firstAvailable);
+                  }
+              }
           } finally {
               setIsLoading(false);
           }
@@ -46,7 +59,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
       setIsAdding(true);
       
       try {
-          // CRITICAL FIX: Format payload to exactly match Stripe's line_items requirement
+          // Format payload to exactly match Stripe's line_items requirement
           const payload = { 
               items: [
                   {
@@ -60,7 +73,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
                                   product_slug: drop?.slug || ''
                               }
                           },
-                          // Stripe expects the amount in cents
                           unit_amount: Math.round(parseFloat(selectedVariant?.price || drop?.price || '0') * 100),
                       },
                       quantity: 1,
@@ -81,7 +93,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
 
           const data = await res.json();
           if (data.url) {
-              // Redirect straight to the secure Stripe hosted checkout (Bypassing Cart page)
               window.location.href = data.url; 
           } else {
               throw new Error("Missing checkout URL from server.");

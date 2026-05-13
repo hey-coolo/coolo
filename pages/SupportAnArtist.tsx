@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { Drop } from '../types';
+import { DROPS } from '../constants'; // Direct import for ultimate fallback
 
 const DropsPage: React.FC = () => {
   const [drops, setDrops] = useState<Drop[]>([]);
@@ -11,12 +12,22 @@ const DropsPage: React.FC = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch('/api/products');
+        
+        if (!response.ok) {
+            throw new Error(`API returned ${response.status}`);
+        }
+
         const data = await response.json();
-        if (Array.isArray(data)) {
+        
+        if (Array.isArray(data) && data.length > 0) {
             setDrops(data);
+        } else {
+            console.warn("API returned empty/invalid array. Loading local DROPS.");
+            setDrops(DROPS);
         }
       } catch (error) {
-        console.error("Failed to load products:", error);
+        console.error("Failed to connect to /api/products. Loading local DROPS:", error);
+        setDrops(DROPS);
       } finally {
         setIsLoading(false);
       }
@@ -124,7 +135,7 @@ const DropsPage: React.FC = () => {
           <AnimatedSection>
             <span className="font-mono text-[10px] uppercase tracking-widest text-brand-yellow font-bold mb-6 block">Artist Submissions</span>
             <h2 className="font-sans text-5xl md:text-7xl font-black uppercase tracking-tight mb-8">
-              Got a dangerous good idea?
+              Got a dangerous idea?
             </h2>
             <p className="font-body text-xl md:text-2xl mb-12 opacity-80 leading-relaxed font-light">
               We are always looking for independent minds. If your work is sharp enough, we'll fund it, build it, and launch it with you. 100% of the artist's cut goes to you.

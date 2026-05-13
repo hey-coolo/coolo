@@ -1,6 +1,5 @@
 import Stripe from 'stripe';
 import { Resend } from 'resend';
-import crypto from 'crypto';
 
 // Vercel Serverless config: Disable body parsing so Stripe can verify the raw signature
 export const config = {
