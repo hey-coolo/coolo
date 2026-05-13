@@ -68,8 +68,56 @@ const AboutPage: React.FC = () => {
             </div>
         </section>
 
+      </div>
+
+      {/* Support An Artist / Internal Lab Feature */}
+      <section className="py-32 bg-brand-navy text-brand-offwhite relative overflow-hidden">
+          {/* Schematic Pattern */}
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FCC803_1px,transparent_1px)] [background-size:24px_24px]"></div>
+          
+          <div className="container mx-auto px-8 relative z-10">
+              <AnimatedSection>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                      <div className="lg:col-span-7">
+                          <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-xs font-black mb-6 block">The Internal Lab</span>
+                          <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tight leading-[0.9] mb-8">
+                              Support<br/>
+                              <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '1px #FCC803' }}>An Artist</span>
+                          </h2>
+                          <p className="font-body text-xl md:text-2xl font-light opacity-80 leading-relaxed max-w-2xl mb-12">
+                              We don't just build brands for clients. We fund, build, and launch limited-run physical drops with independent artists. No mass production. Total creative freedom.
+                          </p>
+                          <div className="flex flex-wrap gap-6">
+                              <Link to="/support-an-artist" className="inline-block bg-brand-yellow text-brand-navy px-8 py-4 font-mono uppercase font-black text-xs tracking-widest hover:bg-white transition-colors">
+                                  Shop The Lab
+                              </Link>
+                              <Link to="/contact" className="inline-block border border-brand-offwhite/20 text-brand-offwhite px-8 py-4 font-mono uppercase font-bold text-xs tracking-widest hover:bg-brand-offwhite hover:text-brand-navy transition-colors">
+                                  Pitch A Drop
+                              </Link>
+                          </div>
+                      </div>
+                      
+                      <div className="lg:col-span-5 hidden lg:block">
+                          <div className="aspect-square border border-brand-offwhite/10 flex items-center justify-center p-12 relative group cursor-pointer hover:border-brand-yellow/30 transition-colors duration-500">
+                              <div className="absolute inset-4 border border-brand-yellow/20 group-hover:scale-[0.97] transition-transform duration-700"></div>
+                              <div className="absolute inset-8 border border-brand-purple/20 group-hover:scale-105 transition-transform duration-700"></div>
+                              <div className="text-center relative z-10">
+                                  <svg className="w-16 h-16 mx-auto mb-6 text-brand-yellow/80 group-hover:text-brand-yellow transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                  </svg>
+                                  <span className="font-mono text-2xl md:text-3xl text-brand-offwhite font-bold uppercase tracking-tight block">100% Artist Cut</span>
+                                  <p className="font-mono text-[10px] uppercase tracking-widest text-brand-offwhite/40 mt-4">Independent Minds Only</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </AnimatedSection>
+          </div>
+      </section>
+
+      <div className="container mx-auto px-8">
         {/* The Crew / Team CMS Integration */}
-        <section className="py-48 relative border-t border-brand-navy/10">
+        <section className="py-48 relative">
             <AnimatedSection>
                 <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
                     <div>

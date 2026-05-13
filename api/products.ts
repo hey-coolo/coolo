@@ -2,6 +2,11 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { DROPS } from '../constants';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // CRITICAL FIX: Prevent Vercel Edge caching so live inventory always shows
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -85,7 +90,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Safely map Printify Product Array to COOLO 'Drop' Type Array
         const mappedProducts = data.data.map((p: any) => ({
             slug: p.id,
-            title: p.title,
+            title: p.title || 'Untitled Product',
             category: p.tags && p.tags.length > 0 ? p.tags[0] : 'Apparel',
             status: 'Live',
             price: p.variants && p.variants.length > 0 ? (p.variants[0].price / 100).toFixed(2) : '0.00',

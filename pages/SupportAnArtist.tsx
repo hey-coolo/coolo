@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { Drop } from '../types';
-import { DROPS } from '../constants'; // Direct import for ultimate fallback
+import { DROPS } from '../constants';
 
 const DropsPage: React.FC = () => {
   const [drops, setDrops] = useState<Drop[]>([]);
@@ -11,7 +11,8 @@ const DropsPage: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products');
+        // Cache buster forces fresh request
+        const response = await fetch(`/api/products?t=${Date.now()}`);
         
         if (!response.ok) {
             throw new Error(`API returned ${response.status}`);
@@ -69,7 +70,7 @@ const DropsPage: React.FC = () => {
       </section>
 
       {/* Section 03: The Editorial E-Comm Grid */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 pb-32">
         <div className="container mx-auto px-6 md:px-8">
             {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
@@ -124,26 +125,38 @@ const DropsPage: React.FC = () => {
                             </Link>
                         </AnimatedSection>
                     ))}
+
+                    {/* Artist Submission Slot (Grid Card) */}
+                    <AnimatedSection delay={drops.length * 50}>
+                        <Link to="/contact" className="group relative block h-full min-h-[450px] flex flex-col justify-center items-center text-center p-8 bg-brand-offwhite border-2 border-brand-navy/10 hover:border-brand-yellow transition-colors duration-500">
+                            {/* Blueprint background pattern */}
+                            <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#0F0328_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            
+                            <div className="relative z-10 flex flex-col items-center">
+                                <div className="w-20 h-20 rounded-full border-2 border-brand-navy/10 flex items-center justify-center mb-8 group-hover:border-brand-yellow group-hover:scale-110 transition-all duration-500">
+                                    <svg className="w-8 h-8 text-brand-navy/40 group-hover:text-brand-yellow transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </div>
+                                
+                                <span className="font-mono text-[10px] uppercase tracking-widest text-brand-navy/40 font-bold mb-3 block">Artist Submissions</span>
+                                
+                                <h3 className="font-sans text-4xl font-black uppercase tracking-tight text-brand-navy mb-4 group-hover:text-brand-yellow transition-colors">
+                                    Got a dangerous<br/>idea?
+                                </h3>
+                                
+                                <p className="font-body text-sm text-brand-navy/60 max-w-[280px] leading-relaxed mb-8">
+                                    We are always looking for independent minds. If your work is sharp enough, we'll fund it, build it, and launch it with you. 100% of the artist's cut goes to you.
+                                </p>
+                                
+                                <span className="font-mono text-xs uppercase tracking-widest font-bold text-brand-navy border-b-2 border-brand-yellow pb-1 group-hover:text-brand-yellow transition-colors">
+                                    Pitch Your Drop
+                                </span>
+                            </div>
+                        </Link>
+                    </AnimatedSection>
                 </div>
             )}
-        </div>
-      </section>
-
-      {/* Section 04: Footer Pitch */}
-      <section className="py-24 md:py-32 bg-brand-navy text-brand-offwhite text-center">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <AnimatedSection>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-brand-yellow font-bold mb-6 block">Artist Submissions</span>
-            <h2 className="font-sans text-5xl md:text-7xl font-black uppercase tracking-tight mb-8">
-              Got a dangerous idea?
-            </h2>
-            <p className="font-body text-xl md:text-2xl mb-12 opacity-80 leading-relaxed font-light">
-              We are always looking for independent minds. If your work is sharp enough, we'll fund it, build it, and launch it with you. 100% of the artist's cut goes to you.
-            </p>
-            <Link to="/contact" className="inline-block border-2 border-brand-yellow text-brand-yellow px-12 py-5 font-mono uppercase font-bold text-sm tracking-widest hover:bg-brand-yellow hover:text-brand-navy transition-all">
-              Pitch Your Drop
-            </Link>
-          </AnimatedSection>
         </div>
       </section>
     </div>

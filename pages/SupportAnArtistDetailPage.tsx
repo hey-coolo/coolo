@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { ArrowLeft } from 'lucide-react';
 import { Drop, DropVariant } from '../types';
-import { DROPS } from '../constants'; // Direct import for ultimate fallback
+import { DROPS } from '../constants'; 
 
 const SupportAnArtistDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -19,7 +19,8 @@ const SupportAnArtistDetailPage: React.FC = () => {
       const fetchProduct = async () => {
           setIsLoading(true);
           try {
-              const res = await fetch(`/api/products?id=${slug}`);
+              // Cache buster forces fresh request from Printify
+              const res = await fetch(`/api/products?id=${slug}&t=${Date.now()}`);
               if (!res.ok) throw new Error('API request failed');
               const data = await res.json();
               
