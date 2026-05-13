@@ -13,7 +13,7 @@ export default async function handler(req: any, res: any) {
   
   if (!email || !firstName) return res.status(400).json({ error: 'Name and email are required.' });
 
-  const fullName = `${firstName} ${lastName}`.trim();
+  const fullName = `${firstName} ${lastName || ''}`.trim();
 
   try {
     // 1. Add to Crew (Contacts)
@@ -22,7 +22,7 @@ export default async function handler(req: any, res: any) {
         await resend.contacts.create({
           email: email,
           firstName: firstName,
-          lastName: lastName,
+          lastName: lastName || '',
           unsubscribed: false,
           audienceId: process.env.RESEND_AUDIENCE_ID,
         });
@@ -33,7 +33,7 @@ export default async function handler(req: any, res: any) {
     const emailRequest = resend.emails.send({
       from: 'COOLO <hey@coolo.co.nz>', 
       to: [email],
-      reply_to: 'hey@coolo.co.nz', 
+      replyTo: 'hey@coolo.co.nz', 
       subject: 'Talk soon // COOLO',
       react: MissionReceivedEmail({ name: firstName }),
     });
@@ -42,7 +42,7 @@ export default async function handler(req: any, res: any) {
     const adminRequest = resend.emails.send({
       from: 'COOLO Bot <system@coolo.co.nz>', 
       to: ['hey@coolo.co.nz'],
-      reply_to: email, 
+      replyTo: email, 
       subject: `New Brief: ${fullName} / ${company || 'Independent'}`,
       react: NewLeadAlert({ 
         name: fullName, 
