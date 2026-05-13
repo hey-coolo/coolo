@@ -46,14 +46,26 @@ const SupportAnArtistDetailPage: React.FC = () => {
       setIsAdding(true);
       
       try {
+          // CRITICAL FIX: Format payload to exactly match Stripe's line_items requirement
           const payload = { 
-              slug: drop?.slug, 
-              size: selectedVariant?.title || 'Standard', 
-              price: selectedVariant?.price || drop?.price,
-              variantId: selectedVariant?.id,
-              // Added title and imageUrl to make the Stripe checkout page look professional
-              title: drop?.title,
-              imageUrl: drop?.imageUrl
+              items: [
+                  {
+                      price_data: {
+                          currency: 'nzd',
+                          product_data: {
+                              name: `${drop?.title} - ${selectedVariant?.title || 'Standard'}`,
+                              images: drop?.imageUrl ? [drop.imageUrl] : [],
+                              metadata: {
+                                  variant_id: selectedVariant?.id?.toString() || '',
+                                  product_slug: drop?.slug || ''
+                              }
+                          },
+                          // Stripe expects the amount in cents
+                          unit_amount: Math.round(parseFloat(selectedVariant?.price || drop?.price || '0') * 100),
+                      },
+                      quantity: 1,
+                  }
+              ]
           };
 
           const res = await fetch('/api/checkout', {
@@ -63,12 +75,13 @@ const SupportAnArtistDetailPage: React.FC = () => {
           });
           
           if (!res.ok) {
-              throw new Error("Failed to connect to checkout.");
+              const errorText = await res.text();
+              throw new Error(`Checkout failed: ${errorText}`);
           }
 
           const data = await res.json();
           if (data.url) {
-              // Redirect straight to the secure Stripe hosted checkout
+              // Redirect straight to the secure Stripe hosted checkout (Bypassing Cart page)
               window.location.href = data.url; 
           } else {
               throw new Error("Missing checkout URL from server.");

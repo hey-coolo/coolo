@@ -124,7 +124,7 @@ const DropsPage: React.FC = () => {
           <AnimatedSection>
             <span className="font-mono text-[10px] uppercase tracking-widest text-brand-yellow font-bold mb-6 block">Artist Submissions</span>
             <h2 className="font-sans text-5xl md:text-7xl font-black uppercase tracking-tight mb-8">
-              Got a dangerous idea?
+              Got a dangerous good idea?
             </h2>
             <p className="font-body text-xl md:text-2xl mb-12 opacity-80 leading-relaxed font-light">
               We are always looking for independent minds. If your work is sharp enough, we'll fund it, build it, and launch it with you. 100% of the artist's cut goes to you.

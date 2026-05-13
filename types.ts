@@ -100,6 +100,14 @@ export interface JournalPost {
     author?: string;
 }
 
+// Added missing DropVariant type to fix TS build errors
+export interface DropVariant {
+    id: string | number;
+    title: string;
+    price: string;
+    available: boolean;
+}
+
 export interface Drop {
     slug: string;
     title: string;
