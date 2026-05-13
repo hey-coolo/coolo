@@ -1,4 +1,6 @@
-export default async function handler(req: any, res: any) {
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   // Make sure you have added PRINTIFY_ACCESS_TOKEN to your Vercel Environment Variables
@@ -27,7 +29,7 @@ export default async function handler(req: any, res: any) {
 
     const data = await response.json();
     
-    // This will print the exact JSON payload you pasted from the docs
+    // This will print the exact JSON payload from the Printify docs
     return res.status(200).json({
         message: "Here are your shops! Grab the 'id' number below.",
         shops: data
