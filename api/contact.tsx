@@ -33,7 +33,7 @@ export default async function handler(req: any, res: any) {
     const emailRequest = resend.emails.send({
       from: 'COOLO <hey@coolo.co.nz>', 
       to: [email],
-      replyTo: 'hey@coolo.co.nz', 
+      reply_to: 'hey@coolo.co.nz', 
       subject: 'Talk soon // COOLO',
       react: MissionReceivedEmail({ name: firstName }),
     });
@@ -42,7 +42,7 @@ export default async function handler(req: any, res: any) {
     const adminRequest = resend.emails.send({
       from: 'COOLO Bot <system@coolo.co.nz>', 
       to: ['hey@coolo.co.nz'],
-      replyTo: email, 
+      reply_to: email, 
       subject: `New Brief: ${fullName} / ${company || 'Independent'}`,
       react: NewLeadAlert({ 
         name: fullName, 

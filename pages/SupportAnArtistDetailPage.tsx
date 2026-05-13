@@ -1,3 +1,4 @@
+// pages/SupportAnArtistDetailPage.tsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
@@ -45,25 +46,36 @@ const SupportAnArtistDetailPage: React.FC = () => {
       setIsAdding(true);
       
       try {
+          const payload = { 
+              slug: drop?.slug, 
+              size: selectedVariant?.title || 'Standard', 
+              price: selectedVariant?.price || drop?.price,
+              variantId: selectedVariant?.id,
+              // Added title and imageUrl to make the Stripe checkout page look professional
+              title: drop?.title,
+              imageUrl: drop?.imageUrl
+          };
+
           const res = await fetch('/api/checkout', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ 
-                  slug: drop?.slug, 
-                  size: selectedVariant?.title || 'OS', 
-                  price: selectedVariant?.price || drop?.price,
-                  variantId: selectedVariant?.id
-              })
+              body: JSON.stringify(payload)
           });
+          
+          if (!res.ok) {
+              throw new Error("Failed to connect to checkout.");
+          }
+
           const data = await res.json();
           if (data.url) {
+              // Redirect straight to the secure Stripe hosted checkout
               window.location.href = data.url; 
           } else {
-              alert("Checkout intent recorded. Waiting for Stripe configuration.");
-              setIsAdding(false);
+              throw new Error("Missing checkout URL from server.");
           }
       } catch (err) {
-          console.error(err);
+          console.error('Checkout error:', err);
+          alert("Could not initiate checkout. Please try again or contact support.");
           setIsAdding(false);
       }
   };
