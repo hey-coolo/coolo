@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { Resend } from 'resend';
+import crypto from 'node:crypto';
 
 // Vercel Serverless config: Disable body parsing so Stripe can verify the raw signature
 export const config = {
@@ -165,8 +166,6 @@ export default async function handler(req: any, res: any) {
         
         if (resend) {
           try {
-             // You can easily adjust the "to" field here to email the actual customer by
-             // using order metadata if saved, or just send a team alert for now.
              await resend.emails.send({
                 from: 'COOLO Store <system@coolo.co.nz>',
                 to: ['hey@coolo.co.nz'], 
