@@ -484,7 +484,7 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
         idealFor: "Business owners tired of confusing marketing with products and communication."
     },
     { 
-        slug: 'creative-partner',
+        slug: 'creative-advisor',
         name: 'Creative Consulting',
         subtitle: 'We become your creative advisor. Send us your ideas we tell you cool or not. We will be there to help you make good communication choices.',
         desc: "We join the team. We become the 'creative little voice' that keeps you looking good every month.", 
