@@ -391,10 +391,10 @@ export const NAV_LINKS = [
     path: '/clarity',
     subLinks: [
         { name: 'Brand Reality Check', path: '/clarity/reality-check'},
-        { name: 'Where are you right now', path: '/clarity/the-brand-state'},
-        { name: 'Brand Self-help Book', path: '/clarity/brand-therapy'},
-        { name: 'The Strategy Sessions', path: '/clarity/strategy-sessions'},        
-        { name: 'The Creative voice in your head', path: '/clarity/creative-partner'},
+        { name: 'Brand Diagnosis', path: '/clarity/brand-diagnosis'},
+        { name: 'Strategy Sessions', path: '/clarity/strategy-sessions'},
+        { name: 'The Full Creative Direction', path: '/clarity/creative-direction'},        
+        { name: 'Creative Consulting', path: '/clarity/creative-advisor'},
         { name: 'Free Resources', path: '/clarity/free-resources' }
     ]
   },
@@ -454,7 +454,7 @@ export const SERVICE_LEGS: ServiceLeg[] = [
 
 export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     { 
-        slug: 'the-brand-state',
+        slug: 'brand-diagnosis',
         name: 'Brand Diagnosis', 
         subtitle: 'Where are you right now',
         desc: "Does your brand make sense? Or is it a mess? Use our free tools to check your pulse before you spend money.", 
@@ -464,8 +464,8 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
         idealFor: "Founders who think their brand message is weak, and it looks meh."
     },
     { 
-        slug: 'brand-therapy',
-        name: 'Brand Building', 
+        slug: 'strategy-sessions',
+        name: 'Strategy Sessions', 
         subtitle: 'A step by step guided brand strategy core book building.',
         desc: "Designed for entrepreneurs and marketers. Step by step guided to find your brand story.", 
         cta: "Go to Therapy", 
@@ -474,8 +474,8 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
         idealFor: "Entrepreneurs ready to stop looking like amateurs."
     },
     { 
-        slug: 'strategy-sessions',
-        name: 'Brand Strategy Sessions', 
+        slug: 'creative-direction',
+        name: 'The Full Creative Direction', 
         subtitle: 'We help you define your voice and message',
         desc: "We sit down. We talk. We listen to you to find the 'problem'. We write the blueprint that'll guide your whole brand and business.", 
         cta: "Book a Call", 
