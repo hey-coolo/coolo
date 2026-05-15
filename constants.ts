@@ -455,8 +455,8 @@ export const SERVICE_LEGS: ServiceLeg[] = [
 export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     { 
         slug: 'the-brand-state',
-        name: 'Where are you right now', 
-        subtitle: 'Brand Diagnostic',
+        name: 'Brand Diagnosis', 
+        subtitle: 'Where are you right now',
         desc: "Does your brand make sense? Or is it a mess? Use our free tools to check your pulse before you spend money.", 
         cta: "Diagnose Your Brand", 
         features: ["AI Brand Audit", "The Hard Questions", "Instant Feedback", "1:1 session discovery", "45-min videocall"],
@@ -465,31 +465,31 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     },
     { 
         slug: 'brand-therapy',
-        name: 'Brand Self-help Book', 
-        subtitle: 'A begginers guide to brand strategy',
-        desc: "Designed for entrepreneurs and marketers. Easy guide to find your brand story.", 
+        name: 'Brand Building', 
+        subtitle: 'A step by step guided brand strategy core book building.',
+        desc: "Designed for entrepreneurs and marketers. Step by step guided to find your brand story.", 
         cta: "Go to Therapy", 
-        features: ["7-Day Plan", "No-BS templates", "Target Audience fix"],
-        timeline: "1-2 Weeks (at one's own pace)",
+        features: ["Strategy Sessions", "Creative Direction", "Audience Perception", "Signal Refinement", "The Funnel"],
+        timeline: "2-4 Weeks",
         idealFor: "Entrepreneurs ready to stop looking like amateurs."
     },
     { 
         slug: 'strategy-sessions',
-        name: 'The Strategy Sessions', 
+        name: 'Brand Strategy Sessions', 
         subtitle: 'We define your voice and message',
         desc: "We sit down. We talk. We listen to you to find the 'problem'. We write the blueprint that'll guide your whole brand and business.", 
         cta: "Book a Call", 
-        features: ["2x Strategy Calls", "Message Blueprint", "Your Brand Code", ""],
-        timeline: "2-4 Weeks",
+        features: ["4x Strategy Sessions", "Brand Direction Blueprint", "Messaging Code", "Ongoing Feedback", "Socials Direction", "Content Ideation", ""],
+        timeline: "4-6 Weeks",
         idealFor: "Business owners tired of confusing marketing with products and communication."
     },
     { 
         slug: 'creative-partner',
-        name: 'The Creative voice in your head',
-        subtitle: 'Ongoing Support',
+        name: 'Creative Consulting',
+        subtitle: 'The creative voice in your head, that is there to help you make good communication choices',
         desc: "We join the team. We become the 'creative little voice' that keeps you looking good every month.", 
         cta: "Partner Up", 
-        features: ["Moves feedback", "Content Direction", "Creative Quality Control"],
+        features: ["Visual feedback", "Content Direction", "Creative Quality Control"],
         timeline: "Monthly",
         idealFor: "Brands that can't afford to look bad."
     }
