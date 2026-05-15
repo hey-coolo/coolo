@@ -643,15 +643,15 @@ export const FREE_RESOURCES: Resource[] = [
         id: '02', 
         title: 'The Hard Questions', 
         format: 'PDF', 
-        desc: 'The exact questions we ask clients. Steal our process.', 
-        link: './docs/questionnaire.pdf' 
+        desc: 'The exact questions we ask clients. Steal our process.This is a tool to help you visualize your brand.', 
+        link: './free-resources/00_COOLO_Free Resources_Brand Clarity_The Hard Questions.pdf' 
     },
     { 
         id: '03', 
-        title: 'The Cheat Sheet', 
+        title: 'Brand Soul Composer', 
         format: 'PDF', 
-        desc: 'If you can’t explain your business on one page, you are trying too hard.', 
-        link: './docs/positioning.pdf' 
+        desc: 'Three questions. One soul. Stop trying to sound like an overly-smart company. Find your pulse. Tell us what makes you mad about your industry, how you actually fix it, and who you’re doing it for.',
+        link: './free-resources/00_COOLO_Free Resources_Brand Clarity_Soul Composer.pdf'
     }
 ];
 
