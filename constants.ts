@@ -467,7 +467,7 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
         slug: 'strategy-sessions',
         name: 'Strategy Sessions', 
         subtitle: 'A step by step guided brand strategy core book building.',
-        desc: "Designed for entrepreneurs and marketers. Step by step guided to find your brand story.", 
+        desc: "Designed for entrepreneurs and marketers. Step by step guided process to find your brand story.", 
         cta: "Go to Therapy", 
         features: ["Strategy Sessions", "Creative Direction", "Audience Perception", "Signal Refinement", "The Funnel"],
         timeline: "2-4 Weeks",
