@@ -54,7 +54,7 @@ const FreeResourcesPage: React.FC = () => {
       <div className="container mx-auto px-8">
         <AnimatedSection>
           <div className="max-w-4xl">
-            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-4 block">Clarity / Leg 1.1</span>
+            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-4 block">Clarity / Strategy Tier</span>
             <h1 className="text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] text-brand-navy">
               Free<br/><span className="text-brand-purple italic">Intelligence.</span>
             </h1>

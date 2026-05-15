@@ -489,7 +489,7 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
         subtitle: 'Ongoing Support',
         desc: "We join the team. We become the 'creative little voice' that keeps you looking good every month.", 
         cta: "Partner Up", 
-        features: ["Visual Design", "Web Updates", "Quality Control"],
+        features: ["Moves feedback", "Content Direction", "Creative Quality Control"],
         timeline: "Monthly",
         idealFor: "Brands that can't afford to look bad."
     }
