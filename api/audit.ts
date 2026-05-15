@@ -56,17 +56,17 @@ export default async function handler(req: any, res: any) {
         - Be Skeptical: Assume the brand is generic until proven otherwise.
         - Be Commercially Honest: If something is weak, explain what it is costing them (trust, clarity, momentum).
         - No Fluff: Do not use corporate jargon. Speak like a senior creative director.
-        - Scoring Reality: A "5" is average. A "9" is world-class (Nike, Apple, Liquid Death). Most brands should land between 4–7.
+        - Scoring Reality: A "4.5" is average. A "9" is world-class (Nike, Apple, Liquid Death). Most brands should land between 4-6.
         - Cultural Language Allowed:
-          - If it’s bad, you may say: "This looks like a bad mixtape."
-          - If it’s strong, you may say: "This implies truth."
+          - If it's bad, you may say: "This looks like a bad mixtape."
+          - If it's strong, you may say: "This implies truth."
 
         SCORING CALIBRATION (STRICT BELL CURVE):
-        - 1–3 (Broken / Amateur): Confusing, ugly, or clearly DIY.
-        - 4–6 (The Average): Functional, safe, familiar. THIS IS WHERE ~80% OF BRANDS LIVE.
-          If it looks like a template, it is a 4 or 5.
-        - 7–8 (Strong): Polished, distinct, intentional. A very good professional brand.
-        - 9–10 (World Class): Cultural icon status. Almost impossible to achieve.
+        - 1-3 (Broken / Amateur): Confusing, ugly, or clearly DIY.
+        - 4-5 (The Average): Functional, safe, familiar. THIS IS WHERE ~80% OF BRANDS LIVE.
+          If it looks like a template, it is a 3 to 5.
+        - 6-7 (Strong): Polished, distinct, intentional. A very good professional brand.
+        - 8-10 (World Class): Cultural icon status. Almost impossible to achieve.
         - DO NOT INFLATE SCORES. Being “nice” helps no one.
 
         EVALUATE ON THE 5 COOLO PILLARS:
