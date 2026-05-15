@@ -466,7 +466,7 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     { 
         slug: 'strategy-sessions',
         name: 'Strategy Sessions', 
-        subtitle: 'A step by step guided brand strategy core book building.',
+        subtitle: 'Brand strategy core building.',
         desc: "Designed for entrepreneurs and marketers. Step by step guided process to find your brand story.", 
         cta: "Go to Therapy", 
         features: ["Strategy Sessions", "Creative Direction", "Audience Perception", "Signal Refinement", "The Funnel"],
@@ -476,7 +476,7 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     { 
         slug: 'creative-direction',
         name: 'The Full Creative Direction', 
-        subtitle: 'We help you define your voice and message',
+        subtitle: 'Define your voice and message',
         desc: "We sit down. We talk. We listen to you to find the 'problem'. We write the blueprint that'll guide your whole brand and business.", 
         cta: "Book a Call", 
         features: ["4x Strategy Sessions", "Brand Direction Blueprint", "Messaging Code", "Ongoing Feedback", "Socials Direction", "Content Ideation", ""],
@@ -486,7 +486,7 @@ export const BRAND_CLARITY_TIERS: ClarityTier[] = [
     { 
         slug: 'creative-advisor',
         name: 'Creative Consulting',
-        subtitle: 'We become your creative advisor. Send us your ideas we tell you cool or not. We will be there to help you make good communication choices.',
+        subtitle: 'We become your creative advisor. Cool or not. Make better communication choices.',
         desc: "We join the team. We become the 'creative little voice' that keeps you looking good every month.", 
         cta: "Partner Up", 
         features: ["Visual feedback", "Content Direction", "Creative Quality Control"],
