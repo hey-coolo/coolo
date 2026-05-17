@@ -35,40 +35,37 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100..900&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-              body: ['"Plus Jakarta Sans"', 'sans-serif'],
+              sans: ['"Big Shoulders Display"', 'sans-serif'],
+              body: ['Inter', 'sans-serif'],
               mono: ['"Space Mono"', 'monospace'],
             },
             colors: {
-              'brand-purple': '#6366f1',
-              'brand-offwhite': '#0b0b0f',
-              'brand-yellow': '#a5b4fc',
-              'brand-lavender': '#1e1b4b',
-              'brand-navy': '#f8fafc',
-              'brand-dark': '#030303',
-              'cyber-bg': '#060608',
-              'cyber-card': 'rgba(255, 255, 255, 0.03)',
-              'cyber-border': 'rgba(255, 255, 255, 0.08)'
+              'brand-purple': '#3A0888',
+              'brand-offwhite': '#F7F7F7',
+              'brand-yellow': '#FCC803',
+              'brand-lavender': '#7670C5',
+              'brand-navy': '#0F0328',
+              'brand-dark': '#010101',
             },
             animation: {
-              'marquee': 'marquee 35s linear infinite',
-              'pulse-slow': 'pulse-slow 8s ease-in-out infinite',
+              'draw': 'draw 2s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+              'marquee': 'marquee 25s linear infinite',
             },
             keyframes: {
+              draw: {
+                '0%': { strokeDashoffset: '1000' },
+                '100%': { strokeDashoffset: '0' },
+              },
               marquee: {
                 '0%': { transform: 'translateX(0%)' },
                 '100%': { transform: 'translateX(-100%)' },
-              },
-              'pulse-slow': {
-                '0%, 100%': { opacity: 0.15, transform: 'translate(-50%, -50%) scale(1)' },
-                '50%': { opacity: 0.3, transform: 'translate(-45%, -55%) scale(1.2)' }
               }
             }
           }
@@ -76,15 +73,20 @@
       }
     </script>
     <style>
+      :root {
+        --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+      }
       html {
         scroll-behavior: smooth;
-        background-color: #060608;
+        background-color: #f1f1f1;
       }
       body {
-        background-color: #060608;
-        color: #f8fafc;
+        background-color: #f1f1f1;
+        color: #0F0328;
+        cursor: none !important;
         overflow-x: hidden;
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-family: 'Inter', sans-serif;
+        line-height: 1.5;
         -webkit-font-smoothing: antialiased;
       }
       body::before {
@@ -92,29 +94,44 @@
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-        opacity: 0.02;
+        opacity: 0.05;
         pointer-events: none;
         z-index: 9999;
       }
-      h1, h2, h3 {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        letter-spacing: -0.04em;
-        font-weight: 700;
+      h1, h2 {
+        font-family: 'Big Shoulders Display', sans-serif;
+        text-transform: uppercase;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        font-weight: 900;
+      }
+      h3, .mango {
+        font-family: 'Big Shoulders Display', sans-serif;
+        text-transform: uppercase;
+        line-height: 1.0;
+        letter-spacing: -0.02em;
+        font-weight: 900;
+      }
+      .kinetic-text {
+        -webkit-text-stroke: 1px currentColor;
+        color: transparent;
       }
       ::selection {
-        background-color: #6366f1;
-        color: #ffffff;
+        background-color: #FCC803;
+        color: #0F0328;
       }
+      
+      *, *::before, *::after {
+        cursor: none !important;
+      }
+
       .hide-scrollbar::-webkit-scrollbar { display: none; }
       .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       
       .studio-grid {
-        background-size: 50px 50px;
-        background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-                          linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
-      }
-      .blur-glow {
-        background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+        background-size: 40px 40px;
+        background-image: radial-gradient(circle, #0F0328 1px, transparent 1px);
+        opacity: 0.03;
       }
     </style>
   </head>
