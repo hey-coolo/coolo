@@ -5,13 +5,13 @@ import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
 
-const DownArrow: React.FC<{ className?: string; size?: number }> = ({ className = "", size = 40 }) => (
+const DownArrow: React.FC<{ className?: string; size?: number }> = ({ className = "", size = 24 }) => (
     <motion.div 
-        animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ y: [0, 6, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         className={className}
     >
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <polyline points="19 12 12 19 5 12"></polyline>
         </svg>
@@ -33,32 +33,22 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
     const trailCount = useRef(0);
 
     const allImages = useMemo(() => {
-        const all = PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).filter(Boolean);
-        for (let i = all.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [all[i], all[j]] = [all[j], all[i]];
-        }
-        return all;
+        return PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).filter(Boolean);
     }, []);
 
     useEffect(() => {
         const handleMove = (clientX: number, clientY: number) => {
             if (!containerRef.current) return;
-
             const rect = containerRef.current.getBoundingClientRect();
 
             if (
-                clientX < rect.left || 
-                clientX > rect.right || 
-                clientY < rect.top || 
-                clientY > rect.bottom
-            ) {
-                return;
-            }
+                clientX < rect.left || clientX > rect.right || 
+                clientY < rect.top || clientY > rect.bottom
+            ) return;
 
             const dist = Math.hypot(clientX - lastPos.current.x, clientY - lastPos.current.y);
 
-            if (dist > 80) {
+            if (dist > 90) {
                 const nextImage = allImages[trailCount.current % allImages.length];
                 const id = trailCount.current++;
                 
@@ -69,8 +59,8 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
                     id,
                     x: relativeX,
                     y: relativeY,
-                    rotation: Math.random() * 20 - 10,
-                    scale: 0.6 + Math.random() * 0.4,
+                    rotation: Math.random() * 12 - 6,
+                    scale: 0.8 + Math.random() * 0.2,
                     img: nextImage
                 };
 
@@ -79,51 +69,28 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
 
                 setTimeout(() => {
                     setTrail(prev => prev.filter(i => i.id !== id));
-                }, 1000);
+                }, 1200);
             }
         };
 
-        const handleMouseMove = (e: MouseEvent) => {
-            handleMove(e.clientX, e.clientY);
-        };
-
-        const handleTouchMove = (e: TouchEvent) => {
-            const touch = e.touches[0];
-            handleMove(touch.clientX, touch.clientY);
-        };
-
+        const handleMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);
         window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('touchmove', handleTouchMove, { passive: true });
-
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('touchmove', handleTouchMove);
-        };
+        return () => window.removeEventListener('mousemove', handleMouseMove);
     }, [allImages, containerRef]);
 
     return (
-        <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
             <AnimatePresence>
                 {trail.map((item) => (
                     <motion.div
                         key={item.id}
-                        initial={{ opacity: 0, scale: 0.5, rotate: item.rotation }}
-                        animate={{ opacity: 1, scale: item.scale, rotate: item.rotation }}
-                        exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        className="absolute w-[140px] md:w-[260px] aspect-[4/5] shadow-2xl origin-center"
-                        style={{
-                            left: item.x,
-                            top: item.y,
-                            x: "-50%",
-                            y: "-50%" 
-                        }}
+                        initial={{ opacity: 0, scale: 0.6, rotate: item.rotation }}
+                        animate={{ opacity: 0.85, scale: item.scale, rotate: item.rotation }}
+                        exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.4 } }}
+                        className="absolute w-[200px] md:w-[320px] aspect-[4/5] overflow-hidden origin-center rounded-lg shadow-[0_30px_60px_rgba(0,0,0,0.8)] border border-white/10 bg-brand-dark"
+                        style={{ left: item.x, top: item.y, x: "-50%", y: "-50%" }}
                     >
-                        <img 
-                            src={item.img} 
-                            alt="" 
-                            className="w-full h-full object-cover" 
-                        />
+                        <img src={item.img} alt="" className="w-full h-full object-cover" />
                     </motion.div>
                 ))}
             </AnimatePresence>
@@ -136,8 +103,8 @@ const BrandHero: React.FC = () => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    const springX = useSpring(mouseX, { stiffness: 60, damping: 25 });
-    const springY = useSpring(mouseY, { stiffness: 60, damping: 25 });
+    const springX = useSpring(mouseX, { stiffness: 40, damping: 20 });
+    const springY = useSpring(mouseY, { stiffness: 40, damping: 20 });
 
     const handleMouseMove = (e: React.MouseEvent) => {
         const { innerWidth, innerHeight } = window;
@@ -149,88 +116,51 @@ const BrandHero: React.FC = () => {
         <section 
             ref={sectionRef}
             onMouseMove={handleMouseMove}
-            className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden"
+            className="relative min-h-screen flex flex-col justify-center items-center pt-32 pb-16 bg-cyber-bg overflow-hidden"
         >
+            <div className="absolute inset-0 studio-grid pointer-events-none z-0"></div>
             <ImageTrail containerRef={sectionRef} />
 
-            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03] z-10"></div>
-            
             <motion.div 
                 style={{ 
-                    x: useTransform(springX, [-0.5, 0.5], [100, -100]), 
-                    y: useTransform(springY, [-0.5, 0.5], [100, -100]) 
+                    x: useTransform(springX, [-0.5, 0.5], [60, -60]), 
+                    y: useTransform(springY, [-0.5, 0.5], [60, -60]) 
                 }}
-                className="absolute inset-0 z-10 pointer-events-none opacity-20"
-            >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brand-purple/5 blur-[120px] rounded-full" />
-            </motion.div>
+                className="absolute w-[70vw] h-[70vw] blur-glow rounded-full z-0 top-1/4 left-1/4 pointer-events-none"
+            />
 
-            <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
-                <div className="relative mb-16 md:mb-32">
-                    <div className="pointer-events-auto inline-block">
-                        <motion.h1 
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                            className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
-                        >
-                            BRAND STRATEGY
-                        </motion.h1>
-                    </div>
-                    
-                    <div className="flex justify-start items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
-                        <motion.span 
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1.4, delay: 0.4, ease: "easeOut" }}
-                            className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none absolute -left-[1em] top-[-0.05em] pointer-events-none"
-                        >
-                            &
-                        </motion.span>
-                        <div className="pointer-events-auto inline-block">
-                            <motion.h1 
-                                initial={{ opacity: 0, x: 50 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-                                className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
-                            >
-                                DESIGN POWER
-                            </motion.h1>
+            <div className="container mx-auto px-6 md:px-12 relative z-20 flex-grow flex flex-col justify-center pointer-events-none w-full">
+                <div className="max-w-7xl mx-auto w-full text-left">
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                        className="space-y-4"
+                    >
+                        <div className="font-mono text-xs tracking-[0.3em] text-brand-purple uppercase font-bold">
+                            // BOUTIQUE BRAND EXPERIMENTAL LAB
                         </div>
-                    </div>
+                        <h1 className="text-[10vw] md:text-[7vw] font-extrabold tracking-tight text-white leading-[0.95] max-w-5xl">
+                            We transform emerging ideas into high-resolution visual systems.
+                        </h1>
+                        <p className="font-body text-lg md:text-2xl text-slate-400 font-light max-w-3xl pt-6 leading-relaxed">
+                            A specialized creative cell built for visionary operators. No bloated agency management teams. Direct accountability, refined aesthetic clarity, and uncompromising execution rules.
+                        </p>
+                    </motion.div>
                 </div>
 
-                <div className="mt-auto pointer-events-auto">
-                    <div className="text-center mb-6">
-                        <span className="font-mono text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold text-brand-navy">
-                            [ MOVE CURSOR TO REVEAL ]
-                        </span>
+                <div className="mt-auto w-full max-w-7xl mx-auto pt-16 flex flex-col sm:flex-row justify-between items-start sm:items-end border-t border-white/5 font-mono text-[11px] uppercase tracking-[0.2em] text-slate-500 gap-6">
+                    <div>
+                        <span className="text-brand-purple block mb-1">// COORDINATES</span>
+                        MT MAUNGANUI, NEW ZEALAND
                     </div>
-
-                    <div className="w-full h-[1.5px] bg-brand-navy/80 mb-8 md:mb-10"></div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start text-brand-navy">
-                        <div className="font-mono">
-                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Est. 2024</span>
-                            <div className="text-[10px] uppercase tracking-widest leading-loose font-bold opacity-70">
-                                MOUNT MAUNGANUI<br/>NEW ZEALAND
-                            </div>
-                        </div>
-
-                        <div className="md:text-center font-mono">
-                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
-                             <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
-                                A specialized senior team for ambitious founders and agencies. Two experts. One system.
-                             </p>
-                        </div>
-
-                        <div className="md:text-right font-mono">
-                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Status</span>
-                             <div className="flex items-center md:justify-end gap-3">
-                                 <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
-                                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70">Accepting Partners</span>
-                             </div>
-                        </div>
+                    <div>
+                        <span className="text-brand-purple block mb-1">// SYSTEM METRIC</span>
+                        SYS_BOOT_V1.2 // RE-ENGAGED
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
+                        <span className="text-slate-300 font-bold">ACCEPTING STRATEGIC SPOTS</span>
                     </div>
                 </div>
             </div>
@@ -240,48 +170,31 @@ const BrandHero: React.FC = () => {
 
 const SplitManifesto: React.FC = () => {
     return (
-        <section className="border-t-2 border-brand-navy bg-brand-offwhite relative z-40 overflow-hidden">
-            <div className="container mx-auto border-x border-brand-navy/10">
-                <div className="grid grid-cols-1 lg:grid-cols-2 items-start">
-                    
-                    {/* LEFT COLUMN: Sticky Header */}
-                    <div className="lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] p-8 md:p-16 border-b lg:border-b-0 lg:border-r border-brand-navy/10 flex flex-col justify-between">
-                        <div>
-                            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-8 block">01 / The Thesis</span>
-                            <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.95] text-brand-navy break-words">
-                                No Magic.<br/>
-                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '1.5px #0F0328' }}>High-Res Logic.</span>
-                            </h2>
-                            <div className="mt-14 md:mt-20">
-                                <DownArrow className="text-brand-purple" size={42} />
-                            </div>
-                        </div>
+        <section className="bg-cyber-bg border-t border-white/5 relative z-30 py-24 md:py-40">
+            <div className="container mx-auto px-6 md:px-12 max-w-7xl">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
+                    <div className="lg:col-span-5 lg:sticky lg:top-32">
+                        <span className="font-mono text-brand-purple uppercase tracking-[0.2em] text-xs font-bold mb-4 block">// THE MANIFESTO</span>
+                        <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-tight">
+                            Design is only validation when backed by absolute truth.
+                        </h2>
                     </div>
 
-                    {/* RIGHT COLUMN: Scrolling Content */}
-                    <div className="p-8 md:p-16 space-y-16 md:space-y-32">
+                    <div className="lg:col-span-7 space-y-12 md:space-y-20 font-light text-slate-400 text-xl md:text-3xl leading-relaxed">
                         <AnimatedSection>
-                            <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy break-words">
-                                Great taste is a discipline. We help ambitious organizations strip away the noise to uncover their <span className="text-brand-purple font-bold">soul</span> and express it with absolute precision.
+                            <p>
+                                Most teams chase contemporary cosmetic design cycles. We execute frameworks around <span className="text-white font-medium">functional logic</span>, filtering subjective feedback loops into structural business equity.
                             </p>
                         </AnimatedSection>
-                        
                         <AnimatedSection>
-                            <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy break-words">
-                                We sell <span className="text-brand-purple font-bold">clarity</span>. We believe that if you can't explain your strategy on a napkin, you don't have one worth executing.
+                            <p>
+                                If your brand positioning strategy cannot cleanly map out onto a simple interface canvas, you don't own an operational thesis. You own a temporary masking dynamic.
                             </p>
                         </AnimatedSection>
-
-                        <AnimatedSection>
-                            <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy break-words">
-                                We provide the <span className="text-brand-purple font-bold">Design Power</span>. We don't just design the car; we build the engine and hand you the keys to drive it.
-                            </p>
-                        </AnimatedSection>
-
-                        <div className="pt-8 md:pt-16">
-                             <Link to="/about" className="inline-block border-2 border-brand-navy px-8 md:px-12 py-5 md:py-6 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy">
-                                 Read the Manifesto
-                             </Link>
+                        <div className="pt-6">
+                            <Link to="/about" className="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-white border border-white/10 hover:border-brand-purple px-8 py-4 rounded-full bg-white/[0.02] transition-colors duration-300">
+                                Verify Architecture Details <DownArrow className="rotate-[-90deg] text-brand-purple" size={14} />
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -292,56 +205,36 @@ const SplitManifesto: React.FC = () => {
 
 const ServiceRouter: React.FC = () => {
     return (
-        <section className="bg-brand-offwhite border-b-2 border-brand-navy relative z-40 overflow-hidden">
-             <div className="grid grid-cols-1 lg:grid-cols-3">
-                {SERVICE_LEGS.map((leg, index) => {
-                    const titleParts = leg.title.match(/^(We help you)\s+(.*)$/i);
-                    const prefix = titleParts ? titleParts[1] : 'We help you';
-                    const mainTitle = titleParts ? titleParts[2] : leg.title;
-
-                    return (
-                        <Link 
-                            key={leg.id}
-                            to={leg.path}
-                            className="group relative block min-h-[60vh] md:min-h-[70vh] border-b lg:border-b-0 lg:border-r border-brand-navy/10 p-8 md:p-12 flex flex-col justify-between overflow-hidden hover:bg-brand-lavender transition-colors duration-500"
-                        >
-                            <div className="relative z-10">
-                                <div className="flex justify-between items-start mb-12">
-                                    <span className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors">
-                                        0{index + 1}
-                                    </span>
-                                    <span className="font-mono text-[10px] uppercase tracking-widest font-bold opacity-50 group-hover:opacity-100 transition-opacity text-brand-navy group-hover:text-brand-offwhite">
-                                        {leg.visual}
-                                    </span>
-                                </div>
-                                
-                                <div className="mb-8 relative">
-                                    <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors block mb-2">
-                                        {prefix}
-                                    </span>
-                                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] text-brand-navy group-hover:text-brand-offwhite transition-colors break-words">
-                                        {mainTitle}
-                                        <span className="text-brand-purple group-hover:text-brand-yellow transition-colors">.</span>
-                                    </h2>
-                                </div>
-                                
-                                <p className="font-body text-xl md:text-2xl text-brand-navy/60 group-hover:text-brand-offwhite/90 transition-colors max-w-sm leading-relaxed">
-                                    {leg.subtitle}
-                                </p>
+        <section className="bg-cyber-bg border-t border-white/5 relative z-30">
+            <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-white/5">
+                {SERVICE_LEGS.map((leg, index) => (
+                    <Link 
+                        key={leg.id}
+                        to={leg.path}
+                        className="group relative block p-8 md:p-16 flex flex-col justify-between min-h-[50vh] hover:bg-white/[0.01] transition-colors duration-500"
+                    >
+                        <div className="space-y-12">
+                            <div className="flex justify-between items-center font-mono text-xs text-slate-600">
+                                <span>METRIC_0{index + 1}</span>
+                                <span className="text-[10px] tracking-widest uppercase border border-white/10 px-2 py-1 rounded-sm">{leg.visual.split(',')[0]}</span>
                             </div>
-
-                            <div className="relative z-10 pt-12 border-t border-brand-navy/10 group-hover:border-brand-offwhite/20 mt-auto">
-                                <p className="font-mono text-xs uppercase tracking-widest mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0 text-brand-navy group-hover:text-brand-offwhite">
+                            <div className="space-y-4">
+                                <h3 className="text-3xl md:text-4xl font-semibold text-white tracking-tight group-hover:text-brand-purple transition-colors duration-300">
+                                    {leg.title.replace("Stop using generic templates", "Tasteful Visual Systems")}
+                                </h3>
+                                <p className="font-body text-base text-slate-400 font-light leading-relaxed">
                                     {leg.hoverText}
                                 </p>
-                                <span className="inline-block font-mono text-sm uppercase font-bold tracking-widest border-b-2 border-brand-purple group-hover:border-brand-yellow pb-1 group-hover:text-brand-yellow transition-colors text-brand-purple">
-                                    More Info
-                                </span>
                             </div>
-                        </Link>
-                    );
-                })}
-             </div>
+                        </div>
+
+                        <div className="pt-12 flex items-center justify-between font-mono text-xs text-brand-purple group-hover:text-white transition-colors">
+                            <span>EXPLORE INTERFACE</span>
+                            <span className="transform group-hover:translate-x-2 transition-transform duration-300">&rarr;</span>
+                        </div>
+                    </Link>
+                ))}
+            </div>
         </section>
     )
 }
@@ -350,45 +243,35 @@ const FeatureSpotlight: React.FC = () => {
     const featuredProject = PROJECTS[0]; 
 
     return (
-        <section className="relative bg-brand-navy overflow-hidden group">
-            <Link to={`/work/${featuredProject.slug}`} className="block relative min-h-screen md:min-h-[120vh]">
-                <div className="absolute inset-0 z-0">
+        <section className="relative bg-brand-dark overflow-hidden group border-t border-white/5 z-30">
+            <Link to={`/work/${featuredProject.slug}`} className="block relative min-h-[80vh] md:min-h-[100vh]">
+                <div className="absolute inset-0 z-0 overflow-hidden">
                     <img 
                         src={featuredProject.imageUrl} 
                         alt={featuredProject.title} 
-                        className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-700 grayscale group-hover:grayscale-0"
+                        className="w-full h-full object-cover opacity-40 group-hover:opacity-25 transition-all duration-1000 ease-out scale-100 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-cyber-bg via-cyber-bg/40 to-transparent" />
                 </div>
 
-                <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-16">
-                    <div className="container mx-auto">
-                        <motion.div 
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-xs font-bold mb-6 block">
-                                Featured Case Study
+                <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 md:p-20">
+                    <div className="container mx-auto max-w-7xl w-full">
+                        <div className="max-w-4xl space-y-6">
+                            <span className="font-mono text-brand-purple uppercase tracking-[0.2em] text-xs font-bold block">
+                                // ARCHIVAL RECORDED WORK_01
                             </span>
-                            <h2 className="text-[15vw] leading-[0.8] font-black uppercase tracking-tighter text-brand-offwhite mb-8 group-hover:text-brand-yellow transition-colors duration-500">
+                            <h2 className="text-5xl md:text-8xl font-extrabold tracking-tight text-white leading-none">
                                 {featuredProject.title}
                             </h2>
-                            
-                            <div className="flex flex-col md:flex-row gap-12 border-t border-brand-offwhite/20 pt-8 text-brand-offwhite/80">
-                                <div className="max-w-xl">
-                                    <p className="font-body text-lg md:text-xl leading-relaxed font-light opacity-80 line-clamp-3 md:line-clamp-4">
-                                        {featuredProject.description}
-                                    </p>
-                                </div>
-                                <div className="mt-auto ml-auto">
-                                    <span className="font-mono text-sm uppercase tracking-widest border-b-2 border-brand-yellow pb-2 text-brand-yellow font-bold">
-                                        Open Case File &rarr;
-                                    </span>
-                                </div>
+                            <p className="font-body text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-2xl">
+                                {featuredProject.description}
+                            </p>
+                            <div className="pt-4">
+                                <span className="inline-flex font-mono text-xs uppercase tracking-widest text-white border-b border-brand-purple pb-1 font-bold group-hover:border-white transition-colors">
+                                    Deconstruct Case Architecture &rarr;
+                                </span>
                             </div>
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
             </Link>
@@ -397,125 +280,72 @@ const FeatureSpotlight: React.FC = () => {
 };
 
 const CapabilityList: React.FC = () => {
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
     const capabilities = [
-        { 
-            id: '01', 
-            title: 'Strategy', 
-            desc: 'Positioning, Messaging, Brand Playbook, & Roadmaps', 
-            link: '/clarity'
-        },
-        { 
-            id: '02', 
-            title: 'Identity', 
-            desc: 'Visual Systems, Logos, Brand Guidelines, Colour, & Typography,', 
-            link: '/design-power'
-        },
-        { 
-            id: '03', 
-            title: 'Digital', 
-            desc: 'Web Design, Webflow Dev, Content Strategy, & Campaign Creative', 
-            link: '/design-power'
-        },
-        { 
-            id: '04', 
-            title: 'Visuals', 
-            desc: 'Motion Design, 3D Product Vis, GFX & Kinetic Type', 
-            link: '/design-power'
-        }
+        { id: '01', title: 'Strategy Architecture', desc: 'Surgical Positioning, Value Messaging Systems, & Technical Core Playbooks', link: '/clarity' },
+        { id: '02', title: 'Identity Engines', desc: 'Visual Telemetry systems, Distinct Mark systems, Layout Systems, & Typography Strategy', link: '/design-power' },
+        { id: '03', title: 'Digital Gateways', desc: 'Custom Micro-Interactions, Structured Performance Webflow & Framer System Engineering', link: '/design-power' },
+        { id: '04', title: 'Kinetic Assets', desc: '3D High-Res Product Visualization, Dynamic Lighting Models, Motion Systems', link: '/design-power' }
     ];
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        mouseX.set(e.clientX);
-        mouseY.set(e.clientY);
-    };
-
     return (
-        <section 
-            className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden" 
-            onMouseMove={handleMouseMove}
-        >
-            <div className="container mx-auto px-8 relative z-10">
-                <div className="mb-24 flex items-end justify-between border-b border-brand-offwhite/20 pb-8">
-                     <h2 className="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-[0.9]">
-                        Output.
+        <section className="bg-cyber-bg border-t border-white/5 py-24 md:py-40 relative z-30">
+            <div className="container mx-auto px-6 md:px-12 max-w-7xl">
+                <div className="mb-20 flex flex-col md:flex-row md:items-end justify-between border-b border-white/5 pb-8 gap-4">
+                     <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white">
+                        Operational Outputs.
                      </h2>
-                     <div className="hidden md:block font-mono text-xs uppercase tracking-widest text-right opacity-80">
-                        Select a capability<br/>to explore
-                     </div>
+                     <span className="font-mono text-xs uppercase tracking-widest text-slate-500">// CAPABILITY FIELDS</span>
                 </div>
 
-                <div className="flex flex-col">
+                <div className="flex flex-col border-t border-white/5">
                     {capabilities.map((cap, index) => (
                         <Link 
                             key={index}
                             to={cap.link}
-                            onMouseEnter={() => setHoveredIndex(index)}
-                            onMouseLeave={() => setHoveredIndex(null)}
-                            className="group relative border-b border-brand-offwhite/20 py-12 md:py-16 flex flex-col md:flex-row justify-between md:items-center transition-colors hover:bg-brand-offwhite/5"
+                            className="group border-b border-white/5 py-8 md:py-12 flex flex-col lg:flex-row justify-between lg:items-center gap-4 hover:bg-white/[0.005] transition-colors duration-300"
                         >
-                            <div className="flex items-baseline gap-8 md:gap-16">
-                                <span className="font-mono text-sm md:text-base text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
-                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tight group-hover:translate-x-4 transition-transform duration-500 ease-out text-brand-offwhite">
+                            <div className="flex items-center gap-6 md:gap-12">
+                                <span className="font-mono text-xs text-brand-purple font-bold">/{cap.id}</span>
+                                <h3 className="text-2xl md:text-4xl font-medium text-white transition-transform duration-300 group-hover:translate-x-2">
                                     {cap.title}
                                 </h3>
                             </div>
-                            <div className="mt-4 md:mt-0 pl-[calc(2rem+14px)] md:pl-0">
-                                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-brand-offwhite">
-                                    {cap.desc}
-                                </span>
-                            </div>
+                            <span className="font-body text-sm md:text-base text-slate-400 font-light max-w-xl lg:text-right">
+                                {cap.desc}
+                            </span>
                         </Link>
                     ))}
                 </div>
             </div>
-
-            <motion.div
-                className="pointer-events-none fixed top-0 left-0 w-[300px] h-[400px] z-50 hidden md:block overflow-hidden bg-brand-yellow mix-blend-normal"
-                style={{
-                    x: mouseX,
-                    y: mouseY,
-                    translateX: "-50%",
-                    translateY: "-50%"
-                }}
-                animate={{
-                    opacity: hoveredIndex !== null ? 1 : 0,
-                    scale: hoveredIndex !== null ? 1 : 0.5,
-                    rotate: hoveredIndex !== null ? -5 : 0
-                }}
-                transition={{ duration: 0.2, ease: "linear" }}
-            >                
-            </motion.div>
         </section>
     );
 }
 
 const ShowcaseGrid: React.FC = () => {
     return (
-        <section className="bg-brand-offwhite px-6 md:px-8 py-32 relative z-40 border-b-2 border-brand-navy overflow-hidden">
-             <div className="container mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.9]">
-                        Selected<br/>Works
+        <section className="bg-cyber-bg border-t border-white/5 py-24 md:py-40 relative z-30">
+             <div className="container mx-auto px-6 md:px-12 max-w-7xl">
+                <div className="flex flex-col sm:flex-row justify-between sm:items-end mb-20 gap-6">
+                     <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white">
+                        Selected Cases
                      </h2>
-                     <Link to="/work" className="font-mono text-sm uppercase tracking-widest font-bold border-2 border-brand-navy px-8 py-3 hover:bg-brand-navy hover:text-brand-offwhite transition-all text-brand-navy">
-                        View Full Archive
+                     <Link to="/work" className="inline-flex font-mono text-xs uppercase tracking-widest text-white border border-white/10 hover:border-brand-purple px-6 py-3 rounded-full transition-colors bg-white/[0.01]">
+                        Archival Log Database
                      </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-y-24">
-                    {PROJECTS.slice(1, 8).map((project, index) => (
-                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-24' : ''}`}>
-                             <ProjectCard project={project} className="aspect-[4/3] w-full" />
-                             <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 md:gap-y-24">
+                    {PROJECTS.slice(1, 7).map((project, index) => (
+                        <div key={project.id} className={`space-y-6 ${index % 2 === 1 ? 'md:translate-y-16' : ''}`}>
+                             <div className="overflow-hidden rounded-lg border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                                 <ProjectCard project={project} className="aspect-[4/3] w-full" />
+                             </div>
+                             <div className="flex justify-between items-start pt-2 font-mono">
                                 <div>
-                                    <h3 className="text-3xl font-black uppercase tracking-tight leading-none text-brand-navy">{project.title}</h3>
-                                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
+                                    <h3 className="text-xl font-bold text-white uppercase tracking-tight font-sans">{project.title}</h3>
+                                    <span className="text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-1 block">{project.category}</span>
                                 </div>
-                                <span className="font-mono text-[10px] uppercase font-bold opacity-40 text-brand-navy">{project.year}</span>
+                                <span className="text-[11px] text-slate-600 font-bold">{project.year}</span>
                              </div>
                         </div>
                     ))}
@@ -527,19 +357,21 @@ const ShowcaseGrid: React.FC = () => {
 
 const LatestIntel: React.FC = () => {
     return (
-        <section className="py-24 relative z-40 bg-brand-offwhite overflow-hidden">
-             <div className="container mx-auto px-8">
-                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-                    <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-brand-navy">Studio Thoughts</h3>
-                    <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">View All Entries &rarr;</Link>
+        <section className="py-24 bg-cyber-bg border-t border-white/5 relative z-30">
+             <div className="container mx-auto px-6 md:px-12 max-w-7xl">
+                 <div className="flex justify-between items-end mb-16 border-b border-white/5 pb-6">
+                    <h3 className="text-3xl font-bold text-white tracking-tight">Studio Intelligence</h3>
+                    <Link to="/journal" className="font-mono text-xs uppercase tracking-widest text-brand-purple hover:text-white transition-colors font-bold">Show Matrix &rarr;</Link>
                  </div>
                  
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-brand-navy/10">
+                 <div className="grid grid-cols-1 md:grid-cols-3 border border-white/5 divide-y md:divide-y-0 md:divide-x divide-white/5 rounded-lg overflow-hidden bg-white/[0.01]">
                     {JOURNAL_POSTS.slice(0, 3).map((post, i) => (
-                        <Link key={i} to={`/journal/${post.slug}`} data-cursor-text="READ" className="group block border-r border-b border-t border-brand-navy/10 p-8 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300">
-                             <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-4 group-hover:text-brand-yellow text-brand-navy group-hover:text-brand-offwhite">{post.date}</span>
-                             <h4 className="text-3xl font-black uppercase tracking-tight leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h4>
-                             <p className="font-body text-sm opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-brand-navy group-hover:text-brand-offwhite">
+                        <Link key={i} to={`/journal/${post.slug}`} className="group block p-8 hover:bg-white/[0.01] transition-all duration-300 space-y-6">
+                             <span className="font-mono text-[10px] uppercase tracking-widest text-slate-500 block">{post.date}</span>
+                             <h4 className="text-2xl font-semibold text-white group-hover:text-brand-purple transition-colors duration-300 leading-tight min-h-[2.5em]">
+                                 {post.title}
+                             </h4>
+                             <p className="font-body text-sm text-slate-400 font-light leading-relaxed line-clamp-3 pt-2">
                                  {post.excerpt}
                              </p>
                         </Link>
@@ -552,7 +384,7 @@ const LatestIntel: React.FC = () => {
 
 const HomePage: React.FC = () => {
   return (
-    <div className="bg-brand-offwhite">
+    <div className="bg-cyber-bg min-h-screen">
       <BrandHero />
       <SplitManifesto />
       <ServiceRouter />
