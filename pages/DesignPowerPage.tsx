@@ -18,9 +18,8 @@ const DesignPowerPage: React.FC = () => {
               <span className="text-brand-navy/40 not-italic text-xl mt-6 block font-normal">
                 You have the direction. Now you need to show up like it. <br/> 
                 This is where it becomes visible. Where ideas turn into something people can actually see, trust, and remember. <br/> 
-                Not just “pretty design.” Design that performs. That holds attention. That feels real across every brand touchpoint.
+                Not just pretty design. Design that performs. That holds attention. That feels real across every brand touchpoint.
               </span>
-            </p>
           </header>
         </AnimatedSection>
 

@@ -7,11 +7,12 @@ const PartnershipPage: React.FC = () => {
   return (
     <div className="bg-brand-offwhite min-h-screen pt-32">
       <div className="container mx-auto px-8">
+        
         <AnimatedSection>
           <header className="py-24 md:py-48 max-w-5xl">
-            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold">Leg 3: Scale</span>
+            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold block mb-4">Phase 03 / The Scale Button</span>
             <h1 className="text-brand-navy text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] mt-0">
-              The Scale<br/><span className="text-brand-purple italic">Button.</span>
+              Plug <br/><span className="text-brand-purple italic">& Play.</span>
             </h1>
             <p className="font-body text-2xl md:text-4xl text-brand-navy/70 mt-12 leading-tight max-w-3xl">
               For senior agencies and visionaries. We are the elite unit you plug into your process to handle the heavy lifting of high-end execution.
@@ -19,12 +20,17 @@ const PartnershipPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
-        {/* Engagement Models */}
-        <section className="py-32 border-t border-brand-navy/10">
+        {/* ENGAGEMENT MODELS - BRUTALIST TIERS */}
+        <section className="py-32 border-t-2 border-brand-navy mb-32">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                  <div className="lg:col-span-4">
-                     <h2 className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-8">How We Engage</h2>
-                     <h3 className="text-5xl font-black uppercase tracking-tight leading-none text-brand-navy">Engagement<br/>Models.</h3>
+                     <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-4 block">How We Engage</span>
+                     <h2 className="text-5xl font-black uppercase tracking-tight leading-none text-brand-navy">
+                        Engagement<br/>Models.
+                     </h2>
+                     <p className="mt-8 font-body text-xl text-brand-navy/60 leading-relaxed">
+                        We don't do typical freelancer arrangements. We build partnerships based on specific outputs and high accountability.
+                     </p>
                  </div>
                  <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                     {PARTNERSHIP_MODELS.map((model, index) => {
@@ -33,25 +39,32 @@ const PartnershipPage: React.FC = () => {
                             <AnimatedSection key={model.slug} delay={index * 100} className="h-full">
                                 <Link 
                                     to={`/partnership/${model.slug}`} 
-                                    className={`block p-12 border h-full flex flex-col transition-all duration-300 group relative overflow-hidden ${
+                                    className={`block border-2 p-12 transition-all duration-500 h-full group relative overflow-hidden flex flex-col justify-between hover:translate-x-1 hover:translate-y-1 hover:shadow-none ${
                                         isEquity 
-                                        ? 'bg-brand-navy text-brand-offwhite border-brand-navy hover:scale-[1.02]' 
-                                        : 'bg-white border-brand-navy/10 hover:border-brand-purple'
+                                        ? 'bg-brand-navy text-brand-offwhite border-brand-navy shadow-[12px_12px_0px_0px_#FCC803] hover:bg-white hover:text-brand-navy' 
+                                        : 'bg-white border-brand-navy text-brand-navy shadow-[12px_12px_0px_0px_#0F0328] hover:bg-brand-navy hover:text-brand-offwhite'
                                     }`}
                                 >
-                                    <h4 className={`text-3xl font-black uppercase tracking-tight mb-4 ${isEquity ? 'text-brand-yellow' : 'text-brand-navy'}`}>
-                                        {model.title}
-                                    </h4>
-                                    <p className={`font-body text-lg mb-8 flex-grow ${isEquity ? 'text-brand-offwhite/70' : 'text-brand-navy/70'}`}>
-                                        {model.description}
-                                    </p>
-                                    <div className="flex justify-between items-center mt-auto">
-                                        <span className={`font-mono text-xs uppercase px-4 py-2 font-bold ${isEquity ? 'bg-brand-offwhite/10 text-brand-offwhite' : 'bg-brand-navy/5 text-brand-navy'}`}>
-                                            {model.priceLabel}
-                                        </span>
-                                        <span className={`font-mono text-[10px] uppercase font-bold tracking-widest opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-4 group-hover:translate-x-0 duration-300 ${isEquity ? 'text-brand-yellow' : 'text-brand-purple'}`}>
-                                            View Details &rarr;
-                                        </span>
+                                    <div>
+                                        <div className="flex justify-between items-start mb-8">
+                                            <span className={`font-mono text-xs uppercase tracking-widest font-bold transition-colors ${isEquity ? 'text-brand-yellow group-hover:text-brand-purple' : 'text-brand-purple group-hover:text-brand-yellow'}`}>
+                                                {model.commitment}
+                                            </span>
+                                            <span className={`font-mono text-[10px] uppercase font-black px-2 py-1 transition-colors ${isEquity ? 'bg-brand-offwhite/10 group-hover:bg-brand-navy/5 text-brand-yellow group-hover:text-brand-navy' : 'bg-brand-navy/5 group-hover:bg-brand-offwhite/10 group-hover:text-brand-yellow'}`}>
+                                                {model.priceLabel}
+                                            </span>
+                                        </div>
+                                        <h3 className="text-4xl font-black uppercase tracking-tight mb-6 leading-none">
+                                            {model.title}
+                                        </h3>
+                                        <p className={`font-body text-xl transition-colors leading-relaxed min-h-[80px] ${isEquity ? 'text-brand-offwhite/70 group-hover:text-brand-navy/60' : 'text-brand-navy/60 group-hover:text-brand-offwhite/70'}`}>
+                                            {model.description}
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="mt-12 flex items-center gap-4">
+                                        <span className="font-mono text-sm uppercase font-bold tracking-widest">View Details</span>
+                                        <div className={`w-12 h-[2px] transition-all duration-500 group-hover:w-24 ${isEquity ? 'bg-brand-offwhite group-hover:bg-brand-navy' : 'bg-brand-navy group-hover:bg-brand-yellow'}`}></div>
                                     </div>
                                 </Link>
                             </AnimatedSection>
@@ -61,27 +74,25 @@ const PartnershipPage: React.FC = () => {
             </div>
         </section>
 
-        {/* Capabilities */}
-        <section className="py-32 border-t border-brand-navy/10 bg-white -mx-8 px-8">
-            <div className="container mx-auto">
-                <div className="max-w-4xl mb-16">
-                    <h2 className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-6">Capabilities</h2>
-                    <h3 className="text-6xl md:text-8xl font-black uppercase tracking-tight leading-none text-brand-navy">What We Ship.</h3>
+        {/* ALIGNED CAPABILITIES SECTION */}
+        <section className="pb-32 border-t border-brand-navy/10 pt-24">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <div className="lg:col-span-4">
+                    <h3 className="text-4xl font-black uppercase text-brand-navy tracking-tight italic">What We Ship.</h3>
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12">
                      {[
                          { title: "Strategy", items: ["Brand Compass", "Positioning", "Messaging Matrix"] },
                          { title: "Identity", items: ["Visual Systems", "Logo Design", "Typography"] },
-                         { title: "Motion", items: ["3D Product Viz", "Campaign Assets", "Social Motion"] },
+                         { title: "Motion & 3D", items: ["Product Viz", "Campaign Assets", "Social Motion"] },
                          { title: "Digital", items: ["Webflow Dev", "UI/UX Design", "Framer Sites"] }
                      ].map(cap => (
-                         <div key={cap.title} className="p-8 border-l-2 border-brand-navy pl-8">
-                             <h4 className="text-2xl font-black uppercase tracking-tight mb-6">{cap.title}</h4>
-                             <ul className="space-y-4">
+                         <div key={cap.title}>
+                             <h4 className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-4">{cap.title}</h4>
+                             <ul className="space-y-3">
                                  {cap.items.map(i => (
-                                     <li key={i} className="font-mono text-sm uppercase tracking-widest text-brand-navy/70 flex items-center gap-2">
-                                         <span className="w-1 h-1 bg-brand-purple"></span> {i}
+                                     <li key={i} className="font-body text-xl text-brand-navy/80 flex items-center gap-3">
+                                         <span className="w-1 h-1 bg-brand-navy/20"></span> {i}
                                      </li>
                                  ))}
                              </ul>
