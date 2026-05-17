@@ -499,8 +499,8 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
     {
         slug: "the-basics",
         name: "The Basics",
-        focus: "Just the Basic. ",
-        desc: "Your business exists, but your branding doesn’t reflect its potential. We bring clarity through a focused identity system built properly.",
+        focus: "Just the Basic.",
+        desc: "Your business exists, but your branding doesn't reflect its potential. We bring clarity through a focused identity system built properly.",
         cta: "Start Looking PRO Now",
         deliverables: ["Logo System", "Colour & Type", "Mini-Rulebook"],
         timeline: "2-4 Weeks",
@@ -509,8 +509,8 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
     {
         slug: "the-basics-plus",
         name: "The Basics Plus Pro Max",
-        focus: "The Basics, extended into a proper system. Built for consistency now, and flexibility later.",
-        desc: "A logo isn't enough. You need a system around it. We build that. The visuals, digital and print graphics, kinetic desing, and the story to launch your products.",
+        focus: "The Basics Extended.",
+        desc: "A logo isn't enough. You need a proper brand ecosystem built for consistency now, and flexibility later. We build that. The visuals, digital and print graphics, kinetic desing, and the story to launch your products.",
         cta: "Start Selling",
         deliverables: ["Brand Applications", "Creative Direction", "Ads Mockups"],
         timeline: "4-5 Weeks",
@@ -519,7 +519,7 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
     {
         slug: "the-content",
         name: "The Content Strategy",
-        focus: "Time to Show Up",
+        focus: "Time to Show Up.",
         desc: "Good branding gets attention. Consistent content builds relevance. We help you create the foundation for both.",
         cta: "I'M Ready to Show Up",
         deliverables: ["Look & Feed Vibes", "Storytelling Direction", "Content Ideas", "Design Template"],
@@ -529,7 +529,7 @@ export const DESIGN_POWER_TIERS: DesignPowerTier[] = [
     {
         slug: "the-website",
         name: "The Website",
-        focus: "Your Digital Store Front",
+        focus: "A PRO Website, really.",
         desc: "Websites that feel considered, custom, and genuinely professional. Built in Webflow without the generic template feel.",
         cta: "Get Me A Cool Website",
         deliverables: ["Custom Web Design", "Webflow Dev", "Responsive Ready", "CMS Training"],
