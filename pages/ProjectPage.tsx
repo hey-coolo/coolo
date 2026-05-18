@@ -259,7 +259,7 @@ const QuoteBreak: React.FC = () => {
             <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8 text-center border-y-2 border-brand-navy">
                 
                 {/* Fixed Label */}
-                <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
+                <div className="relative w-full max-w-5xl mx-auto flex items-center justify-center font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
                     // The Studio Truth
                 </div>
 
@@ -358,8 +358,8 @@ const ResultsSection: React.FC<{ gain: string }> = ({ gain }) => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                 >
-                    <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-12 block">
-                        Final Status
+                    <span className="font-mono text-brand-yellow uppercase tracking-[0.3em] text-xs font-bold mb-12 block">
+                        Final Thoughts
                     </span>
                     <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tight leading-tight max-w-5xl mx-auto text-brand-offwhite">
                         "{gain}"
@@ -394,7 +394,7 @@ const NextProject: React.FC<{ project: any }> = ({ project }) => (
                 </h2>
                 <div className="mt-12 overflow-hidden">
                     <span className="inline-block font-mono text-sm uppercase tracking-widest border-b border-brand-yellow pb-1 text-brand-yellow transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                        Open Dossier
+                        Open Case
                     </span>
                 </div>
             </motion.div>
