@@ -21,7 +21,8 @@
     "@google/genai": "latest",
     "react-helmet-async": "^2.0.4",
     "jspdf": "^2.5.1",
-    "stripe": "^16.0.0"
+    "stripe": "^16.0.0",
+    "lenis": "^1.1.13"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
