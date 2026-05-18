@@ -5,6 +5,33 @@ import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
 
+// --- SHARED SCROLL REVEAL COMPONENT ---
+const ScrollRevealText: React.FC<{ text: string; className?: string }> = ({ text, className = "" }) => {
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start 90%", "end 60%"] 
+    });
+
+    const words = text.split(" ");
+
+    return (
+        <div ref={containerRef} className={`flex flex-wrap ${className}`}>
+            {words.map((word, i) => {
+                const start = i / words.length;
+                const end = start + (1 / words.length);
+                const opacity = useTransform(scrollYProgress, [start, end], [0.15, 1]);
+                return (
+                    <motion.span key={i} style={{ opacity }} className="mr-[0.25em] mb-[0.1em]">
+                        {word}
+                    </motion.span>
+                );
+            })}
+        </div>
+    );
+};
+
+// --- MOUSE TRAIL EFFECT ---
 interface TrailItem {
     id: number;
     x: number;
@@ -31,34 +58,20 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
     useEffect(() => {
         const handleMove = (clientX: number, clientY: number) => {
             if (!containerRef.current) return;
-
             const rect = containerRef.current.getBoundingClientRect();
 
-            if (
-                clientX < rect.left || 
-                clientX > rect.right || 
-                clientY < rect.top || 
-                clientY > rect.bottom
-            ) {
-                return;
-            }
+            if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) return;
 
             const dist = Math.hypot(clientX - lastPos.current.x, clientY - lastPos.current.y);
 
             if (dist > 80) {
                 const nextImage = allImages[trailCount.current % allImages.length];
                 const id = trailCount.current++;
-                
                 const relativeX = clientX - rect.left;
                 const relativeY = clientY - rect.top;
 
                 const newItem: TrailItem = {
-                    id,
-                    x: relativeX,
-                    y: relativeY,
-                    rotation: Math.random() * 20 - 10,
-                    scale: 0.6 + Math.random() * 0.4,
-                    img: nextImage
+                    id, x: relativeX, y: relativeY, rotation: Math.random() * 20 - 10, scale: 0.6 + Math.random() * 0.4, img: nextImage
                 };
 
                 setTrail(prev => [...prev, newItem]);
@@ -70,21 +83,12 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
             }
         };
 
-        const handleMouseMove = (e: MouseEvent) => {
-            handleMove(e.clientX, e.clientY);
-        };
-
-        const handleTouchMove = (e: TouchEvent) => {
-            const touch = e.touches[0];
-            handleMove(touch.clientX, touch.clientY);
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('touchmove', handleTouchMove, { passive: true });
+        window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+        window.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
 
         return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+            window.removeEventListener('touchmove', (e) => handleMove(e.touches[0].clientX, e.touches[0].clientY));
         };
     }, [allImages, containerRef]);
 
@@ -99,18 +103,9 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
                         exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
                         className="absolute w-[140px] md:w-[260px] aspect-[4/5] shadow-2xl origin-center"
-                        style={{
-                            left: item.x,
-                            top: item.y,
-                            x: "-50%",
-                            y: "-50%" 
-                        }}
+                        style={{ left: item.x, top: item.y, x: "-50%", y: "-50%" }}
                     >
-                        <img 
-                            src={item.img} 
-                            alt="" 
-                            className="w-full h-full object-cover" 
-                        />
+                        <img src={item.img} alt="" className="w-full h-full object-cover" />
                     </motion.div>
                 ))}
             </AnimatePresence>
@@ -118,6 +113,7 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
     );
 };
 
+// --- HERO SECTION WITH SCROLL PARALLAX TYPOGRAPHY ---
 const BrandHero: React.FC = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const mouseX = useMotionValue(0);
@@ -132,6 +128,12 @@ const BrandHero: React.FC = () => {
         mouseY.set((e.clientY / innerHeight) - 0.5);
     };
 
+    // Parallax logic for typography
+    const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+    const yText1 = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+    const yText2 = useTransform(scrollYProgress, [0, 1], ["0%", "150%"]); // Moves faster to separate
+    const opacityHero = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
     return (
         <section 
             ref={sectionRef}
@@ -143,18 +145,15 @@ const BrandHero: React.FC = () => {
             <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03] z-10"></div>
             
             <motion.div 
-                style={{ 
-                    x: useTransform(springX, [-0.5, 0.5], [100, -100]), 
-                    y: useTransform(springY, [-0.5, 0.5], [100, -100]) 
-                }}
+                style={{ x: useTransform(springX, [-0.5, 0.5], [100, -100]), y: useTransform(springY, [-0.5, 0.5], [100, -100]) }}
                 className="absolute inset-0 z-10 pointer-events-none opacity-20"
             >
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brand-purple/5 blur-[120px] rounded-full" />
             </motion.div>
 
-            <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
+            <motion.div style={{ opacity: opacityHero }} className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
                 <div className="relative mb-16 md:mb-32">
-                    <div className="pointer-events-auto inline-block">
+                    <motion.div style={{ y: yText1 }} className="pointer-events-auto inline-block">
                         <motion.h1 
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -163,9 +162,9 @@ const BrandHero: React.FC = () => {
                         >
                             BRAND STRATEGY
                         </motion.h1>
-                    </div>
+                    </motion.div>
                     
-                    <div className="flex justify-start items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
+                    <motion.div style={{ y: yText2 }} className="flex justify-start items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
                         <motion.span 
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -184,7 +183,7 @@ const BrandHero: React.FC = () => {
                                 DESIGN POWER
                             </motion.h1>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
 
                 <div className="mt-auto pointer-events-auto">
@@ -193,9 +192,7 @@ const BrandHero: React.FC = () => {
                             [ MOVE CURSOR TO REVEAL ]
                         </span>
                     </div>
-
                     <div className="w-full h-[1.5px] bg-brand-navy/80 mb-8 md:mb-10"></div>
-                    
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start text-brand-navy">
                         <div className="font-mono">
                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Est. 2024</span>
@@ -203,14 +200,12 @@ const BrandHero: React.FC = () => {
                                 MOUNT MAUNGANUI<br/>NEW ZEALAND
                             </div>
                         </div>
-
                         <div className="md:text-center font-mono">
                              <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
                              <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
                                 A boutique creative and brand studio helping businesses transition from improvised to intentional.
                              </p>
                         </div>
-
                         <div className="md:text-right font-mono">
                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Status:</span>
                              <div className="flex items-center md:justify-end gap-3">
@@ -220,95 +215,73 @@ const BrandHero: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 }
 
+// --- HORIZONTAL SCROLL DOSSIER ---
 const NarrativeScroll: React.FC = () => {
-    const containerRef = useRef<HTMLElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end end"]
-    });
-
-    // We split the 300vh scroll space into three distinct phases for the smooth center fade
-    // Phrase 1
-    const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
-    const y1 = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
-    const scale1 = useTransform(scrollYProgress, [0, 0.3], [1, 0.95]);
-
-    // Phrase 2
-    const opacity2 = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [0, 1, 1, 0]);
-    const y2 = useTransform(scrollYProgress, [0.25, 0.4, 0.75], [50, 0, -50]);
-    const scale2 = useTransform(scrollYProgress, [0.25, 0.4, 0.75], [0.95, 1, 0.95]);
-
-    // Phrase 3
-    const opacity3 = useTransform(scrollYProgress, [0.65, 0.8, 1], [0, 1, 1]);
-    const y3 = useTransform(scrollYProgress, [0.65, 0.8], [50, 0]);
-    const scale3 = useTransform(scrollYProgress, [0.65, 0.8], [0.95, 1]);
+    const targetRef = useRef<HTMLElement>(null);
+    const { scrollYProgress } = useScroll({ target: targetRef });
+    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.6666%"]);
 
     return (
-        <section ref={containerRef} className="relative h-[300vh] bg-brand-offwhite">
-            {/* Sticky Container */}
-            <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
-                
-                {/* Fixed Header Label */}
+        <section ref={targetRef} className="relative h-[300vh] bg-brand-offwhite">
+            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
                 <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
-                    01 / The COOLO Way
+                    01 / The Thesis
                 </div>
 
-                <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center h-full">
-                    
-                    {/* --- Phrase 1 --- */}
-                    <motion.div 
-                        style={{ opacity: opacity1, y: y1, scale: scale1 }} 
-                        className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
-                    >
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                            <span>YOUR BUSINESS EVOLVED.</span>
-                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
-                        </h2>
-                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            We help ambitious businesses move beyond DIY survival mode into a more intentional, professional presence without losing the personality that made them worth noticing in the first place.
-                        </p>
-                    </motion.div>
-
-                    {/* --- Phrase 2 --- */}
-                    <motion.div 
-                        style={{ opacity: opacity2, y: y2, scale: scale2 }} 
-                        className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
-                    >
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                            <span>WE SELL CLARITY,</span>
-                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
-                        </h2>
-                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                             Because people feel coherence before they understand it. Not empty aesthetics. Not trend-chasing.
-                        </p>
-                    </motion.div>
-
-                    {/* --- Phrase 3 --- */}
-                    <motion.div 
-                        style={{ opacity: opacity3, y: y3, scale: scale3 }} 
-                        className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto"
-                    >
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                            <span>GOOD TASTE IS</span>
-                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>WHAT WE BUILD.</span>
-                        </h2>
-                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            Intentional thoughtful strategy, sharp creative direction, and design that communicates with precision.
-                        </p>
-                        
-                        <div className="mt-16 flex items-center justify-center gap-4">
-                            <Link to="/about" className="inline-block border-2 border-brand-navy px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
-                                More About Us
-                            </Link>
+                <motion.div style={{ x }} className="flex w-[300vw] h-full will-change-transform">
+                    {/* TRUTH 01 */}
+                    <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0">
+                        <div className="max-w-5xl mx-auto flex flex-col items-center">
+                            <h2 className="text-[10vw] md:text-[8rem] lg:text-[9rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                                <span>YOUR BUSINESS EVOLVED.</span>
+                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
+                            </h2>
+                            <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                                Most brands hide behind safe design and corporate jargon. We strip away the noise to find the actual soul of your business, and express it with absolute precision.
+                            </p>
                         </div>
-                    </motion.div>
+                    </div>
 
-                </div>
+                    {/* TRUTH 02 */}
+                    <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0">
+                        <div className="max-w-5xl mx-auto flex flex-col items-center">
+                            <h2 className="text-[12vw] md:text-[9rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                                <span>WE SELL CLARITY,</span>
+                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
+                            </h2>
+                            <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                                If your strategy takes a 40-page deck to explain, it's already dead. We build frameworks that make sense on a napkin.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* TRUTH 03 */}
+                    <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0 relative">
+                        <div className="max-w-5xl mx-auto flex flex-col items-center">
+                            <h2 className="text-[12vw] md:text-[9rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                                <span>GOOD TASTE IS</span>
+                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>STRATEGIC.</span>
+                            </h2>
+                            <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                                We bring the design power. We engineer visual systems that carry weight. No templates. No fluff. Just high-res output.
+                            </p>
+                            
+                            <div className="mt-16 flex items-center justify-center gap-4">
+                                <div className="w-12 h-12 bg-brand-purple rounded-full flex items-center justify-center text-white shrink-0">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                </div>
+                                <Link to="/about" className="inline-block border-2 border-brand-navy px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
+                                    Read the Manifesto
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
             </div>
         </section>
     );
@@ -338,7 +311,6 @@ const ServiceRouter: React.FC = () => {
                                         {leg.visual}
                                     </span>
                                 </div>
-                                
                                 <div className="mb-8 relative">
                                     <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors block mb-2">
                                         {prefix}
@@ -348,12 +320,10 @@ const ServiceRouter: React.FC = () => {
                                         <span className="text-brand-purple group-hover:text-brand-yellow transition-colors">.</span>
                                     </h2>
                                 </div>
-                                
                                 <p className="font-body text-xl md:text-2xl text-brand-navy/60 group-hover:text-brand-offwhite/90 transition-colors max-w-sm leading-relaxed">
                                     {leg.subtitle}
                                 </p>
                             </div>
-
                             <div className="relative z-10 pt-12 border-t border-brand-navy/10 group-hover:border-brand-offwhite/20 mt-auto">
                                 <p className="font-mono text-xs uppercase tracking-widest mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0 text-brand-navy group-hover:text-brand-offwhite">
                                     {leg.hoverText}
@@ -370,20 +340,28 @@ const ServiceRouter: React.FC = () => {
     )
 }
 
+// --- DEEP PARALLAX FEATURE SPOTLIGHT ---
 const FeatureSpotlight: React.FC = () => {
     const featuredProject = PROJECTS[0]; 
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
+    
+    // Background image scrolls slightly slower than the container to create depth
+    const yBg = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+    const scaleBg = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
 
     return (
-        <section className="relative bg-brand-navy overflow-hidden group">
-            <Link to={`/work/${featuredProject.slug}`} className="block relative min-h-screen md:min-h-[120vh]">
-                <div className="absolute inset-0 z-0">
+        <section ref={containerRef} className="relative bg-brand-navy overflow-hidden group min-h-screen md:min-h-[120vh]">
+            <Link to={`/work/${featuredProject.slug}`} className="block relative w-full h-full">
+                <motion.div style={{ y: yBg, scale: scaleBg }} className="absolute inset-0 z-0 origin-center">
                     <img 
                         src={featuredProject.imageUrl} 
                         alt={featuredProject.title} 
                         className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-700 grayscale group-hover:grayscale-0"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent opacity-90" />
-                </div>
+                </motion.div>
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent opacity-90 z-0" />
 
                 <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-16">
                     <div className="container mx-auto">
@@ -400,13 +378,14 @@ const FeatureSpotlight: React.FC = () => {
                                 {featuredProject.title}
                             </h2>
                             
-                            <div className="flex flex-col md:flex-row gap-12 border-t border-brand-offwhite/20 pt-8 text-brand-offwhite/80">
+                            <div className="flex flex-col md:flex-row gap-12 border-t border-brand-offwhite/20 pt-8 text-brand-offwhite/80 items-end">
                                 <div className="max-w-xl">
-                                    <p className="font-body text-xl font-light opacity-80 line-clamp-3 md:line-clamp-4 leading-relaxed">
-                                        {featuredProject.description}
-                                    </p>
+                                    <ScrollRevealText 
+                                        text={featuredProject.description} 
+                                        className="font-body text-xl font-light opacity-90 leading-relaxed justify-start"
+                                    />
                                 </div>
-                                <div className="mt-auto ml-auto">
+                                <div className="mt-auto ml-auto shrink-0">
                                     <span className="font-mono text-sm uppercase tracking-widest border-b-2 border-brand-yellow pb-2 text-brand-yellow font-bold">
                                         Open Case File &rarr;
                                     </span>
@@ -426,30 +405,10 @@ const CapabilityList: React.FC = () => {
     const mouseY = useMotionValue(0);
 
     const capabilities = [
-        { 
-            id: '01', 
-            title: 'Strategy', 
-            desc: 'Positioning, Messaging, Brand Playbook, & Roadmaps', 
-            link: '/clarity'
-        },
-        { 
-            id: '02', 
-            title: 'Identity', 
-            desc: 'Visual Systems, Logos, Brand Guidelines, Colour, & Typography,', 
-            link: '/design-power'
-        },
-        { 
-            id: '03', 
-            title: 'Digital', 
-            desc: 'Web Design, Webflow Dev, Content Strategy, & Campaign Creative', 
-            link: '/design-power'
-        },
-        { 
-            id: '04', 
-            title: 'Visuals', 
-            desc: 'Motion Design, 3D Product Vis, GFX & Kinetic Type', 
-            link: '/design-power'
-        }
+        { id: '01', title: 'Strategy', desc: 'Positioning, Messaging, Brand Playbook, & Roadmaps', link: '/clarity' },
+        { id: '02', title: 'Identity', desc: 'Visual Systems, Logos, Brand Guidelines, Colour, & Typography', link: '/design-power' },
+        { id: '03', title: 'Digital', desc: 'Web Design, Webflow Dev, Content Strategy, & Campaign Creative', link: '/design-power' },
+        { id: '04', title: 'Visuals', desc: 'Motion Design, 3D Product Vis, GFX & Kinetic Type', link: '/design-power' }
     ];
 
     const handleMouseMove = (e: React.MouseEvent) => {
@@ -458,15 +417,10 @@ const CapabilityList: React.FC = () => {
     };
 
     return (
-        <section 
-            className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden border-b-2 border-brand-navy" 
-            onMouseMove={handleMouseMove}
-        >
+        <section className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden border-b-2 border-brand-navy" onMouseMove={handleMouseMove}>
             <div className="container mx-auto px-8 relative z-10">
                 <div className="mb-24 flex items-end justify-between border-b border-brand-offwhite/20 pb-8">
-                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85]">
-                        Output.
-                     </h2>
+                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85]">Output.</h2>
                      <div className="hidden md:block font-mono text-xs uppercase tracking-widest text-right opacity-80">
                         Select a capability<br/>to explore
                      </div>
@@ -475,22 +429,17 @@ const CapabilityList: React.FC = () => {
                 <div className="flex flex-col">
                     {capabilities.map((cap, index) => (
                         <Link 
-                            key={index}
-                            to={cap.link}
+                            key={index} to={cap.link}
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(null)}
                             className="group relative border-b border-brand-offwhite/20 py-12 md:py-16 flex flex-col md:flex-row justify-between md:items-center transition-colors hover:bg-brand-offwhite/5"
                         >
                             <div className="flex items-baseline gap-8 md:gap-16">
                                 <span className="font-mono text-sm md:text-base text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
-                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-brand-offwhite leading-[0.85]">
-                                    {cap.title}
-                                </h3>
+                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-brand-offwhite leading-[0.85]">{cap.title}</h3>
                             </div>
                             <div className="mt-4 md:mt-0 pl-[calc(2rem+14px)] md:pl-0">
-                                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-brand-offwhite">
-                                    {cap.desc}
-                                </span>
+                                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-brand-offwhite">{cap.desc}</span>
                             </div>
                         </Link>
                     ))}
@@ -499,50 +448,71 @@ const CapabilityList: React.FC = () => {
 
             <motion.div
                 className="pointer-events-none fixed top-0 left-0 w-[300px] h-[400px] z-50 hidden md:block overflow-hidden bg-brand-yellow mix-blend-normal"
-                style={{
-                    x: mouseX,
-                    y: mouseY,
-                    translateX: "-50%",
-                    translateY: "-50%"
-                }}
-                animate={{
-                    opacity: hoveredIndex !== null ? 1 : 0,
-                    scale: hoveredIndex !== null ? 1 : 0.5,
-                    rotate: hoveredIndex !== null ? -5 : 0
-                }}
+                style={{ x: mouseX, y: mouseY, translateX: "-50%", translateY: "-50%" }}
+                animate={{ opacity: hoveredIndex !== null ? 1 : 0, scale: hoveredIndex !== null ? 1 : 0.5, rotate: hoveredIndex !== null ? -5 : 0 }}
                 transition={{ duration: 0.2, ease: "linear" }}
-            >                
-            </motion.div>
+            />
         </section>
     );
 }
 
+// --- ASYMMETRICAL GRID SCROLLING ---
 const ShowcaseGrid: React.FC = () => {
+    const gridRef = useRef(null);
+    const { scrollYProgress } = useScroll({ target: gridRef, offset: ["start end", "end start"] });
+    
+    // Asymmetrical scroll speeds for the two columns
+    const yLeft = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+    const yRight = useTransform(scrollYProgress, [0, 1], ["10%", "0%"]);
+
+    const visibleProjects = PROJECTS.slice(1, 7);
+    const colLeft = visibleProjects.filter((_, i) => i % 2 === 0);
+    const colRight = visibleProjects.filter((_, i) => i % 2 !== 0);
+
     return (
-        <section className="bg-brand-offwhite px-6 md:px-8 py-32 relative z-40 border-b-2 border-brand-navy overflow-hidden">
+        <section ref={gridRef} className="bg-brand-offwhite px-6 md:px-8 py-32 relative z-40 border-b-2 border-brand-navy overflow-hidden">
              <div className="container mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
                      <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">
                         Selected<br/>Works
                      </h2>
-                     <Link to="/work" className="font-mono text-sm uppercase tracking-widest font-bold border-2 border-brand-navy px-8 py-3 hover:bg-brand-navy hover:text-brand-offwhite transition-all text-brand-navy">
+                     <Link to="/work" className="font-mono text-sm uppercase tracking-widest font-bold border-2 border-brand-navy px-8 py-3 hover:bg-brand-navy hover:text-brand-offwhite transition-all text-brand-navy z-20 relative">
                         View Full Archive
                      </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-y-24">
-                    {PROJECTS.slice(1, 8).map((project, index) => (
-                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-24' : ''}`}>
-                             <ProjectCard project={project} className="aspect-[4/3] w-full" />
-                             <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
-                                <div>
-                                    <h3 className="text-3xl font-black uppercase tracking-tighter leading-none text-brand-navy">{project.title}</h3>
-                                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+                    {/* Left Column - Scrolls Faster Up */}
+                    <motion.div style={{ y: yLeft }} className="flex flex-col gap-16">
+                        {colLeft.map((project) => (
+                             <div key={project.id}>
+                                <ProjectCard project={project} className="aspect-[4/5] md:aspect-[4/3] w-full" />
+                                <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
+                                    <div>
+                                        <h3 className="text-3xl font-black uppercase tracking-tighter leading-none text-brand-navy">{project.title}</h3>
+                                        <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
+                                    </div>
+                                    <span className="font-mono text-[10px] uppercase font-bold opacity-40 text-brand-navy">{project.year}</span>
                                 </div>
-                                <span className="font-mono text-[10px] uppercase font-bold opacity-40 text-brand-navy">{project.year}</span>
-                             </div>
-                        </div>
-                    ))}
+                            </div>
+                        ))}
+                    </motion.div>
+
+                    {/* Right Column - Starts Lower, Scrolls Slower */}
+                    <motion.div style={{ y: yRight }} className="flex flex-col gap-16 md:mt-32">
+                        {colRight.map((project) => (
+                             <div key={project.id}>
+                                <ProjectCard project={project} className="aspect-[4/5] md:aspect-[4/3] w-full" />
+                                <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
+                                    <div>
+                                        <h3 className="text-3xl font-black uppercase tracking-tighter leading-none text-brand-navy">{project.title}</h3>
+                                        <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
+                                    </div>
+                                    <span className="font-mono text-[10px] uppercase font-bold opacity-40 text-brand-navy">{project.year}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </motion.div>
                 </div>
             </div>
         </section>
