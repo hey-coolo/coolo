@@ -5,19 +5,6 @@ import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
 
-const DownArrow: React.FC<{ className?: string; size?: number }> = ({ className = "", size = 40 }) => (
-    <motion.div 
-        animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        className={className}
-    >
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <polyline points="19 12 12 19 5 12"></polyline>
-        </svg>
-    </motion.div>
-);
-
 interface TrailItem {
     id: number;
     x: number;
@@ -149,7 +136,7 @@ const BrandHero: React.FC = () => {
         <section 
             ref={sectionRef}
             onMouseMove={handleMouseMove}
-            className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden"
+            className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden border-b-2 border-brand-navy"
         >
             <ImageTrail containerRef={sectionRef} />
 
@@ -172,7 +159,7 @@ const BrandHero: React.FC = () => {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                            className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
+                            className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                         >
                             BRAND STRATEGY
                         </motion.h1>
@@ -192,7 +179,7 @@ const BrandHero: React.FC = () => {
                                 initial={{ opacity: 0, x: 50 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-                                className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.8] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
+                                className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                             >
                                 DESIGN POWER
                             </motion.h1>
@@ -238,59 +225,80 @@ const BrandHero: React.FC = () => {
     );
 }
 
-const SplitManifesto: React.FC = () => {
+const NarrativeScroll: React.FC = () => {
+    const targetRef = useRef<HTMLElement>(null);
+    const { scrollYProgress } = useScroll({ target: targetRef });
+
+    // Maps the vertical scroll to a horizontal translation
+    // We have 3 panels of 100vw, so the container is 300vw wide.
+    // To see the last panel, we move the container by -66.666vw
+    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.666%"]);
+
+    // Subtle fade in/out for the text inside the panels to enhance the editorial feel
+    const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
+    const opacity2 = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [0, 1, 1, 0]);
+    const opacity3 = useTransform(scrollYProgress, [0.65, 0.8, 1], [0, 1, 1]);
+
     return (
-        <section className="border-t-2 border-brand-navy bg-brand-offwhite relative z-40 overflow-hidden">
-            <div className="container mx-auto border-x border-brand-navy/10">
-                <div className="grid grid-cols-1 lg:grid-cols-2 items-start">
-                    
-                    {/* LEFT COLUMN: Sticky Header */}
-                    <div className="lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] p-8 md:p-16 border-b lg:border-b-0 lg:border-r border-brand-navy/10 flex flex-col justify-between">
-                        <div>
-                            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-8 block">01 / The COOLO Way</span>
-                            <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.95] text-brand-navy break-words">
-                                No Fkn Magic.<br/>
-                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '1.5px #0F0328' }}>Just Clear Thinking.</span>
-                            </h2>
-                            <div className="mt-14 md:mt-20">
-                                <DownArrow className="text-brand-purple" size={42} />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* RIGHT COLUMN: Scrolling Content */}
-                    <div className="p-8 md:p-16 space-y-16 md:space-y-32">
-                        <AnimatedSection>
-                            <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy break-words">
-                                Great brands are not accidents. They are built through <span className="text-brand-purple font-bold">clarity, discipline, and direction</span>. 
-                            </p>
-                        </AnimatedSection>
-                        
-                        <AnimatedSection>
-                            <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy break-words">
-                                We help ambitious businesses move beyond DIY survival mode into a more <span className="text-brand-purple font-bold">intentional, professional presence</span> without losing the personality that made them worth noticing in the first place.
-                            </p>
-                        </AnimatedSection>
-
-                        <AnimatedSection>
-                            <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy break-words">
-                                Because people feel coherence before they understand it. <span className="text-brand-purple font-bold">That's what we build.</span> Not empty aesthetics. Not trend-chasing.
-                            </p>
-                        </AnimatedSection>
-
-                          <AnimatedSection>
-                            <p className="text-3xl md:text-5xl font-light leading-tight text-brand-navy break-words">
-                                Intentional thoughtful strategy, sharp creative direction, and design that communicates with precision.
-                            </p>
-                        </AnimatedSection>
-
-                        <div className="pt-8 md:pt-16">
-                             <Link to="/about" className="inline-block border-2 border-brand-navy px-8 md:px-12 py-5 md:py-6 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy">
-                                 More About Us
-                             </Link>
-                        </div>
-                    </div>
+        <section ref={targetRef} className="relative h-[300vh] bg-brand-offwhite">
+            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+                
+                {/* Fixed Label across the entire horizontal scroll */}
+                <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
+                    01 / The Thesis
                 </div>
+
+                <motion.div style={{ x }} className="flex w-[300vw] h-full">
+                    
+                    {/* --- TRUTH 01 --- */}
+                    <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0">
+                        <motion.div style={{ opacity: opacity1 }} className="max-w-5xl mx-auto flex flex-col items-center">
+                            <h2 className="text-5xl md:text-8xl lg:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy">
+                                Your business evolved.<br/>
+                                <span className="text-brand-purple italic font-serif font-light">Your brand didn't.</span>
+                            </h2>
+                            <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                                Most brands hide behind safe design and corporate jargon. We strip away the noise to find the actual soul of your business, and express it with absolute precision.
+                            </p>
+                        </motion.div>
+                    </div>
+
+                    {/* --- TRUTH 02 --- */}
+                    <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0">
+                        <motion.div style={{ opacity: opacity2 }} className="max-w-5xl mx-auto flex flex-col items-center">
+                            <h2 className="text-5xl md:text-8xl lg:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy">
+                                We sell clarity,<br/>
+                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>not decoration.</span>
+                            </h2>
+                            <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                                If your strategy takes a 40-page deck to explain, it's already dead. We build frameworks that make sense on a napkin.
+                            </p>
+                        </motion.div>
+                    </div>
+
+                    {/* --- TRUTH 03 --- */}
+                    <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0 relative">
+                        <motion.div style={{ opacity: opacity3 }} className="max-w-5xl mx-auto flex flex-col items-center">
+                            <h2 className="text-5xl md:text-8xl lg:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy">
+                                Good taste is<br/>
+                                <span className="bg-brand-navy text-brand-yellow px-4 leading-none">strategic.</span>
+                            </h2>
+                            <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                                We bring the design power. We engineer visual systems that carry weight. No templates. No fluff. Just high-res output.
+                            </p>
+                            
+                            <div className="mt-16 flex items-center justify-center gap-4">
+                                <div className="w-12 h-12 bg-brand-purple rounded-full flex items-center justify-center text-white shrink-0">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                </div>
+                                <Link to="/about" className="inline-block border-2 border-brand-navy px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
+                                    Read the Manifesto
+                                </Link>
+                            </div>
+                        </motion.div>
+                    </div>
+
+                </motion.div>
             </div>
         </section>
     );
@@ -325,7 +333,7 @@ const ServiceRouter: React.FC = () => {
                                     <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors block mb-2">
                                         {prefix}
                                     </span>
-                                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] text-brand-navy group-hover:text-brand-offwhite transition-colors break-words">
+                                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] text-brand-navy group-hover:text-brand-offwhite transition-colors break-words">
                                         {mainTitle}
                                         <span className="text-brand-purple group-hover:text-brand-yellow transition-colors">.</span>
                                     </h2>
@@ -378,13 +386,13 @@ const FeatureSpotlight: React.FC = () => {
                             <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-xs font-bold mb-6 block">
                                 Featured Case Study
                             </span>
-                            <h2 className="text-[15vw] leading-[0.8] font-black uppercase tracking-tighter text-brand-offwhite mb-8 group-hover:text-brand-yellow transition-colors duration-500">
+                            <h2 className="text-[15vw] leading-[0.85] font-black uppercase tracking-tighter text-brand-offwhite mb-8 group-hover:text-brand-yellow transition-colors duration-500">
                                 {featuredProject.title}
                             </h2>
                             
                             <div className="flex flex-col md:flex-row gap-12 border-t border-brand-offwhite/20 pt-8 text-brand-offwhite/80">
                                 <div className="max-w-xl">
-                                    <p className="font-body text-lg md:text-xl leading-relaxed font-light opacity-80 line-clamp-3 md:line-clamp-4">
+                                    <p className="font-body text-xl font-light opacity-80 line-clamp-3 md:line-clamp-4 leading-relaxed">
                                         {featuredProject.description}
                                     </p>
                                 </div>
@@ -446,7 +454,7 @@ const CapabilityList: React.FC = () => {
         >
             <div className="container mx-auto px-8 relative z-10">
                 <div className="mb-24 flex items-end justify-between border-b border-brand-offwhite/20 pb-8">
-                     <h2 className="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-[0.9]">
+                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85]">
                         Output.
                      </h2>
                      <div className="hidden md:block font-mono text-xs uppercase tracking-widest text-right opacity-80">
@@ -465,7 +473,7 @@ const CapabilityList: React.FC = () => {
                         >
                             <div className="flex items-baseline gap-8 md:gap-16">
                                 <span className="font-mono text-sm md:text-base text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
-                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tight group-hover:translate-x-4 transition-transform duration-500 ease-out text-brand-offwhite">
+                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-brand-offwhite leading-[0.85]">
                                     {cap.title}
                                 </h3>
                             </div>
@@ -504,7 +512,7 @@ const ShowcaseGrid: React.FC = () => {
         <section className="bg-brand-offwhite px-6 md:px-8 py-32 relative z-40 border-b-2 border-brand-navy overflow-hidden">
              <div className="container mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.9]">
+                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">
                         Selected<br/>Works
                      </h2>
                      <Link to="/work" className="font-mono text-sm uppercase tracking-widest font-bold border-2 border-brand-navy px-8 py-3 hover:bg-brand-navy hover:text-brand-offwhite transition-all text-brand-navy">
@@ -518,7 +526,7 @@ const ShowcaseGrid: React.FC = () => {
                              <ProjectCard project={project} className="aspect-[4/3] w-full" />
                              <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
                                 <div>
-                                    <h3 className="text-3xl font-black uppercase tracking-tight leading-none text-brand-navy">{project.title}</h3>
+                                    <h3 className="text-3xl font-black uppercase tracking-tighter leading-none text-brand-navy">{project.title}</h3>
                                     <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
                                 </div>
                                 <span className="font-mono text-[10px] uppercase font-bold opacity-40 text-brand-navy">{project.year}</span>
@@ -536,7 +544,7 @@ const LatestIntel: React.FC = () => {
         <section className="py-24 relative z-40 bg-brand-offwhite overflow-hidden">
              <div className="container mx-auto px-8">
                  <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-                    <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-brand-navy">Studio Thoughts</h3>
+                    <h3 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">Studio Thoughts</h3>
                     <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">View All Entries &rarr;</Link>
                  </div>
                  
@@ -544,8 +552,8 @@ const LatestIntel: React.FC = () => {
                     {JOURNAL_POSTS.slice(0, 3).map((post, i) => (
                         <Link key={i} to={`/journal/${post.slug}`} data-cursor-text="READ" className="group block border-r border-b border-t border-brand-navy/10 p-8 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300">
                              <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-4 group-hover:text-brand-yellow text-brand-navy group-hover:text-brand-offwhite">{post.date}</span>
-                             <h4 className="text-3xl font-black uppercase tracking-tight leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h4>
-                             <p className="font-body text-sm opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-brand-navy group-hover:text-brand-offwhite">
+                             <h4 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h4>
+                             <p className="font-body text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-brand-navy group-hover:text-brand-offwhite">
                                  {post.excerpt}
                              </p>
                         </Link>
@@ -560,7 +568,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="bg-brand-offwhite">
       <BrandHero />
-      <SplitManifesto />
+      <NarrativeScroll />
       <ServiceRouter />
       <FeatureSpotlight />
       <CapabilityList />
