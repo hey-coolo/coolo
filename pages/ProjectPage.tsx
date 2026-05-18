@@ -5,7 +5,7 @@ import { PROJECTS } from '../constants';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-// --- 1. PRELOADER (DO NOT TOUCH) ---
+// --- 1. PRELOADER ---
 const ProjectReveal: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
     return (
         <motion.div
@@ -42,21 +42,23 @@ const ProjectReveal: React.FC<{ onComplete: () => void }> = ({ onComplete }) => 
     );
 };
 
-// --- 2. HERO SECTION (DO NOT TOUCH) ---
+// --- 2. HERO SECTION (Deep Parallax) ---
 const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-    const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]); 
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+    
+    const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]); 
+    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]); // Deep dive effect
+    const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
     return (
         <div ref={ref} className="relative h-screen w-full overflow-hidden flex flex-col justify-center items-center bg-brand-navy">
-            <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
+            <motion.div style={{ y, scale, opacity }} className="absolute inset-0 z-0 origin-bottom">
                 <img 
                     src={project.imageUrl} 
                     className="w-full h-full object-cover opacity-60" 
                     alt={project.title}
-                    loading="eager" // Hero image must be eager
+                    loading="eager"
                     decoding="sync"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-brand-navy/20 to-brand-navy/90" />
@@ -71,7 +73,7 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
                     <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-xs font-bold mb-8 block">
                         Case Study {project.id.toString().padStart(2, '0')}
                     </span>
-                    <h1 className="text-[12vw] leading-[0.8] font-black uppercase tracking-tighter text-brand-offwhite mb-12 mix-blend-overlay opacity-90">
+                    <h1 className="text-[12vw] leading-[0.85] font-black uppercase tracking-tighter text-brand-offwhite mb-12 mix-blend-overlay opacity-90">
                         {project.title}
                     </h1>
                     
@@ -86,7 +88,7 @@ const ProjectHero: React.FC<{ project: any }> = ({ project }) => {
     );
 };
 
-// --- 3. MODAL (SAFE MODE) ---
+// --- 3. MODAL ---
 const ImageModal: React.FC<{ src: string | null; onClose: () => void }> = ({ src, onClose }) => {
     return ReactDOM.createPortal(
         <AnimatePresence>
@@ -97,7 +99,6 @@ const ImageModal: React.FC<{ src: string | null; onClose: () => void }> = ({ src
                     exit={{ opacity: 0 }}
                     onClick={onClose}
                     className="fixed inset-0 z-[99999] bg-brand-navy/95 backdrop-blur-3xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
-                    style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
                 >
                     <motion.div 
                         initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -106,20 +107,10 @@ const ImageModal: React.FC<{ src: string | null; onClose: () => void }> = ({ src
                         transition={{ type: 'spring', damping: 30, stiffness: 300 }}
                         className="relative w-full h-full flex items-center justify-center pointer-events-none"
                     >
-                        <div 
-                            className="relative flex flex-col items-center pointer-events-auto max-w-full max-h-full"
-                            onClick={(e) => e.stopPropagation()} 
-                        >
-                            <img 
-                                src={src} 
-                                className="w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain shadow-[0_50px_100px_rgba(0,0,0,0.5)] border border-white/10" 
-                                alt="Full Resolution" 
-                            />
+                        <div className="relative flex flex-col items-center pointer-events-auto max-w-full max-h-full" onClick={(e) => e.stopPropagation()}>
+                            <img src={src} className="w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain shadow-[0_50px_100px_rgba(0,0,0,0.5)] border border-white/10" alt="Full Resolution" />
                             <div className="w-full mt-6 flex justify-center">
-                                <button 
-                                    onClick={onClose}
-                                    className="font-mono text-[11px] uppercase tracking-widest text-brand-yellow font-black border-b-2 border-brand-yellow pb-1 hover:text-brand-offwhite hover:border-brand-offwhite transition-all"
-                                >
+                                <button onClick={onClose} className="font-mono text-[11px] uppercase tracking-widest text-brand-yellow font-black border-b-2 border-brand-yellow pb-1 hover:text-brand-offwhite hover:border-brand-offwhite transition-all">
                                     CLOSE_VIEW [ESC]
                                 </button>
                             </div>
@@ -132,7 +123,7 @@ const ImageModal: React.FC<{ src: string | null; onClose: () => void }> = ({ src
     );
 };
 
-// --- 4. AGENCY BRIEF (Clean, Data-Driven) ---
+// --- 4. AGENCY BRIEF (Kinetic Mask Reveal) ---
 const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
     const MetaRow = ({ label, value }: { label: string, value: string }) => (
         <div className="flex justify-between items-baseline border-b border-brand-navy/10 py-3 mb-2">
@@ -141,23 +132,30 @@ const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
         </div>
     );
 
+    const words = project.title.split(" ");
+
     return (
         <section className="py-24 md:py-32 bg-brand-offwhite relative z-20">
             <div className="container mx-auto px-6 md:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-                    {/* LEFT: Title */}
                     <div className="lg:col-span-4">
-                        <motion.h2 
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.9] lg:sticky lg:top-32"
-                        >
-                            {project.title}
-                        </motion.h2>
+                        <div className="lg:sticky lg:top-32 flex flex-col">
+                            {words.map((word: string, index: number) => (
+                                <div key={index} className="overflow-hidden">
+                                    <motion.h2 
+                                        initial={{ y: "100%" }}
+                                        whileInView={{ y: 0 }}
+                                        viewport={{ once: true, margin: "-10%" }}
+                                        transition={{ duration: 0.6, delay: index * 0.1, ease: [0.19, 1, 0.22, 1] }}
+                                        className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]"
+                                    >
+                                        {word}
+                                    </motion.h2>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* RIGHT: Data & Desc */}
                     <div className="lg:col-span-8 flex flex-col gap-16">
                         <motion.div 
                             initial={{ opacity: 0 }} 
@@ -188,58 +186,74 @@ const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
     );
 };
 
-// --- 5. THE WORK (Main Gallery) ---
+// --- 5. THE WORK (Asymmetric Parallax Gallery) ---
 const MainGallery: React.FC<{ images: string[]; onImageClick: (src: string) => void }> = ({ images, onImageClick }) => {
     if (!images || images.length === 0) return null;
 
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    // Column 1 moves slightly up, Column 2 moves slightly down relative to scroll
+    const y1 = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
+    const y2 = useTransform(scrollYProgress, [0, 1], ["15%", "0%"]);
+
+    const col1 = images.filter((_, i) => i % 2 === 0);
+    const col2 = images.filter((_, i) => i % 2 !== 0);
+
+    const ImageBlock = ({ img, index }: { img: string, index: number }) => (
+        <div 
+            className="w-full group cursor-zoom-in relative mb-8 md:mb-16"
+            onClick={() => onImageClick(img)}
+        >
+            <div className="relative overflow-hidden bg-brand-navy/5 shadow-xl">
+                <img 
+                    src={img} 
+                    alt={`Output ${index}`} 
+                    className="w-full h-auto block transition-transform duration-1000 group-hover:scale-[1.02]"
+                    loading="lazy"
+                    decoding="async"
+                />
+                <div className="absolute inset-0 bg-brand-purple/0 group-hover:bg-brand-purple/5 transition-colors duration-500 pointer-events-none" />
+            </div>
+            
+            <div className="mt-3 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/40">Fig. 0{index + 1}</span>
+                <span className="font-mono text-[9px] uppercase tracking-widest font-bold text-brand-purple">[ EXPAND ]</span>
+            </div>
+        </div>
+    );
+
     return (
-        <section className="py-24 border-t border-brand-navy/5">
+        <section ref={containerRef} className="py-24 border-t border-brand-navy/5 overflow-hidden">
             <div className="container mx-auto px-6 md:px-8">
-                <div className="mb-12 flex items-center gap-4">
+                <div className="mb-16 flex items-center gap-4">
                     <span className="w-2 h-2 bg-brand-purple rounded-full"></span>
                     <span className="font-mono text-brand-navy/40 text-xs uppercase tracking-widest font-bold">The Work</span>
                 </div>
                 
-                <div className="columns-1 md:columns-2 gap-8 space-y-8">
-                    {images.map((img, i) => (
-                        <motion.div 
-                            key={i}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-10%" }}
-                            transition={{ duration: 0.8 }}
-                            className="break-inside-avoid w-full group cursor-zoom-in relative mb-8"
-                            onClick={() => onImageClick(img)}
-                        >
-                            <div className="relative overflow-hidden bg-brand-navy/5 shadow-xl">
-                                <img 
-                                    src={img} 
-                                    alt={`Output ${i}`} 
-                                    className="w-full h-auto block transition-transform duration-1000 group-hover:scale-[1.02]"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <div className="absolute inset-0 bg-brand-purple/0 group-hover:bg-brand-purple/5 transition-colors duration-500 pointer-events-none" />
-                            </div>
-                            
-                            <div className="mt-3 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-navy/40">Fig. 0{i + 1}</span>
-                                <span className="font-mono text-[9px] uppercase tracking-widest font-bold text-brand-purple">[ EXPAND ]</span>
-                            </div>
-                        </motion.div>
-                    ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start">
+                    <motion.div style={{ y: y1 }} className="flex flex-col">
+                        {col1.map((img, i) => <ImageBlock key={i} img={img} index={i * 2} />)}
+                    </motion.div>
+                    
+                    <motion.div style={{ y: y2 }} className="flex flex-col md:mt-32">
+                        {col2.map((img, i) => <ImageBlock key={i} img={img} index={(i * 2) + 1} />)}
+                    </motion.div>
                 </div>
             </div>
         </section>
     );
 };
 
-// --- 6. QUOTE / BREAK (Scroll to Reveal) ---
+// --- 6. QUOTE / BREAK (Strict Typography) ---
 const ScrollRevealText: React.FC<{ text: string; className?: string }> = ({ text, className = "" }) => {
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
-        offset: ["start 85%", "end 50%"] // Starts filling when 85% into view, finishes at 50%
+        offset: ["start 85%", "end 50%"]
     });
 
     const words = text.split(" ");
@@ -276,9 +290,13 @@ const QuoteBreak: React.FC = () => (
                         <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>PERFECTION.</span>
                     </h2>
                 </div>
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-4xl mx-auto space-y-12">
                     <ScrollRevealText 
-                        text="We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. Every decision is intentional, replacing friction with coherence. Tools can generate assets, but they can't generate intuition. Taste, restraint, and human signal are what actually matter."
+                        text="We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. Every decision is intentional, replacing friction with coherence."
+                        className="font-body text-2xl md:text-4xl lg:text-5xl font-light text-brand-navy leading-snug md:leading-snug"
+                    />
+                    <ScrollRevealText 
+                        text="Tools can generate assets, but they can't generate intuition. Taste, restraint, and human signal are what actually matter."
                         className="font-body text-2xl md:text-4xl lg:text-5xl font-bold text-brand-purple leading-snug md:leading-snug"
                     />
                 </div>
@@ -362,7 +380,7 @@ const ResultsSection: React.FC<{ gain: string }> = ({ gain }) => {
     );
 };
 
-// --- 9. NEXT PROJECT (DO NOT TOUCH) ---
+// --- 9. NEXT PROJECT ---
 const NextProject: React.FC<{ project: any }> = ({ project }) => (
     <Link to={`/work/${project.slug}`} className="block relative h-screen overflow-hidden group bg-brand-navy z-20">
         <div className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-1000 ease-out">
@@ -435,8 +453,6 @@ const ProjectPage: React.FC = () => {
       <Helmet>
         <title>{project.title} | COOLO Work</title>
         <meta name="description" content={project.description.substring(0, 150)} />
-        
-        {/* Social Media Tags */}
         <meta property="og:title" content={`${project.title} | COOLO`} />
         <meta property="og:description" content={project.description.substring(0, 150)} />
         <meta property="og:image" content={`https://coolo.co.nz${project.imageUrl}`} />
@@ -449,28 +465,14 @@ const ProjectPage: React.FC = () => {
       <ImageModal src={selectedImage} onClose={() => setSelectedImage(null)} />
 
       <div className="bg-brand-offwhite text-brand-navy min-h-screen selection:bg-brand-purple selection:text-white">
-        
-        {/* 1. Hero */}
         <ProjectHero project={project} />
-        
-        {/* 2. Agency Brief (Title, Data, Desc) */}
         <ProjectBrief project={project} />
-
-        {/* 3. The Work (Main Gallery - Polished) */}
         <MainGallery images={detailImages} onImageClick={setSelectedImage} />
-
-        {/* 4. Quote / Interlude (Scroll Fill Feature) */}
         <QuoteBreak />
-
-        {/* 5. The Process (Raw / Sketches) */}
         {processImages.length > 0 && (
             <ProcessGallery images={processImages} onImageClick={setSelectedImage} />
         )}
-
-        {/* 6. Results/Outcome */}
         <ResultsSection gain={gain} />
-    
-        {/* 7. Footer Nav */}
         <NextProject project={nextProject} />
       </div>
     </>
