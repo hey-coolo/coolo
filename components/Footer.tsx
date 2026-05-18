@@ -95,10 +95,10 @@ const Footer: React.FC = () => {
           <div className="border-r border-brand-offwhite/10 py-12 pr-8">
               <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Directory</h4>
               <ul className="space-y-3 font-mono text-xs uppercase tracking-widest">
-                  <li><Link to="/work" className="hover:text-brand-yellow transition-colors">Selected Work</Link></li>
-                  <li><Link to="/clarity" className="hover:text-brand-yellow transition-colors">The Brains</Link></li>
-                  <li><Link to="/design-power" className="hover:text-brand-yellow transition-colors">The Craft</Link></li>
-                  <li><Link to="/about" className="hover:text-brand-yellow transition-colors">Studio</Link></li>
+                  <li><Link to="/work" className="hover:text-brand-yellow transition-colors">Featured Work</Link></li>
+                  <li><Link to="/clarity" className="hover:text-brand-yellow transition-colors">Creative Direction</Link></li>
+                  <li><Link to="/design-power" className="hover:text-brand-yellow transition-colors">Visual Design</Link></li>
+                  <li><Link to="/about" className="hover:text-brand-yellow transition-colors">The Studio</Link></li>
               </ul>
           </div>
 
@@ -130,7 +130,7 @@ const Footer: React.FC = () => {
               <p className="font-mono text-xs uppercase tracking-widest leading-relaxed text-brand-offwhite/80">
                   Mount Maunganui,<br/>
                   New Zealand.<br/>
-                  Earth.
+                  Earthlings.
               </p>
           </div>
       </div>
@@ -142,7 +142,7 @@ const Footer: React.FC = () => {
                   © {new Date().getFullYear()} COOLO Studio.
               </p>
               <p className="font-mono text-[12px] uppercase tracking-widest text-brand-offwhite/30">
-                  Built by Humans.
+                  Built by Humans in the Machine.
               </p>
           </div>
       </div>
