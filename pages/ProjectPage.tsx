@@ -276,13 +276,9 @@ const QuoteBreak: React.FC = () => (
                         <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>PERFECTION.</span>
                     </h2>
                 </div>
-                <div className="max-w-4xl mx-auto space-y-12">
+                <div className="max-w-4xl mx-auto">
                     <ScrollRevealText 
-                        text="We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. Every decision is intentional, replacing friction with coherence."
-                        className="font-body text-2xl md:text-4xl lg:text-5xl font-light text-brand-navy leading-snug md:leading-snug"
-                    />
-                    <ScrollRevealText 
-                        text="Tools can generate assets, but they can't generate intuition. Taste, restraint, and human signal are what actually matter."
+                        text="We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. Every decision is intentional, replacing friction with coherence. Tools can generate assets, but they can't generate intuition. Taste, restraint, and human signal are what actually matter."
                         className="font-body text-2xl md:text-4xl lg:text-5xl font-bold text-brand-purple leading-snug md:leading-snug"
                     />
                 </div>
