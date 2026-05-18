@@ -226,73 +226,92 @@ const BrandHero: React.FC = () => {
 }
 
 const NarrativeScroll: React.FC = () => {
-    const targetRef = useRef<HTMLElement>(null);
-    const { scrollYProgress } = useScroll({ target: targetRef });
+    const containerRef = useRef<HTMLElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
 
-    // Maps vertical scroll to horizontal translation
-    // Container is 300vw, we translate -200vw (-66.6666%) to reveal all 3 panels
-    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.6666%"]);
+    // We split the 300vh scroll space into three distinct phases for the smooth center fade
+    // Phrase 1
+    const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
+    const y1 = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
+    const scale1 = useTransform(scrollYProgress, [0, 0.3], [1, 0.95]);
+
+    // Phrase 2
+    const opacity2 = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [0, 1, 1, 0]);
+    const y2 = useTransform(scrollYProgress, [0.25, 0.4, 0.75], [50, 0, -50]);
+    const scale2 = useTransform(scrollYProgress, [0.25, 0.4, 0.75], [0.95, 1, 0.95]);
+
+    // Phrase 3
+    const opacity3 = useTransform(scrollYProgress, [0.65, 0.8, 1], [0, 1, 1]);
+    const y3 = useTransform(scrollYProgress, [0.65, 0.8], [50, 0]);
+    const scale3 = useTransform(scrollYProgress, [0.65, 0.8], [0.95, 1]);
 
     return (
-        <section ref={targetRef} className="relative h-[300vh] bg-brand-offwhite">
-            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        <section ref={containerRef} className="relative h-[300vh] bg-brand-offwhite">
+            {/* Sticky Container */}
+            <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
                 
-                {/* Fixed Label across the entire horizontal scroll */}
+                {/* Fixed Header Label */}
                 <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
                     01 / The Thesis
                 </div>
 
-                <motion.div style={{ x }} className="flex w-[300vw] h-full will-change-transform">
+                <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center h-full">
                     
                     {/* --- TRUTH 01 --- */}
-                    <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0">
-                        <div className="max-w-5xl mx-auto flex flex-col items-center">
-                            <h2 className="text-[10vw] md:text-[8rem] lg:text-[9rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                                <span>YOUR BUSINESS EVOLVED.</span>
-                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
-                            </h2>
-                            <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                                Most brands hide behind safe design and corporate jargon. We strip away the noise to find the actual soul of your business, and express it with absolute precision.
-                            </p>
-                        </div>
-                    </div>
+                    <motion.div 
+                        style={{ opacity: opacity1, y: y1, scale: scale1 }} 
+                        className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
+                    >
+                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                            <span>YOUR BUSINESS EVOLVED.</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
+                        </h2>
+                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                            Most brands hide behind safe design and corporate jargon. We strip away the noise to find the actual soul of your business, and express it with absolute precision.
+                        </p>
+                    </motion.div>
 
                     {/* --- TRUTH 02 --- */}
-                    <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0">
-                        <div className="max-w-5xl mx-auto flex flex-col items-center">
-                            <h2 className="text-[12vw] md:text-[9rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                                <span>WE SELL CLARITY,</span>
-                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
-                            </h2>
-                            <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                                If your strategy takes a 40-page deck to explain, it's already dead. We build frameworks that make sense on a napkin.
-                            </p>
-                        </div>
-                    </div>
+                    <motion.div 
+                        style={{ opacity: opacity2, y: y2, scale: scale2 }} 
+                        className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
+                    >
+                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                            <span>WE SELL CLARITY,</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
+                        </h2>
+                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                            If your strategy takes a 40-page deck to explain, it's already dead. We build frameworks that make sense on a napkin.
+                        </p>
+                    </motion.div>
 
                     {/* --- TRUTH 03 --- */}
-                    <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0 relative">
-                        <div className="max-w-5xl mx-auto flex flex-col items-center">
-                            <h2 className="text-[12vw] md:text-[9rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                                <span>GOOD TASTE IS</span>
-                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>STRATEGIC.</span>
-                            </h2>
-                            <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                                We bring the design power. We engineer visual systems that carry weight. No templates. No fluff. Just high-res output.
-                            </p>
-                            
-                            <div className="mt-16 flex items-center justify-center gap-4">
-                                <div className="w-12 h-12 bg-brand-purple rounded-full flex items-center justify-center text-white shrink-0">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                                </div>
-                                <Link to="/about" className="inline-block border-2 border-brand-navy px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
-                                    Read the Manifesto
-                                </Link>
+                    <motion.div 
+                        style={{ opacity: opacity3, y: y3, scale: scale3 }} 
+                        className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto"
+                    >
+                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                            <span>GOOD TASTE IS</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>STRATEGIC.</span>
+                        </h2>
+                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                            We bring the design power. We engineer visual systems that carry weight. No templates. No fluff. Just high-res output.
+                        </p>
+                        
+                        <div className="mt-16 flex items-center justify-center gap-4">
+                            <div className="w-12 h-12 bg-brand-purple rounded-full flex items-center justify-center text-white shrink-0">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                             </div>
+                            <Link to="/about" className="inline-block border-2 border-brand-navy px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
+                                Read the Manifesto
+                            </Link>
                         </div>
-                    </div>
+                    </motion.div>
 
-                </motion.div>
+                </div>
             </div>
         </section>
     );
