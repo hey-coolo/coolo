@@ -234,7 +234,32 @@ const MainGallery: React.FC<{ images: string[]; onImageClick: (src: string) => v
     );
 };
 
-// --- 6. QUOTE / BREAK ---
+// --- 6. QUOTE / BREAK (Scroll to Reveal) ---
+const ScrollRevealText: React.FC<{ text: string; className?: string }> = ({ text, className = "" }) => {
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start 85%", "end 50%"] // Starts filling when 85% into view, finishes at 50%
+    });
+
+    const words = text.split(" ");
+
+    return (
+        <div ref={containerRef} className={`flex flex-wrap justify-center ${className}`}>
+            {words.map((word, i) => {
+                const start = i / words.length;
+                const end = start + (1 / words.length);
+                const opacity = useTransform(scrollYProgress, [start, end], [0.15, 1]);
+                return (
+                    <motion.span key={i} style={{ opacity }} className="mr-[0.25em] mb-[0.1em]">
+                        {word}
+                    </motion.span>
+                );
+            })}
+        </div>
+    );
+};
+
 const QuoteBreak: React.FC = () => (
     <section className="py-32 md:py-48 bg-brand-offwhite">
         <div className="container mx-auto px-6 md:px-8 max-w-5xl text-center">
@@ -245,19 +270,21 @@ const QuoteBreak: React.FC = () => (
                 transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
                 className="flex flex-col items-center"
             >
-                <div className="mb-12">
+                <div className="mb-16">
                     <h2 className="text-[12vw] md:text-[7rem] lg:text-[8rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
                         <span>CLARITY OVER</span>
                         <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>PERFECTION.</span>
                     </h2>
                 </div>
-                <div className="max-w-3xl mx-auto space-y-8">
-                    <p className="font-body text-xl md:text-3xl font-light text-brand-navy/80 leading-relaxed">
-                        We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. Every decision is intentional, replacing friction with coherence. 
-                    </p>
-                    <p className="font-body text-xl md:text-3xl font-light text-brand-navy/80 leading-relaxed">
-                        <strong className="font-bold text-brand-purple">Tools can generate assets, but they can't generate intuition.</strong> Taste, restraint, and human signal are what actually matter.
-                    </p>
+                <div className="max-w-4xl mx-auto space-y-12">
+                    <ScrollRevealText 
+                        text="We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. Every decision is intentional, replacing friction with coherence."
+                        className="font-body text-2xl md:text-4xl lg:text-5xl font-light text-brand-navy leading-snug md:leading-snug"
+                    />
+                    <ScrollRevealText 
+                        text="Tools can generate assets, but they can't generate intuition. Taste, restraint, and human signal are what actually matter."
+                        className="font-body text-2xl md:text-4xl lg:text-5xl font-bold text-brand-purple leading-snug md:leading-snug"
+                    />
                 </div>
             </motion.div>
         </div>
@@ -436,7 +463,7 @@ const ProjectPage: React.FC = () => {
         {/* 3. The Work (Main Gallery - Polished) */}
         <MainGallery images={detailImages} onImageClick={setSelectedImage} />
 
-        {/* 4. Quote / Interlude */}
+        {/* 4. Quote / Interlude (Scroll Fill Feature) */}
         <QuoteBreak />
 
         {/* 5. The Process (Raw / Sketches) */}
