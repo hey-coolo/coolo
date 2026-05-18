@@ -258,11 +258,6 @@ const QuoteBreak: React.FC = () => {
         <section ref={containerRef} className="relative h-[300vh] bg-brand-offwhite">
             <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8 text-center border-y-2 border-brand-navy">
                 
-                {/* Fixed Label */}
-                <div className="relative w-full max-w-5xl mx-auto flex items-center justify-center font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
-                    // The Studio Truth
-                </div>
-
                 <div className="relative w-full max-w-5xl mx-auto flex items-center justify-center h-full">
                     
                     {/* TRUTH 1 */}
