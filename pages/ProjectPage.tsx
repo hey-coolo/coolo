@@ -188,12 +188,12 @@ const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
     );
 };
 
-// --- 5. THE WORK (Main Gallery - Updated to Grid/Masonry) ---
+// --- 5. THE WORK (Main Gallery) ---
 const MainGallery: React.FC<{ images: string[]; onImageClick: (src: string) => void }> = ({ images, onImageClick }) => {
     if (!images || images.length === 0) return null;
 
     return (
-        <section className="py-24 border-t border-brand-navy/5">
+        <section className="py-24 border-t border-brand-navy/5 bg-brand-offwhite">
             <div className="container mx-auto px-6 md:px-8">
                 <div className="mb-12 flex items-center gap-4">
                     <span className="w-2 h-2 bg-brand-purple rounded-full"></span>
@@ -234,26 +234,66 @@ const MainGallery: React.FC<{ images: string[]; onImageClick: (src: string) => v
     );
 };
 
-// --- 6. QUOTE / BREAK ---
-const QuoteBreak: React.FC = () => (
-    <section className="py-32 bg-brand-offwhite">
-        <div className="container mx-auto px-8 max-w-4xl text-center">
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="border-y border-brand-navy/10 py-16"
-            >
-                <p className="font-sans font-black text-3xl md:text-5xl text-brand-navy uppercase leading-tight italic opacity-90">
-                    "Clarity over perfection. We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. 
-                    Every decision is intentional, replacing friction with coherence. Tools can generate the assets, but they can't generate intuition. 
-                    Taste, restraint, and human signal are what actually matter."
-                </p>
-            </motion.div>
-        </div>
-    </section>
-);
+// --- 6. QUOTE / BREAK (New Vertical Scroll Logic) ---
+const QuoteBreak: React.FC = () => {
+    const containerRef = useRef<HTMLElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
+
+    // 1st Sentence: "CLARITY OVER PERFECTION."
+    const opacity1 = useTransform(scrollYProgress, [0, 0.25, 0.35], [1, 1, 0]);
+    const y1 = useTransform(scrollYProgress, [0, 0.35], [0, -50]);
+
+    // 2nd Sentence: "WE LET THE REALITY OF YOUR WORK DEFINE HOW YOU SHOW UP."
+    const opacity2 = useTransform(scrollYProgress, [0.25, 0.45, 0.65, 0.75], [0, 1, 1, 0]);
+    const y2 = useTransform(scrollYProgress, [0.25, 0.45, 0.75], [50, 0, -50]);
+
+    // 3rd Sentence: "TOOLS GENERATE ASSETS. HUMANS GENERATE INTUITION."
+    const opacity3 = useTransform(scrollYProgress, [0.65, 0.85, 1], [0, 1, 1]);
+    const y3 = useTransform(scrollYProgress, [0.65, 0.85], [50, 0]);
+
+    return (
+        <section ref={containerRef} className="relative h-[300vh] bg-brand-offwhite">
+            <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8 text-center border-y-2 border-brand-navy">
+                
+                {/* Fixed Label */}
+                <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
+                    // The Studio Truth
+                </div>
+
+                <div className="relative w-full max-w-5xl mx-auto flex items-center justify-center h-full">
+                    
+                    {/* TRUTH 1 */}
+                    <motion.div style={{ opacity: opacity1, y: y1 }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                            <span>CLARITY OVER</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>PERFECTION.</span>
+                        </h2>
+                    </motion.div>
+
+                    {/* TRUTH 2 */}
+                    <motion.div style={{ opacity: opacity2, y: y2 }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                         <h2 className="text-[10vw] md:text-[6rem] lg:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                            <span>LET REALITY DEFINE</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>HOW YOU SHOW UP.</span>
+                        </h2>
+                    </motion.div>
+
+                    {/* TRUTH 3 */}
+                    <motion.div style={{ opacity: opacity3, y: y3 }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-auto">
+                        <h2 className="text-[9vw] md:text-[5rem] lg:text-[6rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                            <span>TOOLS GENERATE ASSETS.</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>HUMANS GENERATE INTUITION.</span>
+                        </h2>
+                    </motion.div>
+
+                </div>
+            </div>
+        </section>
+    );
+};
 
 // --- 7. THE PROCESS (Raw / Humans) ---
 const ProcessGallery: React.FC<{ images: string[]; onImageClick: (src: string) => void }> = ({ images, onImageClick }) => {
@@ -427,7 +467,7 @@ const ProjectPage: React.FC = () => {
         {/* 3. The Work (Main Gallery - Polished) */}
         <MainGallery images={detailImages} onImageClick={setSelectedImage} />
 
-        {/* 4. Quote / Interlude */}
+        {/* 4. Quote / Interlude (300vh Vertical Reveal) */}
         <QuoteBreak />
 
         {/* 5. The Process (Raw / Sketches) */}
