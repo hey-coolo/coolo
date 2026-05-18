@@ -188,7 +188,7 @@ const ProjectBrief: React.FC<{ project: any }> = ({ project }) => {
     );
 };
 
-// --- 5. THE WORK (Main Gallery - Updated to Grid/Masonry) ---
+// --- 5. THE WORK (Main Gallery) ---
 const MainGallery: React.FC<{ images: string[]; onImageClick: (src: string) => void }> = ({ images, onImageClick }) => {
     if (!images || images.length === 0) return null;
 
@@ -236,20 +236,29 @@ const MainGallery: React.FC<{ images: string[]; onImageClick: (src: string) => v
 
 // --- 6. QUOTE / BREAK ---
 const QuoteBreak: React.FC = () => (
-    <section className="py-32 bg-brand-offwhite">
-        <div className="container mx-auto px-8 max-w-4xl text-center">
+    <section className="py-32 md:py-48 bg-brand-offwhite">
+        <div className="container mx-auto px-6 md:px-8 max-w-5xl text-center">
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="border-y border-brand-navy/10 py-16"
+                transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+                className="flex flex-col items-center"
             >
-                <p className="font-sans font-black text-3xl md:text-5xl text-brand-navy uppercase leading-tight italic opacity-90">
-                    "Clarity over perfection. We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. 
-                    Every decision is intentional, replacing friction with coherence. Tools can generate the assets, but they can't generate intuition. 
-                    Taste, restraint, and human signal are what actually matter."
-                </p>
+                <div className="mb-12">
+                    <h2 className="text-[12vw] md:text-[7rem] lg:text-[8rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                        <span>CLARITY OVER</span>
+                        <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>PERFECTION.</span>
+                    </h2>
+                </div>
+                <div className="max-w-3xl mx-auto space-y-8">
+                    <p className="font-body text-xl md:text-3xl font-light text-brand-navy/80 leading-relaxed">
+                        We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. Every decision is intentional, replacing friction with coherence. 
+                    </p>
+                    <p className="font-body text-xl md:text-3xl font-light text-brand-navy/80 leading-relaxed">
+                        <strong className="font-bold text-brand-purple">Tools can generate assets, but they can't generate intuition.</strong> Taste, restraint, and human signal are what actually matter.
+                    </p>
+                </div>
             </motion.div>
         </div>
     </section>
