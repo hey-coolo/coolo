@@ -246,7 +246,9 @@ const QuoteBreak: React.FC = () => (
                 className="border-y border-brand-navy/10 py-16"
             >
                 <p className="font-sans font-black text-3xl md:text-5xl text-brand-navy uppercase leading-tight italic opacity-90">
-                    "Process over perfection. The logic determines the path."
+                    "Clarity over perfection. We don’t squeeze your business into a style just because it looks good; we let the reality of your work define how you show up. 
+                    Every decision is intentional, replacing friction with coherence. Tools can generate the assets, but they can't generate intuition. 
+                    Taste, restraint, and human signal are what actually matter."
                 </p>
             </motion.div>
         </div>
