@@ -229,15 +229,9 @@ const NarrativeScroll: React.FC = () => {
     const targetRef = useRef<HTMLElement>(null);
     const { scrollYProgress } = useScroll({ target: targetRef });
 
-    // Maps the vertical scroll to a horizontal translation
-    // We have 3 panels of 100vw, so the container is 300vw wide.
-    // To see the last panel, we move the container by -66.666vw
-    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.666%"]);
-
-    // Subtle fade in/out for the text inside the panels to enhance the editorial feel
-    const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
-    const opacity2 = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [0, 1, 1, 0]);
-    const opacity3 = useTransform(scrollYProgress, [0.65, 0.8, 1], [0, 1, 1]);
+    // Maps vertical scroll to horizontal translation
+    // Container is 300vw, we translate -200vw (-66.6666%) to reveal all 3 panels
+    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.6666%"]);
 
     return (
         <section ref={targetRef} className="relative h-[300vh] bg-brand-offwhite">
@@ -248,40 +242,40 @@ const NarrativeScroll: React.FC = () => {
                     01 / The Thesis
                 </div>
 
-                <motion.div style={{ x }} className="flex w-[300vw] h-full">
+                <motion.div style={{ x }} className="flex w-[300vw] h-full will-change-transform">
                     
                     {/* --- TRUTH 01 --- */}
                     <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0">
-                        <motion.div style={{ opacity: opacity1 }} className="max-w-5xl mx-auto flex flex-col items-center">
-                            <h2 className="text-5xl md:text-8xl lg:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy">
-                                Your business evolved.<br/>
-                                <span className="text-brand-purple italic font-serif font-light">Your brand didn't.</span>
+                        <div className="max-w-5xl mx-auto flex flex-col items-center">
+                            <h2 className="text-[10vw] md:text-[8rem] lg:text-[9rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                                <span>YOUR BUSINESS EVOLVED.</span>
+                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
                             </h2>
                             <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
                                 Most brands hide behind safe design and corporate jargon. We strip away the noise to find the actual soul of your business, and express it with absolute precision.
                             </p>
-                        </motion.div>
+                        </div>
                     </div>
 
                     {/* --- TRUTH 02 --- */}
                     <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0">
-                        <motion.div style={{ opacity: opacity2 }} className="max-w-5xl mx-auto flex flex-col items-center">
-                            <h2 className="text-5xl md:text-8xl lg:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy">
-                                We sell clarity,<br/>
-                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>not decoration.</span>
+                        <div className="max-w-5xl mx-auto flex flex-col items-center">
+                            <h2 className="text-[12vw] md:text-[9rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                                <span>WE SELL CLARITY,</span>
+                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
                             </h2>
                             <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
                                 If your strategy takes a 40-page deck to explain, it's already dead. We build frameworks that make sense on a napkin.
                             </p>
-                        </motion.div>
+                        </div>
                     </div>
 
                     {/* --- TRUTH 03 --- */}
                     <div className="w-screen h-full flex flex-col items-center justify-center px-6 md:px-8 text-center shrink-0 relative">
-                        <motion.div style={{ opacity: opacity3 }} className="max-w-5xl mx-auto flex flex-col items-center">
-                            <h2 className="text-5xl md:text-8xl lg:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy">
-                                Good taste is<br/>
-                                <span className="bg-brand-navy text-brand-yellow px-4 leading-none">strategic.</span>
+                        <div className="max-w-5xl mx-auto flex flex-col items-center">
+                            <h2 className="text-[12vw] md:text-[9rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                                <span>GOOD TASTE IS</span>
+                                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>STRATEGIC.</span>
                             </h2>
                             <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
                                 We bring the design power. We engineer visual systems that carry weight. No templates. No fluff. Just high-res output.
@@ -295,7 +289,7 @@ const NarrativeScroll: React.FC = () => {
                                     Read the Manifesto
                                 </Link>
                             </div>
-                        </motion.div>
+                        </div>
                     </div>
 
                 </motion.div>
