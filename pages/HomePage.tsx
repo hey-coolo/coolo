@@ -161,7 +161,7 @@ const BrandHero: React.FC = () => {
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
                             className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                         >
-                            BRAND STRATEGY
+                            WE DESIGN
                         </motion.h1>
                     </div>
                     
@@ -172,7 +172,7 @@ const BrandHero: React.FC = () => {
                             transition={{ duration: 1.4, delay: 0.4, ease: "easeOut" }}
                             className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none absolute -left-[1em] top-[-0.05em] pointer-events-none"
                         >
-                            &
+                            MEANINGFUL BRAND
                         </motion.span>
                         <div className="pointer-events-auto inline-block">
                             <motion.h1 
@@ -181,7 +181,7 @@ const BrandHero: React.FC = () => {
                                 transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
                                 className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                             >
-                                DESIGN POWER
+                                SYSTEMS
                             </motion.h1>
                         </div>
                     </div>
@@ -270,7 +270,7 @@ const NarrativeScroll: React.FC = () => {
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
                         </h2>
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            We help ambitious businesses move beyond DIY survival mode into a more intentional, professional presence without losing the personality that made them worth noticing in the first place.
+                            We build brand systems that drive business direction. We partner with founders to build meaningful, purpose-driven visual ecosystems that scale your business.
                         </p>
                     </motion.div>
 
@@ -284,7 +284,7 @@ const NarrativeScroll: React.FC = () => {
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
                         </h2>
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                             Because people feel coherence before they understand it. Not empty aesthetics. Not trend-chasing.
+                             We build a cohesive ecosystem (Strategy $\rightarrow$ Identity $\rightarrow$ Digital $\rightarrow$ 3D/Content) where every touchpoint serves the broader business goal.
                         </p>
                     </motion.div>
 
@@ -298,7 +298,7 @@ const NarrativeScroll: React.FC = () => {
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>WHAT WE BUILD.</span>
                         </h2>
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            Intentional thoughtful strategy, sharp creative direction, and design that communicates with precision.
+                            Intentional thoughtful strategy, creative direction, and design that communicates with precision.
                         </p>
                         
                         <div className="mt-16 flex items-center justify-center gap-4">
