@@ -365,6 +365,22 @@ const ResultsSection: React.FC<{ gain: string }> = ({ gain }) => {
     );
 };
 
+// --- 8.5 NEW CALL TO ACTION SECTION ---
+const ProjectCTA: React.FC = () => (
+    <section className="py-32 bg-brand-offwhite border-t border-brand-navy/10 flex flex-col items-center justify-center text-center relative z-20">
+        <div className="container mx-auto px-6 md:px-8">
+            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold mb-6 block">Ready to Evolve?</span>
+            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-brand-navy mb-12">
+                Start Your Project
+            </h2>
+            <Link to="/contact" className="inline-block bg-brand-navy text-brand-offwhite px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-purple transition-all duration-300 shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
+                Inquire Now
+            </Link>
+        </div>
+    </section>
+);
+
+
 // --- 9. NEXT PROJECT (DO NOT TOUCH) ---
 const NextProject: React.FC<{ project: any }> = ({ project }) => (
     <Link to={`/work/${project.slug}`} className="block relative h-screen overflow-hidden group bg-brand-navy z-20">
@@ -473,7 +489,10 @@ const ProjectPage: React.FC = () => {
         {/* 6. Results/Outcome */}
         <ResultsSection gain={gain} />
     
-        {/* 7. Footer Nav */}
+        {/* 7. New Project CTA */}
+        <ProjectCTA />
+
+        {/* 8. Footer Nav */}
         <NextProject project={nextProject} />
       </div>
     </>
