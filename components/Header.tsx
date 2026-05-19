@@ -98,8 +98,8 @@ const Header: React.FC = () => {
             </div>
           ))}
           <div className="flex items-center space-x-4 ml-6">
-              <Link to="/contact" className={`font-mono text-[10px] uppercase tracking-[0.2em] px-8 py-3 transition-all duration-500 font-bold border ${isLightText ? 'border-brand-offwhite text-brand-offwhite hover:bg-brand-offwhite hover:text-brand-navy drop-shadow-sm' : 'bg-brand-purple text-brand-offwhite border-brand-purple hover:bg-brand-yellow hover:text-brand-navy hover:border-brand-yellow shadow-xl'}`}>
-                Inquire
+              <Link to="/contact" className="font-mono text-[10px] uppercase tracking-[0.2em] px-8 py-3 transition-all duration-300 font-bold bg-brand-navy text-brand-offwhite border-2 border-brand-navy shadow-[4px_4px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
+                Inquire Now
               </Link>
           </div>
         </nav>
