@@ -207,7 +207,7 @@ const BrandHero: React.FC = () => {
                         <div className="md:text-center font-mono">
                              <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
                              <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
-                                A brand design boutique studio helping businesses transition to intentional communication.
+                                A boutique creative and brand studio helping businesses transition from improvised to intentional.
                              </p>
                         </div>
 
@@ -270,7 +270,7 @@ const NarrativeScroll: React.FC = () => {
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
                         </h2>
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            We build brand systems that drive business direction. We partner with founders to build meaningful, purpose-driven visual ecosystems that scale your business.
+                            We help ambitious businesses move beyond DIY survival mode into a more intentional, professional presence without losing the personality that made them worth noticing in the first place.
                         </p>
                     </motion.div>
 
@@ -284,7 +284,7 @@ const NarrativeScroll: React.FC = () => {
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
                         </h2>
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                             Cohesive brand ecosystems from Strategy, Identity, Content, and Visuals for every touchpoint that serves the broader business goal.
+                             Because people feel coherence before they understand it. Not empty aesthetics. Not trend-chasing.
                         </p>
                     </motion.div>
 
@@ -298,10 +298,13 @@ const NarrativeScroll: React.FC = () => {
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>WHAT WE BUILD.</span>
                         </h2>
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            Intentional thoughtful strategy, creative direction, and design that communicates with precision.
+                            Intentional thoughtful strategy, sharp creative direction, and design that communicates with precision.
                         </p>
                         
-                        <div className="mt-16 flex items-center justify-center gap-4">
+                        <div className="mt-16 flex flex-col md:flex-row items-center justify-center gap-6">
+                            <Link to="/contact" className="inline-block border-2 border-brand-navy bg-brand-navy text-brand-offwhite px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-purple hover:border-brand-purple transition-all duration-300 shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
+                                Inquire Now
+                            </Link>
                             <Link to="/about" className="inline-block border-2 border-brand-navy px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
                                 More About Us
                             </Link>
