@@ -284,7 +284,7 @@ const NarrativeScroll: React.FC = () => {
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
                         </h2>
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                             We build a cohesive ecosystem (Strategy $\rightarrow$ Identity $\rightarrow$ Digital $\rightarrow$ 3D/Content) where every touchpoint serves the broader business goal.
+                             Cohesive brand ecosystems from Strategy, Identity, Content, and Visuals for every touchpoint that serves the broader business goal.
                         </p>
                     </motion.div>
 
