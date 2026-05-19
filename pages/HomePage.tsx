@@ -207,7 +207,7 @@ const BrandHero: React.FC = () => {
                         <div className="md:text-center font-mono">
                              <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
                              <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
-                                A boutique creative and brand  design studio helping businesses transition to intentional communication.
+                                A brand design boutique studio helping businesses transition to intentional communication.
                              </p>
                         </div>
 
