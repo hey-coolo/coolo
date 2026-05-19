@@ -232,35 +232,28 @@ const NarrativeScroll: React.FC = () => {
         offset: ["start start", "end end"]
     });
 
-    // We split the 300vh scroll space into three distinct phases for the smooth center fade
-    // Phrase 1
     const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
     const y1 = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
     const scale1 = useTransform(scrollYProgress, [0, 0.3], [1, 0.95]);
 
-    // Phrase 2
     const opacity2 = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [0, 1, 1, 0]);
     const y2 = useTransform(scrollYProgress, [0.25, 0.4, 0.75], [50, 0, -50]);
     const scale2 = useTransform(scrollYProgress, [0.25, 0.4, 0.75], [0.95, 1, 0.95]);
 
-    // Phrase 3
     const opacity3 = useTransform(scrollYProgress, [0.65, 0.8, 1], [0, 1, 1]);
     const y3 = useTransform(scrollYProgress, [0.65, 0.8], [50, 0]);
     const scale3 = useTransform(scrollYProgress, [0.65, 0.8], [0.95, 1]);
 
     return (
         <section ref={containerRef} className="relative h-[300vh] bg-brand-offwhite">
-            {/* Sticky Container */}
             <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
                 
-                {/* Fixed Header Label */}
                 <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
                     01 / The COOLO Way
                 </div>
 
                 <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center h-full">
                     
-                    {/* --- Phrase 1 --- */}
                     <motion.div 
                         style={{ opacity: opacity1, y: y1, scale: scale1 }} 
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
@@ -274,7 +267,6 @@ const NarrativeScroll: React.FC = () => {
                         </p>
                     </motion.div>
 
-                    {/* --- Phrase 2 --- */}
                     <motion.div 
                         style={{ opacity: opacity2, y: y2, scale: scale2 }} 
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
@@ -288,7 +280,6 @@ const NarrativeScroll: React.FC = () => {
                         </p>
                     </motion.div>
 
-                    {/* --- Phrase 3 --- */}
                     <motion.div 
                         style={{ opacity: opacity3, y: y3, scale: scale3 }} 
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto"
@@ -327,12 +318,14 @@ const ServiceRouter: React.FC = () => {
                     const mainTitle = titleParts ? titleParts[2] : leg.title;
 
                     return (
-                        <Link 
+                        <div 
                             key={leg.id}
-                            to={leg.path}
-                            className="group relative block min-h-[60vh] md:min-h-[70vh] border-b lg:border-b-0 lg:border-r border-brand-navy/10 p-8 md:p-12 flex flex-col justify-between overflow-hidden hover:bg-brand-lavender transition-colors duration-500"
+                            className="group relative flex flex-col justify-between min-h-[60vh] md:min-h-[70vh] border-b lg:border-b-0 lg:border-r border-brand-navy/10 p-8 md:p-12 overflow-hidden hover:bg-brand-lavender transition-colors duration-500"
                         >
-                            <div className="relative z-10">
+                            {/* Background stretched link (making the card clickable but allowing inner links) */}
+                            <Link to={leg.path} className="absolute inset-0 z-0" aria-label={`View ${leg.title}`} />
+
+                            <div className="relative z-10 pointer-events-none">
                                 <div className="flex justify-between items-start mb-12">
                                     <span className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors">
                                         0{index + 1}
@@ -357,15 +350,20 @@ const ServiceRouter: React.FC = () => {
                                 </p>
                             </div>
 
-                            <div className="relative z-10 pt-12 border-t border-brand-navy/10 group-hover:border-brand-offwhite/20 mt-auto">
-                                <p className="font-mono text-xs uppercase tracking-widest mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0 text-brand-navy group-hover:text-brand-offwhite">
+                            <div className="relative z-10 pt-12 border-t border-brand-navy/10 group-hover:border-brand-offwhite/20 mt-auto flex flex-col items-start gap-8">
+                                <p className="font-mono text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0 text-brand-navy group-hover:text-brand-offwhite pointer-events-none">
                                     {leg.hoverText}
                                 </p>
-                                <span className="inline-block font-mono text-sm uppercase font-bold tracking-widest border-b-2 border-brand-purple group-hover:border-brand-yellow pb-1 group-hover:text-brand-yellow transition-colors text-brand-purple">
+                                
+                                <Link to="/contact" className="pointer-events-auto bg-brand-navy text-brand-offwhite px-8 py-4 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-purple transition-all duration-300 shadow-[4px_4px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
+                                    Inquire Now
+                                </Link>
+
+                                <Link to={leg.path} className="pointer-events-auto inline-block font-mono text-sm uppercase font-bold tracking-widest border-b-2 border-brand-purple group-hover:border-brand-yellow pb-1 group-hover:text-brand-yellow transition-colors text-brand-purple mt-2">
                                     More Info
-                                </span>
+                                </Link>
                             </div>
-                        </Link>
+                        </div>
                     );
                 })}
              </div>
