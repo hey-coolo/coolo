@@ -161,7 +161,7 @@ const BrandHero: React.FC = () => {
                             transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
                             className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                         >
-                            WE DESIGN
+                            BRAND STRATEGY
                         </motion.h1>
                     </div>
                     
@@ -172,7 +172,7 @@ const BrandHero: React.FC = () => {
                             transition={{ duration: 1.4, delay: 0.4, ease: "easeOut" }}
                             className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none absolute -left-[1em] top-[-0.05em] pointer-events-none"
                         >
-                            MEANINGFUL BRAND
+                            &
                         </motion.span>
                         <div className="pointer-events-auto inline-block">
                             <motion.h1 
@@ -181,7 +181,7 @@ const BrandHero: React.FC = () => {
                                 transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
                                 className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
                             >
-                                SYSTEMS
+                                DESIGN POWER
                             </motion.h1>
                         </div>
                     </div>
