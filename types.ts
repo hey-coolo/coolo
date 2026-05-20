@@ -93,14 +93,13 @@ export interface JournalPost {
     title: string;
     date: string;
     excerpt: string;
-    imageUrl: string;
+    imageUrl?: string; 
     content: string;
     tags?: string[];
     readTime?: string;
     author?: string;
 }
 
-// Added missing DropVariant type to fix TS build errors
 export interface DropVariant {
     id: string | number;
     title: string;
@@ -159,7 +158,6 @@ export interface CourseModule {
     desc: string;
 }
 
-// --- AUDIT TOOL TYPES ---
 export interface PillarScore {
   pillar: string; 
   name: string;

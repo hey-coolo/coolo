@@ -30,7 +30,7 @@ export const PROJECTS: Project[] = [
     year: 2025,
     imageUrl: '/assets/cases/unmplymnt/Hero.webp', 
     featured: true,
-    client: 'unmplymnt',
+    client: 'unmplynmt',
     role: 'Brand Strategy, Logotype & Mark system, Art Direction, Content Creation.',
     detailImages: [
         '/assets/cases/unmplymnt/detail-1.webp', 
@@ -59,7 +59,6 @@ export const PROJECTS: Project[] = [
             '/assets/cases/unmplymnt/process-11.png',
             '/assets/cases/unmplymnt/process-12.png',
             '/assets/cases/unmplymnt/process-13.png'
-
         ]
     }
   },
@@ -105,7 +104,7 @@ export const PROJECTS: Project[] = [
         ]
     }
   },
-    {
+  {
     id: 3,
     title: 'Ntegrity',
     slug: 'ntegrity',
@@ -133,7 +132,6 @@ export const PROJECTS: Project[] = [
         '/assets/cases/ntegrity/detail-5.gif',
         '/assets/cases/ntegrity/detail-6.gif',
         '/assets/cases/ntegrity/detail-7.png'
-
     ],
     story: {
         goal: "",
@@ -150,7 +148,7 @@ export const PROJECTS: Project[] = [
         ]
     }
   },
-{
+  {
     id: 4,
     title: 'Pablo Creative',
     slug: 'pablo-creative',
@@ -196,8 +194,7 @@ export const PROJECTS: Project[] = [
         ] 
     }
   },
-
-{
+  {
     id: 5,
     title: 'The Cartridges',
     slug: 'the-cartridges',
@@ -210,7 +207,7 @@ export const PROJECTS: Project[] = [
       transform a cheap plastic toy into a premium artifact.
     `,
     category: '3D Design',
-    tags: ['Industrial', 'Hardware', 'Lighting',],
+    tags: ['Industrial', 'Hardware', 'Lighting'],
     year: 2021,
     imageUrl: '/assets/cases/the-cartridges/Hero.webp',
     featured: false,
@@ -222,26 +219,24 @@ export const PROJECTS: Project[] = [
         '/assets/cases/the-cartridges/detail-3.webp', 
         '/assets/cases/the-cartridges/detail-4.webp'
     ],
-
-        story: {
+    story: {
         goal: "",
         gap: "",
         gamble: "",
         gain: "A set of high-converting, hyper-real visual assets.",
         processImages: [
-        '/assets/cases/the-cartridges/process-1.webp', 
-        '/assets/cases/the-cartridges/process-2.webp', 
-        '/assets/cases/the-cartridges/process-3.webp',
-        '/assets/cases/the-cartridges/process-4.jpg',
-        '/assets/cases/the-cartridges/process-5.png',
-        '/assets/cases/the-cartridges/process-6.jpg',
-        '/assets/cases/the-cartridges/process-7.webp',
-        '/assets/cases/the-cartridges/process-8.webp',
-        
-    ]
+            '/assets/cases/the-cartridges/process-1.webp', 
+            '/assets/cases/the-cartridges/process-2.webp', 
+            '/assets/cases/the-cartridges/process-3.webp',
+            '/assets/cases/the-cartridges/process-4.jpg',
+            '/assets/cases/the-cartridges/process-5.png',
+            '/assets/cases/the-cartridges/process-6.jpg',
+            '/assets/cases/the-cartridges/process-7.webp',
+            '/assets/cases/the-cartridges/process-8.webp'
+        ]
     }
   },
- {
+  {
     id: 6,
     title: 'Johney’s Dumpling House',
     slug: 'johneys-dumpling-house',
@@ -274,7 +269,7 @@ export const PROJECTS: Project[] = [
         ]
     }
   },
- {
+  {
     id: 7,
     title: 'Franca Austral',
     slug: 'franca-austral',
@@ -297,7 +292,6 @@ export const PROJECTS: Project[] = [
         '/assets/cases/franca-austral/detail-2.webp',
         '/assets/cases/franca-austral/detail-3.webp',
         '/assets/cases/franca-austral/detail-4.webp'
-
     ],
     story: {
         goal: "",
@@ -311,11 +305,10 @@ export const PROJECTS: Project[] = [
             '/assets/cases/franca-austral/process-4.webp',
             '/assets/cases/franca-austral/process-5.png',
             '/assets/cases/franca-austral/process-6.jpg'
-
-            ]
+        ]
     }
   },
- {
+  {
     id: 8,
     title: 'Just Boxes',
     slug: 'just-boxes',
@@ -351,7 +344,7 @@ export const PROJECTS: Project[] = [
 ];
 
 export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
-    franco: {
+  franco: {
     name: 'Franco',
     title: 'Creative Director',
     imageUrl: ASSETS.team.franco, 
@@ -360,7 +353,7 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
       "Anyone can make things look 'nice.' Franco makes them matter. He operates at the intersection of brutal strategy and high-end visual chaos. He’s the one asking the uncomfortable questions about why you exist before he even touches a pixel.",
       "As the Visual Architect, he treats brand building less like a painting and more like architecture—building systems that are durable, scalable, and unmistakably distinct. He believes there is no magic formula—just rigorous logic, stripped of corporate fluff.",
       "While Ariana keeps the train on the tracks, Franco is the one shoveling coal into the engine, pushing the aesthetic edges and ensuring the work doesn't just 'fit in'—it dominates. He sells clarity, not decoration."
-    ],
+    ]
   },
   ariana: {
     name: 'Ariana',
@@ -371,7 +364,7 @@ export const TEAM_MEMBERS: { [key: string]: TeamMember } = {
       "Ideas are everywhere. Everyone has them. What actually matters is making them real. That’s where Ariana comes in. She’s the person who makes sure the work moves forward instead of living in a Google Doc forever.",
       "While the creative side is pushing ideas, testing edges, and occasionally overcomplicating things, she’s bringing clarity—what’s happening, when it’s happening, and how we’re actually going to pull it off. She runs the timelines, budgets, and logistics that keep projects grounded in reality.",
       "If Franco is the chaos and creative momentum, Ariana is the structure that turns it into something real. She makes sure what we promise is clear, achievable, and delivered properly—no surprises, no stress, no fluff."
-    ],
+    ]
   }
 };
 
@@ -419,7 +412,7 @@ export const NAV_LINKS = [
       { name: 'Equity', path: '/partnership/equity' }
     ]
   },
-  { name: 'Journal', path: '/journal' },
+  { name: 'Journal', path: '/journal' }
 ];
 
 export const SERVICE_LEGS: ServiceLeg[] = [
@@ -596,16 +589,15 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = [
 ];
 
 export const JOURNAL_POSTS: JournalPost[] = [
-
-{
-  slug: "Digital Ownership",
-  title: "The Illusion of Digital Ownership",
-  date: "2026.05.19",
-  excerpt: "Why Brands Are the New Tenant Farmers",
-  tags: ["Branding", "Social Media", "Audience", "Strategy"],
-  readTime: "3 min read",
-  author: "Franco",
-  content: `There is a comfortable mass delusion at the centre of modern commercial culture. For the last decade, brands have poured immense creative and financial capital into their social media feeds, mistakenly believing they are building a lasting home for their community. The profound sociological reality is quite different: businesses are engaging in the largest unpaid digital sharecropping experiment in human history.
+  {
+    slug: "digital-ownership",
+    title: "The Illusion of Digital Ownership",
+    date: "2026.05.19",
+    excerpt: "Why Brands Are the New Tenant Farmers",
+    tags: ["Branding", "Social Media", "Audience", "Strategy"],
+    readTime: "3 min read",
+    author: "Franco",
+    content: `There is a comfortable mass delusion at the centre of modern commercial culture. For the last decade, brands have poured immense creative and financial capital into their social media feeds, mistakenly believing they are building a lasting home for their community. The profound sociological reality is quite different: businesses are engaging in the largest unpaid digital sharecropping experiment in human history.
 
 When a brand builds an audience on a social platform, they do not own that community. The brand is simply acting as unpaid labour, generating the free entertainment required to keep human eyeballs glued to a screen. The platform—the digital feudal lord—then extracts that attention and monetises it. In this ecosystem, brands are not the customers. They are the inventory.
 
@@ -613,18 +605,17 @@ Imagine building a multi-million-dollar architectural masterpiece of a home, com
 
 We saw the danger of this during the great Facebook organic reach bait-and-switch of the 2010s, where brands paid fortunes to acquire audiences, only to have the algorithm throttle their reach overnight. The landlord convinced the tenants to build the house, and then started charging them rent just to look out the window. We saw it again when Instagram violently pivoted to short-form video, forcing brands to abandon years of crafted visual heritage just to appease a panicked algorithm. When you do not control the platform, you do not control your cultural context.
 
-The new market reality requires a fundamental psychological shift. Social media is not a destination; it is a highly volatile transit zone. It is a place to briefly borrow attention. The brands that will build lasting, intergenerational equity are the ones that use the rented land to capture interest, but dedicate their true energy to safely transporting that audience back to sovereign digital territory—spaces like independent websites and direct newsletters, where the brand actually owns the architecture.`,
-};
-
-{
-  slug: "Templated Brand",
-  title: "The Era of the Templated Brand",
-  date: "2026.04.21",
-  excerpt: "When perfection is automated, it becomes invisible. Why genuine human distinctiveness is the new cultural currency.",
-  tags: ["Design", "AI", "Branding", "Culture"],
-  readTime: "4 min read",
-  author: "Franco",
-  content: `We are living through the greatest era of aesthetic inflation in human history.
+The new market reality requires a fundamental psychological shift. Social media is not a destination; it is a highly volatile transit zone. It is a place to briefly borrow attention. The brands that will build lasting, intergenerational equity are the ones that use the rented land to capture interest, but dedicate their true energy to safely transporting that audience back to sovereign digital territory—spaces like independent websites and direct newsletters, where the brand actually owns the architecture.`
+  },
+  {
+    slug: "templated-brand",
+    title: "The Era of the Templated Brand",
+    date: "2026.04.21",
+    excerpt: "When perfection is automated, it becomes invisible. Why genuine human distinctiveness is the new cultural currency.",
+    tags: ["Design", "AI", "Branding", "Culture"],
+    readTime: "4 min read",
+    author: "Franco",
+    content: `We are living through the greatest era of aesthetic inflation in human history.
 
 With the democratisation of template-driven design platforms and generative AI, the barrier to creating a perfectly acceptable visual identity has collapsed entirely. A brand can now generate logos, write strategy, and deploy marketing collateral in a matter of seconds.
 
@@ -642,18 +633,17 @@ When perfection is automated, it becomes invisible.
 
 The new market reality is that looking professional is no longer a competitive advantage; it is the absolute bare minimum. The true cultural currency of the future is the friction of genuine human distinctiveness.
 
-When the entire market is desperately trying to look like a perfectly arranged, totally empty show home, the most radical thing a brand can do is leave a few scuff marks on the walls.`,
-};
-
-{
-  slug: "Visual Psychology",
-  title: "Strategy is the Soul, Design is the Body",
-  date: "2026.02.14",
-  excerpt: "In a high-friction, low-attention economy, the era of the standalone logo is over.",
-  tags: ["Design", "Branding", "Strategy", "Psychology"],
-  readTime: "2 min read",
-  author: "Franco",
-  content: `People still pretend they don't judge books by their covers.
+When the entire market is desperately trying to look like a perfectly arranged, totally empty show home, the most radical thing a brand can do is leave a few scuff marks on the walls.`
+  },
+  {
+    slug: "visual-psychology",
+    title: "Strategy is the Soul, Design is the Body",
+    date: "2026.02.14",
+    excerpt: "In a high-friction, low-attention economy, the era of the standalone logo is over.",
+    tags: ["Design", "Branding", "Strategy", "Psychology"],
+    readTime: "2 min read",
+    author: "Franco",
+    content: `People still pretend they don't judge books by their covers.
 
 It's a lovely sentiment, but biologically, it is entirely untrue. We live in a high-friction, low-attention economy. To survive the noise, the human brain relies on visual heuristics—mental shortcuts that instantly calculate safety, competence, and trust.
 
@@ -665,18 +655,17 @@ Today's market demands a cohesive visual ecosystem. We are talking about strict 
 
 Strategy is the soul. Design is the body. If the body is weak, the soul remains invisible.
 
-Are you noticing this shift in how brands are building out their full ecosystems?`,
-};
-
-{
-  slug: "Clarity Problem",
-  title: "Calibrating the Message: Why Most Brands Have a Clarity Problem",
-  date: "2026.01.05",
-  excerpt: "In a market defined by aesthetic inflation, polish is no longer a differentiator. Stop adding decoration. Start calibrating your signal.",
-  tags: ["Clarity", "Design", "Strategy", "Branding"],
-  readTime: "3 min read",
-  author: "Franco",
-  content: `Most brands don't have a design problem. They have a clarity problem.
+Are you noticing this shift in how brands are building out their full ecosystems?`
+  },
+  {
+    slug: "clarity-problem",
+    title: "Calibrating the Message: Why Most Brands Have a Clarity Problem",
+    date: "2026.01.05",
+    excerpt: "In a market defined by aesthetic inflation, polish is no longer a differentiator. Stop adding decoration. Start calibrating your signal.",
+    tags: ["Clarity", "Design", "Strategy", "Branding"],
+    readTime: "3 min read",
+    author: "Franco",
+    content: `Most brands don't have a design problem. They have a clarity problem.
 
 We are operating in a market defined by aesthetic inflation. Because high-level design tools and templates have been completely democratised, polish is no longer a differentiator—it is simply the baseline of entry.
 
@@ -692,9 +681,8 @@ Think of it like a crowded dinner party. The brand that over-decorates and over-
 
 The modern baseline of the economy dictates that visual assets must carry weight, not decoration. Strategy is simply the discipline of connecting what you do in the physical world to how people perceive you in the psychological world.
 
-Stop adding decoration. Start calibrating your signal.`,
-};
-
+Stop adding decoration. Start calibrating your signal.`
+  }
 ];
 
 export const FREE_RESOURCES: Resource[] = [
@@ -703,21 +691,21 @@ export const FREE_RESOURCES: Resource[] = [
         title: 'Brand Reality Check', 
         format: 'APP', 
         desc: 'Is your brand a mess? Use this free tool to find out.', 
-        link: './clarity/reality-check' 
+        link: '/clarity/reality-check' 
     },
     { 
         id: '02', 
         title: 'The Hard Questions', 
         format: 'PDF', 
         desc: 'The exact questions we ask clients. Steal our process.This is a tool to help you visualize your brand.', 
-        link: './free-resources/00_COOLO_Free Resources_Brand Clarity_The Hard Questions.pdf' 
+        link: '/free-resources/00_COOLO_Free Resources_Brand Clarity_The Hard Questions.pdf' 
     },
     { 
         id: '03', 
         title: 'Brand Soul Composer', 
         format: 'PDF', 
         desc: 'Three questions. One soul. Stop trying to sound like an overly-smart company. Find your pulse. Tell us what makes you mad about your industry, how you actually fix it, and who you’re doing it for.',
-        link: './free-resources/00_COOLO_Free Resources_Brand Clarity_Soul Composer.pdf'
+        link: '/free-resources/00_COOLO_Free Resources_Brand Clarity_Soul Composer.pdf'
     }
 ];
 

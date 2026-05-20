@@ -56,10 +56,6 @@ const JournalListPage: React.FC = () => (
                                          </span>
                                     </div>
                                 </div>
-                                
-                                <div className="hidden lg:block absolute top-1/2 right-12 -translate-y-1/2 w-64 aspect-video opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10 overflow-hidden bg-brand-navy border border-brand-offwhite/10 rotate-3 group-hover:rotate-0 transform transition-transform">
-                                    <img src={post.imageUrl} alt="" className="w-full h-full object-cover grayscale opacity-60" />
-                                </div>
                             </Link>
                         </AnimatedSection>
                     ))}
