@@ -598,9 +598,9 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = [
 export const JOURNAL_POSTS: JournalPost[] = [
   {
     slug: "Digital Ownership",
-    title: "The Illusion of Digital Ownership: Why Brands Are the New Tenant Farmers",
+    title: "The Illusion of Digital Ownership",
     date: "2026.05.19",
-    excerpt: "When you do not control the platform, you do not control your cultural context.",
+    excerpt: "Why Brands Are the New Tenant Farmers",
     tags: ["Branding", "Social Media", "Audience", "Strategy"],
     readTime: "4 min read",
     author: "Franco",
