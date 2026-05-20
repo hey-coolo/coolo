@@ -613,7 +613,7 @@ Imagine building a multi-million-dollar architectural masterpiece of a home, com
 
 We saw the danger of this during the great Facebook organic reach bait-and-switch of the 2010s, where brands paid fortunes to acquire audiences, only to have the algorithm throttle their reach overnight. The landlord convinced the tenants to build the house, and then started charging them rent just to look out the window. We saw it again when Instagram violently pivoted to short-form video, forcing brands to abandon years of crafted visual heritage just to appease a panicked algorithm. When you do not control the platform, you do not control your cultural context.
 
-The new market reality requires a fundamental psychological shift. Social media is not a destination; it is a highly volatile transit zone. It is a place to briefly borrow attention. The brands that will build lasting, intergenerational equity are the ones that use the rented land to capture interest, but dedicate their true energy to safely transporting that audience back to sovereign digital territory—spaces like independent websites and direct newsletters, where the brand actually owns the architecture.`
+The new market reality requires a fundamental psychological shift. Social media is not a destination; it is a highly volatile transit zone. It is a place to briefly borrow attention. The brands that will build lasting, intergenerational equity are the ones that use the rented land to capture interest, but dedicate their true energy to safely transporting that audience back to sovereign digital territory—spaces like independent websites and direct newsletters, where the brand actually owns the architecture.`,
 };
 
 {
@@ -642,7 +642,7 @@ When perfection is automated, it becomes invisible.
 
 The new market reality is that looking professional is no longer a competitive advantage; it is the absolute bare minimum. The true cultural currency of the future is the friction of genuine human distinctiveness.
 
-When the entire market is desperately trying to look like a perfectly arranged, totally empty show home, the most radical thing a brand can do is leave a few scuff marks on the walls.`
+When the entire market is desperately trying to look like a perfectly arranged, totally empty show home, the most radical thing a brand can do is leave a few scuff marks on the walls.`,
 };
 
 {
@@ -655,17 +655,17 @@ When the entire market is desperately trying to look like a perfectly arranged, 
   author: "Franco",
   content: `People still pretend they don't judge books by their covers.
 
-It’s a lovely sentiment, but biologically, it is entirely untrue. We live in a high-friction, low-attention economy. To survive the noise, the human brain relies on visual heuristics—mental shortcuts that instantly calculate safety, competence, and trust.
+It's a lovely sentiment, but biologically, it is entirely untrue. We live in a high-friction, low-attention economy. To survive the noise, the human brain relies on visual heuristics—mental shortcuts that instantly calculate safety, competence, and trust.
 
 When a brilliant company enters the market with a fragmented or outdated visual identity, the market instinctively pulls away. Why? Cognitive dissonance. The brain registers a disconnect between the promised high-end strategy and the amateur physical presentation, assuming the internal operations must be equally chaotic.
 
 The era of the "standalone logo" is over. A logo is just a name tag; it proves you exist, but tells the world nothing about who you are.
 
-Today’s market demands a cohesive visual ecosystem. We are talking about strict semiotic rules across colour, typography, kinetic motion, and spatial hierarchy. Brands like Chobani and Dunkin' didn't just update their logos; they rebuilt their entire physical posture to perfectly mirror their internal strategy.
+Today's market demands a cohesive visual ecosystem. We are talking about strict semiotic rules across colour, typography, kinetic motion, and spatial hierarchy. Brands like Chobani and Dunkin' didn't just update their logos; they rebuilt their entire physical posture to perfectly mirror their internal strategy.
 
 Strategy is the soul. Design is the body. If the body is weak, the soul remains invisible.
 
-Are you noticing this shift in how brands are building out their full ecosystems?`
+Are you noticing this shift in how brands are building out their full ecosystems?`,
 };
 
 {
@@ -692,7 +692,7 @@ Think of it like a crowded dinner party. The brand that over-decorates and over-
 
 The modern baseline of the economy dictates that visual assets must carry weight, not decoration. Strategy is simply the discipline of connecting what you do in the physical world to how people perceive you in the psychological world.
 
-Stop adding decoration. Start calibrating your signal.`
+Stop adding decoration. Start calibrating your signal.`,
 };
 
 ];
