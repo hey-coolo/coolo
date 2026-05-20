@@ -9,12 +9,14 @@ const JournalListPage: React.FC = () => (
         <div className="container mx-auto px-8">
             <AnimatedSection>
                 <header className="py-24 md:py-48 max-w-6xl relative">
-                    <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-6 block">Journal / Thoughts</span>
+                    <span className="font-mono text-brand-purple uppercase tracking-[0.4em] text-xs font-black mb-6 block">Journal / Brain Dump</span>
                     <h1 className="text-brand-navy text-8xl md:text-[15vw] font-black uppercase tracking-tight leading-[0.85]">
-                        Brain<br/><span className="text-brand-purple italic">Dump.</span>
+                        Studio<br/><span className="text-brand-purple italic">Thoughts.</span>
                     </h1>
                     <p className="font-body text-2xl md:text-4xl text-brand-navy/60 mt-16 leading-tight max-w-4xl font-light">
-                        Musings on the intersection of brand strategy, kinetic design, and the slow burn of clarity.
+                        A journal exploring the thinking behind modern brands, creative direction, visual systems, strategy, culture, and the realities of building businesses that actually mean something. 
+                        Part studio notes, part field research. 
+                        A place for process, perspective, and the logic behind the work.
                     </p>
                     
                     <div className="absolute top-24 right-0 hidden lg:block text-right">
