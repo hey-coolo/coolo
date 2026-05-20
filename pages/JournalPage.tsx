@@ -105,9 +105,6 @@ const JournalPostPage: React.FC<{ slug: string }> = ({ slug }) => {
                     <div className="lg:col-span-4 space-y-12">
                          <AnimatedSection delay={200}>
                             <div className="sticky top-32">
-                                <div className="aspect-[4/5] bg-brand-navy overflow-hidden mb-8">
-                                    <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover opacity-90 grayscale hover:grayscale-0 transition-all duration-1000" />
-                                </div>
                                 <div className="space-y-6">
                                     <div>
                                         <h4 className="font-mono text-[10px] uppercase text-brand-navy/40 tracking-widest font-bold mb-2">Subject Tags</h4>
