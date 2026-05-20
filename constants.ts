@@ -596,16 +596,25 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = [
 ];
 
 export const JOURNAL_POSTS: JournalPost[] = [
-  {
-    slug: "Digital Ownership",
-    title: "The Illusion of Digital Ownership",
-    date: "2026.05.19",
-    excerpt: "Why Brands Are the New Tenant Farmers",
-    tags: ["Branding", "Social Media", "Audience", "Strategy"],
-    readTime: "4 min read",
-    author: "Franco",
-    content: "There is a comfortable mass delusion at the centre of modern commercial culture. For the last decade, brands have poured immense creative and financial capital into their social media feeds, mistakenly believing they are building a lasting home for their community. The profound sociological reality is quite different: businesses are engaging in the largest unpaid digital sharecropping experiment in human history. When a brand builds an audience on a social platform, they do not own that community. The brand is simply acting as unpaid labour, generating the free entertainment required to keep human eyeballs glued to a screen. The platform—the digital feudal lord—then extracts that attention and monetises it. In this ecosystem, brands are not the customers. They are the inventory. Imagine building a multi-million-dollar architectural masterpiece of a home, complete with Italian marble and landscaped gardens. Now imagine choosing to build that home on a piece of land that you only lease month-to-month, where the landlord can change the locks or bulldoze your driveway at any second. This is exactly what it means to build brand equity entirely on rented digital land. We saw the danger of this during the great Facebook organic reach bait-and-switch of the 2010s, where brands paid fortunes to acquire audiences, only to have the algorithm throttle their reach overnight. The landlord convinced the tenants to build the house, and then started charging them rent just to look out the window. We saw it again when Instagram violently pivoted to short-form video, forcing brands to abandon years of crafted visual heritage just to appease a panicked algorithm. When you do not control the platform, you do not control your cultural context. The new market reality requires a fundamental psychological shift. Social media is not a destination; it is a highly volatile transit zone. It is a place to briefly borrow attention. The brands that will build lasting, intergenerational equity are the ones that use the rented land to capture interest, but dedicate their true energy to safely transporting that audience back to sovereign digital territory—spaces like independent websites and direct newsletters, where the brand actually owns the architecture."
-  },
+{
+  slug: "Digital Ownership",
+  title: "The Illusion of Digital Ownership",
+  date: "2026.05.19",
+  excerpt: "Why Brands Are the New Tenant Farmers",
+  tags: ["Branding", "Social Media", "Audience", "Strategy"],
+  readTime: "4 min read",
+  author: "Franco",
+  content: `There is a comfortable mass delusion at the centre of modern commercial culture. For the last decade, brands have poured immense creative and financial capital into their social media feeds, mistakenly believing they are building a lasting home for their community. The profound sociological reality is quite different: businesses are engaging in the largest unpaid digital sharecropping experiment in human history.
+
+When a brand builds an audience on a social platform, they do not own that community. The brand is simply acting as unpaid labour, generating the free entertainment required to keep human eyeballs glued to a screen. The platform—the digital feudal lord—then extracts that attention and monetises it. In this ecosystem, brands are not the customers. They are the inventory.
+
+Imagine building a multi-million-dollar architectural masterpiece of a home, complete with Italian marble and landscaped gardens. Now imagine choosing to build that home on a piece of land that you only lease month-to-month, where the landlord can change the locks or bulldoze your driveway at any second. This is exactly what it means to build brand equity entirely on rented digital land.
+
+We saw the danger of this during the great Facebook organic reach bait-and-switch of the 2010s, where brands paid fortunes to acquire audiences, only to have the algorithm throttle their reach overnight. The landlord convinced the tenants to build the house, and then started charging them rent just to look out the window. We saw it again when Instagram violently pivoted to short-form video, forcing brands to abandon years of crafted visual heritage just to appease a panicked algorithm. When you do not control the platform, you do not control your cultural context.
+
+The new market reality requires a fundamental psychological shift. Social media is not a destination; it is a highly volatile transit zone. It is a place to briefly borrow attention. The brands that will build lasting, intergenerational equity are the ones that use the rented land to capture interest, but dedicate their true energy to safely transporting that audience back to sovereign digital territory—spaces like independent websites and direct newsletters, where the brand actually owns the architecture.`
+};
+
   {
     slug: "3d-as-strategic-asset",
     title: "3D isn't just candy",

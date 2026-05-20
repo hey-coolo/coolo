@@ -91,7 +91,7 @@ const JournalPostPage: React.FC<{ slug: string }> = ({ slug }) => {
                             <span className="text-brand-navy/20">/</span>
                             <span>{post.readTime}</span>
                             <span className="text-brand-navy/20">/</span>
-                            <span>Auth: {post.author}</span>
+                            <span>Author: {post.author}</span>
                         </div>
                         <h1 className="text-7xl md:text-[10vw] font-black uppercase tracking-tight leading-[0.9] text-brand-navy">
                             {post.title}
@@ -107,7 +107,7 @@ const JournalPostPage: React.FC<{ slug: string }> = ({ slug }) => {
                             <div className="sticky top-32">
                                 <div className="space-y-6">
                                     <div>
-                                        <h4 className="font-mono text-[10px] uppercase text-brand-navy/40 tracking-widest font-bold mb-2">Subject Tags</h4>
+                                        <h4 className="font-mono text-[10px] uppercase text-brand-navy/40 tracking-widest font-bold mb-2">Blog Tags</h4>
                                         <div className="flex flex-wrap gap-2">
                                             {post.tags?.map(tag => (
                                                 <span key={tag} className="font-mono text-[10px] uppercase bg-brand-navy/5 text-brand-navy px-3 py-1 font-bold">
@@ -117,7 +117,7 @@ const JournalPostPage: React.FC<{ slug: string }> = ({ slug }) => {
                                         </div>
                                     </div>
                                     <div>
-                                        <h4 className="font-mono text-[10px] uppercase text-brand-navy/40 tracking-widest font-bold mb-2">Synopsis</h4>
+                                        <h4 className="font-mono text-[10px] uppercase text-brand-navy/40 tracking-widest font-bold mb-2">Entry</h4>
                                         <p className="font-body text-sm leading-relaxed text-brand-navy/70">
                                             {post.excerpt}
                                         </p>
@@ -148,7 +148,7 @@ const JournalPostPage: React.FC<{ slug: string }> = ({ slug }) => {
                                         Franco <span className="text-brand-navy/40">/ Creative Director</span>
                                      </div>
                                 </div>
-                                <Link to="/journal" className="font-mono text-xs uppercase font-bold tracking-[0.2em] text-brand-purple hover:text-brand-yellow transition-colors bg-brand-navy py-3 px-6 hover:bg-brand-navy/90">
+                                <Link to="/journal" className="font-mono text-xs uppercase font-bold tracking-[0.2em] text-brand-yellow hover:text-brand-purple transition-colors bg-brand-navy py-3 px-6 hover:bg-brand-navy/90">
                                     Back to Grid
                                 </Link>
                              </div>
