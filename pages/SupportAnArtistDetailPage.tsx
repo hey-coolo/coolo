@@ -4,6 +4,16 @@ import AnimatedSection from '../components/AnimatedSection';
 import { ArrowLeft } from 'lucide-react';
 import { Drop, DropVariant } from '../types';
 
+const SIZE_GUIDE_DATA = [
+  { size: 'XS', l: '68.6', w: '42', c: '78.7-86.4' },
+  { size: 'S', l: '71.1', w: '45.7', c: '86.4-94' },
+  { size: 'M', l: '73.7', w: '50.8', c: '96.5-104.1' },
+  { size: 'L', l: '76.2', w: '55.9', c: '106.7-114.3' },
+  { size: 'XL', l: '78.7', w: '61', c: '116.8-124.5' },
+  { size: '2XL', l: '81.3', w: '66', c: '127-134.6' },
+  { size: '3XL', l: '83.8', w: '71.1', c: '137.2-144.8' }
+];
+
 const SupportAnArtistDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -49,7 +59,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
           return;
       }
       
-      // Navigate to internal checkout page passing product data
       navigate('/checkout', {
           state: {
               slug: drop?.slug,
@@ -82,6 +91,8 @@ const SupportAnArtistDetailPage: React.FC = () => {
       );
   }
 
+  const hasMultipleOptions = drop.variants && drop.variants.length > 1;
+
   return (
     <div className="bg-brand-offwhite min-h-screen pt-32 pb-32">
       <div className="container mx-auto px-6 md:px-8">
@@ -93,23 +104,13 @@ const SupportAnArtistDetailPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
             
-            {/* LEFT: Lookbook Image Gallery (Stacked Vertically) */}
+            {/* LEFT: Lookbook Image (Just the main one for now) */}
             <div className="lg:col-span-7 space-y-6 md:space-y-12">
-                {drop.galleryImages && drop.galleryImages.length > 0 ? (
-                    drop.galleryImages.map((img, i) => (
-                        <AnimatedSection key={i} delay={i * 50}>
-                            <div className="w-full bg-brand-navy/5 border border-brand-navy/5 overflow-hidden">
-                                <img src={img} alt={`${drop.title} angle ${i + 1}`} className="w-full h-auto object-cover" />
-                            </div>
-                        </AnimatedSection>
-                    ))
-                ) : (
-                    <AnimatedSection>
-                        <div className="aspect-[4/5] bg-brand-navy/5 border border-brand-navy/5 overflow-hidden">
-                            {drop.imageUrl && <img src={drop.imageUrl} alt={drop.title} className="w-full h-full object-cover" />}
-                        </div>
-                    </AnimatedSection>
-                )}
+                <AnimatedSection>
+                    <div className="w-full bg-white border border-brand-navy/5 overflow-hidden shadow-sm">
+                        {drop.imageUrl && <img src={drop.imageUrl} alt={drop.title} className="w-full h-auto object-cover" />}
+                    </div>
+                </AnimatedSection>
             </div>
 
             {/* RIGHT: Sticky Product Information */}
@@ -120,8 +121,8 @@ const SupportAnArtistDetailPage: React.FC = () => {
                             <span className={`font-mono text-[10px] uppercase tracking-widest font-bold px-3 py-1 mb-6 inline-block ${drop.status === 'Live' ? 'bg-brand-yellow text-brand-navy' : 'bg-brand-navy text-white'}`}>
                                 {drop.status}
                             </span>
-                            <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-brand-navy leading-[0.9] mb-4">
-                                {drop.title}
+                            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-brand-navy leading-[0.9] mb-4">
+                                {drop.title.replace(/_/g, ' ')}
                             </h1>
                             <div className="text-3xl font-sans font-bold text-brand-navy">
                                 ${selectedVariant ? selectedVariant.price : drop.price} <span className="text-lg text-brand-navy/40">NZD</span>
@@ -136,11 +137,11 @@ const SupportAnArtistDetailPage: React.FC = () => {
                     </AnimatedSection>
 
                     {/* Sizing / Variants */}
-                    {drop.variants && drop.variants.length > 0 && (
+                    {hasMultipleOptions && (
                         <AnimatedSection delay={200}>
                             <div>
                                 <div className="flex justify-between items-center mb-4">
-                                    <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy/50">Select Size</span>
+                                    <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy/50">Select Option</span>
                                     <button 
                                         onClick={() => setShowSizeGuide(!showSizeGuide)}
                                         className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy transition-colors border-b border-brand-purple pb-0.5"
@@ -150,14 +151,35 @@ const SupportAnArtistDetailPage: React.FC = () => {
                                 </div>
 
                                 {showSizeGuide && (
-                                    <div className="mb-6 p-6 border border-brand-navy/10 bg-white font-mono text-xs uppercase text-brand-navy/60 leading-relaxed">
-                                        <p className="mb-2 font-bold text-brand-navy">General Fit Notes:</p>
-                                        <p>Items run true to size. For a boxy/oversized look, we recommend sizing up one full size. Measurements are standard unisex formatting.</p>
+                                    <div className="mb-6 p-6 border border-brand-navy/10 bg-white font-mono text-xs text-brand-navy/80 leading-relaxed shadow-sm">
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-left border-collapse">
+                                                <thead>
+                                                    <tr className="border-b border-brand-navy/20 uppercase tracking-widest text-[9px] text-brand-navy/50">
+                                                        <th className="py-2">Size</th>
+                                                        <th className="py-2">Length (cm)</th>
+                                                        <th className="py-2">Width (cm)</th>
+                                                        <th className="py-2">Chest (cm)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {SIZE_GUIDE_DATA.map((row) => (
+                                                        <tr key={row.size} className="border-b border-brand-navy/5 last:border-0 text-[11px] font-bold">
+                                                            <td className="py-2 text-brand-purple">{row.size}</td>
+                                                            <td className="py-2">{row.l}</td>
+                                                            <td className="py-2">{row.w}</td>
+                                                            <td className="py-2">{row.c}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <p className="mt-4 text-[9px] uppercase tracking-widest text-brand-navy/40">Measurements are provided by Printful. Items run true to size.</p>
                                     </div>
                                 )}
 
-                                <div className="grid grid-cols-4 md:grid-cols-5 gap-3">
-                                    {drop.variants.map(variant => (
+                                <div className="grid grid-cols-3 gap-3">
+                                    {drop.variants?.map(variant => (
                                         <button 
                                             key={variant.id}
                                             onClick={() => setSelectedVariant(variant)}
@@ -175,7 +197,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </AnimatedSection>
                     )}
 
-                    {/* Checkout Button */}
                     <AnimatedSection delay={250}>
                         <div className="pt-6 border-t border-brand-navy/10">
                             <button 
@@ -191,7 +212,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </div>
                     </AnimatedSection>
 
-                    {/* Specs / Features */}
                     {drop.features && drop.features.length > 0 && (
                         <AnimatedSection delay={300}>
                             <div className="bg-white border border-brand-navy/5 p-8 mt-12">
