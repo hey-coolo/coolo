@@ -20,7 +20,8 @@ import TeamPage from './pages/TeamPage';
 import TeamMemberPage from './pages/TeamMemberPage';
 import JournalPage from './pages/JournalPage';
 import DropsPage from './pages/SupportAnArtist';
-import DropDetailPage from './pages/SupportAnArtistDetailPage';
+import SupportAnArtistDetailPage from './pages/SupportAnArtistDetailPage';
+import CheckoutPage from './pages/CheckoutPage'; // NEW IMPORT
 import ContactPage from './pages/ContactPage';
 import JoinPage from './pages/JoinPage';
 import UnsubscribePage from './pages/Unsubscribe';
@@ -93,42 +94,31 @@ const App: React.FC = () => {
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/playbook" element={<PlaybookPage />} />
                         
-                        
-                        {/* --- CLARITY ROUTES --- */}
                         <Route path="/clarity" element={<ClarityPage />} />
                         <Route path="/clarity/free-resources" element={<FreeResourcesPage />} />
-                        
-                        {/* Unified Audit Route - Pointing to RealityCheckApp */}
                         <Route path="/audit" element={<RealityCheckApp />} />
                         <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
-
                         <Route path="/clarity/:slug" element={<ClarityTierPage />} />
                         
-                        {/* --- DESIGN POWER ROUTES --- */}
                         <Route path="/design-power/:slug" element={<TierDetailPage />} />
                         <Route path="/design-power" element={<DesignPowerPage />} />
                         
-                        {/* --- PARTNERSHIP ROUTES --- */}
                         <Route path="/partnership/:slug" element={<PartnershipDetail />} />
                         <Route path="/partnership" element={<PartnershipPage />} />
                         
-                        {/* --- WORK ROUTES --- */}
                         <Route path="/work/:slug" element={<ProjectPage />} />
                         <Route path="/work" element={<WorkPage />} />
                         
-                        {/* --- TEAM ROUTES --- */}
                         <Route path="/team/:memberSlug" element={<TeamMemberPage />} />
                         <Route path="/team" element={<TeamPage />} />
                         
-                        {/* --- JOURNAL ROUTES --- */}
                         <Route path="/journal/:slug" element={<JournalPage />} />
                         <Route path="/journal" element={<JournalPage />} />
                         
-                        {/* --- DROPS ROUTES --- */}
-                        <Route path="/support-an-artist/:slug" element={<DropDetailPage />} />
+                        <Route path="/support-an-artist/:slug" element={<SupportAnArtistDetailPage />} />
                         <Route path="/support-an-artist" element={<DropsPage />} />
+                        <Route path="/checkout" element={<CheckoutPage />} /> {/* NEW ROUTE */}
                         
-                        {/* --- UTILITY ROUTES --- */}
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/join" element={<JoinPage />} />
                         <Route path="/unsubscribe" element={<UnsubscribePage />} />

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { ArrowLeft } from 'lucide-react';
 import { Drop, DropVariant } from '../types';
 
 const SupportAnArtistDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const [drop, setDrop] = useState<Drop | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<DropVariant | null>(null);
-  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
       window.scrollTo(0, 0);
@@ -30,10 +30,9 @@ const SupportAnArtistDetailPage: React.FC = () => {
                       if (firstAvailable) setSelectedVariant(firstAvailable);
                   }
               } else {
-                  throw new Error("Invalid payload format from Printful");
+                  throw new Error("Invalid payload format");
               }
           } catch (error: any) {
-              console.error("API error:", error);
               setErrorMsg(error.message);
           } finally {
               setIsLoading(false);
@@ -43,46 +42,23 @@ const SupportAnArtistDetailPage: React.FC = () => {
       if (slug) fetchProduct();
   }, [slug]);
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
       if (drop?.variants && drop.variants.length > 0 && !selectedVariant) {
           alert("Please select an option.");
           return;
       }
-      setIsAdding(true);
       
-      try {
-          // Sending a clean, flat payload so the backend handles Stripe requirements
-          const payload = { 
+      // Navigate to internal checkout page passing product data
+      navigate('/checkout', {
+          state: {
               slug: drop?.slug,
               title: drop?.title,
               variantTitle: selectedVariant?.title,
               price: selectedVariant?.price || drop?.price,
               variantId: selectedVariant?.id,
               imageUrl: drop?.imageUrl
-          };
-
-          const res = await fetch('/api/checkout', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-          });
-          
-          if (!res.ok) {
-              const errorData = await res.json();
-              throw new Error(errorData.error || "Checkout validation failed");
           }
-
-          const data = await res.json();
-          if (data.url) {
-              window.location.href = data.url; 
-          } else {
-              throw new Error("Missing checkout URL from server.");
-          }
-      } catch (err: any) {
-          console.error('Checkout error:', err);
-          alert(`Error initiating checkout: ${err.message}`);
-          setIsAdding(false);
-      }
+      });
   };
 
   if (isLoading) {
@@ -123,6 +99,18 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         )}
                     </div>
                 </AnimatedSection>
+                
+                {drop.galleryImages && drop.galleryImages.length > 1 && (
+                    <div className="grid grid-cols-2 gap-6">
+                        {drop.galleryImages.slice(1).map((img, i) => (
+                            <AnimatedSection key={i} delay={i * 100}>
+                                <div className="aspect-square bg-brand-navy/5 border border-brand-navy/5 overflow-hidden">
+                                    <img src={img} alt={`${drop.title} detail ${i}`} className="w-full h-full object-cover" />
+                                </div>
+                            </AnimatedSection>
+                        ))}
+                    </div>
+                )}
             </div>
 
             <div className="lg:col-span-5 relative">
@@ -176,10 +164,10 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         <div className="pt-6 border-t border-brand-navy/10">
                             <button 
                                 onClick={handleCheckout}
-                                disabled={drop.status !== 'Live' || isAdding}
+                                disabled={drop.status !== 'Live'}
                                 className="w-full bg-brand-navy text-brand-offwhite font-mono uppercase font-black text-sm tracking-widest py-6 hover:bg-brand-purple transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none"
                             >
-                                {isAdding ? 'PROCESSING...' : drop.status === 'Live' ? 'ADD TO CART — FUND ARTIST' : 'OUT OF STOCK'}
+                                {drop.status === 'Live' ? 'ADD TO CART — FUND ARTIST' : 'OUT OF STOCK'}
                             </button>
                             <p className="text-center font-mono text-[9px] uppercase tracking-widest text-brand-navy/40 mt-6">
                                 Secure Checkout. Global Shipping.
