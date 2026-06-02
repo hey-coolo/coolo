@@ -38,8 +38,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     if (id) {
-        // --- FETCH SINGLE PRODUCT FOR PDP (PRINTFUL API V2) ---
-        const response = await fetch(`https://api.printful.com/v2/store/products/${id}`, { headers });
+        // --- FETCH SINGLE PRODUCT FOR PDP (PRINTFUL API V1) ---
+        // Sync products are NOT available in v2 beta yet, so we must use v1.
+        const response = await fetch(`https://api.printful.com/store/products/${id}`, { headers });
         
         if (!response.ok) {
             console.error(`Printful returned ${response.status} for product ${id}. Serving fallback.`);
@@ -47,10 +48,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
         
         const data = await response.json();
-        // Defensive check for V2 beta changing response wrappers (data vs result)
-        const p = data.data?.sync_product || data.result?.sync_product;
-        const variants = data.data?.sync_variants || data.result?.sync_variants || [];
+        const p = data.result?.sync_product;
+        const variants = data.result?.sync_variants || [];
         
+        if (!p) {
+            return serveFallback();
+        }
+
         // Safely map Printful Product to COOLO 'Drop' Type
         const mappedProduct = {
             slug: p.id.toString(),
@@ -73,8 +77,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         return res.status(200).json(mappedProduct);
     } else {
-        // --- FETCH ALL PRODUCTS FOR CATALOG (PRINTFUL API V2) ---
-        const response = await fetch(`https://api.printful.com/v2/store/products?limit=50`, { headers });
+        // --- FETCH ALL PRODUCTS FOR CATALOG (PRINTFUL API V1) ---
+        // Sync products are NOT available in v2 beta yet, so we must use v1.
+        const response = await fetch(`https://api.printful.com/store/products?limit=50`, { headers });
         
         if (!response.ok) {
             console.error(`Printful returned ${response.status} for catalog. Serving fallback.`);
@@ -82,7 +87,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const data = await response.json();
-        const results = data.data || data.result;
+        const results = data.result;
         
         if (!results || !Array.isArray(results)) {
             console.error("Printful payload missing data array. Serving fallback.");

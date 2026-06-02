@@ -27,8 +27,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     };
     if (storeId) headers['X-PF-Store-Id'] = storeId;
 
-    // TEST 2: Can we authenticate and fetch products using API v2?
-    const response = await fetch(`https://api.printful.com/v2/store/products?limit=50`, {
+    // TEST 2: Can we authenticate and fetch products using API v1?
+    // Note: Printful API v2 Beta does NOT support the Sync Products endpoint yet.
+    const response = await fetch(`https://api.printful.com/store/products?limit=50`, {
         method: 'GET',
         headers
     });
@@ -44,7 +45,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const data = await response.json();
-    const resultList = data.data || data.result;
+    const resultList = data.result;
     
     // TEST 3: Are there actually products in the store?
     if (!resultList || resultList.length === 0) {

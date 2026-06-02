@@ -13,7 +13,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const response = await fetch('https://api.printful.com/v2/stores', {
+    const response = await fetch('https://api.printful.com/stores', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -30,7 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     
     return res.status(200).json({
         message: "Here are your stores! Grab the 'id' number below to set your PRINTFUL_STORE_ID.",
-        shops: data.data || data.result
+        shops: data.result
     });
 
   } catch (error: any) {

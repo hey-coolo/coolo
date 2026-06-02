@@ -70,7 +70,7 @@ export default async function handler(req: any, res: any) {
 
         if (shippingDetails && session.metadata?.variant_id) {
           
-          // Printful API v2 Order Payload
+          // Printful API v1 Order Payload
           const orderData = {
             external_id: session.id, 
             recipient: {
@@ -98,7 +98,7 @@ export default async function handler(req: any, res: any) {
           };
           if (storeId) headers['X-PF-Store-Id'] = storeId;
 
-          const printfulRes = await fetch(`https://api.printful.com/v2/orders`, {
+          const printfulRes = await fetch(`https://api.printful.com/orders`, {
             method: 'POST',
             headers,
             body: JSON.stringify(orderData)
