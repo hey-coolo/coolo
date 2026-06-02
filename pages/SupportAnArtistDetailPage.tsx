@@ -51,24 +51,14 @@ const SupportAnArtistDetailPage: React.FC = () => {
       setIsAdding(true);
       
       try {
+          // Sending a clean, flat payload so the backend handles Stripe requirements
           const payload = { 
-              items: [
-                  {
-                      price_data: {
-                          currency: 'nzd',
-                          product_data: {
-                              name: `${drop?.title} - ${selectedVariant?.title || 'Standard'}`,
-                              images: drop?.imageUrl ? [drop.imageUrl] : [],
-                              metadata: {
-                                  variant_id: selectedVariant?.id?.toString() || '',
-                                  product_slug: drop?.slug || ''
-                              }
-                          },
-                          unit_amount: Math.round(parseFloat(selectedVariant?.price || drop?.price || '0') * 100),
-                      },
-                      quantity: 1,
-                  }
-              ]
+              slug: drop?.slug,
+              title: drop?.title,
+              variantTitle: selectedVariant?.title,
+              price: selectedVariant?.price || drop?.price,
+              variantId: selectedVariant?.id,
+              imageUrl: drop?.imageUrl
           };
 
           const res = await fetch('/api/checkout', {
@@ -77,7 +67,10 @@ const SupportAnArtistDetailPage: React.FC = () => {
               body: JSON.stringify(payload)
           });
           
-          if (!res.ok) throw new Error(`Checkout failed: ${await res.text()}`);
+          if (!res.ok) {
+              const errorData = await res.json();
+              throw new Error(errorData.error || "Checkout validation failed");
+          }
 
           const data = await res.json();
           if (data.url) {
@@ -85,9 +78,9 @@ const SupportAnArtistDetailPage: React.FC = () => {
           } else {
               throw new Error("Missing checkout URL from server.");
           }
-      } catch (err) {
+      } catch (err: any) {
           console.error('Checkout error:', err);
-          alert("Could not initiate checkout. Please try again.");
+          alert(`Error initiating checkout: ${err.message}`);
           setIsAdding(false);
       }
   };
