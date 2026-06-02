@@ -56,7 +56,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 'Global Shipping'
             ],
             variants: variants.filter((v: any) => !v.is_ignored).map((v: any) => {
-                
                 // Bulletproof sizing logic
                 let cleanTitle = v.name || "";
                 const parts = cleanTitle.split(/[-/]/);
@@ -84,15 +83,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (!results || !Array.isArray(results)) return res.status(500).json({ error: "Invalid payload" });
         if (results.length === 0) return res.status(200).json([]);
         
-        const mappedProducts = results.map((p: any) => ({
-            slug: p.id.toString(),
-            title: p.name || 'Untitled Product',
-            category: 'Apparel',
-            status: 'Live',
-            price: '0.00', 
-            description: p.name,
-            imageUrl: p.thumbnail_url || ''
-        }));
+        // PARALLEL SWEEP: Fetch detailed pricing for all products concurrently
+        const detailedProductPromises = results.map((p: any) => 
+            fetch(`https://api.printful.com/store/products/${p.id}`, { headers })
+                .then(res => res.json())
+                .catch(() => null) // Ignore individual failures so the whole grid doesn't crash
+        );
+
+        const detailedProductsData = await Promise.all(detailedProductPromises);
+
+        const mappedProducts = detailedProductsData.map((detailData: any) => {
+            if (!detailData || !detailData.result) return null;
+            
+            const p = detailData.result.sync_product;
+            const variants = detailData.result.sync_variants || [];
+            
+            // Extract the actual price from the first available variant
+            const actualPrice = variants.length > 0 ? parseFloat(variants[0].retail_price).toFixed(2) : '0.00';
+
+            return {
+                slug: p.id.toString(),
+                title: p.name || 'Untitled Product',
+                category: 'Apparel',
+                status: 'Live',
+                price: actualPrice, 
+                description: p.name,
+                imageUrl: p.thumbnail_url || ''
+            };
+        }).filter(Boolean); // Remove any nulls from failed fetches
         
         return res.status(200).json(mappedProducts);
     }
