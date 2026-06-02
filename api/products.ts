@@ -30,7 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     if (id) {
-        // 1. FETCH SYNC PRODUCT (Your customized item)
+        // 1. FETCH SYNC PRODUCT
         const response = await fetch(`https://api.printful.com/store/products/${id}`, { headers });
         if (!response.ok) return res.status(response.status).json({ error: await response.text() });
         
@@ -40,7 +40,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         
         if (!p) return res.status(404).json({ error: "Product not found" });
 
-        // Extract extra mockup angles from the variants
         const gallerySet = new Set<string>();
         if (p.thumbnail_url) gallerySet.add(p.thumbnail_url);
         
@@ -52,19 +51,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }
         });
 
-        // 2. FETCH CATALOG PRODUCT (To extract the real description)
-        let enrichedDescription = p.name; // Fallback to title
+        // 2. FETCH CATALOG PRODUCT (To extract rich description)
+        let mainDesc = p.name;
+        let extractedFeatures: string[] = [];
         const baseProductId = variants.length > 0 ? (variants[0].product?.product_id || variants[0].product_id) : null;
         
         if (baseProductId) {
             try {
-                // Hitting the Printful V2 Catalog API
                 const catRes = await fetch(`https://api.printful.com/v2/catalog-products/${baseProductId}`, { headers });
                 if (catRes.ok) {
                     const catData = await catRes.json();
                     if (catData.data?.description) {
-                        // Strip raw HTML from Printful's catalog description for a clean text UI
-                        enrichedDescription = catData.data.description.replace(/(<([^>]+)>)/gi, "").trim();
+                        let rawHtml = catData.data.description;
+                        
+                        // Replace list items with a strict bullet character before stripping HTML
+                        rawHtml = rawHtml.replace(/<li[^>]*>/gi, " • ");
+                        
+                        // Strip HTML
+                        let cleanText = rawHtml.replace(/(<([^>]+)>)/gi, "").trim();
+                        
+                        // Split the narrative description from the bullet points
+                        let parts = cleanText.split('•');
+                        mainDesc = parts[0].trim();
+                        extractedFeatures = parts.slice(1).map((f: string) => f.trim()).filter(Boolean);
                     }
                 }
             } catch (e) {
@@ -78,26 +87,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             category: 'Apparel', 
             status: 'Live',
             price: variants.length > 0 ? parseFloat(variants[0].retail_price).toFixed(2) : '0.00',
-            description: enrichedDescription.substring(0, 140) + '...',
-            longDescription: enrichedDescription,
+            description: mainDesc.substring(0, 140) + '...',
+            longDescription: mainDesc,
             imageUrl: p.thumbnail_url,
             galleryImages: Array.from(gallerySet), 
             features: [
-                'Printful Fulfillment', 
+                ...extractedFeatures,
                 'Made On-Demand to reduce overproduction', 
                 'Global Shipping'
             ],
             variants: variants.filter((v: any) => !v.is_ignored).map((v: any) => {
-                
-                // 3. PERFECT VARIANT CLEANING:
                 let cleanTitle = v.name || "";
-                // If variant name contains the product title, slice it out
                 if (cleanTitle.includes(p.name)) {
                     cleanTitle = cleanTitle.replace(p.name, '').trim();
                 }
-                // Remove leftover hyphens, slashes, or whitespace at the start
                 cleanTitle = cleanTitle.replace(/^[-/\s]+/, '').trim();
-                // Strip out parenthesis notes (e.g., "(Large)")
                 cleanTitle = cleanTitle.replace(/\(.*?\)/g, '').trim();
                 
                 return {
@@ -119,7 +123,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (!results || !Array.isArray(results)) return res.status(500).json({ error: "Invalid payload" });
         if (results.length === 0) return res.status(200).json([]);
         
-        // PARALLEL SWEEP: Fetch detailed pricing concurrently
         const detailedProductPromises = results.map((p: any) => 
             fetch(`https://api.printful.com/store/products/${p.id}`, { headers })
                 .then(res => res.json())

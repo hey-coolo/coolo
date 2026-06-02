@@ -121,7 +121,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
                                 {drop.status}
                             </span>
                             <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85] mb-6">
-                                {drop.title}
+                                {drop.title.replace(/_/g, ' ')}
                             </h1>
                             <div className="flex items-end gap-2">
                                 <span className="text-4xl md:text-5xl font-sans font-black text-brand-navy">
@@ -134,9 +134,9 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </div>
                     </AnimatedSection>
 
-                    {/* Description */}
+                    {/* Description - Reduced font size for better hierarchy */}
                     <AnimatedSection delay={150}>
-                        <div className="font-body text-lg leading-relaxed text-brand-navy/70 font-light">
+                        <div className="font-body text-sm md:text-base leading-relaxed text-brand-navy/70 font-light">
                             {drop.longDescription || drop.description}
                         </div>
                     </AnimatedSection>
@@ -190,7 +190,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </div>
                     </AnimatedSection>
 
-                    {/* Specifications */}
+                    {/* Specifications - Refined Typography */}
                     {drop.features && drop.features.length > 0 && (
                         <AnimatedSection delay={300}>
                             <div className="bg-white border border-brand-navy/10 p-8 mt-12 shadow-sm">
@@ -199,8 +199,8 @@ const SupportAnArtistDetailPage: React.FC = () => {
                                 </h4>
                                 <ul className="space-y-4">
                                     {drop.features.map((feature, i) => (
-                                        <li key={i} className="flex items-start gap-4 font-mono text-xs uppercase tracking-widest text-brand-navy/70 font-bold">
-                                            <span className="w-1.5 h-1.5 bg-brand-purple shrink-0 mt-1"></span>
+                                        <li key={i} className="flex items-start gap-4 font-body text-sm text-brand-navy/80">
+                                            <span className="w-1 h-1 bg-brand-navy shrink-0 mt-2 rounded-full"></span>
                                             {feature}
                                         </li>
                                     ))}
