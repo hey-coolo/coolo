@@ -65,13 +65,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             features: ['Printful Fulfillment', 'Made on Demand', 'Global Shipping'],
             variants: variants.filter((v: any) => !v.is_ignored).map((v: any) => {
                 
-                // 1. Clean Printful's clunky variant names (e.g. "Unisex ECO Hoodie - Black / XL" -> "Black / XL")
-                let cleanTitle = v.name.replace(p.name, '').trim();
-                cleanTitle = cleanTitle.replace(/^[-\s\/]+/, ''); // Remove leading dashes or slashes
+                // Aggressively clean Printful's clunky variant names
+                // e.g., "HUMANS IN THE MACHINE_UNISEX ECO RAGLAN HOODIE / XS" -> "XS"
+                let cleanTitle = v.name;
+                
+                if (cleanTitle.includes(' / ')) {
+                    cleanTitle = cleanTitle.split(' / ').pop()?.trim() || cleanTitle;
+                } else if (cleanTitle.includes(' - ')) {
+                    cleanTitle = cleanTitle.split(' - ').pop()?.trim() || cleanTitle;
+                }
                 
                 return {
                     id: v.id,
-                    title: cleanTitle || v.name, // Fallback to raw name if parsing fails
+                    title: cleanTitle,
                     price: parseFloat(v.retail_price).toFixed(2),
                     available: true 
                 };
