@@ -9,7 +9,7 @@ import { useCart } from '../context/CartContext';
 const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY as string;
 const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null;
 
-const CheckoutForm = ({ clearCart }: { clearCart: () => void }) => {
+const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState<string | null>(null);
@@ -20,9 +20,10 @@ const CheckoutForm = ({ clearCart }: { clearCart: () => void }) => {
     if (!stripe || !elements) return;
 
     setIsProcessing(true);
+    setError(null);
 
-    // Clear cart locally from states right before final execution loops completes
-    clearCart();
+    // CRITICAL FIX: We do NOT clear the cart state here anymore. 
+    // We let Stripe process safely. The global webhook or success landing handles fulfillment synchronization.
 
     const { error: submitError } = await stripe.confirmPayment({
       elements,
@@ -62,8 +63,7 @@ const CheckoutForm = ({ clearCart }: { clearCart: () => void }) => {
 };
 
 const CheckoutPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { cart, getCartTotal, removeFromCart, clearCart } = useCart();
+  const { cart, getCartTotal, removeFromCart } = useCart();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
   const total = getCartTotal();
@@ -72,7 +72,6 @@ const CheckoutPage: React.FC = () => {
     window.scrollTo(0, 0);
     if (cart.length === 0) return;
 
-    // Create Intent based on all aggregated items
     fetch('/api/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -163,7 +162,7 @@ const CheckoutPage: React.FC = () => {
                     </div>
                 ) : clientSecret && stripePromise ? (
                     <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'stripe', variables: { colorPrimary: '#3A0888', colorBackground: '#ffffff', colorText: '#0F0328', fontFamily: '"Space Mono", monospace' } } }}>
-                        <CheckoutForm clearCart={clearCart} />
+                        <CheckoutForm />
                     </Elements>
                 ) : (
                     <div className="h-64 flex items-center justify-center border-2 border-brand-navy/10 border-dashed bg-white shadow-sm">
