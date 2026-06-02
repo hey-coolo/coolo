@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import AnimatedSection from '../components/AnimatedSection';
 import { Drop } from '../types';
 
@@ -7,6 +8,12 @@ const DropsPage: React.FC = () => {
   const [drops, setDrops] = useState<Drop[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Parallax Setup for the Hero
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -37,24 +44,35 @@ const DropsPage: React.FC = () => {
   return (
     <div className="w-full bg-brand-offwhite min-h-screen font-sans text-brand-navy selection:bg-brand-navy selection:text-brand-yellow">
       
-      {/* --- EDITORIAL HERO --- */}
-      <section className="pt-40 pb-16 md:pt-48 md:pb-24 px-6 md:px-12 border-b border-brand-navy/20">
-        <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row justify-between lg:items-end gap-12">
-          <AnimatedSection>
-            <div className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-brand-purple mb-8">
-              [ The Internal Lab ]
-            </div>
-            <h1 className="font-sans text-[15vw] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.8] text-brand-navy m-0">
-              COOLO<br/>
-              <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>DROPS.</span>
-            </h1>
-          </AnimatedSection>
-          
-          <AnimatedSection delay={100} className="lg:max-w-md pb-2">
-            <p className="font-body text-lg md:text-xl text-brand-navy/70 leading-relaxed font-light">
-              Limited-run drops, designed by independent artists, backed by COOLO. You get exclusive physical goods. Artists get the funding to keep creating. No mass production.
-            </p>
-          </AnimatedSection>
+      {/* --- CINEMATIC IMAGE HERO --- */}
+      <section ref={heroRef} className="relative h-screen w-full overflow-hidden flex flex-col justify-end pb-24 md:pb-32 bg-brand-navy border-b border-brand-navy/20">
+        
+        {/* Parallax Background Image */}
+        <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
+            <img 
+                src="/assets/images/drops-hero.jpg" // <-- UPLOAD YOUR HERO IMAGE HERE
+                className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-1000" 
+                alt="Support an Artist - COOLO Drops"
+                loading="eager"
+            />
+            {/* Gradient Overlay for Text Readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/40 to-brand-navy/10" />
+        </motion.div>
+
+        {/* Hero Content */}
+        <div className="container mx-auto px-6 md:px-12 relative z-10 max-w-[1600px]">
+            <AnimatedSection>
+                <div className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-brand-yellow mb-8 drop-shadow-md">
+                [ The Internal Lab ]
+                </div>
+                <h1 className="font-sans text-[15vw] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.8] text-brand-offwhite m-0 mb-8">
+                COOLO<br/>
+                <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #F7F7F7' }}>DROPS.</span>
+                </h1>
+                <p className="font-body text-lg md:text-2xl text-brand-offwhite/80 leading-relaxed font-light max-w-2xl drop-shadow-sm">
+                Limited-run drops, designed by independent artists, backed by COOLO. You get exclusive physical goods. Artists get the funding to keep creating. No mass production.
+                </p>
+            </AnimatedSection>
         </div>
       </section>
 
