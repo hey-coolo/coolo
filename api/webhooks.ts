@@ -9,7 +9,7 @@ export const config = {
   },
 };
 
-// Helper to read the raw body natively (removes the need for the 'micro' dependency)
+// Helper to read the raw body natively
 async function getRawBody(req: any): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
@@ -27,7 +27,7 @@ export default async function handler(req: any, res: any) {
     
     // Identify who is sending the webhook based on headers
     const stripeSignature = req.headers['stripe-signature'] as string;
-    const printifySignature = req.headers['x-printify-signature'] as string;
+    const printfulSignature = req.headers['x-printful-signature'] as string;
 
     const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
@@ -57,61 +57,56 @@ export default async function handler(req: any, res: any) {
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
         
-        const shopId = process.env.PRINTIFY_SHOP_ID;
-        const token = process.env.PRINTIFY_ACCESS_TOKEN;
+        const storeId = process.env.PRINTFUL_STORE_ID;
+        const token = process.env.PRINTFUL_ACCESS_TOKEN;
         
-        if (!shopId || !token) {
-            console.error("Missing Printify credentials");
+        if (!token) {
+            console.error("Missing Printful credentials");
             return res.status(500).json({ error: "Fulfillment configuration error" });
         }
 
         const shippingDetails = session.shipping_details?.address;
         const customerName = session.shipping_details?.name || session.customer_details?.name || '';
-        
-        // Extract First and Last Name for Printify
-        const nameParts = customerName.split(' ');
-        const firstName = nameParts[0] || 'Customer';
-        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
 
         if (shippingDetails && session.metadata?.variant_id) {
           
+          // Printful API v2 Order Payload
           const orderData = {
             external_id: session.id, 
-            label: `Stripe Order ${session.id}`,
-            line_items: [
-              {
-                variant_id: parseInt(session.metadata.variant_id),
-                quantity: 1
-              }
-            ],
-            shipping_method: 1, 
-            send_shipping_notification: true,
-            address_to: {
-              first_name: firstName,
-              last_name: lastName,
-              email: session.customer_details?.email || 'hey@coolo.co.nz',
-              phone: session.customer_details?.phone || "",
-              country: shippingDetails.country,
-              region: shippingDetails.state || "",
+            recipient: {
+              name: customerName,
               address1: shippingDetails.line1,
               address2: shippingDetails.line2 || "",
               city: shippingDetails.city,
-              zip: shippingDetails.postal_code
-            }
+              state_code: shippingDetails.state || "",
+              country_code: shippingDetails.country,
+              zip: shippingDetails.postal_code,
+              email: session.customer_details?.email || 'hey@coolo.co.nz',
+              phone: session.customer_details?.phone || ""
+            },
+            items: [
+              {
+                sync_variant_id: parseInt(session.metadata.variant_id),
+                quantity: 1
+              }
+            ]
           };
 
-          const printifyRes = await fetch(`https://api.printify.com/v1/shops/${shopId}/orders.json`, {
+          const headers: any = {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          };
+          if (storeId) headers['X-PF-Store-Id'] = storeId;
+
+          const printfulRes = await fetch(`https://api.printful.com/v2/orders`, {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
+            headers,
             body: JSON.stringify(orderData)
           });
 
-          if (!printifyRes.ok) {
-             const errText = await printifyRes.text();
-             console.error('Printify Order Submission Failed:', errText);
+          if (!printfulRes.ok) {
+             const errText = await printfulRes.text();
+             console.error('Printful Order Submission Failed:', errText);
              throw new Error(errText);
           }
 
@@ -121,8 +116,8 @@ export default async function handler(req: any, res: any) {
                   await resend.emails.send({
                       from: 'COOLO Store <system@coolo.co.nz>',
                       to: ['hey@coolo.co.nz'],
-                      subject: `Order Sent to Printify: ${session.metadata.product_slug}`,
-                      html: `<p>Payment successful. Order automatically routed to Printify for <strong>${customerName}</strong>.</p>`
+                      subject: `Order Sent to Printful: ${session.metadata.product_slug}`,
+                      html: `<p>Payment successful. Order automatically routed to Printful for <strong>${customerName}</strong>.</p>`
                   });
               } catch (emailErr) {
                   console.error("Email notification failed, but order was sent.", emailErr);
@@ -135,42 +130,40 @@ export default async function handler(req: any, res: any) {
     }
 
     // ==========================================
-    // 2. PRINTIFY WEBHOOK HANDLER
+    // 2. PRINTFUL WEBHOOK HANDLER
     // ==========================================
-    else if (printifySignature) {
-      const printifyWebhookSecret = process.env.PRINTIFY_WEBHOOK_SECRET;
+    else if (printfulSignature) {
+      const printfulWebhookSecret = process.env.PRINTFUL_WEBHOOK_SECRET;
 
-      if (!printifyWebhookSecret) {
-        console.error("Missing Printify Webhook Secret");
+      if (!printfulWebhookSecret) {
+        console.error("Missing Printful Webhook Secret");
         return res.status(500).json({ error: "Server configuration error" });
       }
 
-      // Verify Printify Signature using Node's crypto library (HMAC-SHA256)
+      // Verify Printful Signature using Node's crypto library (HMAC-SHA256)
       const expectedSignature = crypto
-        .createHmac('sha256', printifyWebhookSecret)
+        .createHmac('sha256', printfulWebhookSecret)
         .update(buf)
         .digest('hex');
       
       const formattedExpectedSig = `sha256=${expectedSignature}`;
 
-      if (printifySignature !== expectedSignature && printifySignature !== formattedExpectedSig) {
-        console.error('Printify webhook signature verification failed.');
-        return res.status(400).send('Webhook Error: Invalid Printify Signature');
+      if (printfulSignature !== expectedSignature && printfulSignature !== formattedExpectedSig) {
+        console.error('Printful webhook signature verification failed.');
+        return res.status(400).send('Webhook Error: Invalid Printful Signature');
       }
 
-      const printifyEvent = JSON.parse(buf.toString('utf8'));
+      const printfulEvent = JSON.parse(buf.toString('utf8'));
 
-      // Handle Printify events (e.g., when the order gets shipped)
-      if (printifyEvent.type === 'order:shipment:generated') {
-        console.log(`Printify order shipped: ${printifyEvent.data.order_id}`);
-        
+      // Handle Printful events (e.g., when the order gets shipped)
+      if (printfulEvent.type === 'package_shipped') {
         if (resend) {
           try {
              await resend.emails.send({
                 from: 'COOLO Store <system@coolo.co.nz>',
                 to: ['hey@coolo.co.nz'], 
-                subject: `Printify Order Shipped!`,
-                html: `<p>Good news! An order has shipped. Tracking URL: <a href="${printifyEvent.data.tracking_url}">Track Here</a></p>`
+                subject: `Printful Order Shipped!`,
+                html: `<p>Good news! An order has shipped. Check your dashboard for tracking details.</p>`
              });
           } catch (emailErr) {
              console.error("Failed to send tracking alert.", emailErr);
