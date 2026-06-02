@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { TEAM_MEMBERS } from '../constants';
 import { motion } from 'framer-motion';
+import { Drop } from '../types';
 
 const AboutPage: React.FC = () => {
+  const [featuredDrop, setFeaturedDrop] = useState<Drop | null>(null);
+
+  useEffect(() => {
+    // Fetch the latest product from the store to feature on the About page
+    fetch(`/api/products?t=${Date.now()}`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          // Grab the first live drop
+          const liveDrop = data.find((d: Drop) => d.status === 'Live') || data[0];
+          setFeaturedDrop(liveDrop);
+        }
+      })
+      .catch(err => console.error("Error fetching featured drop:", err));
+  }, []);
+
   return (
     <div className="bg-brand-offwhite pt-32">
       <div className="container mx-auto px-8">
@@ -98,17 +115,42 @@ const AboutPage: React.FC = () => {
                       </div>
                       
                       <div className="lg:col-span-5 hidden lg:block">
-                          <div className="aspect-square border border-brand-offwhite/10 flex items-center justify-center p-12 relative group cursor-pointer hover:border-brand-yellow/30 transition-colors duration-500">
-                              <div className="absolute inset-4 border border-brand-yellow/20 group-hover:scale-[0.97] transition-transform duration-700"></div>
-                              <div className="absolute inset-8 border border-brand-purple/20 group-hover:scale-105 transition-transform duration-700"></div>
-                              <div className="text-center relative z-10">
-                                  <svg className="w-16 h-16 mx-auto mb-6 text-brand-yellow/80 group-hover:text-brand-yellow transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                                  </svg>
-                                  <span className="font-mono text-2xl md:text-3xl text-brand-offwhite font-bold uppercase tracking-tight block">100% Artist Cut</span>
-                                  <p className="font-mono text-[10px] uppercase tracking-widest text-brand-offwhite/40 mt-4">Independent Minds Only</p>
+                          {/* E-Commerce Product Feature Layout */}
+                          {featuredDrop ? (
+                              <Link to={`/support-an-artist/${featuredDrop.slug}`} className="block group relative bg-white p-6 shadow-[12px_12px_0px_#FCC803] hover:-translate-y-2 transition-transform duration-500">
+                                  <div className="aspect-[4/5] bg-brand-offwhite overflow-hidden relative border border-brand-navy/5">
+                                      <img 
+                                          src={featuredDrop.imageUrl} 
+                                          alt={featuredDrop.title} 
+                                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                                      />
+                                      <div className="absolute top-4 left-4 bg-brand-yellow text-brand-navy font-mono text-[9px] uppercase font-bold px-3 py-1 shadow-sm">
+                                          Featured Drop
+                                      </div>
+                                  </div>
+                                  <div className="mt-6 flex justify-between items-start text-brand-navy">
+                                      <div>
+                                          <h4 className="font-sans text-2xl font-black uppercase leading-none group-hover:text-brand-purple transition-colors">{featuredDrop.title.replace(/_/g, ' ')}</h4>
+                                          <p className="font-mono text-[10px] uppercase tracking-widest opacity-50 mt-2">{featuredDrop.category}</p>
+                                      </div>
+                                  </div>
+                                  <div className="mt-6 w-full bg-brand-navy text-brand-offwhite text-center py-4 font-mono text-xs uppercase font-bold group-hover:bg-brand-purple transition-colors">
+                                      Shop Now
+                                  </div>
+                              </Link>
+                          ) : (
+                              <div className="aspect-square border border-brand-offwhite/10 flex items-center justify-center p-12 relative group cursor-pointer hover:border-brand-yellow/30 transition-colors duration-500">
+                                  <div className="absolute inset-4 border border-brand-yellow/20 group-hover:scale-[0.97] transition-transform duration-700"></div>
+                                  <div className="absolute inset-8 border border-brand-purple/20 group-hover:scale-105 transition-transform duration-700"></div>
+                                  <div className="text-center relative z-10">
+                                      <svg className="w-16 h-16 mx-auto mb-6 text-brand-yellow/80 group-hover:text-brand-yellow transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                      </svg>
+                                      <span className="font-mono text-2xl md:text-3xl text-brand-offwhite font-bold uppercase tracking-tight block">100% Artist Cut</span>
+                                      <p className="font-mono text-[10px] uppercase tracking-widest text-brand-offwhite/40 mt-4">Independent Minds Only</p>
+                                  </div>
                               </div>
-                          </div>
+                          )}
                       </div>
                   </div>
               </AnimatedSection>

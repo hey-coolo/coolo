@@ -49,14 +49,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             description: p.name,
             longDescription: p.name,
             imageUrl: p.thumbnail_url,
-            galleryImages: [p.thumbnail_url], // REVERTED: Just use the main mockup
+            galleryImages: [p.thumbnail_url], // ONLY THE MAIN IMAGE
             features: [
                 'Printful Fulfillment', 
                 'Made On-Demand to reduce overproduction', 
                 'Global Shipping'
             ],
             variants: variants.filter((v: any) => !v.is_ignored).map((v: any) => {
-                // Keep the clean variant names
+                
+                // Bulletproof sizing logic
                 let cleanTitle = v.name || "";
                 const parts = cleanTitle.split(/[-/]/);
                 if (parts.length > 1) {
