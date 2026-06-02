@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // CRITICAL FIX: Prevent Vercel caching so live inventory always shows
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
@@ -15,12 +16,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const storeId = process.env.PRINTFUL_STORE_ID;
   const token = process.env.PRINTFUL_ACCESS_TOKEN;
 
-  const serveFallback = (reason: string) => {
-    console.warn(`[PRINTFUL FALLBACK] ${reason}`);
-    return res.status(500).json({ error: reason });
-  };
-
-  if (!token) return serveFallback("Missing PRINTFUL_ACCESS_TOKEN");
+  if (!token) {
+    return res.status(500).json({ error: "Missing PRINTFUL_ACCESS_TOKEN on Vercel." });
+  }
 
   const headers: any = { 
       'Authorization': `Bearer ${token}`,
@@ -30,7 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     if (id) {
-        // FETCH SINGLE PRODUCT
+        // FETCH SINGLE PRODUCT (Printful API v1)
         const response = await fetch(`https://api.printful.com/store/products/${id}`, { headers });
         if (!response.ok) return res.status(response.status).json({ error: await response.text() });
         
@@ -38,17 +36,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const p = data.result?.sync_product;
         const variants = data.result?.sync_variants || [];
         
-        if (!p) return res.status(404).json({ error: "Product not found" });
+        if (!p) return res.status(404).json({ error: "No product found in Printful" });
 
-        // AGGRESSIVE IMAGE EXTRACTION: Sweep everything for preview URLs
+        // Extract extra mockup angles from the variants to build a rich image gallery
         const gallerySet = new Set<string>();
         if (p.thumbnail_url) gallerySet.add(p.thumbnail_url);
         
         variants.forEach((v: any) => {
             if (v.files && Array.isArray(v.files)) {
                 v.files.forEach((file: any) => {
-                    // Grab any preview URL available (ignores high-res print files)
-                    if (file.preview_url) {
+                    if (file.type === 'preview' && file.preview_url) {
                         gallerySet.add(file.preview_url);
                     }
                 });
@@ -61,44 +58,42 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             category: 'Apparel', 
             status: 'Live',
             price: variants.length > 0 ? parseFloat(variants[0].retail_price).toFixed(2) : '0.00',
-            description: p.name, // Printful API doesn't pass descriptions, so we use the title as a base.
+            description: p.name,
             longDescription: p.name,
             imageUrl: p.thumbnail_url,
-            galleryImages: Array.from(gallerySet), 
-            features: [
-                'Printful Fulfillment', 
-                'Made On-Demand to reduce overproduction', 
-                'Global Shipping'
-            ],
+            galleryImages: Array.from(gallerySet), // Passes all unique angles to your UI
+            features: ['Printful Fulfillment', 'Made on Demand', 'Global Shipping'],
             variants: variants.filter((v: any) => !v.is_ignored).map((v: any) => {
                 
-                // BULLETPROOF VARIANT CLEANING: 
-                // Splits strings like "HUMANS IN THE MACHINE_UNISEX ECO RAGLAN HOODIE / XS" to just "XS"
-                let cleanTitle = v.name || "";
-                const parts = cleanTitle.split(/[-/]/);
-                if (parts.length > 1) {
-                    cleanTitle = parts[parts.length - 1].trim();
+                // Aggressively clean Printful's clunky variant names
+                // e.g., "HUMANS IN THE MACHINE_UNISEX ECO RAGLAN HOODIE / XS" -> "XS"
+                let cleanTitle = v.name;
+                
+                if (cleanTitle.includes(' / ')) {
+                    cleanTitle = cleanTitle.split(' / ').pop()?.trim() || cleanTitle;
+                } else if (cleanTitle.includes(' - ')) {
+                    cleanTitle = cleanTitle.split(' - ').pop()?.trim() || cleanTitle;
                 }
-                cleanTitle = cleanTitle.replace(/\(.*\)/g, '').trim();
                 
                 return {
                     id: v.id,
-                    title: cleanTitle || "Standard",
+                    title: cleanTitle,
                     price: parseFloat(v.retail_price).toFixed(2),
                     available: true 
                 };
             })
         });
     } else {
-        // FETCH CATALOG
+        // FETCH CATALOG (Printful API v1)
         const response = await fetch(`https://api.printful.com/store/products?limit=50`, { headers });
         if (!response.ok) return res.status(response.status).json({ error: await response.text() });
 
         const data = await response.json();
         const results = data.result;
         
-        if (!results || !Array.isArray(results)) return res.status(500).json({ error: "Invalid payload" });
-        if (results.length === 0) return res.status(200).json([]);
+        if (!results || !Array.isArray(results)) {
+            return res.status(500).json({ error: "Invalid payload from Printful" });
+        }
         
         const mappedProducts = results.map((p: any) => ({
             slug: p.id.toString(),
