@@ -71,7 +71,7 @@ const DropsPage: React.FC = () => {
                       
                       <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16">
                           <span className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-brand-yellow mb-4 drop-shadow-md">
-                              Collection 01
+                              Support An Artist
                           </span>
                           <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.8] text-brand-offwhite m-0 drop-shadow-lg">
                               LATEST<br/>
