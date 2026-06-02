@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion'; // <-- THE MISSING IMPORT
 import AnimatedSection from '../components/AnimatedSection';
 import { ArrowLeft, ShoppingBag } from 'lucide-react';
 import { Drop, DropVariant } from '../types';
