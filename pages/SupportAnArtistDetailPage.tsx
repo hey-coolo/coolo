@@ -4,16 +4,6 @@ import AnimatedSection from '../components/AnimatedSection';
 import { ArrowLeft } from 'lucide-react';
 import { Drop, DropVariant } from '../types';
 
-const SIZE_GUIDE_DATA = [
-  { size: 'XS', l: '68.6', w: '42', c: '78.7-86.4' },
-  { size: 'S', l: '71.1', w: '45.7', c: '86.4-94' },
-  { size: 'M', l: '73.7', w: '50.8', c: '96.5-104.1' },
-  { size: 'L', l: '76.2', w: '55.9', c: '106.7-114.3' },
-  { size: 'XL', l: '78.7', w: '61', c: '116.8-124.5' },
-  { size: '2XL', l: '81.3', w: '66', c: '127-134.6' },
-  { size: '3XL', l: '83.8', w: '71.1', c: '137.2-144.8' }
-];
-
 const SupportAnArtistDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -21,7 +11,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<DropVariant | null>(null);
-  const [showSizeGuide, setShowSizeGuide] = useState(false);
 
   useEffect(() => {
       window.scrollTo(0, 0);
@@ -106,7 +95,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
             
-            {/* LEFT: Lookbook Image (Massive, White Background, Brutalist Border) */}
+            {/* LEFT: Lookbook Image */}
             <div className="lg:col-span-6 space-y-6">
                 <AnimatedSection>
                     <div className="w-full bg-white border border-brand-navy/10 flex items-center justify-center p-8 md:p-16">
@@ -160,41 +149,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
                                     <span className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy/50">
                                         Select Option
                                     </span>
-                                    <button 
-                                        onClick={() => setShowSizeGuide(!showSizeGuide)}
-                                        className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy transition-colors border-b border-brand-purple pb-0.5"
-                                    >
-                                        {showSizeGuide ? 'Close Guide' : 'Size Guide'}
-                                    </button>
                                 </div>
-
-                                {/* Size Guide Accordion */}
-                                {showSizeGuide && (
-                                    <div className="mb-6 p-6 border border-brand-navy/10 bg-white shadow-sm">
-                                        <div className="overflow-x-auto">
-                                            <table className="w-full text-left border-collapse font-mono text-[10px] uppercase tracking-widest">
-                                                <thead>
-                                                    <tr className="border-b border-brand-navy/20 text-brand-navy/50">
-                                                        <th className="py-3 font-bold">Size</th>
-                                                        <th className="py-3 font-bold">Length (cm)</th>
-                                                        <th className="py-3 font-bold">Width (cm)</th>
-                                                        <th className="py-3 font-bold">Chest (cm)</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {SIZE_GUIDE_DATA.map((row) => (
-                                                        <tr key={row.size} className="border-b border-brand-navy/5 last:border-0 font-bold text-brand-navy">
-                                                            <td className="py-3 text-brand-purple">{row.size}</td>
-                                                            <td className="py-3">{row.l}</td>
-                                                            <td className="py-3">{row.w}</td>
-                                                            <td className="py-3">{row.c}</td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                )}
 
                                 {/* Buttons */}
                                 <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
