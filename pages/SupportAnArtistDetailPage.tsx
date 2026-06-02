@@ -1,15 +1,14 @@
-// pages/SupportAnArtistDetailPage.tsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { ArrowLeft } from 'lucide-react';
 import { Drop, DropVariant } from '../types';
-import { DROPS } from '../constants'; 
 
 const SupportAnArtistDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [drop, setDrop] = useState<Drop | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<DropVariant | null>(null);
   const [isAdding, setIsAdding] = useState(false);
 
@@ -19,31 +18,23 @@ const SupportAnArtistDetailPage: React.FC = () => {
       const fetchProduct = async () => {
           setIsLoading(true);
           try {
-              // Cache buster forces fresh request from Printify
               const res = await fetch(`/api/products?id=${slug}&t=${Date.now()}`);
-              if (!res.ok) throw new Error('API request failed');
               const data = await res.json();
+
+              if (!res.ok) throw new Error(data.error || `API returned ${res.status}`);
               
               if (data && data.slug) {
                   setDrop(data);
-                  // Auto-select the first available variant if they exist
                   if (data.variants && data.variants.length > 0) {
                       const firstAvailable = data.variants.find((v: DropVariant) => v.available);
                       if (firstAvailable) setSelectedVariant(firstAvailable);
                   }
               } else {
-                  throw new Error("Invalid payload format");
+                  throw new Error("Invalid payload format from Printful");
               }
-          } catch (error) {
-              console.error("API error, checking local constants for drop:", error);
-              const localDrop = DROPS.find(d => d.slug === slug);
-              if (localDrop) {
-                  setDrop(localDrop);
-                  if (localDrop.variants && localDrop.variants.length > 0) {
-                      const firstAvailable = localDrop.variants.find(v => v.available);
-                      if (firstAvailable) setSelectedVariant(firstAvailable);
-                  }
-              }
+          } catch (error: any) {
+              console.error("API error:", error);
+              setErrorMsg(error.message);
           } finally {
               setIsLoading(false);
           }
@@ -60,7 +51,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
       setIsAdding(true);
       
       try {
-          // Format payload to exactly match Stripe's line_items requirement
           const payload = { 
               items: [
                   {
@@ -87,10 +77,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
               body: JSON.stringify(payload)
           });
           
-          if (!res.ok) {
-              const errorText = await res.text();
-              throw new Error(`Checkout failed: ${errorText}`);
-          }
+          if (!res.ok) throw new Error(`Checkout failed: ${await res.text()}`);
 
           const data = await res.json();
           if (data.url) {
@@ -100,7 +87,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
           }
       } catch (err) {
           console.error('Checkout error:', err);
-          alert("Could not initiate checkout. Please try again or contact support.");
+          alert("Could not initiate checkout. Please try again.");
           setIsAdding(false);
       }
   };
@@ -113,12 +100,13 @@ const SupportAnArtistDetailPage: React.FC = () => {
       );
   }
 
-  if (!drop) {
+  if (errorMsg || !drop) {
       return (
           <div className="min-h-screen flex items-center justify-center bg-brand-offwhite">
-              <div className="text-center">
-                  <h1 className="text-6xl font-black uppercase text-brand-navy tracking-tight">Product_Offline</h1>
-                  <Link to="/support-an-artist" className="font-mono uppercase underline mt-8 block text-brand-purple tracking-widest text-xs">Return to Catalog</Link>
+              <div className="text-center p-8 border-2 border-red-500 bg-red-50 text-red-700 max-w-lg font-mono">
+                  <h1 className="text-2xl font-black uppercase tracking-tight mb-4">Product Offline</h1>
+                  <p>{errorMsg}</p>
+                  <Link to="/support-an-artist" className="uppercase underline mt-8 block tracking-widest text-xs">Return to Catalog</Link>
               </div>
           </div>
       );
@@ -127,8 +115,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
   return (
     <div className="bg-brand-offwhite min-h-screen pt-32 pb-32">
       <div className="container mx-auto px-6 md:px-8">
-        
-        {/* Back Nav */}
         <div className="mb-12">
             <Link to="/support-an-artist" className="inline-flex items-center gap-2 font-mono text-[10px] uppercase font-bold tracking-widest text-brand-navy/50 hover:text-brand-purple transition-colors">
                 <ArrowLeft size={14} /> Back to Collection
@@ -136,8 +122,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-            
-            {/* LEFT: Image Gallery */}
             <div className="lg:col-span-7 space-y-6">
                 <AnimatedSection>
                     <div className="aspect-[4/5] md:aspect-square bg-brand-navy/5 border border-brand-navy/5 overflow-hidden">
@@ -146,21 +130,8 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         )}
                     </div>
                 </AnimatedSection>
-                
-                {drop.galleryImages && drop.galleryImages.length > 1 && (
-                    <div className="grid grid-cols-2 gap-6">
-                        {drop.galleryImages.slice(1).map((img, i) => (
-                            <AnimatedSection key={i} delay={i * 100}>
-                                <div className="aspect-square bg-brand-navy/5 border border-brand-navy/5 overflow-hidden">
-                                    <img src={img} alt={`${drop.title} detail ${i}`} className="w-full h-full object-cover" />
-                                </div>
-                            </AnimatedSection>
-                        ))}
-                    </div>
-                )}
             </div>
 
-            {/* RIGHT: Sticky Product Details */}
             <div className="lg:col-span-5 relative">
                 <div className="lg:sticky lg:top-32 space-y-10">
                     <AnimatedSection delay={100}>
@@ -183,7 +154,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </div>
                     </AnimatedSection>
 
-                    {/* Sizing / Variants (Dynamic from API) */}
                     {drop.variants && drop.variants.length > 0 && (
                         <AnimatedSection delay={200}>
                             <div>
@@ -209,7 +179,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </AnimatedSection>
                     )}
 
-                    {/* Add to Cart / Actions */}
                     <AnimatedSection delay={250}>
                         <div className="pt-6 border-t border-brand-navy/10">
                             <button 
@@ -225,7 +194,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </div>
                     </AnimatedSection>
 
-                    {/* Features / Specs */}
                     {drop.features && drop.features.length > 0 && (
                         <AnimatedSection delay={300}>
                             <div className="bg-white border border-brand-navy/5 p-8 mt-12">
@@ -243,7 +211,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
                     )}
                 </div>
             </div>
-
         </div>
       </div>
     </div>
