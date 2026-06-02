@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ShoppingBag } from 'lucide-react';
 import { Drop, DropVariant } from '../types';
+import { useCart } from '../context/CartContext';
 
 const SupportAnArtistDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [drop, setDrop] = useState<Drop | null>(null);
+  const [otherDrops, setOtherDrops] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<DropVariant | null>(null);
+  const [addedMessage, setAddedMessage] = useState(false);
 
   useEffect(() => {
       window.scrollTo(0, 0);
+      setAddedMessage(false);
       
-      const fetchProduct = async () => {
+      const fetchProductAndCatalog = async () => {
           setIsLoading(true);
           try {
+              // 1. Fetch current detail product
               const res = await fetch(`/api/products?id=${slug}&t=${Date.now()}`);
               const data = await res.json();
 
@@ -29,8 +34,16 @@ const SupportAnArtistDetailPage: React.FC = () => {
                       const firstAvailable = data.variants.find((v: DropVariant) => v.available);
                       if (firstAvailable) setSelectedVariant(firstAvailable);
                   }
-              } else {
-                  throw new Error("Invalid payload format");
+              }
+
+              // 2. Fetch full catalog for the alternative recommendations grid at bottom
+              const listRes = await fetch(`/api/products?t=${Date.now()}`);
+              if (listRes.ok) {
+                  const listData = await listRes.json();
+                  if (Array.isArray(listData)) {
+                      // Filter out the active item to display other products
+                      setOtherDrops(listData.filter((item: any) => item.slug !== slug).slice(0, 3));
+                  }
               }
           } catch (error: any) {
               setErrorMsg(error.message);
@@ -39,25 +52,28 @@ const SupportAnArtistDetailPage: React.FC = () => {
           }
       };
 
-      if (slug) fetchProduct();
+      if (slug) fetchProductAndCatalog();
   }, [slug]);
 
-  const handleCheckout = () => {
-      if (drop?.variants && drop.variants.length > 0 && !selectedVariant) {
+  const handleAddToBasket = () => {
+      if (!drop) return;
+      if (drop.variants && drop.variants.length > 1 && !selectedVariant) {
           alert("Please select an option.");
           return;
       }
       
-      navigate('/checkout', {
-          state: {
-              slug: drop?.slug,
-              title: drop?.title,
-              variantTitle: selectedVariant?.title,
-              price: selectedVariant?.price || drop?.price,
-              variantId: selectedVariant?.id,
-              imageUrl: drop?.imageUrl
-          }
+      addToCart({
+          slug: drop.slug,
+          title: drop.title,
+          variantTitle: selectedVariant?.title || 'Standard',
+          variantId: selectedVariant?.id || drop.slug,
+          price: selectedVariant?.price || drop.price,
+          imageUrl: drop.imageUrl,
+          quantity: 1
       });
+
+      setAddedMessage(true);
+      setTimeout(() => setAddedMessage(false), 3000);
   };
 
   if (isLoading) {
@@ -83,17 +99,20 @@ const SupportAnArtistDetailPage: React.FC = () => {
   const hasMultipleOptions = drop.variants && drop.variants.length > 1;
 
   return (
-    <div className="bg-brand-offwhite min-h-screen pt-32 pb-32">
+    <div className="bg-brand-offwhite min-h-screen pt-32 pb-32 font-sans text-brand-navy">
       <div className="container mx-auto px-6 md:px-12 max-w-[1400px]">
         
-        {/* Back Navigation */}
-        <div className="mb-12 border-b border-brand-navy/10 pb-6">
+        {/* Navigation Toolbar */}
+        <div className="mb-12 border-b border-brand-navy/10 pb-6 flex justify-between items-center">
             <Link to="/support-an-artist" className="inline-flex items-center gap-2 font-mono text-[10px] uppercase font-bold tracking-widest text-brand-navy/50 hover:text-brand-purple transition-colors">
                 <ArrowLeft size={14} /> Back to Collection
             </Link>
+            <Link to="/support-an-artist" className="font-mono text-[10px] uppercase font-bold tracking-widest text-brand-purple hover:text-brand-navy transition-colors border-b border-brand-purple pb-0.5">
+                Continue Shopping
+            </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start pb-24">
             
             {/* LEFT: Lookbook Image */}
             <div className="lg:col-span-6 space-y-6">
@@ -103,14 +122,14 @@ const SupportAnArtistDetailPage: React.FC = () => {
                             <img 
                                 src={drop.imageUrl} 
                                 alt={drop.title} 
-                                className="w-full h-auto object-contain max-w-[500px]" 
+                                className="w-full h-auto object-contain max-w-[500px] mix-blend-multiply" 
                             />
                         )}
                     </div>
                 </AnimatedSection>
             </div>
 
-            {/* RIGHT: Product Info & Commerce Engine */}
+            {/* RIGHT: Product Info & Basket Action Deck */}
             <div className="lg:col-span-6 relative">
                 <div className="lg:sticky lg:top-32 space-y-10">
                     
@@ -120,7 +139,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
                             <span className={`font-mono text-[10px] uppercase tracking-widest font-bold px-3 py-1 mb-6 inline-block shadow-sm ${drop.status === 'Live' ? 'bg-brand-yellow text-brand-navy' : 'bg-brand-navy text-brand-offwhite'}`}>
                                 {drop.status}
                             </span>
-                            <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85] mb-6">
+                            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85] mb-6">
                                 {drop.title.replace(/_/g, ' ')}
                             </h1>
                             <div className="flex items-end gap-2">
@@ -134,7 +153,7 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </div>
                     </AnimatedSection>
 
-                    {/* Description - Reduced font size for better hierarchy */}
+                    {/* Description */}
                     <AnimatedSection delay={150}>
                         <div className="font-body text-sm md:text-base leading-relaxed text-brand-navy/70 font-light">
                             {drop.longDescription || drop.description}
@@ -151,7 +170,6 @@ const SupportAnArtistDetailPage: React.FC = () => {
                                     </span>
                                 </div>
 
-                                {/* Buttons */}
                                 <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
                                     {drop.variants?.map(variant => (
                                         <button 
@@ -174,26 +192,42 @@ const SupportAnArtistDetailPage: React.FC = () => {
                         </AnimatedSection>
                     )}
 
-                    {/* Add to Cart Engine */}
+                    {/* Add to Basket Action */}
                     <AnimatedSection delay={250}>
-                        <div className="pt-8">
+                        <div className="pt-4 space-y-4">
                             <button 
-                                onClick={handleCheckout}
+                                onClick={handleAddToBasket}
                                 disabled={drop.status !== 'Live'}
-                                className="w-full bg-brand-navy text-brand-offwhite font-mono uppercase font-black text-sm tracking-[0.2em] py-6 hover:bg-brand-purple transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[8px_8px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_#FCC803] active:translate-x-[8px] active:translate-y-[8px] active:shadow-none"
+                                className="w-full bg-brand-navy text-brand-offwhite font-mono uppercase font-black text-sm tracking-[0.2em] py-6 hover:bg-brand-purple transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[8px_8px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_#FCC803] active:translate-x-[8px] active:translate-y-[8px] active:shadow-none flex items-center justify-center gap-3"
                             >
-                                {drop.status === 'Live' ? 'ADD TO CART — FUND ARTIST' : 'OUT OF STOCK'}
+                                <ShoppingBag size={18} />
+                                {drop.status === 'Live' ? 'ADD TO BASKET — FUND ARTIST' : 'OUT OF STOCK'}
                             </button>
-                            <p className="text-center font-mono text-[9px] uppercase tracking-widest text-brand-navy/40 mt-6">
-                                Secure Checkout. Global Shipping.
+                            
+                            <AnimatePresence>
+                                {addedMessage && (
+                                    <motion.div 
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0 }}
+                                        className="bg-green-50 text-green-800 border border-green-200 p-4 text-center font-mono text-xs uppercase font-bold flex justify-between items-center"
+                                    >
+                                        <span>✓ Item secured in basket.</span>
+                                        <Link to="/checkout" className="underline hover:text-brand-purple">Go to checkout &rarr;</Link>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                            
+                            <p className="text-center font-mono text-[9px] uppercase tracking-widest text-brand-navy/40 mt-4">
+                                Secure local gateway. Global Fulfillment.
                             </p>
                         </div>
                     </AnimatedSection>
 
-                    {/* Specifications - Refined Typography */}
+                    {/* Specifications */}
                     {drop.features && drop.features.length > 0 && (
                         <AnimatedSection delay={300}>
-                            <div className="bg-white border border-brand-navy/10 p-8 mt-12 shadow-sm">
+                            <div className="bg-white border border-brand-navy/10 p-8 shadow-sm">
                                 <h4 className="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-navy mb-6 border-b border-brand-navy/10 pb-4">
                                     Specifications
                                 </h4>
@@ -211,6 +245,37 @@ const SupportAnArtistDetailPage: React.FC = () => {
                 </div>
             </div>
         </div>
+
+        {/* --- DYNAMIC RELATED DROPS LOOP (MORE PRODUCTS) --- */}
+        {otherDrops.length > 0 && (
+            <section className="border-t-2 border-brand-navy pt-24 mt-24">
+                <div className="flex flex-col sm:flex-row justify-between sm:items-baseline mb-16 gap-6">
+                    <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter m-0">
+                        More Drops.
+                    </h2>
+                    <Link to="/support-an-artist" className="font-mono text-xs uppercase font-bold border-b border-brand-navy pb-1">
+                        View Entire Catalogue &rarr;
+                    </Link>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    {otherDrops.map((item, idx) => (
+                        <AnimatedSection key={item.slug} delay={idx * 100}>
+                            <Link to={`/support-an-artist/${item.slug}`} className="group block">
+                                <div className="aspect-[4/5] bg-white border border-brand-navy/10 p-6 flex items-center justify-center overflow-hidden mb-4 group-hover:border-brand-navy transition-colors">
+                                    <img src={item.imageUrl} alt={item.title} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
+                                </div>
+                                <div className="flex justify-between items-start font-mono text-xs uppercase tracking-tight font-bold">
+                                    <h4 className="truncate max-w-[70%] text-brand-navy group-hover:text-brand-purple transition-colors">{item.title.replace(/_/g, ' ')}</h4>
+                                    <span className="text-brand-navy/60">${item.price}</span>
+                                </div>
+                            </Link>
+                        </AnimatedSection>
+                    ))}
+                </div>
+            </section>
+        )}
+
       </div>
     </div>
   );

@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, ShoppingBag } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 import BrandLogo from './BrandLogo';
+import { useCart } from '../context/CartContext';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false); // Mobile menu state
-  const [expandedMenu, setExpandedMenu] = useState<string | null>(null); // Mobile sub-menu toggle
+  const [isOpen, setIsOpen] = useState(false); 
+  const [expandedMenu, setExpandedMenu] = useState<string | null>(null); 
   const location = useLocation();
+  const { getCartCount } = useCart();
+  const cartCount = getCartCount();
   
   const isHome = location.pathname === '/';
-  
-  // Logic: 
-  // 1. If Menu is OPEN -> Logo is WHITE (because bg is Navy)
-  // 2. If Scrolled -> Logo is DARK (because bg is white)
-  // 3. If Home & Top -> Logo is WHITE (because bg is image/dark)
   const logoColor = isOpen ? '#F7F7F7' : (isHome && !isScrolled ? '#F7F7F7' : '#0F0328');
-
-  // Text Logic:
   const isLightText = isHome && !isScrolled && !isOpen;
 
   useEffect(() => {
@@ -28,13 +24,11 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setIsOpen(false);
-    setExpandedMenu(null); // Reset sub-menu on route change
+    setExpandedMenu(null); 
   }, [location]);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -97,7 +91,21 @@ const Header: React.FC = () => {
                 )}
             </div>
           ))}
-          <div className="flex items-center space-x-4 ml-6">
+          <div className="flex items-center space-x-6 ml-6">
+              {/* Checkout Cart Button Indicator */}
+              <Link 
+                to="/checkout" 
+                className={`relative p-2 transition-colors duration-300 ${isLightText ? 'text-brand-offwhite hover:text-brand-yellow' : 'text-brand-navy hover:text-brand-purple'}`}
+                title="View Checkout Basket"
+              >
+                  <ShoppingBag size={20} />
+                  {cartCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-brand-yellow text-brand-navy font-mono text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-brand-navy">
+                          {cartCount}
+                      </span>
+                  )}
+              </Link>
+
               <Link to="/contact" className="font-mono text-[10px] uppercase tracking-[0.2em] px-8 py-3 transition-all duration-300 font-bold bg-brand-navy text-brand-offwhite border-2 border-brand-navy shadow-[4px_4px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
                 Inquire Now
               </Link>
@@ -105,16 +113,23 @@ const Header: React.FC = () => {
         </nav>
 
         {/* Mobile Menu Toggle Button */}
-        <button 
-            onClick={() => setIsOpen(!isOpen)}
-            className={`md:hidden z-[60] p-2 focus:outline-none transition-colors duration-300 ${
-                // If menu is open, button must be white. If we are on dark home banner, button must be white.
-                isOpen || (isHome && !isScrolled) ? 'text-brand-offwhite' : 'text-brand-navy'
-            }`}
-            aria-label="Toggle Menu"
-        >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        <div className="flex items-center gap-4 md:hidden z-[60]">
+            <Link to="/checkout" className={`relative p-2 ${isOpen || (isHome && !isScrolled) ? 'text-brand-offwhite' : 'text-brand-navy'}`}>
+                <ShoppingBag size={22} />
+                {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-brand-yellow text-brand-navy font-mono text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-brand-navy">
+                        {cartCount}
+                    </span>
+                )}
+            </Link>
+            <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className={`p-2 focus:outline-none transition-colors duration-300 ${isOpen || (isHome && !isScrolled) ? 'text-brand-offwhite' : 'text-brand-navy'}`}
+                aria-label="Toggle Menu"
+            >
+                {isOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+        </div>
       </div>
     </header>
 
@@ -128,7 +143,6 @@ const Header: React.FC = () => {
                 transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
                 className="fixed inset-0 bg-brand-navy z-50 flex flex-col items-center justify-center space-y-6 md:hidden px-8 overflow-y-auto py-20"
             >
-                {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                     <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-brand-purple rounded-full blur-[100px]"></div>
                     <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-brand-yellow rounded-full blur-[100px]"></div>
@@ -154,7 +168,6 @@ const Header: React.FC = () => {
                                     {link.name}
                                 </NavLink>
                                 
-                                {/* Sub-menu toggle button */}
                                 {link.subLinks && (
                                     <button 
                                         onClick={() => toggleSubMenu(link.name)}
@@ -168,7 +181,6 @@ const Header: React.FC = () => {
                                 )}
                             </div>
                             
-                            {/* Mobile Sublinks Accordion */}
                             <AnimatePresence>
                                 {link.subLinks && expandedMenu === link.name && (
                                     <motion.div 
