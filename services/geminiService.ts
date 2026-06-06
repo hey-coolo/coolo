@@ -50,10 +50,10 @@ FINAL VERDICT (MANDATORY):
 
 
 export const runBrandAudit = async (url: string): Promise<AuditResult> => {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const apiKey = import.meta.env.GEMINI_API_KEY;
   
   if (!apiKey) {
-    throw new Error("Missing VITE_GEMINI_API_KEY in environment variables.");
+    throw new Error("Missing GEMINI_API_KEY in environment variables.");
   }
 
   // Use the standard stable SDK
@@ -79,7 +79,7 @@ export const runBrandAudit = async (url: string): Promise<AuditResult> => {
     Your job is to perform a ruthless "Reality Check" on this URL: ${url}.
     
     RESEARCH STEPS:
-    1. **VISUALS & VIBE**: Infer descriptions of website design, logo, colors, and imagery.
+    1. **EVIDENCE-BASED**: Base your critique strictly on the provided website content and search context. If the data is missing or the site is a 404/broken page, you MUST stop the audit and state that the site is inaccessible.
     2. **VOICE & BIO**: Analyze Headline, "About Us" style, and inferred tone.
     3. **CONSISTENCY**: Do the visuals match the words?
 
