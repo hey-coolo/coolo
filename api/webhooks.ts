@@ -31,7 +31,7 @@ export default async function handler(req: any, res: any) {
     // ==========================================
     if (stripeSignature) {
       const stripeKey = process.env.STRIPE_SECRET_KEY;
-      const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET; // This is the secret you just added to Vercel
+      const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET; 
       
       if (!stripeKey || !webhookSecret) return res.status(500).json({ error: "Server config error" });
 
@@ -79,7 +79,7 @@ export default async function handler(req: any, res: any) {
               state_code: shippingDetails.address?.state || "",
               country_code: shippingDetails.address?.country,
               zip: shippingDetails.address?.postal_code,
-              email: 'hey@coolo.co.nz', // Fallback for Printful dashboard
+              email: paymentIntent.receipt_email || 'hey@coolo.co.nz', // Tries to use customer email if Stripe grabbed it
               phone: shippingDetails.phone || ""
             },
             items: printfulItems
@@ -91,8 +91,8 @@ export default async function handler(req: any, res: any) {
           };
           if (storeId) headers['X-PF-Store-Id'] = storeId;
 
-          // Dispatch the entire basket to Printful
-          const printfulRes = await fetch(`https://api.printful.com/v2/orders`, {
+          // Dispatch the entire basket to Printful using the stable v1 API endpoint
+          const printfulRes = await fetch(`https://api.printful.com/orders`, {
             method: 'POST',
             headers,
             body: JSON.stringify(orderData)
