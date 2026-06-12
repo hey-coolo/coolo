@@ -4,6 +4,7 @@ import AnimatedSection from '../components/AnimatedSection';
 import { TEAM_MEMBERS } from '../constants';
 import { motion } from 'framer-motion';
 import { Drop } from '../types';
+import { Helmet } from 'react-helmet-async';
 
 const AboutPage: React.FC = () => {
   const [featuredDrop, setFeaturedDrop] = useState<Drop | null>(null);
@@ -22,8 +23,29 @@ const AboutPage: React.FC = () => {
       .catch(err => console.error("Error fetching featured drop:", err));
   }, []);
 
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "COOLO Studio",
+      "url": "https://coolo.co.nz",
+      "logo": "https://coolo.co.nz/assets/logos/logo-dark.svg",
+      "description": "A boutique creative and brand studio based in Mount Maunganui, New Zealand, specializing in brand strategy and digital design."
+    }
+  };
+
   return (
     <div className="bg-brand-offwhite pt-32">
+      <Helmet>
+        <title>About Us | COOLO Studio</title>
+        <meta name="description" content="Learn about COOLO Studio, our design philosophy, and how we help businesses transition from improvised to intentional brand strategies." />
+        <link rel="canonical" href="https://coolo.co.nz/about" />
+        <script type="application/ld+json">
+          {JSON.stringify(aboutSchema)}
+        </script>
+      </Helmet>
+
       <div className="container mx-auto px-8">
         
         {/* Header / Origin Story */}
@@ -38,28 +60,32 @@ const AboutPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
-        {/* Narrative / History */}
+        {/* Narrative / History - EXPANDED FOR AEO COMPLIANCE (Word count, Internal & External Links) */}
         <section className="pb-32 grid grid-cols-1 lg:grid-cols-12 gap-16 border-t border-brand-navy/10 pt-24">
             <div className="lg:col-span-5">
-                <h3 className="text-4xl font-black uppercase tracking-tight text-brand-navy leading-none sticky top-32">
+                <h2 className="text-4xl font-black uppercase tracking-tight text-brand-navy leading-none sticky top-32">
                     Calibrating<br/>The Signal.
-                </h3>
+                </h2>
             </div>
             <div className="lg:col-span-7 space-y-12 text-xl md:text-2xl font-light text-brand-navy/80 leading-relaxed">
                 <AnimatedSection delay={100}>
                     <p>
-                        Most brands don't have a design problem.<strong className="font-bold text-brand-navy">They have a clarity problem.</strong> That's where we start. We are here to help clarify what you do and how you say it.
+                        Most brands don't have a design problem. <strong className="font-bold text-brand-navy">They have a clarity problem.</strong> That's where we start. We are here to help clarify what you do and how you say it. COOLO is a boutique creative and brand studio operating out of the coastal hub of <a href="https://www.bayofplentynz.com/places/mount-maunganui/" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-purple transition-colors">Mount Maunganui, New Zealand</a>. We partner with founders, marketing teams, and visionary entrepreneurs to help their businesses transition from improvised growth into an intentional, undeniable market presence.
                     </p>
                 </AnimatedSection>
                 <AnimatedSection delay={200}>
                     <p>
-                        We don't use templates. Our mission is to help you fix what's not fully landing: your message, your positioning, and how your brand shows up.
+                        In a digital landscape cluttered with fleeting trends and templated aesthetics, we believe in building systems that endure. Our philosophy is heavily inspired by the timeless principles of functionalism—a concept championed by legendary designers like <a href="https://www.interaction-design.org/literature/article/dieter-rams-10-principles-for-good-design" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-purple transition-colors">Dieter Rams</a>, who advocated that good design makes a product ultimately understandable and unobtrusive. We bring this exact rigor to how we structure brands today. We don't use templates. Our mission is to help you fix what's not fully landing: your message, your positioning, and how your brand shows up.
                     </p>
                 </AnimatedSection>
                 <AnimatedSection delay={300}>
                     <p>
-                        Operating from Mount Maunganui, we provide a senior creative process model. We partner with founders, and agencies to refine the message and eliminate the noise.
-                        We keep seeing the same pattern: good businesses, badly explained or designed. That's why and what COOLO is built to fix.
+                        We don't just decorate businesses; we clarify their purpose. This process begins with our foundational <Link to="/clarity" className="underline hover:text-brand-purple transition-colors">Brand Strategy & Clarity</Link> sprints, where we align your internal vision with your external messaging. Once the strategy is locked, we execute through our <Link to="/design-power" className="underline hover:text-brand-purple transition-colors">Design Power</Link> services—translating strategy into high-fidelity visual identities, scalable websites, and motion graphics that demand attention.
+                    </p>
+                </AnimatedSection>
+                <AnimatedSection delay={400}>
+                    <p>
+                        Our team deliberately remains boutique. By limiting the volume of clients we take on at any given time, we ensure that every project receives senior-level strategic oversight and uncompromising creative dedication. We are fully invested in the commercial success and cultural resonance of the brands we partner with. Whether you are looking to undergo a complete brand overhaul, launch a new digital product, or simply refine your current market positioning, we have the tools and the taste to get you there. We invite you to explore our <Link to="/work" className="underline hover:text-brand-purple transition-colors">Selected Works</Link> to see our methodology in action.
                     </p>
                 </AnimatedSection>
             </div>

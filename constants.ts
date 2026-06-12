@@ -718,12 +718,12 @@ export const QA_DATA = [
           a: "Please, no. Agencies have timesheets, account managers, and ping-pong tables to hide the burnout. We are a Studio. It’s just us (Franco & Ariana). We do the work. We answer the emails. We give a damn."
       },
       {
-          q: 'Why the 90/00s vibes?',
-          a: "It was the last time the world felt real. No AI, no algorithms, just raw creativity and good music. We bring that analog soul—tactile, honest, impermanent—into the digital work we do."
+          q: 'Will my brand look generic?',
+          a: "Not a chance. The market is flooded with generic, templated looks. We don't do sterile or corporate. Instead, we rely on good taste and cultural sensitivity, which are your true strategic advantages in a noisy world. Good branding should amplify your personality, not erase it."
       },
       {
-          q: 'Can I text you on the weekend?',
-          a: "You can try. But unless the server is on fire or aliens have landed, we’re probably surfing, skating, or recharging. We protect our peace so we can be obsessed with your project on Monday."
+          q: 'What makes your design approach different??',
+          a: "We prioritize human signals in a world of empty noise. While the internet is drowning in AI-generated content and trend-chasing design, we bring a tactile, honest, and human element to our digital work. We believe that professional doesn't have to mean soulless."
       }
     ]
   },
