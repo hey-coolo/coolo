@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, Transition } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -21,7 +22,7 @@ import TeamMemberPage from './pages/TeamMemberPage';
 import JournalPage from './pages/JournalPage';
 import DropsPage from './pages/SupportAnArtist';
 import SupportAnArtistDetailPage from './pages/SupportAnArtistDetailPage';
-import CheckoutPage from './pages/CheckoutPage'; // NEW IMPORT
+import CheckoutPage from './pages/CheckoutPage'; 
 import ContactPage from './pages/ContactPage';
 import JoinPage from './pages/JoinPage';
 import UnsubscribePage from './pages/Unsubscribe';
@@ -61,6 +62,11 @@ const App: React.FC = () => {
 
   return (
     <SmoothScroll>
+      <Helmet>
+        {/* Dynamic Canonical URL to prevent duplicate content indexing by AI crawlers */}
+        <link rel="canonical" href={`https://coolo.co.nz${location.pathname}`} />
+      </Helmet>
+      
       <div className="bg-brand-offwhite font-body text-brand-navy min-h-screen flex flex-col antialiased selection:bg-brand-yellow">
         <CustomCursor />
         
@@ -117,7 +123,7 @@ const App: React.FC = () => {
                         
                         <Route path="/support-an-artist/:slug" element={<SupportAnArtistDetailPage />} />
                         <Route path="/support-an-artist" element={<DropsPage />} />
-                        <Route path="/checkout" element={<CheckoutPage />} /> {/* NEW ROUTE */}
+                        <Route path="/checkout" element={<CheckoutPage />} />
                         
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/join" element={<JoinPage />} />

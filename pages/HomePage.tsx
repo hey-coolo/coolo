@@ -1,7 +1,8 @@
 import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
-import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
+import { Helmet } from 'react-helmet-async';
+import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS, QA_DATA } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
 
@@ -154,37 +155,19 @@ const BrandHero: React.FC = () => {
 
             <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
                 <div className="relative mb-16 md:mb-32">
-                    <div className="pointer-events-auto inline-block">
-                        <motion.h1 
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                            className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
-                        >
-                            BRAND STRATEGY
-                        </motion.h1>
-                    </div>
-                    
-                    <div className="flex justify-start items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
-                        <motion.span 
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1.4, delay: 0.4, ease: "easeOut" }}
-                            className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none absolute -left-[1em] top-[-0.05em] pointer-events-none"
-                        >
-                            &
-                        </motion.span>
-                        <div className="pointer-events-auto inline-block">
-                            <motion.h1 
-                                initial={{ opacity: 0, x: 50 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
-                                className="text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
-                            >
-                                DESIGN POWER
-                            </motion.h1>
-                        </div>
-                    </div>
+                    {/* Fixed to single H1 for SEO compliance */}
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+                        className="flex flex-col text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal pointer-events-auto"
+                    >
+                        <span>BRAND STRATEGY</span>
+                        <span className="flex items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
+                            <span className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none absolute -left-[1em] top-[-0.05em] pointer-events-none">&</span>
+                            <span className="pointer-events-auto">DESIGN POWER</span>
+                        </span>
+                    </motion.h1>
                 </div>
 
                 <div className="mt-auto pointer-events-auto">
@@ -262,8 +245,9 @@ const NarrativeScroll: React.FC = () => {
                             <span>YOUR BUSINESS EVOLVED.</span>
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
                         </h2>
-                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            We help ambitious businesses move beyond DIY survival mode into a more intentional, professional presence without losing the personality that made them worth noticing in the first place.
+                        {/* Adding internal links for AEO context */}
+                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed pointer-events-auto">
+                            We help ambitious businesses move beyond DIY survival mode into a more intentional, <Link to="/design-power" className="underline hover:text-brand-purple transition-colors">professional presence</Link> without losing the personality that made them worth noticing in the first place.
                         </p>
                     </motion.div>
 
@@ -288,8 +272,9 @@ const NarrativeScroll: React.FC = () => {
                             <span>GOOD TASTE IS</span>
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>WHAT WE BUILD.</span>
                         </h2>
+                        {/* Adding external citation links for AEO context */}
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            Intentional thoughtful strategy, sharp creative direction, and design that communicates with precision.
+                            Intentional thoughtful <Link to="/clarity" className="underline hover:text-brand-purple transition-colors">strategy</Link>, sharp creative direction, and design that communicates with precision from our studio in <a href="https://www.bayofplentynz.com/places/mount-maunganui/" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-purple transition-colors">Mount Maunganui</a>.
                         </p>
                         
                         <div className="mt-16 flex flex-col md:flex-row items-center justify-center gap-6">
@@ -322,7 +307,6 @@ const ServiceRouter: React.FC = () => {
                             key={leg.id}
                             className="group relative flex flex-col justify-between min-h-[60vh] md:min-h-[70vh] border-b lg:border-b-0 lg:border-r border-brand-navy/10 p-8 md:p-12 overflow-hidden hover:bg-brand-lavender transition-colors duration-500"
                         >
-                            {/* Background stretched link (making the card clickable but allowing inner links) */}
                             <Link to={leg.path} className="absolute inset-0 z-0" aria-label={`View ${leg.title}`} />
 
                             <div className="relative z-10 pointer-events-none">
@@ -496,6 +480,13 @@ const CapabilityList: React.FC = () => {
                         </Link>
                     ))}
                 </div>
+                
+                {/* External link injection to improve AEO scoring */}
+                <div className="mt-16 md:mt-24 max-w-2xl border-t border-brand-offwhite/20 pt-8">
+                    <p className="font-body text-lg opacity-80">
+                        We build custom visual systems using industry-standard platforms like <a href="https://webflow.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Webflow</a> and <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Stripe</a>, ensuring your brand performs securely and as well as it looks.
+                    </p>
+                </div>
             </div>
 
             <motion.div
@@ -550,12 +541,37 @@ const ShowcaseGrid: React.FC = () => {
     )
 }
 
+const FAQSection: React.FC = () => {
+    const faqs = QA_DATA[0].questions; 
+    return (
+        <section className="py-24 bg-white border-b-2 border-brand-navy relative z-40">
+            <div className="container mx-auto px-6 md:px-8">
+                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85] mb-16">Frequently Asked Questions</h2>
+                <div className="max-w-4xl" itemScope itemType="https://schema.org/FAQPage">
+                    {faqs.map((faq, i) => (
+                        <div key={i} className="mb-10 border-b border-brand-navy/10 pb-10" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+                            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-brand-navy mb-4" itemProp="name">
+                                {faq.q}
+                            </h3>
+                            <div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                                <p className="font-body text-lg md:text-xl text-brand-navy/80 leading-relaxed" itemProp="text">
+                                    {faq.a}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
+
 const LatestIntel: React.FC = () => {
     return (
         <section className="py-24 relative z-40 bg-brand-offwhite overflow-hidden">
              <div className="container mx-auto px-8">
                  <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-                    <h3 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">Studio Thoughts</h3>
+                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">Studio Thoughts</h2>
                     <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">View All Entries &rarr;</Link>
                  </div>
                  
@@ -563,7 +579,7 @@ const LatestIntel: React.FC = () => {
                     {JOURNAL_POSTS.slice(0, 3).map((post, i) => (
                         <Link key={i} to={`/journal/${post.slug}`} data-cursor-text="READ" className="group block border-r border-b border-t border-brand-navy/10 p-8 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300">
                              <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-4 group-hover:text-brand-yellow text-brand-navy group-hover:text-brand-offwhite">{post.date}</span>
-                             <h4 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h4>
+                             <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h3>
                              <p className="font-body text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-brand-navy group-hover:text-brand-offwhite">
                                  {post.excerpt}
                              </p>
@@ -576,14 +592,35 @@ const LatestIntel: React.FC = () => {
 }
 
 const HomePage: React.FC = () => {
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "COOLO Studio",
+    "url": "https://coolo.co.nz",
+    "logo": "https://coolo.co.nz/assets/logos/logo-dark.svg",
+    "description": "Boutique creative and brand studio focused on helping businesses communicate with clarity, confidence, coherence, and soul.",
+    "sameAs": [
+      "https://instagram.com/coolo.co",
+      "https://linkedin.com/company/coolo"
+    ]
+  };
+
   return (
     <div className="bg-brand-offwhite">
+      <Helmet>
+        <title>COOLO | Brand Strategy & Design Power</title>
+        <script type="application/ld+json">
+          {JSON.stringify(orgSchema)}
+        </script>
+      </Helmet>
+      
       <BrandHero />
       <NarrativeScroll />
       <ServiceRouter />
       <FeatureSpotlight />
       <CapabilityList />
       <ShowcaseGrid />
+      <FAQSection />
       <LatestIntel />
     </div>
   );
