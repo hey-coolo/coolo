@@ -60,7 +60,7 @@ const AboutPage: React.FC = () => {
           </header>
         </AnimatedSection>
 
-        {/* Narrative / History - EXPANDED FOR AEO COMPLIANCE (Word count, Internal & External Links) */}
+        {/* Narrative / History */}
         <section className="pb-32 grid grid-cols-1 lg:grid-cols-12 gap-16 border-t border-brand-navy/10 pt-24">
             <div className="lg:col-span-5">
                 <h2 className="text-4xl font-black uppercase tracking-tight text-brand-navy leading-none sticky top-32">
@@ -75,7 +75,7 @@ const AboutPage: React.FC = () => {
                 </AnimatedSection>
                 <AnimatedSection delay={200}>
                     <p>
-                        In a digital landscape cluttered with fleeting trends and templated aesthetics, we believe in building systems that endure. Our philosophy is heavily inspired by the timeless principles of functionalism—a concept championed by legendary designers like <a href="https://www.interaction-design.org/literature/article/dieter-rams-10-principles-for-good-design" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-purple transition-colors">Dieter Rams</a>, who advocated that good design makes a product ultimately understandable and unobtrusive. We bring this exact rigor to how we structure brands today. We don't use templates. Our mission is to help you fix what's not fully landing: your message, your positioning, and how your brand shows up.
+                        In a digital landscape cluttered with fleeting trends and templated aesthetics, we believe in building systems that endure. Our philosophy is pretty simple: keep it functional, keep it intentional, and cut out the noise. We build brands that feel like a breath of fresh air—ultimately understandable and completely authentic to who you are. We bring this exact rigor to how we structure brands today. We don't use templates. Our mission is to help you fix what's not fully landing: your message, your positioning, and how your brand actually shows up in the wild.
                     </p>
                 </AnimatedSection>
                 <AnimatedSection delay={300}>
