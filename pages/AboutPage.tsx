@@ -75,7 +75,7 @@ const AboutPage: React.FC = () => {
                 </AnimatedSection>
                 <AnimatedSection delay={200}>
                     <p>
-                        In a digital landscape cluttered with fleeting trends and templated aesthetics, we believe in building systems that endure. Our philosophy is pretty simple: keep it functional, keep it intentional, and cut out the noise. We build brands that feel like a breath of fresh air—ultimately understandable and completely authentic to who you are. We bring this exact rigor to how we structure brands today. We don't use templates. Our mission is to help you fix what's not fully landing: your message, your positioning, and how your brand actually shows up in the wild.
+                        In a digital landscape cluttered with fleeting trends and templated aesthetics, we believe in building systems that endure. Our philosophy is pretty simple: keep it functional, keep it intentional, and cut out the noise. We build brands that feel like a breath of fresh air. Ultimately understandable and completely authentic to who you are. We bring this exact rigor to how we structure brands today. We don't use templates. Our mission is to help you fix what's not fully landing: your message, your positioning, and how your brand actually shows up in the wild.
                     </p>
                 </AnimatedSection>
                 <AnimatedSection delay={300}>
