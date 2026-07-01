@@ -346,15 +346,22 @@ const ContactPage: React.FC = () => {
                         </AnimatePresence>
                     </div>
 
-                    {/* --- DIRECT CALENDAR LINK --- */}
-                    <div className="border-t-[1px] border-brand-navy pt-16 mt-16 text-left">
+                    {/* --- INLINE CALENDAR --- */}
+                    <div className="border-t-[1px] border-brand-navy pt-16 mt-16 text-left w-full">
                         <h3 className="text-4xl md:text-5xl font-black uppercase mb-4 tracking-tighter">Or bypass the forms.</h3>
                         <p className="font-sans text-xl md:text-2xl font-medium mb-10 max-w-lg opacity-80">
                             Book a slot directly in our calendar for a video call. Let's talk face to face.
                         </p>
-                        <button className="bg-transparent border-[1px] border-brand-navy text-brand-navy px-10 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-yellow transition-colors inline-block">
-                            Open Calendar
-                        </button>
+                        <div className="w-full h-[650px] border-2 border-brand-navy bg-white shadow-[8px_8px_0px_#0F0328] overflow-hidden">
+                            <iframe 
+                                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2uFUb9K1Qg3Q5JfRkqTu9ompowUuV2jXG6ttxzU54RThQ3B9JmZoRNuH982GTAjRcreJm49J-z?gv=true" 
+                                style={{ border: 0 }} 
+                                width="100%" 
+                                height="100%" 
+                                frameBorder="0"
+                                title="Google Calendar Appointment"
+                            ></iframe>
+                        </div>
                     </div>
 
                 </div>
