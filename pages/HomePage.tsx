@@ -1,8 +1,7 @@
 import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
-import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS, QA_DATA } from '../constants';
+import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
 
@@ -155,19 +154,29 @@ const BrandHero: React.FC = () => {
 
             <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
                 <div className="relative mb-16 md:mb-32">
-                    {/* Fixed to single H1 for SEO compliance */}
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                        className="flex flex-col text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal pointer-events-auto"
-                    >
-                        <span>BRAND STRATEGY</span>
-                        <span className="flex items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
-                            <span className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none absolute -left-[1em] top-[-0.05em] pointer-events-none">&</span>
-                            <span className="pointer-events-auto">DESIGN POWER</span>
-                        </span>
-                    </motion.h1>
+                    <div className="pointer-events-auto inline-block">
+                        <motion.h1 
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+                            className="text-[14vw] md:text-[13vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
+                        >
+                            ATTENTION
+                        </motion.h1>
+                    </div>
+                    
+                    <div className="flex justify-start items-baseline mt-2 md:mt-4 md:ml-[12vw] relative">
+                        <div className="pointer-events-auto inline-block">
+                            <motion.h1 
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 1.2, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
+                                className="text-[14vw] md:text-[13vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal"
+                            >
+                                SYSTEMS.
+                            </motion.h1>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="mt-auto pointer-events-auto">
@@ -188,9 +197,9 @@ const BrandHero: React.FC = () => {
                         </div>
 
                         <div className="md:text-center font-mono">
-                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
+                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Independent Creative Direction</span>
                              <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
-                                A boutique creative and brand studio helping businesses transition from improvised to intentional.
+                                Strategy, identity, campaigns, and experiences under one vision. For ambitious brands.
                              </p>
                         </div>
 
@@ -198,7 +207,7 @@ const BrandHero: React.FC = () => {
                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Status:</span>
                              <div className="flex items-center md:justify-end gap-3">
                                  <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
-                                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70">Currently Booking Q2/Q3 Projects</span>
+                                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70">Accepting Q3 Partners</span>
                              </div>
                         </div>
                     </div>
@@ -232,7 +241,7 @@ const NarrativeScroll: React.FC = () => {
             <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
                 
                 <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
-                    01 / The COOLO Way
+                    01 / The COOLO Method
                 </div>
 
                 <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center h-full">
@@ -242,12 +251,11 @@ const NarrativeScroll: React.FC = () => {
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
                     >
                         <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                            <span>YOUR BUSINESS EVOLVED.</span>
-                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
+                            <span>A BRAND IS SIMPLY A SYSTEM</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>THAT EARNS ATTENTION CONSISTENTLY.</span>
                         </h2>
-                        {/* Adding internal links for AEO context */}
-                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed pointer-events-auto">
-                            We help ambitious businesses move beyond DIY survival mode into a more intentional, <Link to="/design-power" className="underline hover:text-brand-purple transition-colors">professional presence</Link> without losing the personality that made them worth noticing in the first place.
+                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
+                            Aesthetics alone don't move markets. We engineer cultural relevance through sharp strategy and undeniable identity execution.
                         </p>
                     </motion.div>
 
@@ -256,11 +264,11 @@ const NarrativeScroll: React.FC = () => {
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
                     >
                         <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                            <span>WE SELL CLARITY,</span>
-                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
+                            <span>WE DON'T SELL LOGOS.</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>WE SELL DECISIONS.</span>
                         </h2>
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                             Because people feel coherence before they understand it. Not empty aesthetics. Not trend-chasing.
+                             Why this lens. Why this texture. Why this framing. That's what separates art direction from decoration.
                         </p>
                     </motion.div>
 
@@ -269,12 +277,11 @@ const NarrativeScroll: React.FC = () => {
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto"
                     >
                         <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                            <span>GOOD TASTE IS</span>
-                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>WHAT WE BUILD.</span>
+                            <span>JUDGMENT OVER</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>OPINION.</span>
                         </h2>
-                        {/* Adding external citation links for AEO context */}
                         <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            Intentional thoughtful <Link to="/clarity" className="underline hover:text-brand-purple transition-colors">strategy</Link>, sharp creative direction, and design that communicates with precision from our studio in <a href="https://www.bayofplentynz.com/places/mount-maunganui/" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-purple transition-colors">Mount Maunganui</a>.
+                            Creative leadership for ambitious businesses.
                         </p>
                         
                         <div className="mt-16 flex flex-col md:flex-row items-center justify-center gap-6">
@@ -282,7 +289,7 @@ const NarrativeScroll: React.FC = () => {
                                 Inquire Now
                             </Link>
                             <Link to="/about" className="inline-block border-2 border-brand-navy px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
-                                More About Us
+                                The Consultancy Roster
                             </Link>
                         </div>
                     </motion.div>
@@ -298,10 +305,6 @@ const ServiceRouter: React.FC = () => {
         <section className="bg-brand-offwhite border-t-2 border-b-2 border-brand-navy relative z-40 overflow-hidden">
              <div className="grid grid-cols-1 lg:grid-cols-3">
                 {SERVICE_LEGS.map((leg, index) => {
-                    const titleParts = leg.title.match(/^(We help you)\s+(.*)$/i);
-                    const prefix = titleParts ? titleParts[1] : 'We help you';
-                    const mainTitle = titleParts ? titleParts[2] : leg.title;
-
                     return (
                         <div 
                             key={leg.id}
@@ -320,11 +323,8 @@ const ServiceRouter: React.FC = () => {
                                 </div>
                                 
                                 <div className="mb-8 relative">
-                                    <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors block mb-2">
-                                        {prefix}
-                                    </span>
                                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] text-brand-navy group-hover:text-brand-offwhite transition-colors break-words">
-                                        {mainTitle}
+                                        {leg.title}
                                         <span className="text-brand-purple group-hover:text-brand-yellow transition-colors">.</span>
                                     </h2>
                                 </div>
@@ -480,13 +480,6 @@ const CapabilityList: React.FC = () => {
                         </Link>
                     ))}
                 </div>
-                
-                {/* External link injection to improve AEO scoring */}
-                <div className="mt-16 md:mt-24 max-w-2xl border-t border-brand-offwhite/20 pt-8">
-                    <p className="font-body text-lg opacity-80">
-                        We build custom visual systems using industry-standard platforms like <a href="https://webflow.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Webflow</a> and <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Stripe</a>, ensuring your brand performs securely and as well as it looks.
-                    </p>
-                </div>
             </div>
 
             <motion.div
@@ -541,45 +534,20 @@ const ShowcaseGrid: React.FC = () => {
     )
 }
 
-const FAQSection: React.FC = () => {
-    const faqs = QA_DATA[0].questions; 
-    return (
-        <section className="py-24 bg-white border-b-2 border-brand-navy relative z-40">
-            <div className="container mx-auto px-6 md:px-8">
-                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85] mb-16">Frequently Asked Questions</h2>
-                <div className="max-w-4xl" itemScope itemType="https://schema.org/FAQPage">
-                    {faqs.map((faq, i) => (
-                        <div key={i} className="mb-10 border-b border-brand-navy/10 pb-10" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-                            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-brand-navy mb-4" itemProp="name">
-                                {faq.q}
-                            </h3>
-                            <div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-                                <p className="font-body text-lg md:text-xl text-brand-navy/80 leading-relaxed" itemProp="text">
-                                    {faq.a}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-};
-
 const LatestIntel: React.FC = () => {
     return (
         <section className="py-24 relative z-40 bg-brand-offwhite overflow-hidden">
              <div className="container mx-auto px-8">
                  <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">Studio Thoughts</h2>
-                    <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">View All Entries &rarr;</Link>
+                    <h3 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">Published<br/>Intel</h3>
+                    <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">Read Publications &rarr;</Link>
                  </div>
                  
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-brand-navy/10">
                     {JOURNAL_POSTS.slice(0, 3).map((post, i) => (
                         <Link key={i} to={`/journal/${post.slug}`} data-cursor-text="READ" className="group block border-r border-b border-t border-brand-navy/10 p-8 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300">
                              <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-4 group-hover:text-brand-yellow text-brand-navy group-hover:text-brand-offwhite">{post.date}</span>
-                             <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h3>
+                             <h4 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h4>
                              <p className="font-body text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-brand-navy group-hover:text-brand-offwhite">
                                  {post.excerpt}
                              </p>
@@ -592,35 +560,14 @@ const LatestIntel: React.FC = () => {
 }
 
 const HomePage: React.FC = () => {
-  const orgSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "COOLO Studio",
-    "url": "https://coolo.co.nz",
-    "logo": "https://coolo.co.nz/assets/logos/logo-dark.svg",
-    "description": "Boutique creative and brand studio focused on helping businesses communicate with clarity, confidence, coherence, and soul.",
-    "sameAs": [
-      "https://instagram.com/coolo.co",
-      "https://linkedin.com/company/coolo"
-    ]
-  };
-
   return (
     <div className="bg-brand-offwhite">
-      <Helmet>
-        <title>COOLO | Brand Strategy & Design Power</title>
-        <script type="application/ld+json">
-          {JSON.stringify(orgSchema)}
-        </script>
-      </Helmet>
-      
       <BrandHero />
       <NarrativeScroll />
       <ServiceRouter />
       <FeatureSpotlight />
       <CapabilityList />
       <ShowcaseGrid />
-      <FAQSection />
       <LatestIntel />
     </div>
   );
