@@ -127,7 +127,7 @@ const BrandHero: React.FC = () => {
     const springX = useSpring(mouseX, { stiffness: 60, damping: 25 });
     const springY = useSpring(mouseY, { stiffness: 60, damping: 25 });
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e: React.MouseEvent) => {
         const { innerWidth, innerHeight } = window;
         mouseX.set((e.clientX / innerWidth) - 0.5);
         mouseY.set((e.clientY / innerHeight) - 0.5);
@@ -168,7 +168,6 @@ const BrandHero: React.FC = () => {
                     </motion.h1>
                 </div>
 
-                {/* HIGH VISIBILITY DIRECT ACTION CTA ZONE */}
                 <div className="pointer-events-auto mb-16 max-w-sm">
                     <div className="flex flex-col sm:flex-row gap-4">
                         <Link to="/contact" className="w-full sm:w-auto inline-block text-center border-2 border-brand-navy bg-brand-navy text-brand-offwhite px-8 py-4 font-mono text-xs uppercase tracking-widest font-bold hover:bg-brand-purple hover:border-brand-purple transition-all duration-300 shadow-[4px_4px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
@@ -225,98 +224,126 @@ const NarrativeScroll: React.FC = () => {
         offset: ["start start", "end end"]
     });
 
-    // Progressive scroll frame transformations across 500vh tracking space
-    const opacityW1 = useTransform(scrollYProgress, [0, 0.12, 0.16], [1, 1, 0]);
-    const yW1 = useTransform(scrollYProgress, [0, 0.16], [0, -30]);
+    const smoothProgress = useSpring(scrollYProgress, { stiffness: 90, damping: 25, restDelta: 0.001 });
 
-    const opacityW2 = useTransform(scrollYProgress, [0.14, 0.18, 0.30, 0.34], [0, 1, 1, 0]);
-    const yW2 = useTransform(scrollYProgress, [0.14, 0.18, 0.30, 0.34], [30, 0, 0, -30]);
+    // CSS mesh alignment interpolation following art parameters in image_c3bca2.jpg
+    const auraX1 = useTransform(smoothProgress, [0, 1], ['15%', '65%']);
+    const auraY1 = useTransform(smoothProgress, [0, 1], ['25%', '75%']);
+    const auraX2 = useTransform(smoothProgress, [0, 1], ['85%', '25%']);
+    const auraY2 = useTransform(smoothProgress, [0, 1], ['15%', '60%']);
+    const auraScale = useTransform(smoothProgress, [0, 0.5, 1], [1, 1.25, 0.85]);
 
-    const opacityW3 = useTransform(scrollYProgress, [0.32, 0.36, 0.48, 0.52], [0, 1, 1, 0]);
-    const yW3 = useTransform(scrollYProgress, [0.32, 0.36, 0.48, 0.52], [30, 0, 0, -30]);
+    // Progressive timeline frames for discrete key phrase opacity shifts
+    const word0Opacity = useTransform(smoothProgress, [0, 0.12, 0.16], [1, 1, 0]);
+    const word0Y = useTransform(smoothProgress, [0, 0.16], [0, -25]);
 
-    const opacityW4 = useTransform(scrollYProgress, [0.50, 0.54, 0.66, 0.70], [0, 1, 1, 0]);
-    const yW4 = useTransform(scrollYProgress, [0.50, 0.54, 0.66, 0.70], [30, 0, 0, -30]);
+    const word1Opacity = useTransform(smoothProgress, [0.14, 0.18, 0.30, 0.34], [0, 1, 1, 0]);
+    const word1Y = useTransform(smoothProgress, [0.14, 0.18, 0.30, 0.34], [25, 0, 0, -25]);
 
-    const opacityW5 = useTransform(scrollYProgress, [0.68, 0.72, 0.82, 0.86], [0, 1, 1, 0]);
-    const yW5 = useTransform(scrollYProgress, [0.68, 0.72, 0.82, 0.86], [30, 0, 0, -30]);
+    const word2Opacity = useTransform(smoothProgress, [0.32, 0.36, 0.48, 0.52], [0, 1, 1, 0]);
+    const word2Y = useTransform(smoothProgress, [0.32, 0.36, 0.48, 0.52], [25, 0, 0, -25]);
 
-    const opacityW6 = useTransform(scrollYProgress, [0.84, 0.90, 1], [0, 1, 1]);
-    const yW6 = useTransform(scrollYProgress, [0.84, 0.90], [30, 0]);
-    const scaleW6 = useTransform(scrollYProgress, [0.84, 0.90], [0.95, 1]);
+    const word3Opacity = useTransform(smoothProgress, [0.50, 0.54, 0.66, 0.70], [0, 1, 1, 0]);
+    const word3Y = useTransform(smoothProgress, [0.50, 0.54, 0.66, 0.70], [25, 0, 0, -25]);
+
+    const word4Opacity = useTransform(smoothProgress, [0.68, 0.72, 0.82, 0.86], [0, 1, 1, 0]);
+    const word4Y = useTransform(smoothProgress, [0.68, 0.72, 0.82, 0.86], [25, 0, 0, -25]);
+
+    const finalCardOpacity = useTransform(smoothProgress, [0.84, 0.90], [0, 1]);
+    const finalCardY = useTransform(smoothProgress, [0.84, 0.90], [40, 0]);
+    
+    const activeLoopOpacity = useTransform(smoothProgress, [0, 0.82, 0.85], [1, 1, 0]);
 
     return (
         <section ref={containerRef} className="relative h-[500vh] bg-brand-offwhite border-b-2 border-brand-navy">
-            <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
+            <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
                 
-                <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
-                    01 / The Progression
+                {/* image_c3bca2.jpg Editorial Mesh Background Mapping (Custom Studio Tones) */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-40">
+                    <motion.div 
+                        className="absolute w-[65vw] h-[65vw] rounded-full bg-brand-purple/20 blur-[130px]"
+                        style={{ left: auraX1, top: auraY1 }}
+                    />
+                    <motion.div 
+                        className="absolute w-[55vw] h-[55vw] rounded-full bg-brand-yellow/15 blur-[110px]"
+                        style={{ right: auraX2, bottom: auraY2 }}
+                    />
+                    <motion.div 
+                        className="absolute w-[75vw] h-[75vw] top-1/4 left-1/4 rounded-full bg-brand-lavender/40 blur-[150px]"
+                        style={{ scale: auraScale }}
+                    />
                 </div>
 
-                <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center h-full">
+                {/* image_c3bca2.jpg Modular Edge Metadata Framework */}
+                <div className="absolute top-12 left-8 right-8 flex justify-between font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-brand-navy/60 z-20">
+                    <span>01 / THE PROGRESSION</span>
+                    <span>// SYSTEM LOG</span>
+                    <span>10-07-2026</span>
+                </div>
+
+                <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center h-full z-10 px-6">
                     
-                    <h2 className="text-[11vw] md:text-[7.5rem] lg:text-[8.5rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center text-center w-full relative">
-                        <span className="opacity-95 mb-4 block">EVERY FOUNDER</span>
+                    {/* Active Mutation Cycle */}
+                    <motion.div style={{ opacity: activeLoopOpacity }} className="absolute flex flex-col items-center justify-center text-center w-full pointer-events-none">
+                        <h2 className="text-[11vw] md:text-[7.5rem] lg:text-[8.5rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                            <span className="font-sans">EVERY</span>
+                            <span className="font-serif italic font-normal my-2 tracking-normal text-brand-purple">FOUNDER</span>
+                        </h2>
                         
-                        <div className="relative w-full flex items-center justify-center h-[1.3em] md:h-[1.5em] lg:h-[1.8em]">
+                        <div className="relative h-24 md:h-36 lg:h-44 w-full flex items-center justify-center mt-4">
                             <motion.span 
-                                style={{ opacity: opacityW1, y: yW1, WebkitTextStroke: '2px #0F0328' }} 
-                                className="absolute text-transparent select-none whitespace-nowrap"
+                                style={{ opacity: word0Opacity, y: word0Y, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent font-mono font-black tracking-tight text-[10vw] md:text-[6.5rem] lg:text-[7.5rem]"
                             >
                                 STARTS.
                             </motion.span>
 
                             <motion.span 
-                                style={{ opacity: opacityW2, y: yW2, WebkitTextStroke: '2px #0F0328' }} 
-                                className="absolute text-transparent select-none whitespace-nowrap"
+                                style={{ opacity: word1Opacity, y: word1Y, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent font-mono font-black tracking-tight text-[10vw] md:text-[6.5rem] lg:text-[7.5rem]"
                             >
                                 STRUGGLES.
                             </motion.span>
 
                             <motion.span 
-                                style={{ opacity: opacityW3, y: yW3, WebkitTextStroke: '2px #0F0328' }} 
-                                className="absolute text-transparent select-none whitespace-nowrap"
+                                style={{ opacity: word2Opacity, y: word2Y, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent font-mono font-black tracking-tight text-[10vw] md:text-[6.5rem] lg:text-[7.5rem]"
                             >
                                 DOUBTS.
                             </motion.span>
 
                             <motion.span 
-                                style={{ opacity: opacityW4, y: yW4, WebkitTextStroke: '2px #0F0328' }} 
-                                className="absolute text-transparent select-none whitespace-nowrap"
+                                style={{ opacity: word3Opacity, y: word3Y, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent font-mono font-black tracking-tight text-[10vw] md:text-[6.5rem] lg:text-[7.5rem]"
                             >
                                 LEARNS.
                             </motion.span>
 
                             <motion.span 
-                                style={{ opacity: opacityW5, y: yW5, WebkitTextStroke: '2px #0F0328' }} 
-                                className="absolute text-transparent select-none whitespace-nowrap"
+                                style={{ opacity: word4Opacity, y: word4Y, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent font-mono font-black tracking-tight text-[10vw] md:text-[6.5rem] lg:text-[7.5rem]"
                             >
                                 GROWS.
                             </motion.span>
-
-                            <motion.span 
-                                style={{ 
-                                    opacity: opacityW6, 
-                                    y: yW6, 
-                                    scale: scaleW6,
-                                    WebkitTextStroke: '1.5px #0F0328' 
-                                }} 
-                                className="absolute text-transparent select-none text-[6.5vw] md:text-[3.8rem] lg:text-[4.5rem] font-black uppercase tracking-tight leading-none text-center max-w-4xl"
-                            >
-                                DESERVES A BRAND WITH CHARACTER.
-                            </motion.span>
                         </div>
-                    </h2>
+                    </motion.div>
 
+                    {/* Final Message Resolution Display */}
                     <motion.div 
-                        style={{ opacity: opacityW6 }}
-                        className="flex flex-col items-center justify-center text-center mt-12 md:mt-16 pointer-events-auto"
+                        style={{ opacity: finalCardOpacity, y: finalCardY }}
+                        className="absolute flex flex-col items-center justify-center text-center max-w-4xl px-4 pointer-events-auto"
                     >
-                        <p className="font-body text-lg md:text-2xl font-light text-brand-navy/85 max-w-3xl leading-relaxed px-4">
-                            We work alongside founders to shape brands from the inside out—clarifying what they stand for, designing how they're seen, and crafting the creative content that helps audiences understand, trust, and choose them.
+                        <h2 className="text-[9vw] md:text-[5.5rem] lg:text-[6.5rem] font-black uppercase tracking-tighter leading-[0.9] text-brand-navy">
+                            <span className="block font-sans">EVERY FOUNDER</span>
+                            <span className="block text-brand-purple italic font-serif font-normal my-4 tracking-normal">DESERVES A BRAND</span>
+                            <span className="block font-sans">WITH CHARACTER.</span>
+                        </h2>
+                        
+                        <p className="mt-8 font-body text-lg md:text-2xl font-light text-brand-navy/85 max-w-3xl leading-relaxed">
+                            We partner with visionary builders to construct unified narratives—clarifying foundational direction, establishing elite design footprints, and producing cinematic contents that command space.
                         </p>
                         
-                        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 w-full px-4">
+                        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 w-full max-w-xl mx-auto">
                             <Link to="/contact" className="w-full sm:w-auto inline-block border-2 border-brand-navy bg-brand-navy text-brand-offwhite px-12 py-5 font-mono text-xs uppercase tracking-widest font-bold hover:bg-brand-purple hover:border-brand-purple transition-all duration-300 shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none text-center">
                                 Inquire Now
                             </Link>
@@ -326,6 +353,11 @@ const NarrativeScroll: React.FC = () => {
                         </div>
                     </motion.div>
 
+                </div>
+
+                {/* image_c3bca2.jpg Bottom Caption Context Element */}
+                <div className="absolute bottom-12 right-8 hidden md:block max-w-xs font-mono text-[10px] text-right text-brand-navy/60 uppercase tracking-widest leading-relaxed">
+                    The trajectory is never linear.<br/>From improvised to intentional. ↘
                 </div>
             </div>
         </section>
@@ -535,7 +567,6 @@ const CapabilityList: React.FC = () => {
                     translateX: "-50%",
                     translateY: "-50%"
                 }}
-                vertical-placement="center"
                 animate={{
                     opacity: hoveredIndex !== null ? 1 : 0,
                     scale: hoveredIndex !== null ? 1 : 0.5,
