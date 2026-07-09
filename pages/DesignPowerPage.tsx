@@ -1,123 +1,122 @@
-import React, { useRef } from 'react';
+import React from 'react';
+import AnimatedSection from '../components/AnimatedSection';
+import { DESIGN_POWER_TIERS } from '../constants';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, ArrowUpRight, Layers, Feathers, ShieldAlert } from 'lucide-react';
 
 const DesignPowerPage: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  const headerY = useTransform(scrollYProgress, [0, 0.4], [0, -40]);
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-
-  const modules = [
-    {
-      num: "01",
-      title: "Visual Identity Systems",
-      details: ["Logo System Blueprints", "Typographic Matrices", "Color Frequency Guides", "Brand Usage Rulebooks"]
-    },
-    {
-      num: "02",
-      title: "Digital Interface Dev",
-      details: ["High-Contrast UI Layouts", "Webflow Production Launch", "Responsive System Tuning", "Interaction Latency Safety"]
-    },
-    {
-      num: "03",
-      title: "Kinetic Media & Motion",
-      details: ["3D Realtime Texturing", "Kinetic Type Engines", "Campaign Motion Toolkits", "Vector Assets Tuning"]
-    }
-  ];
-
   return (
-    <div ref={containerRef} className="relative min-h-screen bg-brand-navy text-white overflow-hidden studio-grid">
-      <Helmet>
-        <title>Design Power & Identity Systems | COOLO</title>
-        <meta name="description" content="High-impact aesthetic execution for industry leaders. We engineering visual guidelines, advanced interface systems, and vector playbooks." />
-      </Helmet>
-
-      <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-brand-yellow/5 blur-[120px] rounded-full pointer-events-none z-0 translate-x-1/3 -translate-y-1/3" />
-
-      <div className="container mx-auto px-6 md:px-12 max-w-7xl relative z-10 pt-44 pb-32">
+    <div className="bg-brand-offwhite pt-32">
+      <div className="container mx-auto px-8">
         
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
-        >
-          <Link 
-            to="/" 
-            className="inline-flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-brand-lavender hover:text-brand-yellow transition-colors group"
-          >
-            <ArrowLeft size={12} className="transform group-hover:-translate-x-1 transition-transform" />
-            <span>Service Leg 02 / Design Systems</span>
-          </Link>
-        </motion.div>
+        <AnimatedSection>
+          <header className="py-24 md:py-48 max-w-5xl">
+            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-sm font-bold block mb-4">Phase 02 / The Creative Execution</span>
+            <h1 className="text-brand-navy text-8xl md:text-[12vw] font-black uppercase tracking-tight leading-[0.9] mt-0">
+              Make It <br/>
+              <span className="text-brand-purple italic">Real.</span>
+            </h1>
+              <span className="text-brand-navy/40 not-italic text-xl mt-6 block font-normal">
+                You have the direction. Now you need to show up like it. <br/> 
+                This is where it becomes visible. Where ideas turn into something people can actually see, trust, and remember. <br/> 
+                Not just pretty design. Design that performs. That holds attention. That feels real across every brand touchpoint.
+              </span>
+          </header>
+        </AnimatedSection>
 
-        {/* Clamped and Safely Scaled Heading Blocks to Ensure Safe Multi-line Wraps */}
-        <motion.div 
-          style={{ y: headerY, opacity: headerOpacity }}
-          className="border-b border-white/5 pb-16 mb-24"
-        >
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase leading-[0.85] tracking-tighter text-white max-w-5xl select-text">
-            Design Power<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-brand-offwhite to-brand-yellow">High Contrast</span> &<br />
-            Visual Identity Systems<span className="text-brand-purple">.</span>
-          </h1>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 items-start">
-            <div className="lg:col-span-4 font-mono text-[10px] uppercase tracking-widest text-brand-yellow font-bold flex items-center gap-2">
-              <Layers size={12} />
-              <span>[ VISUAL ASSETS MATRIX // SYS_02 ]</span>
+        {/* ALIGNED TO CLARITY PAGE 12-COL LAYOUT */}
+        <section className="py-24 border-t-2 border-brand-navy mb-32">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <div className="lg:col-span-4">
+                    <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-black mb-4 block">The execution</span>
+                    <h2 className="text-5xl font-black uppercase tracking-tight leading-none text-brand-navy">
+                        Death to<br/>Clip Art.
+                    </h2>
+                </div>
+                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12 font-body text-xl leading-relaxed text-brand-navy/80">
+                    <AnimatedSection delay={100}>
+                        <h4 className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-2">The Harsh Truth</h4>
+                        <p>
+                            <strong>People judge books by their covers.</strong> It sucks, but it’s true. If your business looks like it was made in MS Paint, nobody is going to trust your strategy.
+                        </p>
+                    </AnimatedSection>
+                    <AnimatedSection delay={200}>
+                        <h4 className="font-mono text-brand-purple uppercase tracking-widest text-xs font-bold mb-2">The Solution</h4>
+                        <p>
+                            We use <strong>The Creative Method™</strong> to translate your strategy into visuals. We don't guess. We take the "Soul" we found in Phase 1 and build a body for it.
+                        </p>
+                    </AnimatedSection>
+                </div>
             </div>
-            <div className="lg:col-span-8">
-              <p className="font-body text-lg md:text-xl font-light leading-relaxed text-white/70 max-w-2xl">
-                We build adaptive typographic architectures and interface environments that perform flawlessly across desktop, tablet, and mobile dimensions.
-              </p>
-            </div>
-          </div>
-        </motion.div>
+        </section>
 
-        {/* Modules Loop Segment */}
-        <div className="space-y-6 mb-32">
-          {modules.map((mod) => (
-            <div key={mod.num} className="bg-platform-dark/20 border border-white/5 p-8 rounded-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center hover:bg-platform-dark/40 transition-colors duration-300">
-              <div className="lg:col-span-2 font-mono text-3xl font-black text-brand-purple">// {mod.num}</div>
-              <div className="lg:col-span-5">
-                <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">{mod.title}</h3>
-              </div>
-              <div className="lg:col-span-5">
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-[11px] text-white/60">
-                  {mod.details.map((detail, idx) => (
-                    <li key={idx} className="flex items-center gap-2">
-                      <span className="w-1 h-1 bg-brand-yellow rounded-full"></span>
-                      <span>{detail}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        {/* BRUTALIST TIERS - ALIGNED TO CLARITY PAGE CARDS */}
+        <section className="pb-48">
+            <div className="mb-16">
+                <h3 className="font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold">The Menu</h3>
             </div>
-          ))}
-        </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {DESIGN_POWER_TIERS.map((tier, i) => (
+                    <AnimatedSection key={tier.slug} delay={i * 100}>
+                        <Link 
+                            to={`/design-power/${tier.slug}`} 
+                            className="block border-2 border-brand-navy p-12 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-500 h-full group relative overflow-hidden bg-white shadow-[12px_12px_0px_0px_#0F0328] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+                        >
+                            <div className="flex flex-col h-full justify-between relative z-10">
+                                <div>
+                                    <div className="flex justify-between items-start mb-8">
+                                        <span className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple group-hover:text-brand-yellow transition-colors">{tier.subtitle || tier.timeline}</span>
+                                        <span className="font-mono text-[10px] uppercase font-black px-2 py-1 bg-brand-navy/5 group-hover:bg-brand-offwhite/10 group-hover:text-brand-yellow transition-colors">Talk to us</span>
+                                    </div>
+                                    <h3 className="text-4xl md:text-5xl font-black uppercase leading-none tracking-tight mb-6">{tier.name}</h3>
+                                    <p className="font-body text-xl text-brand-navy/60 group-hover:text-brand-offwhite/70 transition-colors leading-relaxed min-h-[80px]">
+                                        {tier.desc}
+                                    </p>
 
-        {/* Lower Call to Action Frame */}
-        <div className="border-t border-white/10 pt-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-          <div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40 block mb-2">Launch Architecture</span>
-            <h3 className="text-3xl font-black uppercase tracking-tight text-white">Require custom corporate visual setups?</h3>
-          </div>
-          <Link 
-            to="/contact" 
-            className="inline-flex items-center gap-3 bg-white text-brand-navy font-mono text-xs uppercase font-black py-4 px-10 border border-white hover:bg-transparent hover:text-white transition-all duration-300 transform-gpu"
-          >
-            <span>Deploy Design Pipeline</span>
-            <ArrowUpRight size={14} />
-          </Link>
-        </div>
+                                    <ul className="mt-8 space-y-2 border-t border-brand-navy/10 pt-8 group-hover:border-brand-offwhite/20 transition-colors">
+                                        {(tier.deliverables || []).slice(0, 3).map((feature) => (
+                                            <li key={feature} className="font-mono text-[10px] uppercase tracking-widest flex items-center gap-2">
+                                                <span className="w-1 h-1 bg-brand-purple group-hover:bg-brand-yellow transition-colors"></span> {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="mt-12 flex items-center gap-4">
+                                    <span className="font-mono text-sm uppercase font-bold tracking-widest">{tier.cta}</span>
+                                    <div className="w-12 h-[2px] bg-brand-navy group-hover:bg-brand-yellow group-hover:w-24 transition-all duration-500"></div>
+                                </div>
+                            </div>
+                        </Link>
+                    </AnimatedSection>
+                ))}
+            </div>
+        </section>
+
+        {/* ALIGNED TO CLARITY PAGE "THE OUTCOME" */}
+        <section className="pb-32 border-t border-brand-navy/10 pt-24">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <div className="lg:col-span-4">
+                    <h3 className="text-4xl font-black uppercase text-brand-navy tracking-tight italic">How we build and design brands.</h3>
+                </div>
+                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12">
+                    {[
+                        { step: "01", t: "The Download", d: "We don't start sketching until we understand the job. We take your strategy and turn it into a Visual Brief." },
+                        { step: "02", t: "The Messy Art Work", d: "We show you the sketches, the bad ideas, and the rough drafts so we can find the gold together." },
+                        { step: "03", t: "The Build", d: "Once we sign-off on the look, we build the design system. Every file, every format, every pixel—ready to use." },
+                        { step: "04", t: "The Handoff", d: "We hand over the keys. Full ownership of assets, clear rules, and no hostage situations." }
+                    ].map(o => (
+                        <div key={o.t}>
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className="font-mono text-brand-purple text-xs font-bold">[{o.step}]</span>
+                                <h4 className="font-mono text-brand-navy uppercase tracking-widest text-xs font-bold">{o.t}</h4>
+                            </div>
+                            <p className="font-body text-xl text-brand-navy/80">{o.d}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
 
       </div>
     </div>
