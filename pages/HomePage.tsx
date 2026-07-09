@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet-async';
 import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS, QA_DATA } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
-import { ArrowUpRight, Layers, Terminal } from 'lucide-react';
 
 interface TrailItem {
     id: number;
@@ -47,7 +46,7 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
 
             const dist = Math.hypot(clientX - lastPos.current.x, clientY - lastPos.current.y);
 
-            if (dist > 95) {
+            if (dist > 80) {
                 const nextImage = allImages[trailCount.current % allImages.length];
                 const id = trailCount.current++;
                 
@@ -91,7 +90,7 @@ const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ 
     }, [allImages, containerRef]);
 
     return (
-        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
             <AnimatePresence>
                 {trail.map((item) => (
                     <motion.div
@@ -125,10 +124,10 @@ const BrandHero: React.FC = () => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    const springX = useSpring(mouseX, { stiffness: 45, damping: 22 });
-    const springY = useSpring(mouseY, { stiffness: 45, damping: 22 });
+    const springX = useSpring(mouseX, { stiffness: 60, damping: 25 });
+    const springY = useSpring(mouseY, { stiffness: 60, damping: 25 });
 
-    const handleMouseMove = (e: React.MouseEvent) => {
+    const handleMouseMove = (e: MouseEvent) => {
         const { innerWidth, innerHeight } = window;
         mouseX.set((e.clientX / innerWidth) - 0.5);
         mouseY.set((e.clientY / innerHeight) - 0.5);
@@ -138,16 +137,16 @@ const BrandHero: React.FC = () => {
         <section 
             ref={sectionRef}
             onMouseMove={handleMouseMove}
-            className="relative min-h-screen flex flex-col pt-40 pb-20 bg-brand-navy text-white overflow-hidden border-b border-white/5"
+            className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden border-b-2 border-brand-navy"
         >
             <ImageTrail containerRef={sectionRef} />
 
-            <div className="absolute inset-0 studio-grid pointer-events-none z-0"></div>
+            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03] z-10"></div>
             
             <motion.div 
                 style={{ 
-                    x: useTransform(springX, [-0.5, 0.5], [80, -80]), 
-                    y: useTransform(springY, [-0.5, 0.5], [80, -80]) 
+                    x: useTransform(springX, [-0.5, 0.5], [100, -100]), 
+                    y: useTransform(springY, [-0.5, 0.5], [100, -100]) 
                 }}
                 className="absolute inset-0 z-10 pointer-events-none opacity-20"
             >
@@ -155,12 +154,12 @@ const BrandHero: React.FC = () => {
             </motion.div>
 
             <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
-                <div className="relative mb-16 md:mb-28">
+                <div className="relative mb-8 md:mb-16">
                     <motion.h1 
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                        className="flex flex-col text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-white break-words select-all pointer-events-auto"
+                        className="flex flex-col text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal pointer-events-auto"
                     >
                         <span>SHAPING BRANDS</span>
                         <span className="flex items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
@@ -169,35 +168,47 @@ const BrandHero: React.FC = () => {
                     </motion.h1>
                 </div>
 
+                {/* HIGH VISIBILITY DIRECT ACTION CTA ZONE */}
+                <div className="pointer-events-auto mb-16 max-w-sm">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <Link to="/contact" className="w-full sm:w-auto inline-block text-center border-2 border-brand-navy bg-brand-navy text-brand-offwhite px-8 py-4 font-mono text-xs uppercase tracking-widest font-bold hover:bg-brand-purple hover:border-brand-purple transition-all duration-300 shadow-[4px_4px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
+                            Book a Project &rarr;
+                        </Link>
+                        <Link to="/work" className="w-full sm:w-auto inline-block text-center border-2 border-brand-navy bg-transparent text-brand-navy px-8 py-4 font-mono text-xs uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 shadow-[4px_4px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
+                            View Case Files
+                        </Link>
+                    </div>
+                </div>
+
                 <div className="mt-auto pointer-events-auto">
                     <div className="text-center mb-6">
-                        <span className="font-mono text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold text-white">
-                            [ MOVE CURSOR TO REVEAL ]
+                        <span className="font-mono text-xs uppercase tracking-[0.5em] opacity-70 font-bold text-brand-navy">
+                            [ MOVE CURSOR TO REVEAL IMAGES ]
                         </span>
                     </div>
 
-                    <div className="w-full h-[1px] bg-white/10 mb-8 md:mb-10"></div>
+                    <div className="w-full h-[1.5px] bg-brand-navy/80 mb-8 md:mb-10"></div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start text-white/80 font-mono">
-                        <div className="bg-platform-dark/40 border border-white/5 p-6 rounded-sm backdrop-blur-md">
-                            <span className="text-brand-yellow uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Est. 2024</span>
-                            <div className="text-[10px] uppercase tracking-widest leading-loose font-bold opacity-70">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start text-brand-navy">
+                        <div className="font-mono">
+                            <span className="text-brand-purple uppercase tracking-[0.2em] text-xs font-bold block mb-2 md:mb-3">Est. 2024</span>
+                            <div className="text-xs uppercase tracking-widest leading-loose font-bold opacity-85">
                                 MOUNT MAUNGANUI<br/>NEW ZEALAND
                             </div>
                         </div>
 
-                        <div className="bg-platform-dark/40 border border-white/5 p-6 rounded-sm backdrop-blur-md md:text-center">
-                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
-                             <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
-                                A boutique creative and brand studio helping businesses transition from improvised to intentional.
+                        <div className="md:text-center font-mono">
+                             <span className="text-brand-purple uppercase tracking-[0.2em] text-xs font-bold block mb-2 md:mb-3">The Senior Unit</span>
+                             <p className="text-xs uppercase tracking-widest font-bold leading-relaxed opacity-85 max-w-xs mx-auto">
+                                A premium brand design studio specializing in independent creative strategy, custom digital platforms, and distinctive identities.
                              </p>
                         </div>
 
-                        <div className="bg-platform-dark/40 border border-white/5 p-6 rounded-sm backdrop-blur-md md:text-right">
-                            <span className="text-brand-lavender uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Status:</span>
+                        <div className="md:text-right font-mono">
+                            <span className="text-brand-purple uppercase tracking-[0.2em] text-xs font-bold block mb-2 md:mb-3">Status:</span>
                              <div className="flex items-center md:justify-end gap-3">
                                  <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
-                                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70">Currently Booking Q2/Q3 Projects</span>
+                                 <span className="text-xs uppercase tracking-[0.3em] font-bold opacity-85">Booking Q2/Q3 Projects</span>
                              </div>
                         </div>
                     </div>
@@ -205,7 +216,7 @@ const BrandHero: React.FC = () => {
             </div>
         </section>
     );
-}
+};
 
 const NarrativeScroll: React.FC = () => {
     const containerRef = useRef<HTMLElement>(null);
@@ -213,70 +224,103 @@ const NarrativeScroll: React.FC = () => {
         target: containerRef,
         offset: ["start start", "end end"]
     });
-    
-    const opacity1 = useTransform(scrollYProgress, [0, 0.15, 0.22], [1, 1, 0]);
-    const y1 = useTransform(scrollYProgress, [0, 0.22], [0, -50]);
-    const scale1 = useTransform(scrollYProgress, [0, 0.22], [1, 0.95]);
 
-    const opacity2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0, 1, 0]);
-    const y2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [50, 0, -50]);
-    const scale2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0.95, 1, 0.95]);
+    // Progressive scroll frame transformations across 500vh tracking space
+    const opacityW1 = useTransform(scrollYProgress, [0, 0.12, 0.16], [1, 1, 0]);
+    const yW1 = useTransform(scrollYProgress, [0, 0.16], [0, -30]);
 
-    const opacity3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0, 1, 0]);
-    const y3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [50, 0, -50]);
-    const scale3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0.95, 1, 0.95]);
+    const opacityW2 = useTransform(scrollYProgress, [0.14, 0.18, 0.30, 0.34], [0, 1, 1, 0]);
+    const yW2 = useTransform(scrollYProgress, [0.14, 0.18, 0.30, 0.34], [30, 0, 0, -30]);
 
-    const opacity4 = useTransform(scrollYProgress, [0.68, 0.85, 1], [0, 1, 1]);
-    const y4 = useTransform(scrollYProgress, [0.68, 0.85], [50, 0]);
-    const scale4 = useTransform(scrollYProgress, [0.68, 0.85], [0.95, 1]);
+    const opacityW3 = useTransform(scrollYProgress, [0.32, 0.36, 0.48, 0.52], [0, 1, 1, 0]);
+    const yW3 = useTransform(scrollYProgress, [0.32, 0.36, 0.48, 0.52], [30, 0, 0, -30]);
+
+    const opacityW4 = useTransform(scrollYProgress, [0.50, 0.54, 0.66, 0.70], [0, 1, 1, 0]);
+    const yW4 = useTransform(scrollYProgress, [0.50, 0.54, 0.66, 0.70], [30, 0, 0, -30]);
+
+    const opacityW5 = useTransform(scrollYProgress, [0.68, 0.72, 0.82, 0.86], [0, 1, 1, 0]);
+    const yW5 = useTransform(scrollYProgress, [0.68, 0.72, 0.82, 0.86], [30, 0, 0, -30]);
+
+    const opacityW6 = useTransform(scrollYProgress, [0.84, 0.90, 1], [0, 1, 1]);
+    const yW6 = useTransform(scrollYProgress, [0.84, 0.90], [30, 0]);
+    const scaleW6 = useTransform(scrollYProgress, [0.84, 0.90], [0.95, 1]);
 
     return (
-        <section ref={containerRef} className="relative h-[400vh] bg-brand-navy">
+        <section ref={containerRef} className="relative h-[500vh] bg-brand-offwhite border-b-2 border-brand-navy">
             <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
                 
-                <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20 flex items-center gap-2">
-                    <Terminal size={12} className="text-brand-yellow" />
-                    <span>01 // NARRATIVE LOG TRACK</span>
+                <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
+                    01 / The Progression
                 </div>
 
-                <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center h-full">
+                <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center h-full">
                     
-                    <motion.div style={{ opacity: opacity1, y: y1, scale: scale1 }} className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-white flex flex-col items-center">
-                            <span>EVERY FOUNDER</span>
-                            <span className="kinetic-text">HAS A VISION.</span>
-                        </h2>
-                    </motion.div>
-
-                    <motion.div style={{ opacity: opacity2, y: y2, scale: scale2 }} className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-white flex flex-col items-center">
-                            <span>NOT EVERY VISION</span>
-                            <span className="kinetic-text">BECOMES A BRAND.</span>
-                        </h2>
-                    </motion.div>
-
-                    <motion.div style={{ opacity: opacity3, y: y3, scale: scale3 }} className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-white flex flex-col items-center">
-                            <span>THAT'S WHERE WE</span>
-                            <span className="kinetic-text">COME IN.</span>
-                        </h2>
-                    </motion.div>
-
-                    <motion.div style={{ opacity: opacity4, y: y4, scale: scale4 }} className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto mt-16 md:mt-0">
-                        <h2 className="text-[10vw] md:text-[5rem] lg:text-[6.5rem] font-black uppercase tracking-tighter leading-[0.85] text-white flex flex-col items-center">
-                            <span>STRATEGY. DESIGN.</span>
-                            <span className="text-brand-yellow">DIRECTION. CONTENT.</span>
-                        </h2>
+                    <h2 className="text-[11vw] md:text-[7.5rem] lg:text-[8.5rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center text-center w-full relative">
+                        <span className="opacity-95 mb-4 block">EVERY FOUNDER</span>
                         
-                        <p className="mt-8 font-body text-xl md:text-2xl font-light text-white/70 max-w-4xl leading-relaxed mx-auto">
-                            We work alongside founders to shape brands from the inside out—clarifying what they stand for, designing how they're seen, and crafting the creative that helps people understand, remember and choose them.
+                        <div className="relative w-full flex items-center justify-center h-[1.3em] md:h-[1.5em] lg:h-[1.8em]">
+                            <motion.span 
+                                style={{ opacity: opacityW1, y: yW1, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent select-none whitespace-nowrap"
+                            >
+                                STARTS.
+                            </motion.span>
+
+                            <motion.span 
+                                style={{ opacity: opacityW2, y: yW2, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent select-none whitespace-nowrap"
+                            >
+                                STRUGGLES.
+                            </motion.span>
+
+                            <motion.span 
+                                style={{ opacity: opacityW3, y: yW3, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent select-none whitespace-nowrap"
+                            >
+                                DOUBTS.
+                            </motion.span>
+
+                            <motion.span 
+                                style={{ opacity: opacityW4, y: yW4, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent select-none whitespace-nowrap"
+                            >
+                                LEARNS.
+                            </motion.span>
+
+                            <motion.span 
+                                style={{ opacity: opacityW5, y: yW5, WebkitTextStroke: '2px #0F0328' }} 
+                                className="absolute text-transparent select-none whitespace-nowrap"
+                            >
+                                GROWS.
+                            </motion.span>
+
+                            <motion.span 
+                                style={{ 
+                                    opacity: opacityW6, 
+                                    y: yW6, 
+                                    scale: scaleW6,
+                                    WebkitTextStroke: '1.5px #0F0328' 
+                                }} 
+                                className="absolute text-transparent select-none text-[6.5vw] md:text-[3.8rem] lg:text-[4.5rem] font-black uppercase tracking-tight leading-none text-center max-w-4xl"
+                            >
+                                DESERVES A BRAND WITH CHARACTER.
+                            </motion.span>
+                        </div>
+                    </h2>
+
+                    <motion.div 
+                        style={{ opacity: opacityW6 }}
+                        className="flex flex-col items-center justify-center text-center mt-12 md:mt-16 pointer-events-auto"
+                    >
+                        <p className="font-body text-lg md:text-2xl font-light text-brand-navy/85 max-w-3xl leading-relaxed px-4">
+                            We work alongside founders to shape brands from the inside out—clarifying what they stand for, designing how they're seen, and crafting the creative content that helps audiences understand, trust, and choose them.
                         </p>
                         
-                        <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6">
-                            <Link to="/contact" className="inline-block border border-white bg-white text-brand-navy px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-transparent hover:text-white transition-all duration-300">
+                        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 w-full px-4">
+                            <Link to="/contact" className="w-full sm:w-auto inline-block border-2 border-brand-navy bg-brand-navy text-brand-offwhite px-12 py-5 font-mono text-xs uppercase tracking-widest font-bold hover:bg-brand-purple hover:border-brand-purple transition-all duration-300 shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none text-center">
                                 Inquire Now
                             </Link>
-                            <Link to="/about" className="inline-block border border-white/20 px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-white/10 transition-all duration-300 text-white">
+                            <Link to="/about" className="w-full sm:w-auto inline-block border-2 border-brand-navy px-12 py-5 font-mono text-xs uppercase tracking-widest font-bold hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300 text-brand-navy shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none text-center">
                                 More About Us
                             </Link>
                         </div>
@@ -286,11 +330,11 @@ const NarrativeScroll: React.FC = () => {
             </div>
         </section>
     );
-}
+};
 
 const ServiceRouter: React.FC = () => {
     return (
-        <section className="bg-brand-navy border-t border-b border-white/5 relative z-40 overflow-hidden">
+        <section className="bg-brand-offwhite border-t-2 border-b-2 border-brand-navy relative z-40 overflow-hidden">
              <div className="grid grid-cols-1 lg:grid-cols-3">
                 {SERVICE_LEGS.map((leg, index) => {
                     const titleParts = leg.title.match(/^(We help you)\s+(.*)$/i);
@@ -300,16 +344,16 @@ const ServiceRouter: React.FC = () => {
                     return (
                         <div 
                             key={leg.id}
-                            className="group relative flex flex-col justify-between min-h-[60vh] md:min-h-[70vh] border-b lg:border-b-0 lg:border-r border-white/5 p-8 md:p-12 overflow-hidden hover:bg-platform-dark/40 transition-colors duration-500 neon-glow-border"
+                            className="group relative flex flex-col justify-between min-h-[60vh] md:min-h-[70vh] border-b lg:border-b-0 lg:border-r border-brand-navy/10 p-8 md:p-12 overflow-hidden hover:bg-brand-lavender transition-colors duration-500"
                         >
                             <Link to={leg.path} className="absolute inset-0 z-0" aria-label={`View ${leg.title}`} />
 
                             <div className="relative z-10 pointer-events-none">
                                 <div className="flex justify-between items-start mb-12">
-                                    <span className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors">
+                                    <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors">
                                         0{index + 1}
                                     </span>
-                                    <span className="font-mono text-[10px] uppercase tracking-widest font-bold opacity-50 group-hover:opacity-100 transition-opacity text-white">
+                                    <span className="font-mono text-xs uppercase tracking-widest font-bold opacity-70 group-hover:opacity-100 text-brand-navy group-hover:text-brand-offwhite">
                                         {leg.visual}
                                     </span>
                                 </div>
@@ -318,27 +362,27 @@ const ServiceRouter: React.FC = () => {
                                     <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors block mb-2">
                                         {prefix}
                                     </span>
-                                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] text-white break-words">
+                                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] text-brand-navy group-hover:text-brand-offwhite transition-colors break-words">
                                         {mainTitle}
                                         <span className="text-brand-purple group-hover:text-brand-yellow transition-colors">.</span>
                                     </h2>
                                 </div>
                                 
-                                <p className="font-body text-xl md:text-2xl text-white/60 group-hover:text-white transition-colors max-w-sm leading-relaxed">
+                                <p className="font-body text-xl md:text-2xl text-brand-navy/80 group-hover:text-brand-offwhite/90 transition-colors max-w-sm leading-relaxed">
                                     {leg.subtitle}
                                 </p>
                             </div>
 
-                            <div className="relative z-10 pt-12 border-t border-white/5 mt-auto flex flex-col items-start gap-8">
-                                <p className="font-mono text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0 text-white pointer-events-none">
+                            <div className="relative z-10 pt-12 border-t border-brand-navy/10 group-hover:border-brand-offwhite/20 mt-auto flex flex-col items-start gap-8">
+                                <p className="font-mono text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0 text-brand-navy group-hover:text-brand-offwhite pointer-events-none">
                                     {leg.hoverText}
                                 </p>
                                 
-                                <Link to="/contact" className="pointer-events-auto bg-white text-brand-navy px-8 py-4 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-purple hover:text-white border border-white transition-all duration-300">
+                                <Link to="/contact" className="pointer-events-auto bg-brand-navy text-brand-offwhite px-8 py-4 font-mono text-xs uppercase tracking-widest font-bold hover:bg-brand-purple transition-all duration-300 shadow-[4px_4px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
                                     Inquire Now
                                 </Link>
 
-                                <Link to={leg.path} className="pointer-events-auto inline-block font-mono text-sm uppercase font-bold tracking-widest border-b-2 border-brand-purple group-hover:border-brand-yellow pb-1 group-hover:text-brand-yellow transition-colors text-brand-purple mt-2">
+                                <Link to={leg.path} className="pointer-events-auto inline-block font-mono text-xs uppercase font-bold tracking-widest border-b-2 border-brand-purple group-hover:border-brand-yellow pb-1 group-hover:text-brand-yellow transition-colors text-brand-purple mt-2">
                                     More Info
                                 </Link>
                             </div>
@@ -347,8 +391,8 @@ const ServiceRouter: React.FC = () => {
                 })}
              </div>
         </section>
-    )
-}
+    );
+};
 
 const FeatureSpotlight: React.FC = () => {
     const featuredProject = PROJECTS[0]; 
@@ -376,13 +420,13 @@ const FeatureSpotlight: React.FC = () => {
                             <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-xs font-bold mb-6 block">
                                 Featured Case Study
                             </span>
-                            <h2 className="text-[15vw] leading-[0.85] font-black uppercase tracking-tighter text-white mb-8 group-hover:text-brand-yellow transition-colors duration-500">
+                            <h2 className="text-[15vw] leading-[0.85] font-black uppercase tracking-tighter text-brand-offwhite mb-8 group-hover:text-brand-yellow transition-colors duration-500">
                                 {featuredProject.title}
                             </h2>
                             
-                            <div className="flex flex-col md:flex-row gap-12 border-t border-white/10 pt-8 text-white/80">
+                            <div className="flex flex-col md:flex-row gap-12 border-t border-brand-offwhite/20 pt-8 text-brand-offwhite/80">
                                 <div className="max-w-xl">
-                                    <p className="font-body text-xl font-light opacity-80 line-clamp-3 md:line-clamp-4 leading-relaxed">
+                                    <p className="font-body text-xl font-light opacity-85 line-clamp-3 md:line-clamp-4 leading-relaxed">
                                         {featuredProject.description}
                                     </p>
                                 </div>
@@ -439,12 +483,12 @@ const CapabilityList: React.FC = () => {
 
     return (
         <section 
-            className="bg-brand-navy text-white py-32 relative z-40 overflow-hidden border-b border-white/5" 
+            className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden border-b-2 border-brand-navy" 
             onMouseMove={handleMouseMove}
         >
             <div className="container mx-auto px-8 relative z-10">
-                <div className="mb-24 flex items-end justify-between border-b border-white/10 pb-8">
-                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">
+                <div className="mb-24 flex items-end justify-between border-b border-brand-offwhite/20 pb-8">
+                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85]">
                         Output.
                      </h2>
                      <div className="hidden md:block font-mono text-xs uppercase tracking-widest text-right opacity-80">
@@ -459,16 +503,16 @@ const CapabilityList: React.FC = () => {
                             to={cap.link}
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(null)}
-                            className="group relative border-b border-white/5 py-12 md:py-16 flex flex-col md:flex-row justify-between md:items-center transition-colors hover:bg-white/[0.01]"
+                            className="group relative border-b border-brand-offwhite/20 py-12 md:py-16 flex flex-col md:flex-row justify-between md:items-center transition-colors hover:bg-brand-offwhite/5"
                         >
                             <div className="flex items-baseline gap-8 md:gap-16">
-                                <span className="font-mono text-sm md:text-base text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
-                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-white leading-[0.85]">
+                                <span className="font-mono text-xs md:text-sm text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
+                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-brand-offwhite leading-[0.85]">
                                     {cap.title}
                                 </h3>
                             </div>
                             <div className="mt-4 md:mt-0 pl-[calc(2rem+14px)] md:pl-0">
-                                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-white">
+                                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-85 group-hover:opacity-100 transition-opacity text-brand-offwhite">
                                     {cap.desc}
                                 </span>
                             </div>
@@ -476,8 +520,8 @@ const CapabilityList: React.FC = () => {
                     ))}
                 </div>
                 
-                <div className="mt-16 md:mt-24 max-w-2xl border-t border-white/10 pt-8">
-                    <p className="font-body text-lg opacity-80">
+                <div className="mt-16 md:mt-24 max-w-2xl border-t border-brand-offwhite/20 pt-8">
+                    <p className="font-body text-lg opacity-90 leading-relaxed">
                         We build custom visual systems using industry-standard platforms like <a href="https://webflow.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Webflow</a> and <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Stripe</a>, ensuring your brand performs securely and as well as it looks.
                     </p>
                 </div>
@@ -491,6 +535,7 @@ const CapabilityList: React.FC = () => {
                     translateX: "-50%",
                     translateY: "-50%"
                 }}
+                vertical-placement="center"
                 animate={{
                     opacity: hoveredIndex !== null ? 1 : 0,
                     scale: hoveredIndex !== null ? 1 : 0.5,
@@ -501,17 +546,17 @@ const CapabilityList: React.FC = () => {
             </motion.div>
         </section>
     );
-}
+};
 
 const ShowcaseGrid: React.FC = () => {
     return (
-        <section className="bg-brand-navy px-6 md:px-8 py-32 relative z-40 border-b border-white/5 overflow-hidden">
+        <section className="bg-brand-offwhite px-6 md:px-8 py-32 relative z-40 border-b-2 border-brand-navy overflow-hidden">
              <div className="container mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">
+                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">
                         Selected<br/>Works
                      </h2>
-                     <Link to="/work" className="font-mono text-sm uppercase tracking-widest font-bold border-2 border-white/10 px-8 py-3 hover:bg-white hover:text-brand-navy transition-all text-white">
+                     <Link to="/work" className="font-mono text-xs uppercase tracking-widest font-bold border-2 border-brand-navy px-8 py-3 hover:bg-brand-navy hover:text-brand-offwhite transition-all text-brand-navy">
                         View Full Archive
                      </Link>
                 </div>
@@ -520,35 +565,35 @@ const ShowcaseGrid: React.FC = () => {
                     {PROJECTS.slice(1, 8).map((project, index) => (
                         <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-24' : ''}`}>
                              <ProjectCard project={project} className="aspect-[4/3] w-full" />
-                             <div className="mt-6 flex justify-between items-start border-t border-white/5 pt-4">
+                             <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
                                 <div>
-                                    <h3 className="text-3xl font-black uppercase tracking-tighter leading-none text-white">{project.title}</h3>
-                                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
+                                    <h3 className="text-3xl font-black uppercase tracking-tighter leading-none text-brand-navy">{project.title}</h3>
+                                    <span className="font-mono text-xs uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
                                 </div>
-                                <span className="font-mono text-[10px] uppercase font-bold opacity-40 text-white">{project.year}</span>
+                                <span className="font-mono text-xs uppercase font-bold opacity-70 text-brand-navy">{project.year}</span>
                              </div>
                         </div>
                     ))}
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
 const FAQSection: React.FC = () => {
     const faqs = QA_DATA[0].questions; 
     return (
-        <section className="py-24 bg-brand-navy border-b border-white/5 relative z-40">
+        <section className="py-24 bg-white border-b-2 border-brand-navy relative z-40">
             <div className="container mx-auto px-6 md:px-8">
-                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85] mb-16">Frequently Asked Questions</h2>
+                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85] mb-16">Frequently Asked Questions</h2>
                 <div className="max-w-4xl" itemScope itemType="https://schema.org/FAQPage">
                     {faqs.map((faq, i) => (
-                        <div key={i} className="mb-10 border-b border-white/5 pb-10" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-                            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white mb-4" itemProp="name">
+                        <div key={i} className="mb-10 border-b border-brand-navy/10 pb-10" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+                            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-brand-navy mb-4" itemProp="name">
                                 {faq.q}
                             </h3>
                             <div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-                                <p className="font-body text-lg md:text-xl text-white/60 leading-relaxed" itemProp="text">
+                                <p className="font-body text-lg md:text-xl text-brand-navy/95 leading-relaxed" itemProp="text">
                                     {faq.a}
                                 </p>
                             </div>
@@ -562,19 +607,19 @@ const FAQSection: React.FC = () => {
 
 const LatestIntel: React.FC = () => {
     return (
-        <section className="py-24 relative z-40 bg-brand-navy overflow-hidden">
+        <section className="py-24 relative z-40 bg-brand-offwhite overflow-hidden">
              <div className="container mx-auto px-8">
                  <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">Studio Thoughts</h2>
-                    <Link to="/journal" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-white">View All Entries &rarr;</Link>
+                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">Studio Thoughts</h2>
+                    <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">View All Entries &rarr;</Link>
                  </div>
                  
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-white/5">
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-brand-navy/10">
                     {JOURNAL_POSTS.slice(0, 3).map((post, i) => (
-                        <Link key={i} to={`/journal/${post.slug}`} className="group block border-r border-b border-t border-white/5 p-8 hover:bg-white/[0.01] transition-all duration-300 text-white">
-                             <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-4 group-hover:text-brand-yellow text-white">{post.date}</span>
-                             <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-white group-hover:text-brand-yellow transition-colors min-h-[3em]">{post.title}</h3>
-                             <p className="font-body text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-white">
+                        <Link key={i} to={`/journal/${post.slug}`} data-cursor-text="READ" className="group block border-r border-b border-t border-brand-navy/10 p-8 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300">
+                             <span className="font-mono text-xs uppercase tracking-widest opacity-75 block mb-4 group-hover:text-brand-yellow text-brand-navy group-hover:text-brand-offwhite">{post.date}</span>
+                             <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h3>
+                             <p className="font-body text-xl font-light opacity-85 leading-relaxed line-clamp-3 group-hover:opacity-100 text-brand-navy group-hover:text-brand-offwhite">
                                  {post.excerpt}
                              </p>
                         </Link>
@@ -582,8 +627,8 @@ const LatestIntel: React.FC = () => {
                  </div>
              </div>
         </section>
-    )
-}
+    );
+};
 
 const HomePage: React.FC = () => {
   const orgSchema = {
@@ -591,7 +636,7 @@ const HomePage: React.FC = () => {
     "@type": "Organization",
     "name": "COOLO Co.",
     "url": "https://coolo.co.nz",
-    "logo": "https://coolo.co.nz/assets/logos/logo-dark.svg",
+    "logo": "hey-coolo/coolo/public/assets/logos/logo-dark.svg",
     "description": "Boutique creative and brand studio focused on helping businesses communicate with clarity, confidence, coherence, and soul.",
     "sameAs": [
       "https://instagram.com/coolo.co",
@@ -600,7 +645,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-brand-navy">
+    <div className="bg-brand-offwhite">
       <Helmet>
         <title>COOLO | Shaping Brands With Character</title>
         <script type="application/ld+json">
