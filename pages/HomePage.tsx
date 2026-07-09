@@ -1,68 +1,105 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS, QA_DATA } from '../constants';
 import ProjectCard from '../components/ProjectCard';
 
 const BrandHero: React.FC = () => {
-    // We use the first project image to inject into the brutalist typography
-    const heroImage = PROJECTS[0]?.imageUrl || '';
+    // Grab a selection of images to intersperse within the typography
+    const images = PROJECTS.slice(0, 5).map(p => p.imageUrl);
 
     return (
-        <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden border-b-2 border-brand-navy">
+        <section className="relative h-screen flex flex-col justify-between pt-24 md:pt-32 pb-8 bg-brand-navy text-brand-offwhite overflow-hidden">
             <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.04] z-0"></div>
 
-            <div className="container mx-auto px-4 md:px-8 relative z-10 flex-grow flex flex-col justify-center">
+            <div className="container mx-auto px-4 md:px-8 h-full flex flex-col justify-between relative z-10">
                 
-                {/* Brutalist Massive Typography */}
-                <div className="w-full">
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="font-black uppercase tracking-tighter text-brand-navy w-full"
-                    >
-                        <div className="flex flex-wrap items-center leading-[0.8]">
-                            <span className="text-[16vw] md:text-[14vw]">SHAPING</span>
-                            {heroImage && (
-                                <motion.div 
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ delay: 0.4, duration: 0.6, type: "spring" }}
-                                    className="hidden md:block mx-[2vw] w-[18vw] h-[10vw] overflow-hidden shrink-0"
-                                >
-                                    <img src={heroImage} alt="Featured work" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
-                                </motion.div>
-                            )}
-                        </div>
-                        <div className="flex flex-wrap items-center leading-[0.8] mt-2 md:mt-0">
-                            <span className="text-[16vw] md:text-[14vw]">BRANDS</span>
-                        </div>
-                        <div className="flex flex-wrap items-center leading-[0.8] mt-2 md:mt-0 md:pl-[8vw]">
-                            <span className="font-serif italic font-light text-brand-purple text-[17vw] md:text-[15vw] pr-[2vw]">WITH</span>
-                            <span className="text-[16vw] md:text-[14vw]">CHARACTER.</span>
-                        </div>
-                    </motion.h1>
-                </div>
+                {/* Brutalist Massive Typography - Interspersed with Images */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex-1 flex flex-col justify-center w-full font-black uppercase tracking-tighter leading-[0.8] text-[15vw] md:text-[14.5vw]"
+                >
+                    {/* Row 1 */}
+                    <div className="flex items-center justify-between w-full">
+                        {images[0] && (
+                            <motion.div 
+                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, duration: 0.6 }}
+                                className="h-[0.75em] w-[1.8em] overflow-hidden shrink-0 hidden md:block"
+                            >
+                                <img src={images[0]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                            </motion.div>
+                        )}
+                        <span>SHAPING</span>
+                        {images[1] && (
+                            <motion.div 
+                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, duration: 0.6 }}
+                                className="h-[0.75em] w-[1.2em] overflow-hidden shrink-0 hidden md:block"
+                            >
+                                <img src={images[1]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                            </motion.div>
+                        )}
+                    </div>
+                    
+                    {/* Row 2 */}
+                    <div className="flex items-center justify-between w-full mt-2 md:mt-0">
+                        <span>BRANDS</span>
+                        {images[2] && (
+                            <motion.div 
+                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, duration: 0.6 }}
+                                className="h-[0.75em] w-[2.5em] overflow-hidden shrink-0 hidden md:block"
+                            >
+                                <img src={images[2]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                            </motion.div>
+                        )}
+                    </div>
+
+                    {/* Row 3 */}
+                    <div className="flex items-center justify-between w-full mt-2 md:mt-0">
+                        {images[3] && (
+                            <motion.div 
+                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, duration: 0.6 }}
+                                className="h-[0.75em] w-[2em] overflow-hidden shrink-0 hidden md:block"
+                            >
+                                <img src={images[3]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                            </motion.div>
+                        )}
+                        <span className="font-serif italic font-light text-brand-yellow pr-[2vw]">WITH</span>
+                        {images[4] && (
+                            <motion.div 
+                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6, duration: 0.6 }}
+                                className="h-[0.75em] w-[1.5em] overflow-hidden shrink-0 hidden md:block"
+                            >
+                                <img src={images[4]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                            </motion.div>
+                        )}
+                    </div>
+
+                    {/* Row 4 */}
+                    <div className="flex items-center justify-between w-full mt-2 md:mt-0">
+                        <span className="w-full text-center md:text-left">CHARACTER.</span>
+                    </div>
+                </motion.div>
 
                 {/* Structured Editorial Footer */}
                 <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.6, duration: 0.8 }}
-                    className="mt-16 md:mt-32 grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 pt-8 border-t-2 border-brand-navy"
+                    transition={{ delay: 0.8, duration: 0.8 }}
+                    className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-12 pt-6 border-t border-brand-offwhite/20"
                 >
-                    <div className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-brand-purple">
+                    <div className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-brand-yellow">
                         [ Mission 1/1 ]
                     </div>
                     
-                    <div className="md:col-span-2 font-body text-xl md:text-2xl font-light leading-relaxed">
+                    <div className="md:col-span-2 font-body text-lg md:text-xl font-light leading-relaxed text-brand-offwhite/80">
                         We partner with founders to shape brands from the inside out—clarifying what they stand for, designing how they're seen, and crafting the creative that helps people recognize, remember, and trust them.
                     </div>
                     
                     <div className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold md:text-right flex flex-col md:items-end gap-2">
-                        <span className="text-brand-purple">Status //</span>
+                        <span className="text-brand-yellow opacity-60">Status //</span>
                         <div className="flex items-center gap-3">
                             <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
                             <span>Booking Q2/Q3 Projects</span>
@@ -82,18 +119,24 @@ const NarrativeScroll: React.FC = () => {
         offset: ["start start", "end end"]
     });
 
+    // Expanding from 300vh to 400vh for a 4-part narrative
+    
+    // 1. Every founder has a vision.
     const opacity1 = useTransform(scrollYProgress, [0, 0.15, 0.22], [1, 1, 0]);
     const y1 = useTransform(scrollYProgress, [0, 0.22], [0, -50]);
     const scale1 = useTransform(scrollYProgress, [0, 0.22], [1, 0.95]);
 
+    // 2. Not every vision becomes a brand.
     const opacity2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0, 1, 0]);
     const y2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [50, 0, -50]);
     const scale2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0.95, 1, 0.95]);
 
+    // 3. That's where we come in.
     const opacity3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0, 1, 0]);
     const y3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [50, 0, -50]);
     const scale3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0.95, 1, 0.95]);
 
+    // 4. Strategy. Design. Creative Direction. Content.
     const opacity4 = useTransform(scrollYProgress, [0.68, 0.85, 1], [0, 1, 1]);
     const y4 = useTransform(scrollYProgress, [0.68, 0.85], [50, 0]);
     const scale4 = useTransform(scrollYProgress, [0.68, 0.85], [0.95, 1]);
@@ -281,6 +324,8 @@ const FeatureSpotlight: React.FC = () => {
 
 const CapabilityList: React.FC = () => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
 
     const capabilities = [
         { 
@@ -309,8 +354,16 @@ const CapabilityList: React.FC = () => {
         }
     ];
 
+    const handleMouseMove = (e: React.MouseEvent) => {
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
+    };
+
     return (
-        <section className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden border-b-2 border-brand-navy">
+        <section 
+            className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden border-b-2 border-brand-navy" 
+            onMouseMove={handleMouseMove}
+        >
             <div className="container mx-auto px-8 relative z-10">
                 <div className="mb-24 flex items-end justify-between border-b border-brand-offwhite/20 pb-8">
                      <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85]">
@@ -351,6 +404,23 @@ const CapabilityList: React.FC = () => {
                     </p>
                 </div>
             </div>
+
+            <motion.div
+                className="pointer-events-none fixed top-0 left-0 w-[300px] h-[400px] z-50 hidden md:block overflow-hidden bg-brand-yellow mix-blend-normal"
+                style={{
+                    x: mouseX,
+                    y: mouseY,
+                    translateX: "-50%",
+                    translateY: "-50%"
+                }}
+                animate={{
+                    opacity: hoveredIndex !== null ? 1 : 0,
+                    scale: hoveredIndex !== null ? 1 : 0.5,
+                    rotate: hoveredIndex !== null ? -5 : 0
+                }}
+                transition={{ duration: 0.2, ease: "linear" }}
+            >                
+            </motion.div>
         </section>
     );
 }
