@@ -25,8 +25,7 @@
     "stripe": "^16.0.0",
     "lenis": "^1.1.13",
     "@stripe/stripe-js": "^4.1.0",
-    "@stripe/react-stripe-js": "^2.7.1",
-    "@studio-freight/lenis": "latest"
+    "@stripe/react-stripe-js": "^2.7.1"
     
   },
   "devDependencies": {
