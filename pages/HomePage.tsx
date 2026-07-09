@@ -217,6 +217,93 @@ const BrandHero: React.FC = () => {
     );
 };
 
+{/* image_c3c043.jpg ALIGNED STUDIO MANIFESTO PROFILE SECTION */}
+const StudioManifesto: React.FC = () => {
+    return (
+        <section className="relative min-h-screen bg-brand-offwhite text-brand-navy py-32 flex flex-col items-center justify-center overflow-hidden border-b-2 border-brand-navy">
+            {/* image_c3bca2.jpg Editorial Gradient Backdrops mapped to COOLO Palettes */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+                <div className="absolute w-[50vw] h-[50vw] -top-12 -left-12 rounded-full bg-brand-lavender/30 blur-[120px]" />
+                <div className="absolute w-[45vw] h-[45vw] bottom-0 right-0 rounded-full bg-brand-yellow/10 blur-[100px]" />
+            </div>
+
+            {/* image_c3c043.jpg Structural Engineering Blueprint Grid Line Layer */}
+            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.04] z-0"></div>
+
+            {/* image_c3bca2.jpg Framed Document Header Metadata Elements */}
+            <div className="w-full flex justify-between font-mono text-[10px] uppercase tracking-[0.3em] opacity-50 mb-16 max-w-6xl mx-auto px-6 relative z-10">
+                <span>// PROFILE_01</span>
+                <span>COOLO Co. MANIFESTO</span>
+                <span>[ NZ_2026 ]</span>
+            </div>
+
+            {/* image_c3c043.jpg Layout Architecture Block */}
+            <div className="container mx-auto max-w-5xl px-6 relative z-10 flex flex-col items-center justify-center flex-grow">
+                <div className="w-full text-center mb-8">
+                    <h3 className="font-mono text-xs md:text-sm text-brand-purple uppercase tracking-[0.4em] font-bold">
+                        Who We Are:
+                    </h3>
+                </div>
+
+                <div className="relative text-center max-w-4xl mx-auto py-12 px-4 border border-brand-navy/5 bg-white/20 backdrop-blur-sm shadow-sm">
+                    {/* Architectural Crosshair Target Pins adapted from image_c3c043.jpg */}
+                    <div className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t border-l border-brand-navy/30" />
+                    <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t border-r border-brand-navy/30" />
+                    <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b border-l border-brand-navy/30" />
+                    <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b border-r border-brand-navy/30" />
+
+                    <h4 className="text-4xl sm:text-5xl md:text-7xl lg:text-[5.4rem] font-black uppercase tracking-tight leading-[1.05] text-brand-navy text-left sm:text-center relative">
+                        We build 
+                        {/* image_c3c043.jpg Highlight Block customized with Studio Yellow Overlay */}
+                        <span className="relative inline-block mx-3 px-4 py-1 transform -rotate-1 bg-brand-yellow text-brand-navy font-sans shadow-sm rounded-sm">
+                            brands
+                            {/* Target Marker Pin Symbol */}
+                            <span className="absolute -top-3 -right-2 text-brand-purple font-mono text-xs font-black select-none">✦</span>
+                        </span> 
+                        that feel 
+                        <span className="block sm:inline text-brand-purple italic font-serif font-normal my-2 sm:my-0 sm:mx-3 tracking-normal">intentional.</span> 
+                        From 
+                        <span className="relative inline-block mx-2 font-mono font-black tracking-tighter border-b-4 border-brand-purple pb-1">
+                            identity
+                        </span> 
+                        to 
+                        <span className="font-serif italic font-normal text-brand-navy underline decoration-brand-yellow decoration-4 underline-offset-8">execution.</span>
+                    </h4>
+
+                    {/* Floating High-Contrast Annotated Badges adapted from image_c3c043.jpg */}
+                    <div className="absolute -top-12 left-[10%] transform -rotate-6 hidden md:flex items-center gap-2 bg-brand-purple text-brand-yellow font-mono text-[10px] uppercase tracking-widest px-4 py-2 font-bold rounded-full shadow-md border border-brand-navy/20 z-20">
+                        <span>Strategy First</span>
+                        <span className="text-brand-yellow animate-pulse">⊙</span>
+                    </div>
+
+                    <div className="absolute top-[45%] -right-12 transform rotate-3 hidden md:flex items-center gap-2 bg-brand-navy text-brand-offwhite font-mono text-[10px] uppercase tracking-widest px-4 py-2 font-bold rounded-sm shadow-md border border-brand-offwhite/10 z-20">
+                        <span>Design with soul</span>
+                        <span className="text-brand-yellow">✦</span>
+                    </div>
+
+                    <div className="absolute -bottom-8 left-[30%] transform -rotate-2 hidden md:flex items-center gap-2 bg-brand-lavender text-brand-navy font-mono text-[10px] uppercase tracking-widest px-4 py-2 font-bold rounded-full shadow-md border border-brand-navy/10 z-20">
+                        <span>Built for Impact</span>
+                        <span className="text-brand-purple">⌖</span>
+                    </div>
+                </div>
+
+                <div className="mt-16 w-full max-w-xl text-left sm:text-center">
+                    <p className="font-body text-base md:text-lg opacity-85 text-brand-navy leading-relaxed">
+                        COOLO operates at the cross-section of systematic layout and uncompromised art direction. We strip away standard startup templates to ensure your digital ecosystem behaves with authentic character.
+                    </p>
+                </div>
+            </div>
+
+            {/* image_c3c043.jpg Footer Platform Reference Array */}
+            <div className="w-full flex justify-center gap-12 font-mono text-[10px] uppercase tracking-widest opacity-40 mt-auto pb-12 relative z-10">
+                <span>[ STRATEGY SYSTEM ]</span>
+                <span>[ CUSTOM UI ARCHITECTURE ]</span>
+                <span>[ KINETIC DIRECTION ]</span>
+            </div>
+        </section>
+    );
+};
+
 const NarrativeScroll: React.FC = () => {
     const containerRef = useRef<HTMLElement>(null);
     const { scrollYProgress } = useScroll({
@@ -276,7 +363,7 @@ const NarrativeScroll: React.FC = () => {
 
                 {/* image_c3bca2.jpg Modular Edge Metadata Framework */}
                 <div className="absolute top-12 left-8 right-8 flex justify-between font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-brand-navy/60 z-20">
-                    <span>01 / THE PROGRESSION</span>
+                    <span>02 / THE PROGRESSION</span>
                     <span>// SYSTEM LOG</span>
                     <span>10-07-2026</span>
                 </div>
@@ -685,6 +772,7 @@ const HomePage: React.FC = () => {
       </Helmet>
       
       <BrandHero />
+      <StudioManifesto />
       <NarrativeScroll />
       <ServiceRouter />
       <FeatureSpotlight />
