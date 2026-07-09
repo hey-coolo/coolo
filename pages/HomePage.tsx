@@ -154,18 +154,17 @@ const BrandHero: React.FC = () => {
             </motion.div>
 
             <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
-                <div className="relative mb-16 md:mb-32">
-                    {/* Fixed to single H1 for SEO compliance */}
+                <div className="relative mb-16 md:mb-24">
                     <motion.h1 
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                        className="flex flex-col text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal pointer-events-auto"
+                        className="flex flex-col text-[14vw] md:text-[13vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal pointer-events-auto"
                     >
-                        <span>BRAND STRATEGY</span>
-                        <span className="flex items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
-                            <span className="text-brand-purple font-serif italic font-light text-[12vw] md:text-[11vw] leading-none absolute -left-[1em] top-[-0.05em] pointer-events-none">&</span>
-                            <span className="pointer-events-auto">DESIGN POWER</span>
+                        <span>SHAPING BRANDS</span>
+                        <span className="flex items-baseline mt-2 md:mt-4 ml-[4vw] md:ml-[16vw] relative">
+                            <span className="text-brand-purple font-serif italic font-light text-[13vw] md:text-[12vw] leading-none absolute -left-[0.8em] top-[0.05em] pointer-events-none">WITH</span>
+                            <span className="pointer-events-auto">CHARACTER.</span>
                         </span>
                     </motion.h1>
                 </div>
@@ -179,25 +178,22 @@ const BrandHero: React.FC = () => {
 
                     <div className="w-full h-[1.5px] bg-brand-navy/80 mb-8 md:mb-10"></div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start text-brand-navy">
-                        <div className="font-mono">
-                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Est. 2024</span>
-                            <div className="text-[10px] uppercase tracking-widest leading-loose font-bold opacity-70">
-                                MOUNT MAUNGANUI<br/>NEW ZEALAND
-                            </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start text-brand-navy">
+                        <div className="md:col-span-2 font-body text-xl md:text-2xl leading-relaxed font-light pr-0 md:pr-12">
+                            Working with founders to bring strategy, design, creative direction and content into one cohesive brand experience.
                         </div>
 
-                        <div className="md:text-center font-mono">
-                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
-                             <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
+                        <div className="font-mono pt-2">
+                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3">The Senior Unit</span>
+                             <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70">
                                 A boutique creative and brand studio helping businesses transition from improvised to intentional.
                              </p>
                         </div>
 
-                        <div className="md:text-right font-mono">
-                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Status:</span>
-                             <div className="flex items-center md:justify-end gap-3">
-                                 <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
+                        <div className="md:text-right font-mono pt-2">
+                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3">Status:</span>
+                             <div className="flex items-start md:items-center md:justify-end gap-3">
+                                 <span className="w-2 h-2 mt-1 md:mt-0 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)] shrink-0"></span>
                                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70">Currently Booking Q2/Q3 Projects</span>
                              </div>
                         </div>
@@ -215,24 +211,34 @@ const NarrativeScroll: React.FC = () => {
         offset: ["start start", "end end"]
     });
 
-    const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
-    const y1 = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
-    const scale1 = useTransform(scrollYProgress, [0, 0.3], [1, 0.95]);
+    // Expanding from 300vh to 400vh for a 4-part narrative
+    
+    // 1. Every founder has a vision.
+    const opacity1 = useTransform(scrollYProgress, [0, 0.15, 0.22], [1, 1, 0]);
+    const y1 = useTransform(scrollYProgress, [0, 0.22], [0, -50]);
+    const scale1 = useTransform(scrollYProgress, [0, 0.22], [1, 0.95]);
 
-    const opacity2 = useTransform(scrollYProgress, [0.25, 0.4, 0.6, 0.75], [0, 1, 1, 0]);
-    const y2 = useTransform(scrollYProgress, [0.25, 0.4, 0.75], [50, 0, -50]);
-    const scale2 = useTransform(scrollYProgress, [0.25, 0.4, 0.75], [0.95, 1, 0.95]);
+    // 2. Not every vision becomes a brand.
+    const opacity2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0, 1, 0]);
+    const y2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [50, 0, -50]);
+    const scale2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0.95, 1, 0.95]);
 
-    const opacity3 = useTransform(scrollYProgress, [0.65, 0.8, 1], [0, 1, 1]);
-    const y3 = useTransform(scrollYProgress, [0.65, 0.8], [50, 0]);
-    const scale3 = useTransform(scrollYProgress, [0.65, 0.8], [0.95, 1]);
+    // 3. That's where we come in.
+    const opacity3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0, 1, 0]);
+    const y3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [50, 0, -50]);
+    const scale3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0.95, 1, 0.95]);
+
+    // 4. Strategy. Design. Creative Direction. Content.
+    const opacity4 = useTransform(scrollYProgress, [0.68, 0.85, 1], [0, 1, 1]);
+    const y4 = useTransform(scrollYProgress, [0.68, 0.85], [50, 0]);
+    const scale4 = useTransform(scrollYProgress, [0.68, 0.85], [0.95, 1]);
 
     return (
-        <section ref={containerRef} className="relative h-[300vh] bg-brand-offwhite">
+        <section ref={containerRef} className="relative h-[400vh] bg-brand-offwhite">
             <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
                 
                 <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
-                    01 / The COOLO Way
+                    01 / The Narrative
                 </div>
 
                 <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center h-full">
@@ -242,13 +248,9 @@ const NarrativeScroll: React.FC = () => {
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
                     >
                         <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                            <span>YOUR BUSINESS EVOLVED.</span>
-                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>YOUR BRAND DIDN'T.</span>
+                            <span>EVERY FOUNDER</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>HAS A VISION.</span>
                         </h2>
-                        {/* Adding internal links for AEO context */}
-                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed pointer-events-auto">
-                            We help ambitious businesses move beyond DIY survival mode into a more intentional, <Link to="/design-power" className="underline hover:text-brand-purple transition-colors">professional presence</Link> without losing the personality that made them worth noticing in the first place.
-                        </p>
                     </motion.div>
 
                     <motion.div 
@@ -256,28 +258,35 @@ const NarrativeScroll: React.FC = () => {
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
                     >
                         <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                            <span>WE SELL CLARITY,</span>
-                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>NOT DECORATION.</span>
+                            <span>NOT EVERY VISION</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>BECOMES A BRAND.</span>
                         </h2>
-                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                             Because people feel coherence before they understand it. Not empty aesthetics. Not trend-chasing.
-                        </p>
                     </motion.div>
 
                     <motion.div 
                         style={{ opacity: opacity3, y: y3, scale: scale3 }} 
-                        className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto"
+                        className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
                     >
                         <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
-                            <span>GOOD TASTE IS</span>
-                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>WHAT WE BUILD.</span>
+                            <span>THAT'S WHERE WE</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>COME IN.</span>
                         </h2>
-                        {/* Adding external citation links for AEO context */}
-                        <p className="mt-8 font-body text-xl md:text-3xl font-light text-brand-navy/70 max-w-3xl leading-relaxed">
-                            Intentional thoughtful <Link to="/clarity" className="underline hover:text-brand-purple transition-colors">strategy</Link>, sharp creative direction, and design that communicates with precision from our studio in <a href="https://www.bayofplentynz.com/places/mount-maunganui/" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-purple transition-colors">Mount Maunganui</a>.
+                    </motion.div>
+
+                    <motion.div 
+                        style={{ opacity: opacity4, y: y4, scale: scale4 }} 
+                        className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto mt-16 md:mt-0"
+                    >
+                        <h2 className="text-[10vw] md:text-[5rem] lg:text-[6.5rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                            <span>STRATEGY. DESIGN.</span>
+                            <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>DIRECTION. CONTENT.</span>
+                        </h2>
+                        
+                        <p className="mt-8 font-body text-xl md:text-2xl font-light text-brand-navy/80 max-w-4xl leading-relaxed">
+                            We work alongside founders to shape brands from the inside out—clarifying what they stand for, designing how they're seen, and crafting the creative that helps people understand, remember and choose them.
                         </p>
                         
-                        <div className="mt-16 flex flex-col md:flex-row items-center justify-center gap-6">
+                        <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6">
                             <Link to="/contact" className="inline-block border-2 border-brand-navy bg-brand-navy text-brand-offwhite px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-purple hover:border-brand-purple transition-all duration-300 shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
                                 Inquire Now
                             </Link>
