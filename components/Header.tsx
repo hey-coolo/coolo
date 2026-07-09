@@ -14,10 +14,6 @@ const Header: React.FC = () => {
   const { getCartCount } = useCart();
   const cartCount = getCartCount();
   
-  const isHome = location.pathname === '/';
-  const logoColor = isOpen ? '#F7F7F7' : (isHome && !isScrolled ? '#F7F7F7' : '#0F0328');
-  const isLightText = isHome && !isScrolled && !isOpen;
-
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
@@ -44,44 +40,41 @@ const Header: React.FC = () => {
   return (
     <>
     <header 
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        isScrolled ? 'py-4 bg-brand-offwhite/95 backdrop-blur-md border-b border-brand-navy/5 shadow-sm' : 'py-8 bg-transparent'
+      className={`fixed top-0 w-full z-50 transition-all duration-400 ${
+        isScrolled ? 'py-4 bg-brand-navy/85 backdrop-blur-md border-b border-white/5 shadow-lg' : 'py-8 bg-transparent'
       }`}
     >
-      <div className="container mx-auto px-6 md:px-8 flex justify-between items-center relative z-50">
+      <div className="container mx-auto px-6 md:px-12 flex justify-between items-center relative z-50">
         
-        {/* Logo */}
+        {/* Logo Configuration */}
         <div className="relative z-[60]">
             <Link to="/" className="block w-20 md:w-24" onClick={() => setIsOpen(false)}>
                  <BrandLogo 
-                    className="w-full h-auto" 
-                    color={logoColor}
+                    className="w-full h-auto brightness-0 invert" 
                  />
             </Link>
         </div>
         
-        {/* Desktop Navigation */}
+        {/* Desktop Interface Tracks */}
         <nav className="hidden md:flex items-center space-x-10">
           {NAV_LINKS.map((link) => (
             <div key={link.name} className="relative group">
                 <NavLink
                   to={link.path}
-                  className={({ isActive }) => `font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 relative font-bold block py-4 ${
-                    isLightText ? 'text-brand-offwhite hover:text-brand-yellow drop-shadow-sm' : 'text-brand-navy hover:text-brand-purple'
-                  } ${isActive ? (isLightText ? '!text-brand-yellow' : '!text-brand-purple underline decoration-2 underline-offset-4') : ''}`}
+                  className={({ isActive }) => `font-mono text-[10px] uppercase tracking-[0.2em] transition-colors duration-300 relative font-bold block py-4 text-white/60 hover:text-brand-yellow ${isActive ? '!text-brand-yellow border-b-2 border-brand-yellow' : ''}`}
                 >
                   {link.name.toUpperCase()}
                 </NavLink>
 
-                {/* Desktop Dropdown */}
+                {/* Sub-menu Navigation Matrix */}
                 {link.subLinks && (
-                    <div className="absolute left-0 pt-2 w-48 hidden group-hover:block">
-                        <div className="bg-brand-navy border border-brand-offwhite/10 shadow-xl py-2">
+                    <div className="absolute left-0 pt-2 w-52 hidden group-hover:block">
+                        <div className="bg-platform-dark border border-white/10 shadow-2xl py-2 rounded-sm backdrop-blur-md">
                             {link.subLinks.map((sub) => (
                                 <Link 
                                     key={sub.name}
                                     to={sub.path}
-                                    className="block px-4 py-2 font-mono text-[9px] uppercase tracking-widest text-brand-offwhite hover:bg-brand-purple hover:text-white transition-colors"
+                                    className="block px-4 py-2.5 font-mono text-[9px] uppercase tracking-widest text-white/70 hover:bg-brand-purple hover:text-white transition-colors"
                                 >
                                     {sub.name}
                                 </Link>
@@ -92,13 +85,13 @@ const Header: React.FC = () => {
             </div>
           ))}
           <div className="flex items-center space-x-6 ml-6">
-              {/* Checkout Cart Button Indicator */}
+              {/* Shopping Cart Indicator Deck */}
               <Link 
                 to="/checkout" 
-                className={`relative p-2 transition-colors duration-300 ${isLightText ? 'text-brand-offwhite hover:text-brand-yellow' : 'text-brand-navy hover:text-brand-purple'}`}
+                className="relative p-2 text-white/80 hover:text-brand-yellow transition-colors"
                 title="View Checkout Basket"
               >
-                  <ShoppingBag size={20} />
+                  <ShoppingBag size={18} />
                   {cartCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-brand-yellow text-brand-navy font-mono text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-brand-navy">
                           {cartCount}
@@ -106,16 +99,16 @@ const Header: React.FC = () => {
                   )}
               </Link>
 
-              <Link to="/contact" className="font-mono text-[10px] uppercase tracking-[0.2em] px-8 py-3 transition-all duration-300 font-bold bg-brand-navy text-brand-offwhite border-2 border-brand-navy shadow-[4px_4px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
+              <Link to="/contact" className="font-mono text-[10px] uppercase tracking-[0.2em] px-6 py-2.5 transition-all duration-300 font-bold bg-white text-brand-navy hover:bg-brand-purple hover:text-white border border-white">
                 Inquire Now
               </Link>
           </div>
         </nav>
 
-        {/* Mobile Menu Toggle Button */}
+        {/* Mobile Command Toggle Box */}
         <div className="flex items-center gap-4 md:hidden z-[60]">
-            <Link to="/checkout" className={`relative p-2 ${isOpen || (isHome && !isScrolled) ? 'text-brand-offwhite' : 'text-brand-navy'}`}>
-                <ShoppingBag size={22} />
+            <Link to="/checkout" className="relative p-2 text-white">
+                <ShoppingBag size={20} />
                 {cartCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-brand-yellow text-brand-navy font-mono text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-brand-navy">
                         {cartCount}
@@ -124,16 +117,16 @@ const Header: React.FC = () => {
             </Link>
             <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className={`p-2 focus:outline-none transition-colors duration-300 ${isOpen || (isHome && !isScrolled) ? 'text-brand-offwhite' : 'text-brand-navy'}`}
+                className="p-2 focus:outline-none transition-colors text-white"
                 aria-label="Toggle Menu"
             >
-                {isOpen ? <X size={28} /> : <Menu size={28} />}
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
         </div>
       </div>
     </header>
 
-      {/* Full Screen Mobile Menu Overlay */}
+      {/* Full-Screen Matrix Interface Deck */}
       <AnimatePresence>
         {isOpen && (
             <motion.div 
@@ -152,18 +145,16 @@ const Header: React.FC = () => {
                     {NAV_LINKS.map((link, i) => (
                         <motion.div
                             key={link.name}
-                            initial={{ opacity: 0, y: 40 }}
+                            initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 + (i * 0.05), duration: 0.5, ease: "easeOut" }}
+                            transition={{ delay: 0.1 + (i * 0.04), duration: 0.4, ease: "easeOut" }}
                             className="w-full flex flex-col items-center"
                         >
-                            <div className="flex items-center justify-center gap-4">
+                            <div className="flex items-center justify-center gap-3">
                                 <NavLink 
                                     to={link.path}
                                     onClick={() => setIsOpen(false)}
-                                    className={({ isActive }) => `block font-black text-4xl uppercase tracking-tighter transition-colors ${
-                                        isActive ? 'text-brand-yellow' : 'text-brand-offwhite hover:text-brand-yellow'
-                                    }`}
+                                    className={({ isActive }) => `block font-black text-3xl uppercase tracking-tight transition-colors ${isActive ? 'text-brand-yellow' : 'text-brand-offwhite hover:text-brand-yellow'}`}
                                 >
                                     {link.name}
                                 </NavLink>
@@ -171,10 +162,10 @@ const Header: React.FC = () => {
                                 {link.subLinks && (
                                     <button 
                                         onClick={() => toggleSubMenu(link.name)}
-                                        className="text-brand-offwhite/50 hover:text-brand-yellow transition-colors p-2"
+                                        className="text-brand-offwhite/50 hover:text-brand-yellow p-2"
                                     >
                                         <ChevronDown 
-                                            size={24} 
+                                            size={20} 
                                             className={`transition-transform duration-300 ${expandedMenu === link.name ? 'rotate-180 text-brand-yellow' : ''}`}
                                         />
                                     </button>
@@ -189,13 +180,13 @@ const Header: React.FC = () => {
                                         exit={{ height: 0, opacity: 0 }}
                                         className="overflow-hidden w-full"
                                     >
-                                        <div className="flex flex-col items-center gap-4 py-4 mt-2 border-t border-brand-offwhite/10 w-3/4 mx-auto">
+                                        <div className="flex flex-col items-center gap-3 py-4 mt-2 border-t border-white/5 w-3/4 mx-auto">
                                             {link.subLinks.map(sub => (
                                                 <Link 
                                                     key={sub.name}
                                                     to={sub.path}
                                                     onClick={() => setIsOpen(false)}
-                                                    className="font-mono text-sm uppercase tracking-widest text-brand-offwhite/60 hover:text-brand-white"
+                                                    className="font-mono text-xs uppercase tracking-widest text-white/60 hover:text-white"
                                                 >
                                                     {sub.name}
                                                 </Link>
@@ -208,15 +199,15 @@ const Header: React.FC = () => {
                     ))}
                     
                     <motion.div
-                        initial={{ opacity: 0, y: 40 }}
+                        initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
-                        className="mt-4 flex flex-col items-center gap-8 w-full border-t border-brand-offwhite/10 pt-10"
+                        transition={{ delay: 0.4 }}
+                        className="mt-4 flex flex-col items-center gap-8 w-full border-t border-white/5 pt-8"
                     >
                         <Link 
                             to="/contact" 
                             onClick={() => setIsOpen(false)}
-                            className="w-full max-w-xs text-center font-mono text-sm uppercase tracking-widest px-8 py-5 border-2 border-brand-yellow text-brand-yellow font-bold hover:bg-brand-yellow hover:text-brand-navy transition-all"
+                            className="w-full max-w-xs text-center font-mono text-xs uppercase tracking-widest px-8 py-4 border border-brand-yellow text-brand-yellow font-bold bg-transparent hover:bg-brand-yellow hover:text-brand-navy transition-all"
                         >
                             Start Project
                         </Link>
