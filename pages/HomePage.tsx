@@ -1,204 +1,75 @@
-import React, { useRef, useState, useMemo, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS, QA_DATA } from '../constants';
-import AnimatedSection from '../components/AnimatedSection';
 import ProjectCard from '../components/ProjectCard';
 
-interface TrailItem {
-    id: number;
-    x: number;
-    y: number;
-    rotation: number;
-    scale: number;
-    img: string;
-}
-
-const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ containerRef }) => {
-    const [trail, setTrail] = useState<TrailItem[]>([]);
-    const lastPos = useRef({ x: 0, y: 0 });
-    const trailCount = useRef(0);
-
-    const allImages = useMemo(() => {
-        const all = PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).filter(Boolean);
-        for (let i = all.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [all[i], all[j]] = [all[j], all[i]];
-        }
-        return all;
-    }, []);
-
-    useEffect(() => {
-        const handleMove = (clientX: number, clientY: number) => {
-            if (!containerRef.current) return;
-
-            const rect = containerRef.current.getBoundingClientRect();
-
-            if (
-                clientX < rect.left || 
-                clientX > rect.right || 
-                clientY < rect.top || 
-                clientY > rect.bottom
-            ) {
-                return;
-            }
-
-            const dist = Math.hypot(clientX - lastPos.current.x, clientY - lastPos.current.y);
-
-            if (dist > 80) {
-                const nextImage = allImages[trailCount.current % allImages.length];
-                const id = trailCount.current++;
-                
-                const relativeX = clientX - rect.left;
-                const relativeY = clientY - rect.top;
-
-                const newItem: TrailItem = {
-                    id,
-                    x: relativeX,
-                    y: relativeY,
-                    rotation: Math.random() * 20 - 10,
-                    scale: 0.6 + Math.random() * 0.4,
-                    img: nextImage
-                };
-
-                setTrail(prev => [...prev, newItem]);
-                lastPos.current = { x: clientX, y: clientY };
-
-                setTimeout(() => {
-                    setTrail(prev => prev.filter(i => i.id !== id));
-                }, 1000);
-            }
-        };
-
-        const handleMouseMove = (e: MouseEvent) => {
-            handleMove(e.clientX, e.clientY);
-        };
-
-        const handleTouchMove = (e: TouchEvent) => {
-            const touch = e.touches[0];
-            handleMove(touch.clientX, touch.clientY);
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('touchmove', handleTouchMove, { passive: true });
-
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('touchmove', handleTouchMove);
-        };
-    }, [allImages, containerRef]);
-
-    return (
-        <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
-            <AnimatePresence>
-                {trail.map((item) => (
-                    <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0, scale: 0.5, rotate: item.rotation }}
-                        animate={{ opacity: 1, scale: item.scale, rotate: item.rotation }}
-                        exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        className="absolute w-[140px] md:w-[260px] aspect-[4/5] shadow-2xl origin-center"
-                        style={{
-                            left: item.x,
-                            top: item.y,
-                            x: "-50%",
-                            y: "-50%" 
-                        }}
-                    >
-                        <img 
-                            src={item.img} 
-                            alt="" 
-                            className="w-full h-full object-cover" 
-                        />
-                    </motion.div>
-                ))}
-            </AnimatePresence>
-        </div>
-    );
-};
-
 const BrandHero: React.FC = () => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    const springX = useSpring(mouseX, { stiffness: 60, damping: 25 });
-    const springY = useSpring(mouseY, { stiffness: 60, damping: 25 });
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const { innerWidth, innerHeight } = window;
-        mouseX.set((e.clientX / innerWidth) - 0.5);
-        mouseY.set((e.clientY / innerHeight) - 0.5);
-    };
+    // We use the first project image to inject into the brutalist typography
+    const heroImage = PROJECTS[0]?.imageUrl || '';
 
     return (
-        <section 
-            ref={sectionRef}
-            onMouseMove={handleMouseMove}
-            className="relative min-h-screen flex flex-col pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden border-b-2 border-brand-navy"
-        >
-            <ImageTrail containerRef={sectionRef} />
+        <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-16 bg-brand-offwhite text-brand-navy overflow-hidden border-b-2 border-brand-navy">
+            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.04] z-0"></div>
 
-            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.03] z-10"></div>
-            
-            <motion.div 
-                style={{ 
-                    x: useTransform(springX, [-0.5, 0.5], [100, -100]), 
-                    y: useTransform(springY, [-0.5, 0.5], [100, -100]) 
-                }}
-                className="absolute inset-0 z-10 pointer-events-none opacity-20"
-            >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brand-purple/5 blur-[120px] rounded-full" />
-            </motion.div>
-
-            <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
-                <div className="relative mb-16 md:mb-24">
+            <div className="container mx-auto px-4 md:px-8 relative z-10 flex-grow flex flex-col justify-center">
+                
+                {/* Brutalist Massive Typography */}
+                <div className="w-full">
                     <motion.h1 
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                        className="flex flex-col text-[14vw] md:text-[13vw] font-black uppercase leading-[0.85] tracking-tighter text-brand-navy break-words select-all md:mix-blend-difference md:text-white lg:text-brand-navy lg:mix-blend-normal pointer-events-auto"
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-black uppercase tracking-tighter text-brand-navy w-full"
                     >
-                        <span>SHAPING BRANDS</span>
-                        <span className="flex items-baseline mt-2 md:mt-4 ml-[4vw] md:ml-[16vw] relative">
-                            <span className="text-brand-purple font-serif italic font-light text-[13vw] md:text-[12vw] leading-none absolute -left-[0.8em] top-[0.05em] pointer-events-none">WITH</span>
-                            <span className="pointer-events-auto">CHARACTER.</span>
-                        </span>
+                        <div className="flex flex-wrap items-center leading-[0.8]">
+                            <span className="text-[16vw] md:text-[14vw]">SHAPING</span>
+                            {heroImage && (
+                                <motion.div 
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ delay: 0.4, duration: 0.6, type: "spring" }}
+                                    className="hidden md:block mx-[2vw] w-[18vw] h-[10vw] overflow-hidden shrink-0"
+                                >
+                                    <img src={heroImage} alt="Featured work" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                                </motion.div>
+                            )}
+                        </div>
+                        <div className="flex flex-wrap items-center leading-[0.8] mt-2 md:mt-0">
+                            <span className="text-[16vw] md:text-[14vw]">BRANDS</span>
+                        </div>
+                        <div className="flex flex-wrap items-center leading-[0.8] mt-2 md:mt-0 md:pl-[8vw]">
+                            <span className="font-serif italic font-light text-brand-purple text-[17vw] md:text-[15vw] pr-[2vw]">WITH</span>
+                            <span className="text-[16vw] md:text-[14vw]">CHARACTER.</span>
+                        </div>
                     </motion.h1>
                 </div>
 
-                <div className="mt-auto pointer-events-auto">
-                    <div className="text-center mb-6">
-                        <span className="font-mono text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold text-brand-navy">
-                            [ MOVE CURSOR TO REVEAL ]
-                        </span>
+                {/* Structured Editorial Footer */}
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6, duration: 0.8 }}
+                    className="mt-16 md:mt-32 grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 pt-8 border-t-2 border-brand-navy"
+                >
+                    <div className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-brand-purple">
+                        [ Mission 1/1 ]
                     </div>
-
-                    <div className="w-full h-[1.5px] bg-brand-navy/80 mb-8 md:mb-10"></div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start text-brand-navy">
-                        <div className="md:col-span-2 font-body text-xl md:text-2xl leading-relaxed font-light pr-0 md:pr-12">
-                            Working with founders to bring strategy, design, creative direction and content into one cohesive brand experience.
-                        </div>
-
-                        <div className="font-mono pt-2">
-                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3">The Senior Unit</span>
-                             <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70">
-                                A boutique creative and brand studio helping businesses transition from improvised to intentional.
-                             </p>
-                        </div>
-
-                        <div className="md:text-right font-mono pt-2">
-                            <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3">Status:</span>
-                             <div className="flex items-start md:items-center md:justify-end gap-3">
-                                 <span className="w-2 h-2 mt-1 md:mt-0 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)] shrink-0"></span>
-                                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70">Currently Booking Q2/Q3 Projects</span>
-                             </div>
+                    <div className="md:col-span-2 font-body text-xl md:text-2xl font-light leading-relaxed">
+                        We partner with founders to shape brands from the inside out—clarifying what they stand for, designing how they're seen, and crafting the creative that helps people recognize, remember, and trust them.
+                    </div>
+                    
+                    <div className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold md:text-right flex flex-col md:items-end gap-2">
+                        <span className="text-brand-purple">Status //</span>
+                        <div className="flex items-center gap-3">
+                            <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
+                            <span>Booking Q2/Q3 Projects</span>
                         </div>
                     </div>
-                </div>
+                </motion.div>
+
             </div>
         </section>
     );
@@ -211,24 +82,18 @@ const NarrativeScroll: React.FC = () => {
         offset: ["start start", "end end"]
     });
 
-    // Expanding from 300vh to 400vh for a 4-part narrative
-    
-    // 1. Every founder has a vision.
     const opacity1 = useTransform(scrollYProgress, [0, 0.15, 0.22], [1, 1, 0]);
     const y1 = useTransform(scrollYProgress, [0, 0.22], [0, -50]);
     const scale1 = useTransform(scrollYProgress, [0, 0.22], [1, 0.95]);
 
-    // 2. Not every vision becomes a brand.
     const opacity2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0, 1, 0]);
     const y2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [50, 0, -50]);
     const scale2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0.95, 1, 0.95]);
 
-    // 3. That's where we come in.
     const opacity3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0, 1, 0]);
     const y3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [50, 0, -50]);
     const scale3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0.95, 1, 0.95]);
 
-    // 4. Strategy. Design. Creative Direction. Content.
     const opacity4 = useTransform(scrollYProgress, [0.68, 0.85, 1], [0, 1, 1]);
     const y4 = useTransform(scrollYProgress, [0.68, 0.85], [50, 0]);
     const scale4 = useTransform(scrollYProgress, [0.68, 0.85], [0.95, 1]);
@@ -241,13 +106,13 @@ const NarrativeScroll: React.FC = () => {
                     01 / The Narrative
                 </div>
 
-                <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center h-full">
+                <div className="relative w-full max-w-7xl mx-auto flex items-center justify-center h-full">
                     
                     <motion.div 
                         style={{ opacity: opacity1, y: y1, scale: scale1 }} 
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
                     >
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                        <h2 className="text-[12vw] md:text-[9vw] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
                             <span>EVERY FOUNDER</span>
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>HAS A VISION.</span>
                         </h2>
@@ -257,7 +122,7 @@ const NarrativeScroll: React.FC = () => {
                         style={{ opacity: opacity2, y: y2, scale: scale2 }} 
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
                     >
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                        <h2 className="text-[12vw] md:text-[9vw] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
                             <span>NOT EVERY VISION</span>
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>BECOMES A BRAND.</span>
                         </h2>
@@ -267,7 +132,7 @@ const NarrativeScroll: React.FC = () => {
                         style={{ opacity: opacity3, y: y3, scale: scale3 }} 
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
                     >
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                        <h2 className="text-[12vw] md:text-[9vw] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
                             <span>THAT'S WHERE WE</span>
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>COME IN.</span>
                         </h2>
@@ -277,7 +142,7 @@ const NarrativeScroll: React.FC = () => {
                         style={{ opacity: opacity4, y: y4, scale: scale4 }} 
                         className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto mt-16 md:mt-0"
                     >
-                        <h2 className="text-[10vw] md:text-[5rem] lg:text-[6.5rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                        <h2 className="text-[10vw] md:text-[7vw] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
                             <span>STRATEGY. DESIGN.</span>
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>DIRECTION. CONTENT.</span>
                         </h2>
@@ -416,8 +281,6 @@ const FeatureSpotlight: React.FC = () => {
 
 const CapabilityList: React.FC = () => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
 
     const capabilities = [
         { 
@@ -446,16 +309,8 @@ const CapabilityList: React.FC = () => {
         }
     ];
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        mouseX.set(e.clientX);
-        mouseY.set(e.clientY);
-    };
-
     return (
-        <section 
-            className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden border-b-2 border-brand-navy" 
-            onMouseMove={handleMouseMove}
-        >
+        <section className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden border-b-2 border-brand-navy">
             <div className="container mx-auto px-8 relative z-10">
                 <div className="mb-24 flex items-end justify-between border-b border-brand-offwhite/20 pb-8">
                      <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85]">
@@ -490,30 +345,12 @@ const CapabilityList: React.FC = () => {
                     ))}
                 </div>
                 
-                {/* External link injection to improve AEO scoring */}
                 <div className="mt-16 md:mt-24 max-w-2xl border-t border-brand-offwhite/20 pt-8">
                     <p className="font-body text-lg opacity-80">
                         We build custom visual systems using industry-standard platforms like <a href="https://webflow.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Webflow</a> and <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Stripe</a>, ensuring your brand performs securely and as well as it looks.
                     </p>
                 </div>
             </div>
-
-            <motion.div
-                className="pointer-events-none fixed top-0 left-0 w-[300px] h-[400px] z-50 hidden md:block overflow-hidden bg-brand-yellow mix-blend-normal"
-                style={{
-                    x: mouseX,
-                    y: mouseY,
-                    translateX: "-50%",
-                    translateY: "-50%"
-                }}
-                animate={{
-                    opacity: hoveredIndex !== null ? 1 : 0,
-                    scale: hoveredIndex !== null ? 1 : 0.5,
-                    rotate: hoveredIndex !== null ? -5 : 0
-                }}
-                transition={{ duration: 0.2, ease: "linear" }}
-            >                
-            </motion.div>
         </section>
     );
 }
