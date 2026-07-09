@@ -1,107 +1,87 @@
 import React from 'react';
-import AnimatedSection from '../components/AnimatedSection';
 import { Link } from 'react-router-dom';
-
-const DownloadIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-    </svg>
-);
+import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { ArrowUpRight, Terminal, CheckCircle2 } from 'lucide-react';
+import { SERVICE_LEGS } from '../constants';
 
 const ServicesPage: React.FC = () => {
-  const creativeMethodServices = [
-    'Brand Strategy & Positioning', 
-    'Logo & Visual Identity Systems', 
-    'Comprehensive Brand Guidelines',
-    'Campaign Concepts & Art Direction',
-    'Web Design & Webflow Development',
-    'UI/UX Design',
-    '3D Renders & Visualizations', 
-    'Motion Design & Short-form Video'
-  ];
-  
-  const noMagicTiers = [
-      { title: 'Freebies', price: '$0', description: "Downloadable worksheets and guides to kickstart your brand thinking.", cta: "Download Worksheet", link: "/journal" },
-      { title: 'Mini-Workbook', price: '$30', description: "A tactical guide with exercises to define your brand's core messaging.", comingSoon: true },
-      { title: 'Online Course', price: '$400', description: "A comprehensive course on our brand strategy and storytelling framework.", comingSoon: true },
-      { title: 'Private Consulting', price: '$4,000+', description: "1:1 brand strategy sessions and roadmap development.", cta: "Inquire Now", link: "/contact" }
-  ];
-
   return (
-    <div className="container mx-auto p-4 md:p-8">
-      <AnimatedSection>
-        <section className="py-24 md:py-48 text-center">
-          <h1 className="font-sans text-6xl md:text-8xl font-black uppercase tracking-tighter">
-            From Insight to Impact
-          </h1>
-          <p className="font-body text-lg md:text-xl mt-8 max-w-3xl mx-auto text-brand-muted">
-            We build lasting brands by separating our process into two core offerings: strategy and execution.
-          </p>
-        </section>
-      </AnimatedSection>
+    <div className="relative min-h-screen bg-brand-navy text-white overflow-hidden studio-grid pt-44 pb-32">
+      <Helmet>
+        <title>Studio Services & Capabilities | COOLO</title>
+        <meta name="description" content="Explore our core services matrix. From comprehensive brand alignment sprints to Webflow product infrastructure deployment." />
+      </Helmet>
 
-      <AnimatedSection>
-        <section id="no-magic" className="py-24 md:py-32 border-t border-brand-dark/20">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div className="lg:col-span-1">
-                    <h2 className="font-sans text-4xl font-bold uppercase tracking-tight sticky top-24">The No Magic Formula™</h2>
-                     <p className="font-body text-xl text-brand-muted mt-6 lg:max-w-xs">
-                        Strategy & Insight. There's no universal “magic formula.” Every brand must find its own identity. We provide a tiered system to help you find yours.
-                    </p>
+      <div className="container mx-auto px-6 md:px-12 max-w-7xl relative z-10">
+        
+        {/* Adjusted Display Title To Prevent Screen Scale Breakage */}
+        <div className="border-b border-white/5 pb-16 mb-24">
+          <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-brand-purple font-bold block mb-4">
+            [ STUDIO DEPLOYMENT ARCHITECTURE ]
+          </span>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase leading-[0.85] tracking-tighter text-white max-w-4xl">
+            Our Core Studio<br />
+            Capabilities Matrix<span className="text-brand-yellow">.</span>
+          </h1>
+          <p className="mt-8 font-body text-lg md:text-xl font-light text-white/60 max-w-2xl leading-relaxed">
+            We deliver tailored operational assets across three critical axes of growth. No templates, no generic corporate structures—just premium customized workflows.
+          </p>
+        </div>
+
+        {/* Dynamic Grid Layout for Original Constants Array */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+          {SERVICE_LEGS.map((service, idx) => (
+            <div 
+              key={service.id}
+              className="bg-platform-dark/20 border border-white/5 rounded-sm p-8 flex flex-col justify-between hover:border-white/20 transition-all duration-300"
+            >
+              <div>
+                <div className="flex justify-between items-center mb-8 border-b border-white/5 pb-4">
+                  <span className="font-mono text-xs text-brand-purple font-bold">// 0{idx + 1}</span>
+                  <span className="font-mono text-[9px] text-white/40 tracking-wider uppercase font-bold">{service.visual.split(',')[0]}</span>
                 </div>
-                <div className="lg:col-span-2">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {noMagicTiers.map((tier) => (
-                          <div key={tier.title} className="bg-white border border-brand-dark/10 p-8 rounded-lg flex flex-col h-full">
-                            <div className="flex flex-col sm:flex-row justify-between sm:items-baseline">
-                                <h3 className="font-sans text-2xl font-bold">{tier.title}</h3>
-                                <div className="flex items-center space-x-4 mt-2 sm:mt-0 shrink-0">
-                                  {tier.comingSoon && <span className="font-mono text-xs uppercase text-brand-dark bg-brand-dark/10 px-2 py-1 rounded">Coming Soon</span>}
-                                  <span className="font-mono text-lg text-brand-dark">{tier.price}</span>
-                                </div>
-                            </div>
-                            <p className="font-body mt-4 text-brand-muted max-w-2xl flex-grow">{tier.description}</p>
-                            
-                            <div className="mt-6">
-                                {tier.cta && tier.link && !tier.comingSoon && (
-                                    tier.title === 'Freebies' ? (
-                                         <a href={tier.link} className="inline-flex items-center justify-center font-mono text-sm uppercase bg-brand-accent text-brand-dark px-6 py-3 font-bold hover:opacity-80 transition-opacity duration-300">
-                                            {tier.cta} <DownloadIcon />
-                                        </a>
-                                    ) : (
-                                        <Link to={tier.link} className="inline-block font-mono text-sm uppercase text-brand-dark hover:text-brand-accent transition-colors duration-300">
-                                            {tier.cta} &rarr;
-                                        </Link>
-                                    )
-                                )}
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                </div>
+                <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white mb-4">
+                  {service.title}
+                </h2>
+                <p className="font-body text-sm text-white/60 leading-relaxed mb-6">
+                  {service.subtitle}
+                </p>
+              </div>
+
+              <div className="pt-6 border-t border-white/5 mt-auto">
+                <Link 
+                  to={service.path}
+                  className="w-full inline-flex items-center justify-between font-mono text-[11px] uppercase tracking-widest font-bold text-white hover:text-brand-yellow transition-colors group"
+                >
+                  <span>Explore Protocol Details</span>
+                  <ArrowUpRight size={14} className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-brand-purple group-hover:text-brand-yellow" />
+                </Link>
+              </div>
             </div>
-        </section>
-      </AnimatedSection>
-      
-      <AnimatedSection>
-        <section id="creative-method" className="py-24 md:py-32 border-t border-brand-dark/20">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="md:col-span-1">
-                     <h2 className="font-sans text-4xl font-bold uppercase tracking-tight sticky top-24">The Creative Method™</h2>
-                </div>
-                <div className="md:col-span-2">
-                    <p className="font-body text-xl text-brand-muted mb-12">
-                       Execution & Storytelling. This is where strategy becomes tangible. We bring your brand to life through compelling visuals, digital experiences, and unforgettable storytelling.
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 font-body text-xl">
-                        {creativeMethodServices.map((service) => (
-                            <p key={service}>{service}</p>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
-      </AnimatedSection>
+          ))}
+        </div>
+
+        {/* Trust Infrastructure Framework */}
+        <div className="bg-platform-dark/30 border border-white/5 p-8 md:p-12 rounded-sm flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+          <div className="max-w-2xl">
+            <h3 className="text-xl font-bold uppercase tracking-wider mb-2 flex items-center gap-2">
+              <Terminal size={16} className="text-brand-yellow" />
+              <span>Production Pipeline Standards</span>
+            </h3>
+            <p className="font-body text-sm text-white/70 leading-relaxed">
+              Every digital asset designed by COOLO is built on zero-latency visual framework layers. We enforce absolute code maintainability, complete semantic accessibility compliance, and pixel-perfect rendering across mobile, desktop, and tablet screen form factors.
+            </p>
+          </div>
+          <Link 
+            to="/contact" 
+            className="w-full lg:w-auto text-center bg-brand-purple hover:bg-brand-yellow text-white hover:text-brand-navy font-mono text-xs uppercase font-black py-4 px-10 rounded-xs transition-colors duration-300 whitespace-nowrap"
+          >
+            Start Digital Intake
+          </Link>
+        </div>
+
+      </div>
     </div>
   );
 };
