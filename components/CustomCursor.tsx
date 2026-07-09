@@ -2,72 +2,117 @@ import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const CustomCursor: React.FC = () => {
-    // 1. Bypass React state for coordinates to prevent re-renders on mousemove
-    const cursorX = useMotionValue(-100);
-    const cursorY = useMotionValue(-100);
+  const [cursorText, setCursorText] = useState('');
+  const [cursorVariant, setCursorVariant] = useState('default');
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Use motion values to prevent React re-renders on every mouse move
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+
+  // Apply spring physics for that heavy, premium follow effect
+  const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
+  const cursorXSpring = useSpring(cursorX, springConfig);
+  const cursorYSpring = useSpring(cursorY, springConfig);
+
+  useEffect(() => {
+    // Only show custom cursor on non-touch devices
+    if (window.matchMedia('(pointer: coarse)').matches) return;
     
-    // 2. Apply a tight, snappy spring for zero-latency feel
-    const springConfig = { damping: 25, stiffness: 600, mass: 0.2 };
-    const cursorXSpring = useSpring(cursorX, springConfig);
-    const cursorYSpring = useSpring(cursorY, springConfig);
+    setIsVisible(true);
 
-    const [isHovering, setIsHovering] = useState(false);
-    const [cursorText, setCursorText] = useState('');
+    const moveCursor = (e: MouseEvent) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+    };
 
-    useEffect(() => {
-        const moveCursor = (e: MouseEvent) => {
-            cursorX.set(e.clientX);
-            cursorY.set(e.clientY);
-        };
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      
+      // Check if hovering over interactive elements or elements with custom cursor data attributes
+      const isInteractive = target.closest('a, button, input, textarea, select');
+      const customCursorData = target.closest('[data-cursor]');
+      const customCursorText = target.closest('[data-cursor-text]');
 
-        const handleMouseOver = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            const interactiveEl = target.closest('a, button, [data-cursor-text]');
-            
-            if (interactiveEl) {
-                setIsHovering(true);
-                const text = interactiveEl.getAttribute('data-cursor-text');
-                setCursorText(text || '');
-            } else {
-                setIsHovering(false);
-                setCursorText('');
-            }
-        };
+      if (customCursorText) {
+        setCursorText(customCursorText.getAttribute('data-cursor-text') || '');
+        setCursorVariant('text');
+      } else if (customCursorData) {
+        setCursorVariant(customCursorData.getAttribute('data-cursor') || 'hover');
+      } else if (isInteractive) {
+        setCursorVariant('hover');
+      } else {
+        setCursorVariant('default');
+        setCursorText('');
+      }
+    };
 
-        window.addEventListener('mousemove', moveCursor);
-        window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', moveCursor);
+    window.addEventListener('mouseover', handleMouseOver);
+    
+    // Hide cursor when leaving window
+    document.body.addEventListener('mouseleave', () => setIsVisible(false));
+    document.body.addEventListener('mouseenter', () => setIsVisible(true));
 
-        return () => {
-            window.removeEventListener('mousemove', moveCursor);
-            window.removeEventListener('mouseover', handleMouseOver);
-        };
-    }, [cursorX, cursorY]);
+    return () => {
+      window.removeEventListener('mousemove', moveCursor);
+      window.removeEventListener('mouseover', handleMouseOver);
+      document.body.removeEventListener('mouseleave', () => setIsVisible(false));
+      document.body.removeEventListener('mouseenter', () => setIsVisible(true));
+    };
+  }, [cursorX, cursorY]);
 
-    // Hide cursor on touch devices
-    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
-        return null;
+  if (!isVisible) return null;
+
+  const variants = {
+    default: {
+      width: 12,
+      height: 12,
+      backgroundColor: '#000000',
+      border: '0px solid transparent',
+      mixBlendMode: 'normal' as any,
+    },
+    hover: {
+      width: 64,
+      height: 64,
+      backgroundColor: 'transparent',
+      border: '1px solid rgba(0, 0, 0, 0.2)',
+      mixBlendMode: 'difference' as any,
+    },
+    text: {
+      width: 100,
+      height: 100,
+      backgroundColor: '#000000',
+      border: '0px solid transparent',
+      mixBlendMode: 'normal' as any,
     }
+  };
 
-    return (
-        <motion.div
-            className="fixed top-0 left-0 flex items-center justify-center rounded-full pointer-events-none z-[9999] mix-blend-difference bg-brand-yellow text-brand-navy font-mono text-[8px] font-bold tracking-widest text-center"
-            style={{
-                x: cursorXSpring,
-                y: cursorYSpring,
-                translateX: '-50%',
-                translateY: '-50%',
-                width: isHovering ? (cursorText ? '60px' : '40px') : '16px',
-                height: isHovering ? (cursorText ? '60px' : '40px') : '16px',
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
+  return (
+    <motion.div
+      className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center text-white text-xs font-medium uppercase tracking-wider text-center"
+      style={{
+        x: cursorXSpring,
+        y: cursorYSpring,
+        translateX: '-50%',
+        translateY: '-50%',
+      }}
+      variants={variants}
+      animate={cursorVariant}
+      transition={{ type: 'tween', ease: 'backOut', duration: 0.2 }}
+    >
+      {cursorVariant === 'text' && (
+        <motion.span
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.05 }}
+          className="pointer-events-none select-none"
         >
-            {isHovering && cursorText && (
-                <span className="opacity-100">{cursorText}</span>
-            )}
-        </motion.div>
-    );
+          {cursorText}
+        </motion.span>
+      )}
+    </motion.div>
+  );
 };
 
 export default CustomCursor;
