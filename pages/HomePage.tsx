@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../components/Header'; // Assuming you have a basic header
+import Footer from '../components/Footer'; // Assuming you have a basic footer
 import AnimatedSection from '../components/AnimatedSection';
 import SmoothScroll from '../components/SmoothScroll';
 import ProjectCard from '../components/ProjectCard';
@@ -13,11 +12,12 @@ const HomePage: React.FC = () => {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) return null;
+  // Prevent hydration mismatch
+  if (!isMounted) return <div className="min-h-screen bg-[#0a0a0a]" />;
 
   return (
     <SmoothScroll>
-      <div className="min-h-screen bg-[#0a0a0a] text-[#f0f0f0] selection:bg-[#f0f0f0] selection:text-[#0a0a0a]">
+      <div className="min-h-screen bg-[#0a0a0a] text-[#f0f0f0] selection:bg-[#f0f0f0] selection:text-[#0a0a0a] overflow-hidden">
         <Header />
 
         <main>
@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
                 </span>
               </div>
               <div className="md:col-span-8 lg:col-span-7">
-                <h2 className="font-display text-4xl md:text-5xl lg:text-7xl leading-[1.1] tracking-tight">
+                <h2 className="font-display text-4xl md:text-5xl lg:text-7xl leading-[1.1] tracking-tight m-0">
                   Operating at the intersection of cultural insight and strict design discipline. We build digital and physical experiences that demand attention.
                 </h2>
                 <div className="mt-12">
@@ -69,8 +69,8 @@ const HomePage: React.FC = () => {
           {/* SELECTED WORK - ASYMMETRICAL GRID */}
           <section className="py-24 px-6 md:px-12 lg:px-20 w-full bg-[#111111]">
             <AnimatedSection className="flex justify-between items-end border-b border-[#f0f0f0]/20 pb-8 mb-20">
-              <h2 className="font-display text-6xl md:text-8xl tracking-tight uppercase">Selected Work</h2>
-              <span className="font-mono text-xs uppercase tracking-widest text-[#f0f0f0]/60 hidden md:block">
+              <h2 className="font-display text-6xl md:text-8xl tracking-tight uppercase m-0">Selected Work</h2>
+              <span className="font-mono text-xs uppercase tracking-widest text-[#f0f0f0]/60 hidden md:block mb-2">
                 [ 2024 — 2026 ]
               </span>
             </AnimatedSection>
@@ -104,7 +104,7 @@ const HomePage: React.FC = () => {
             <AnimatedSection className="w-full flex justify-center mt-32">
               <a 
                 href="/work" 
-                className="font-mono text-sm uppercase tracking-widest border border-[#f0f0f0]/30 px-8 py-4 hover:bg-[#f0f0f0] hover:text-[#0a0a0a] transition-all duration-300"
+                className="inline-block font-mono text-sm uppercase tracking-widest border border-[#f0f0f0]/30 px-8 py-4 hover:bg-[#f0f0f0] hover:text-[#0a0a0a] transition-all duration-300"
               >
                 View Full Archive
               </a>
@@ -120,7 +120,7 @@ const HomePage: React.FC = () => {
                 </span>
               </div>
               <div className="md:col-span-8 lg:col-span-8">
-                <ul className="w-full flex flex-col">
+                <ul className="w-full flex flex-col m-0 p-0 list-none">
                   {['Brand Strategy', 'Creative Direction', 'Visual Identity', 'Digital Experiences'].map((item, i) => (
                     <li key={i} className="w-full border-t border-[#f0f0f0]/20 py-8 flex justify-between items-center group cursor-pointer">
                       <span className="font-display text-4xl md:text-6xl tracking-tight text-[#f0f0f0]/80 group-hover:text-[#f0f0f0] transition-colors duration-300">
