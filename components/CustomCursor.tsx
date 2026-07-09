@@ -10,7 +10,7 @@ const CustomCursor: React.FC = () => {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  // Apply spring physics for that heavy, premium follow effect
+  // Apply spring physics for heavy follow latency effect
   const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
@@ -29,7 +29,7 @@ const CustomCursor: React.FC = () => {
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       
-      // Check if hovering over interactive elements or elements with custom cursor data attributes
+      // Check if hovering over interactive elements or custom data points
       const isInteractive = target.closest('a, button, input, textarea, select');
       const customCursorData = target.closest('[data-cursor]');
       const customCursorText = target.closest('[data-cursor-text]');
@@ -50,7 +50,7 @@ const CustomCursor: React.FC = () => {
     window.addEventListener('mousemove', moveCursor);
     window.addEventListener('mouseover', handleMouseOver);
     
-    // Hide cursor when leaving window
+    // Hide cursor when leaving active frame bounds
     document.body.addEventListener('mouseleave', () => setIsVisible(false));
     document.body.addEventListener('mouseenter', () => setIsVisible(true));
 
@@ -68,7 +68,7 @@ const CustomCursor: React.FC = () => {
     default: {
       width: 12,
       height: 12,
-      backgroundColor: '#000000',
+      backgroundColor: '#F7F7F7',
       border: '0px solid transparent',
       mixBlendMode: 'normal' as any,
     },
@@ -76,13 +76,13 @@ const CustomCursor: React.FC = () => {
       width: 64,
       height: 64,
       backgroundColor: 'transparent',
-      border: '1px solid rgba(0, 0, 0, 0.2)',
-      mixBlendMode: 'difference' as any,
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      mixBlendMode: 'normal' as any,
     },
     text: {
       width: 100,
       height: 100,
-      backgroundColor: '#000000',
+      backgroundColor: '#FCC803',
       border: '0px solid transparent',
       mixBlendMode: 'normal' as any,
     }
@@ -90,7 +90,7 @@ const CustomCursor: React.FC = () => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center text-white text-xs font-medium uppercase tracking-wider text-center"
+      className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center text-brand-navy text-xs font-black uppercase tracking-wider text-center"
       style={{
         x: cursorXSpring,
         y: cursorYSpring,
@@ -106,7 +106,7 @@ const CustomCursor: React.FC = () => {
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.05 }}
-          className="pointer-events-none select-none"
+          className="pointer-events-none select-none text-brand-navy px-2 block"
         >
           {cursorText}
         </motion.span>
