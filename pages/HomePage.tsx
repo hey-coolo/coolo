@@ -1,94 +1,86 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS, QA_DATA } from '../constants';
 import ProjectCard from '../components/ProjectCard';
 
 const BrandHero: React.FC = () => {
-    // Grab a selection of images to intersperse within the typography
-    const images = PROJECTS.slice(0, 5).map(p => p.imageUrl);
+    // Select images to embed inline with the typography
+    const img1 = PROJECTS[0]?.imageUrl || '';
+    const img2 = PROJECTS[1]?.imageUrl || '';
+    const img3 = PROJECTS[2]?.imageUrl || '';
+    const img4 = PROJECTS[3]?.imageUrl || '';
 
     return (
-        <section className="relative h-screen flex flex-col justify-between pt-24 md:pt-32 pb-8 bg-brand-navy text-brand-offwhite overflow-hidden">
-            <div className="absolute inset-0 studio-grid pointer-events-none opacity-[0.04] z-0"></div>
-
-            <div className="container mx-auto px-4 md:px-8 h-full flex flex-col justify-between relative z-10">
+        <section className="relative min-h-screen flex flex-col justify-center pt-32 pb-16 bg-brand-navy text-brand-offwhite overflow-hidden border-b-2 border-brand-navy">
+            
+            <div className="container mx-auto px-4 md:px-8 relative z-10 flex-grow flex flex-col justify-center">
                 
-                {/* Brutalist Massive Typography - Interspersed with Images */}
-                <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex-1 flex flex-col justify-center w-full font-black uppercase tracking-tighter leading-[0.8] text-[15vw] md:text-[14.5vw]"
-                >
-                    {/* Row 1 */}
-                    <div className="flex items-center justify-between w-full">
-                        {images[0] && (
-                            <motion.div 
-                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, duration: 0.6 }}
-                                className="h-[0.75em] w-[1.8em] overflow-hidden shrink-0 hidden md:block"
-                            >
-                                <img src={images[0]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
-                            </motion.div>
-                        )}
-                        <span>SHAPING</span>
-                        {images[1] && (
-                            <motion.div 
-                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, duration: 0.6 }}
-                                className="h-[0.75em] w-[1.2em] overflow-hidden shrink-0 hidden md:block"
-                            >
-                                <img src={images[1]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
-                            </motion.div>
-                        )}
-                    </div>
-                    
-                    {/* Row 2 */}
-                    <div className="flex items-center justify-between w-full mt-2 md:mt-0">
-                        <span>BRANDS</span>
-                        {images[2] && (
-                            <motion.div 
-                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, duration: 0.6 }}
-                                className="h-[0.75em] w-[2.5em] overflow-hidden shrink-0 hidden md:block"
-                            >
-                                <img src={images[2]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
-                            </motion.div>
-                        )}
-                    </div>
+                {/* Brutalist Typography with Inline Images based on 'em' sizes to perfectly scale with text */}
+                <div className="w-full">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-black uppercase tracking-tighter text-brand-offwhite w-full flex flex-col gap-2 md:gap-4 text-[13vw]"
+                    >
+                        {/* Row 1 */}
+                        <div className="flex flex-wrap items-center justify-between w-full leading-[0.78]">
+                            {img1 && (
+                                <motion.span 
+                                    initial={{ width: 0 }} animate={{ width: "2em" }} transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                                    className="hidden md:inline-block h-[0.78em] overflow-hidden"
+                                >
+                                    <img src={img1} alt="Work" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                                </motion.span>
+                            )}
+                            <span className="flex-1 text-center md:text-left md:pl-[0.1em]">SHAPING</span>
+                            {img2 && (
+                                <motion.span 
+                                    initial={{ width: 0 }} animate={{ width: "1.5em" }} transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                                    className="hidden md:inline-block h-[0.78em] overflow-hidden"
+                                >
+                                    <img src={img2} alt="Work" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                                </motion.span>
+                            )}
+                        </div>
 
-                    {/* Row 3 */}
-                    <div className="flex items-center justify-between w-full mt-2 md:mt-0">
-                        {images[3] && (
-                            <motion.div 
-                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, duration: 0.6 }}
-                                className="h-[0.75em] w-[2em] overflow-hidden shrink-0 hidden md:block"
-                            >
-                                <img src={images[3]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
-                            </motion.div>
-                        )}
-                        <span className="font-serif italic font-light text-brand-yellow pr-[2vw]">WITH</span>
-                        {images[4] && (
-                            <motion.div 
-                                initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6, duration: 0.6 }}
-                                className="h-[0.75em] w-[1.5em] overflow-hidden shrink-0 hidden md:block"
-                            >
-                                <img src={images[4]} alt="Work sample" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
-                            </motion.div>
-                        )}
-                    </div>
+                        {/* Row 2 */}
+                        <div className="flex flex-wrap items-center justify-between w-full leading-[0.78]">
+                            <span className="flex-1">BRANDS</span>
+                            {img3 && (
+                                <motion.span 
+                                    initial={{ width: 0 }} animate={{ width: "2.8em" }} transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                                    className="hidden md:inline-block h-[0.78em] overflow-hidden"
+                                >
+                                    <img src={img3} alt="Work" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                                </motion.span>
+                            )}
+                        </div>
 
-                    {/* Row 4 */}
-                    <div className="flex items-center justify-between w-full mt-2 md:mt-0">
-                        <span className="w-full text-center md:text-left">CHARACTER.</span>
-                    </div>
-                </motion.div>
+                        {/* Row 3 */}
+                        <div className="flex flex-wrap items-center justify-between w-full leading-[0.78]">
+                            <span className="text-brand-yellow font-serif italic pr-[0.1em]">WITH</span>
+                            {img4 && (
+                                <motion.span 
+                                    initial={{ width: 0 }} animate={{ width: "2em" }} transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                                    className="hidden md:inline-block h-[0.78em] overflow-hidden"
+                                >
+                                    <img src={img4} alt="Work" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                                </motion.span>
+                            )}
+                            <span className="flex-1 text-right">CHARACTER.</span>
+                        </div>
+                    </motion.div>
+                </div>
 
                 {/* Structured Editorial Footer */}
                 <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.8, duration: 0.8 }}
-                    className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-12 pt-6 border-t border-brand-offwhite/20"
+                    className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 pt-8 border-t border-brand-offwhite/20"
                 >
                     <div className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-brand-yellow">
                         [ Mission 1/1 ]
@@ -101,7 +93,7 @@ const BrandHero: React.FC = () => {
                     <div className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold md:text-right flex flex-col md:items-end gap-2">
                         <span className="text-brand-yellow opacity-60">Status //</span>
                         <div className="flex items-center gap-3">
-                            <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
+                            <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)] shrink-0"></span>
                             <span>Booking Q2/Q3 Projects</span>
                         </div>
                     </div>
@@ -119,33 +111,27 @@ const NarrativeScroll: React.FC = () => {
         offset: ["start start", "end end"]
     });
 
-    // Expanding from 300vh to 400vh for a 4-part narrative
-    
-    // 1. Every founder has a vision.
     const opacity1 = useTransform(scrollYProgress, [0, 0.15, 0.22], [1, 1, 0]);
     const y1 = useTransform(scrollYProgress, [0, 0.22], [0, -50]);
     const scale1 = useTransform(scrollYProgress, [0, 0.22], [1, 0.95]);
 
-    // 2. Not every vision becomes a brand.
     const opacity2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0, 1, 0]);
     const y2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [50, 0, -50]);
     const scale2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0.95, 1, 0.95]);
 
-    // 3. That's where we come in.
     const opacity3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0, 1, 0]);
     const y3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [50, 0, -50]);
     const scale3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0.95, 1, 0.95]);
 
-    // 4. Strategy. Design. Creative Direction. Content.
     const opacity4 = useTransform(scrollYProgress, [0.68, 0.85, 1], [0, 1, 1]);
     const y4 = useTransform(scrollYProgress, [0.68, 0.85], [50, 0]);
     const scale4 = useTransform(scrollYProgress, [0.68, 0.85], [0.95, 1]);
 
     return (
         <section ref={containerRef} className="relative h-[400vh] bg-brand-offwhite">
-            <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
+            <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8 border-b-2 border-brand-navy">
                 
-                <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20">
+                <div className="absolute top-24 md:top-32 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] font-bold z-20">
                     01 / The Narrative
                 </div>
 
@@ -212,7 +198,7 @@ const NarrativeScroll: React.FC = () => {
 
 const ServiceRouter: React.FC = () => {
     return (
-        <section className="bg-brand-offwhite border-t-2 border-b-2 border-brand-navy relative z-40 overflow-hidden">
+        <section className="bg-brand-offwhite border-b-2 border-brand-navy relative z-40 overflow-hidden">
              <div className="grid grid-cols-1 lg:grid-cols-3">
                 {SERVICE_LEGS.map((leg, index) => {
                     const titleParts = leg.title.match(/^(We help you)\s+(.*)$/i);
@@ -284,7 +270,7 @@ const FeatureSpotlight: React.FC = () => {
                         alt={featuredProject.title} 
                         className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-700 grayscale group-hover:grayscale-0"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/60 to-transparent opacity-100" />
                 </div>
 
                 <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-16">
@@ -295,21 +281,21 @@ const FeatureSpotlight: React.FC = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
                         >
-                            <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-xs font-bold mb-6 block">
+                            <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-[10px] font-bold mb-6 block">
                                 Featured Case Study
                             </span>
                             <h2 className="text-[15vw] leading-[0.85] font-black uppercase tracking-tighter text-brand-offwhite mb-8 group-hover:text-brand-yellow transition-colors duration-500">
                                 {featuredProject.title}
                             </h2>
                             
-                            <div className="flex flex-col md:flex-row gap-12 border-t border-brand-offwhite/20 pt-8 text-brand-offwhite/80">
+                            <div className="flex flex-col md:flex-row gap-8 md:gap-12 border-t border-brand-offwhite/20 pt-8 text-brand-offwhite/80">
                                 <div className="max-w-xl">
-                                    <p className="font-body text-xl font-light opacity-80 line-clamp-3 md:line-clamp-4 leading-relaxed">
+                                    <p className="font-body text-lg md:text-xl font-light opacity-80 line-clamp-3 md:line-clamp-4 leading-relaxed">
                                         {featuredProject.description}
                                     </p>
                                 </div>
-                                <div className="mt-auto ml-auto">
-                                    <span className="font-mono text-sm uppercase tracking-widest border-b-2 border-brand-yellow pb-2 text-brand-yellow font-bold">
+                                <div className="mt-auto ml-auto shrink-0">
+                                    <span className="font-mono text-xs uppercase tracking-widest border-b-2 border-brand-yellow pb-2 text-brand-yellow font-bold">
                                         Open Case File &rarr;
                                     </span>
                                 </div>
@@ -323,10 +309,6 @@ const FeatureSpotlight: React.FC = () => {
 };
 
 const CapabilityList: React.FC = () => {
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
     const capabilities = [
         { 
             id: '01', 
@@ -337,7 +319,7 @@ const CapabilityList: React.FC = () => {
         { 
             id: '02', 
             title: 'Identity', 
-            desc: 'Visual Systems, Logos, Brand Guidelines, Colour, & Typography,', 
+            desc: 'Visual Systems, Logos, Brand Guidelines, Colour, & Typography', 
             link: '/design-power'
         },
         { 
@@ -354,22 +336,14 @@ const CapabilityList: React.FC = () => {
         }
     ];
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        mouseX.set(e.clientX);
-        mouseY.set(e.clientY);
-    };
-
     return (
-        <section 
-            className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden border-b-2 border-brand-navy" 
-            onMouseMove={handleMouseMove}
-        >
-            <div className="container mx-auto px-8 relative z-10">
-                <div className="mb-24 flex items-end justify-between border-b border-brand-offwhite/20 pb-8">
+        <section className="bg-brand-navy text-brand-offwhite py-32 relative z-40 overflow-hidden border-b-2 border-brand-navy">
+            <div className="container mx-auto px-6 md:px-8 relative z-10">
+                <div className="mb-16 md:mb-24 flex items-end justify-between border-b border-brand-offwhite/20 pb-8">
                      <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85]">
                         Output.
                      </h2>
-                     <div className="hidden md:block font-mono text-xs uppercase tracking-widest text-right opacity-80">
+                     <div className="hidden md:block font-mono text-[10px] uppercase tracking-widest text-right opacity-80">
                         Select a capability<br/>to explore
                      </div>
                 </div>
@@ -379,18 +353,16 @@ const CapabilityList: React.FC = () => {
                         <Link 
                             key={index}
                             to={cap.link}
-                            onMouseEnter={() => setHoveredIndex(index)}
-                            onMouseLeave={() => setHoveredIndex(null)}
-                            className="group relative border-b border-brand-offwhite/20 py-12 md:py-16 flex flex-col md:flex-row justify-between md:items-center transition-colors hover:bg-brand-offwhite/5"
+                            className="group relative border-b border-brand-offwhite/20 py-10 md:py-16 flex flex-col md:flex-row justify-between md:items-center transition-colors hover:bg-brand-offwhite/5"
                         >
-                            <div className="flex items-baseline gap-8 md:gap-16">
-                                <span className="font-mono text-sm md:text-base text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
-                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-brand-offwhite leading-[0.85]">
+                            <div className="flex items-baseline gap-6 md:gap-16">
+                                <span className="font-mono text-xs md:text-sm text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
+                                <h3 className="text-4xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-brand-offwhite leading-[0.85]">
                                     {cap.title}
                                 </h3>
                             </div>
-                            <div className="mt-4 md:mt-0 pl-[calc(2rem+14px)] md:pl-0">
-                                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-brand-offwhite">
+                            <div className="mt-4 md:mt-0 pl-[calc(1.5rem+12px)] md:pl-0">
+                                <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-brand-offwhite">
                                     {cap.desc}
                                 </span>
                             </div>
@@ -404,47 +376,30 @@ const CapabilityList: React.FC = () => {
                     </p>
                 </div>
             </div>
-
-            <motion.div
-                className="pointer-events-none fixed top-0 left-0 w-[300px] h-[400px] z-50 hidden md:block overflow-hidden bg-brand-yellow mix-blend-normal"
-                style={{
-                    x: mouseX,
-                    y: mouseY,
-                    translateX: "-50%",
-                    translateY: "-50%"
-                }}
-                animate={{
-                    opacity: hoveredIndex !== null ? 1 : 0,
-                    scale: hoveredIndex !== null ? 1 : 0.5,
-                    rotate: hoveredIndex !== null ? -5 : 0
-                }}
-                transition={{ duration: 0.2, ease: "linear" }}
-            >                
-            </motion.div>
         </section>
     );
 }
 
 const ShowcaseGrid: React.FC = () => {
     return (
-        <section className="bg-brand-offwhite px-6 md:px-8 py-32 relative z-40 border-b-2 border-brand-navy overflow-hidden">
+        <section className="bg-brand-offwhite px-6 md:px-8 py-24 md:py-32 relative z-40 border-b-2 border-brand-navy overflow-hidden">
              <div className="container mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-8">
                      <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">
                         Selected<br/>Works
                      </h2>
-                     <Link to="/work" className="font-mono text-sm uppercase tracking-widest font-bold border-2 border-brand-navy px-8 py-3 hover:bg-brand-navy hover:text-brand-offwhite transition-all text-brand-navy">
+                     <Link to="/work" className="font-mono text-[10px] md:text-xs uppercase tracking-widest font-bold border-2 border-brand-navy px-8 py-3 hover:bg-brand-navy hover:text-brand-offwhite transition-all text-brand-navy">
                         View Full Archive
                      </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-y-24">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8 md:gap-y-24">
                     {PROJECTS.slice(1, 8).map((project, index) => (
                         <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-24' : ''}`}>
                              <ProjectCard project={project} className="aspect-[4/3] w-full" />
                              <div className="mt-6 flex justify-between items-start border-t border-brand-navy/10 pt-4">
                                 <div>
-                                    <h3 className="text-3xl font-black uppercase tracking-tighter leading-none text-brand-navy">{project.title}</h3>
+                                    <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter leading-none text-brand-navy">{project.title}</h3>
                                     <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
                                 </div>
                                 <span className="font-mono text-[10px] uppercase font-bold opacity-40 text-brand-navy">{project.year}</span>
@@ -466,11 +421,11 @@ const FAQSection: React.FC = () => {
                 <div className="max-w-4xl" itemScope itemType="https://schema.org/FAQPage">
                     {faqs.map((faq, i) => (
                         <div key={i} className="mb-10 border-b border-brand-navy/10 pb-10" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-                            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-brand-navy mb-4" itemProp="name">
+                            <h3 className="text-xl md:text-3xl font-black uppercase tracking-tight text-brand-navy mb-4" itemProp="name">
                                 {faq.q}
                             </h3>
                             <div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-                                <p className="font-body text-lg md:text-xl text-brand-navy/80 leading-relaxed" itemProp="text">
+                                <p className="font-body text-base md:text-xl text-brand-navy/80 leading-relaxed" itemProp="text">
                                     {faq.a}
                                 </p>
                             </div>
@@ -485,18 +440,18 @@ const FAQSection: React.FC = () => {
 const LatestIntel: React.FC = () => {
     return (
         <section className="py-24 relative z-40 bg-brand-offwhite overflow-hidden">
-             <div className="container mx-auto px-8">
-                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+             <div className="container mx-auto px-6 md:px-8">
+                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">Studio Thoughts</h2>
-                    <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">View All Entries &rarr;</Link>
+                    <Link to="/journal" data-cursor-text="INTEL" className="font-mono text-[10px] md:text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-brand-navy">View All Entries &rarr;</Link>
                  </div>
                  
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-brand-navy/10">
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:border-l border-brand-navy/10">
                     {JOURNAL_POSTS.slice(0, 3).map((post, i) => (
-                        <Link key={i} to={`/journal/${post.slug}`} data-cursor-text="READ" className="group block border-r border-b border-t border-brand-navy/10 p-8 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300">
+                        <Link key={i} to={`/journal/${post.slug}`} data-cursor-text="READ" className="group block md:border-r border-b border-t md:border-t-0 border-brand-navy/10 py-8 md:p-8 hover:bg-brand-navy hover:text-brand-offwhite transition-all duration-300">
                              <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-4 group-hover:text-brand-yellow text-brand-navy group-hover:text-brand-offwhite">{post.date}</span>
-                             <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h3>
-                             <p className="font-body text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-brand-navy group-hover:text-brand-offwhite">
+                             <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-brand-navy group-hover:text-brand-offwhite min-h-[3em]">{post.title}</h3>
+                             <p className="font-body text-lg md:text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-brand-navy group-hover:text-brand-offwhite">
                                  {post.excerpt}
                              </p>
                         </Link>

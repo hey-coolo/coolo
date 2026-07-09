@@ -1,232 +1,150 @@
 import React, { useState, useEffect } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, ShoppingBag } from 'lucide-react';
-import { NAV_LINKS } from '../constants';
 import BrandLogo from './BrandLogo';
 import { useCart } from '../context/CartContext';
 
 const Header: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false); 
-  const [expandedMenu, setExpandedMenu] = useState<string | null>(null); 
-  const location = useLocation();
-  const { getCartCount } = useCart();
-  const cartCount = getCartCount();
-  
-  const isHome = location.pathname === '/';
-  const logoColor = isOpen ? '#F7F7F7' : (isHome && !isScrolled ? '#F7F7F7' : '#0F0328');
-  const isLightText = isHome && !isScrolled && !isOpen;
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const location = useLocation();
+    const { state } = useCart();
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const isDarkBg = location.pathname === '/' || location.pathname === '/work';
 
-  useEffect(() => {
-    setIsOpen(false);
-    setExpandedMenu(null); 
-  }, [location]);
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [isOpen]);
+    useEffect(() => {
+        setMobileMenuOpen(false);
+    }, [location.pathname]);
 
-  const toggleSubMenu = (menuName: string) => {
-    setExpandedMenu(expandedMenu === menuName ? null : menuName);
-  };
+    const navLinks = [
+        { name: 'Work', path: '/work' },
+        { name: 'Studio', path: '/about' },
+        { name: 'Clarity', path: '/clarity' },
+        { name: 'Design Power', path: '/design-power' },
+        { name: 'Partnership', path: '/partnership' },
+        { name: 'Journal', path: '/journal' }
+    ];
 
-  return (
-    <>
-    <header 
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        isScrolled ? 'py-4 bg-brand-offwhite/95 backdrop-blur-md border-b border-brand-navy/5 shadow-sm' : 'py-8 bg-transparent'
-      }`}
-    >
-      <div className="container mx-auto px-6 md:px-8 flex justify-between items-center relative z-50">
-        
-        {/* Logo */}
-        <div className="relative z-[60]">
-            <Link to="/" className="block w-20 md:w-24" onClick={() => setIsOpen(false)}>
-                 <BrandLogo 
-                    className="w-full h-auto" 
-                    color={logoColor}
-                 />
-            </Link>
-        </div>
-        
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-10">
-          {NAV_LINKS.map((link) => (
-            <div key={link.name} className="relative group">
-                <NavLink
-                  to={link.path}
-                  className={({ isActive }) => `font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 relative font-bold block py-4 ${
-                    isLightText ? 'text-brand-offwhite hover:text-brand-yellow drop-shadow-sm' : 'text-brand-navy hover:text-brand-purple'
-                  } ${isActive ? (isLightText ? '!text-brand-yellow' : '!text-brand-purple underline decoration-2 underline-offset-4') : ''}`}
-                >
-                  {link.name.toUpperCase()}
-                </NavLink>
+    const textColorClass = isScrolled 
+        ? 'text-brand-navy' 
+        : (isDarkBg ? 'text-brand-offwhite' : 'text-brand-navy');
 
-                {/* Desktop Dropdown */}
-                {link.subLinks && (
-                    <div className="absolute left-0 pt-2 w-48 hidden group-hover:block">
-                        <div className="bg-brand-navy border border-brand-offwhite/10 shadow-xl py-2">
-                            {link.subLinks.map((sub) => (
-                                <Link 
-                                    key={sub.name}
-                                    to={sub.path}
-                                    className="block px-4 py-2 font-mono text-[9px] uppercase tracking-widest text-brand-offwhite hover:bg-brand-purple hover:text-white transition-colors"
-                                >
-                                    {sub.name}
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-                )}
-            </div>
-          ))}
-          <div className="flex items-center space-x-6 ml-6">
-              {/* Checkout Cart Button Indicator */}
-              <Link 
-                to="/checkout" 
-                className={`relative p-2 transition-colors duration-300 ${isLightText ? 'text-brand-offwhite hover:text-brand-yellow' : 'text-brand-navy hover:text-brand-purple'}`}
-                title="View Checkout Basket"
-              >
-                  <ShoppingBag size={20} />
-                  {cartCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-brand-yellow text-brand-navy font-mono text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-brand-navy">
-                          {cartCount}
-                      </span>
-                  )}
-              </Link>
+    const headerBgClass = isScrolled
+        ? 'bg-brand-offwhite/95 backdrop-blur-md shadow-sm border-b border-brand-navy/10'
+        : 'bg-transparent border-b border-transparent';
 
-              <Link to="/contact" className="font-mono text-[10px] uppercase tracking-[0.2em] px-8 py-3 transition-all duration-300 font-bold bg-brand-navy text-brand-offwhite border-2 border-brand-navy shadow-[4px_4px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
-                Inquire Now
-              </Link>
-          </div>
-        </nav>
+    return (
+        <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${headerBgClass}`}>
+            <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+                
+                {/* Logo - Left */}
+                <Link to="/" className="relative z-50 shrink-0" aria-label="COOLO Home">
+                    <BrandLogo 
+                        className={`h-6 w-auto transition-colors duration-300 ${isScrolled || mobileMenuOpen ? 'text-brand-navy' : textColorClass}`} 
+                    />
+                </Link>
 
-        {/* Mobile Menu Toggle Button */}
-        <div className="flex items-center gap-4 md:hidden z-[60]">
-            <Link to="/checkout" className={`relative p-2 ${isOpen || (isHome && !isScrolled) ? 'text-brand-offwhite' : 'text-brand-navy'}`}>
-                <ShoppingBag size={22} />
-                {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-brand-yellow text-brand-navy font-mono text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-brand-navy">
-                        {cartCount}
-                    </span>
-                )}
-            </Link>
-            <button 
-                onClick={() => setIsOpen(!isOpen)}
-                className={`p-2 focus:outline-none transition-colors duration-300 ${isOpen || (isHome && !isScrolled) ? 'text-brand-offwhite' : 'text-brand-navy'}`}
-                aria-label="Toggle Menu"
-            >
-                {isOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
-        </div>
-      </div>
-    </header>
-
-      {/* Full Screen Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-            <motion.div 
-                initial={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
-                animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
-                exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
-                transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-                className="fixed inset-0 bg-brand-navy z-50 flex flex-col items-center justify-center space-y-6 md:hidden px-8 overflow-y-auto py-20"
-            >
-                <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-                    <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-brand-purple rounded-full blur-[100px]"></div>
-                    <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-brand-yellow rounded-full blur-[100px]"></div>
-                </div>
-
-                <div className="flex flex-col items-center gap-6 relative z-10 w-full mt-12">
-                    {NAV_LINKS.map((link, i) => (
-                        <motion.div
+                {/* Desktop Navigation - Center */}
+                <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+                    {navLinks.map((link) => (
+                        <Link
                             key={link.name}
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 + (i * 0.05), duration: 0.5, ease: "easeOut" }}
-                            className="w-full flex flex-col items-center"
+                            to={link.path}
+                            className={`font-mono text-[10px] uppercase tracking-widest font-bold transition-colors hover:text-brand-yellow ${textColorClass}`}
                         >
-                            <div className="flex items-center justify-center gap-4">
-                                <NavLink 
-                                    to={link.path}
-                                    onClick={() => setIsOpen(false)}
-                                    className={({ isActive }) => `block font-black text-4xl uppercase tracking-tighter transition-colors ${
-                                        isActive ? 'text-brand-yellow' : 'text-brand-offwhite hover:text-brand-yellow'
-                                    }`}
-                                >
-                                    {link.name}
-                                </NavLink>
-                                
-                                {link.subLinks && (
-                                    <button 
-                                        onClick={() => toggleSubMenu(link.name)}
-                                        className="text-brand-offwhite/50 hover:text-brand-yellow transition-colors p-2"
-                                    >
-                                        <ChevronDown 
-                                            size={24} 
-                                            className={`transition-transform duration-300 ${expandedMenu === link.name ? 'rotate-180 text-brand-yellow' : ''}`}
-                                        />
-                                    </button>
-                                )}
-                            </div>
-                            
-                            <AnimatePresence>
-                                {link.subLinks && expandedMenu === link.name && (
-                                    <motion.div 
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        className="overflow-hidden w-full"
-                                    >
-                                        <div className="flex flex-col items-center gap-4 py-4 mt-2 border-t border-brand-offwhite/10 w-3/4 mx-auto">
-                                            {link.subLinks.map(sub => (
-                                                <Link 
-                                                    key={sub.name}
-                                                    to={sub.path}
-                                                    onClick={() => setIsOpen(false)}
-                                                    className="font-mono text-sm uppercase tracking-widest text-brand-offwhite/60 hover:text-brand-white"
-                                                >
-                                                    {sub.name}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </motion.div>
-                    ))}
-                    
-                    <motion.div
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
-                        className="mt-4 flex flex-col items-center gap-8 w-full border-t border-brand-offwhite/10 pt-10"
-                    >
-                        <Link 
-                            to="/contact" 
-                            onClick={() => setIsOpen(false)}
-                            className="w-full max-w-xs text-center font-mono text-sm uppercase tracking-widest px-8 py-5 border-2 border-brand-yellow text-brand-yellow font-bold hover:bg-brand-yellow hover:text-brand-navy transition-all"
-                        >
-                            Start Project
+                            {link.name}
                         </Link>
-                    </motion.div>
+                    ))}
+                </nav>
+
+                {/* Actions - Right */}
+                <div className="hidden lg:flex items-center gap-6 shrink-0">
+                    <button 
+                        className={`relative font-mono text-[10px] uppercase tracking-widest font-bold hover:text-brand-yellow transition-colors ${textColorClass}`}
+                        aria-label="Cart"
+                    >
+                        [ Cart: {state.items.length} ]
+                    </button>
+                    
+                    <Link 
+                        to="/contact" 
+                        className={`font-mono text-[10px] uppercase tracking-widest font-bold border pb-1 transition-all ${
+                            isScrolled || !isDarkBg 
+                                ? 'border-brand-navy text-brand-navy hover:text-brand-yellow hover:border-brand-yellow' 
+                                : 'border-brand-offwhite text-brand-offwhite hover:text-brand-yellow hover:border-brand-yellow'
+                        }`}
+                    >
+                        Inquire Now
+                    </Link>
                 </div>
-            </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
+
+                {/* Mobile Menu Toggle */}
+                <button 
+                    className="lg:hidden relative z-50 p-2"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    aria-label="Toggle Menu"
+                >
+                    <div className="w-6 flex flex-col gap-1.5">
+                        <span className={`block h-[1.5px] w-full transition-transform duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[7.5px] bg-brand-navy' : `bg-current ${textColorClass}`}`}></span>
+                        <span className={`block h-[1.5px] w-full transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0 bg-brand-navy' : `bg-current ${textColorClass}`}`}></span>
+                        <span className={`block h-[1.5px] w-full transition-transform duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[7.5px] bg-brand-navy' : `bg-current ${textColorClass}`}`}></span>
+                    </div>
+                </button>
+            </div>
+
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.div 
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-0 bg-brand-offwhite z-40 flex flex-col justify-center px-8"
+                    >
+                        <nav className="flex flex-col gap-6">
+                            {navLinks.map((link, i) => (
+                                <motion.div 
+                                    key={link.name}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.1 + (i * 0.05) }}
+                                >
+                                    <Link
+                                        to={link.path}
+                                        className="text-4xl font-black uppercase tracking-tighter text-brand-navy hover:text-brand-purple"
+                                    >
+                                        {link.name}
+                                    </Link>
+                                </motion.div>
+                            ))}
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.1 + (navLinks.length * 0.05) }}
+                                className="mt-8 pt-8 border-t border-brand-navy/10 flex flex-col gap-4"
+                            >
+                                <button className="text-left font-mono text-xs uppercase tracking-widest font-bold text-brand-navy">
+                                    [ Cart: {state.items.length} ]
+                                </button>
+                                <Link to="/contact" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple">
+                                    Inquire Now &rarr;
+                                </Link>
+                            </motion.div>
+                        </nav>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </header>
+    );
 };
 
 export default Header;
