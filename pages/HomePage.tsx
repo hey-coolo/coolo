@@ -10,69 +10,76 @@ const BrandHero: React.FC = () => {
     const [isStudioHovered, setIsStudioHovered] = useState(false);
 
     return (
-        <section className="relative h-[100svh] pt-32 pb-8 bg-[#F8F8F9] text-brand-navy flex flex-col justify-between overflow-hidden selection:bg-brand-purple selection:text-white">
+        <section className="relative min-h-[100svh] pt-32 pb-8 bg-[#F8F8F9] text-brand-navy flex flex-col justify-between overflow-hidden selection:bg-[#8B84D7] selection:text-white">
             {/* Top Metadata */}
-            <div className="absolute top-28 md:top-32 w-full px-6 md:px-12 flex justify-between items-start font-mono text-[9px] md:text-[10px] uppercase tracking-widest opacity-30 pointer-events-none">
+            <div className="w-full px-6 md:px-12 flex justify-between items-start font-mono text-[9px] md:text-[10px] uppercase tracking-widest opacity-40 font-bold pointer-events-none">
                 <span className="max-w-[150px] md:max-w-none">© 2026 COOLO. HUMANS IN THE MACHINE.</span>
                 <span className="hidden md:block">ARTWORK: CONCEPT PLAYGROUND</span>
             </div>
 
-            <div className="container mx-auto px-6 md:px-12 relative z-10 flex-grow flex flex-col justify-center mt-12 md:mt-16">
+            {/* Core Typography Statement */}
+            <div className="container mx-auto px-6 md:px-12 flex-grow flex flex-col justify-center w-full mt-12 md:mt-0">
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="text-[13.5vw] md:text-[10.5vw] font-black uppercase leading-[0.8] tracking-tighter w-full text-left"
+                    className="text-[12.5vw] lg:text-[10.5vw] font-black uppercase leading-[0.85] tracking-tighter w-full text-left flex flex-col items-start"
                 >
-                    YOUR BUSINESS IS BETTER THAN IT CURRENTLY LOOKS, AND YOU{' '}
-                    <span className="text-[#8B84D7]">JUST FOUND </span>
-                    <a 
-                        href="https://instagram.com/coolo.co"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#8B84D7] relative cursor-crosshair transition-all duration-300 hover:text-brand-navy"
-                        onMouseEnter={() => setIsStudioHovered(true)}
-                        onMouseLeave={() => setIsStudioHovered(false)}
-                    >
-                        <span className="relative inline-block">
-                            THE STUDIO
-                            <span className="absolute left-0 bottom-0 md:bottom-2 w-full h-[3px] md:h-[6px] bg-current transition-all duration-300 transform origin-left scale-x-100"></span>
-                        </span>
-                    </a> 
-                    {' '}TO FIX THAT.
-                </motion.h1>
-                
-                {/* Follow Us Interaction */}
-                <div className="h-[20px] mt-4 md:mt-6 ml-[45vw] md:ml-[55vw]">
-                    <AnimatePresence>
-                        {isStudioHovered && (
-                            <motion.a 
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                transition={{ duration: 0.3, ease: "easeOut" }}
-                                href="https://instagram.com/coolo.co" 
-                                target="_blank" 
+                    <span className="block">YOUR BUSINESS IS BETTER THAN IT</span>
+                    <span className="block">CURRENTLY LOOKS, AND YOU <span className="text-[#8B84D7]">JUST</span></span>
+                    <span className="block relative z-20">
+                        <span className="text-[#8B84D7]">FOUND </span>
+                        <div 
+                            className="relative inline-block"
+                            onMouseEnter={() => setIsStudioHovered(true)}
+                            onMouseLeave={() => setIsStudioHovered(false)}
+                        >
+                            <a 
+                                href="https://instagram.com/coolo.co"
+                                target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[#8B84D7] hover:text-brand-navy transition-colors font-mono text-[10px] md:text-xs font-bold tracking-widest uppercase block"
+                                className="text-[#8B84D7] relative z-10 transition-colors duration-300 hover:text-brand-navy"
                             >
-                                [@] FOLLOW US
-                            </motion.a>
-                        )}
-                    </AnimatePresence>
-                </div>
+                                THE STUDIO
+                                <span className="absolute left-0 bottom-[10%] w-full h-[3px] md:h-[6px] bg-current"></span>
+                            </a>
+                            
+                            {/* Hover Badge */}
+                            <AnimatePresence>
+                                {isStudioHovered && (
+                                    <motion.a 
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.2, ease: "easeOut" }}
+                                        href="https://instagram.com/coolo.co" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="absolute left-1/2 -translate-x-1/2 top-full mt-4 text-[#8B84D7] hover:text-brand-navy transition-colors font-mono text-[9px] md:text-[10px] font-bold tracking-widest uppercase whitespace-nowrap z-0"
+                                    >
+                                        [@] FOLLOW US
+                                    </motion.a>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                        {' '}TO FIX THAT.
+                    </span>
+                </motion.h1>
             </div>
 
-            {/* Bottom Section */}
-            <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-end relative z-10 w-full">
-                {/* Scroll Indicator */}
+            {/* Bottom Grid Row */}
+            <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 items-end gap-12 md:gap-0 pb-4 relative z-10">
+                <div className="hidden md:block">
+                    {/* Empty left column to respect 12-col grid alignment */}
+                </div>
+                
                 <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1, duration: 1 }}
-                    className="flex flex-col items-center opacity-40 font-mono text-[9px] uppercase tracking-widest font-bold order-2 md:order-1 mx-auto md:mx-0 w-full md:w-auto mt-12 md:mt-0"
+                    className="flex flex-col items-center opacity-40 font-mono text-[9px] md:text-[10px] uppercase tracking-widest font-bold w-full mx-auto"
                 >
-                    <span className="mb-3">SCROLL TO DISCOVER</span>
+                    <span className="mb-4">SCROLL TO DISCOVER</span>
                     <motion.div
                         animate={{ y: [0, 5, 0] }}
                         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -82,14 +89,15 @@ const BrandHero: React.FC = () => {
                     </motion.div>
                 </motion.div>
 
-                {/* Body Copy */}
                 <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5, duration: 1 }}
-                    className="max-w-[280px] md:max-w-sm font-mono text-[10px] md:text-[11px] uppercase tracking-widest font-bold opacity-90 leading-[1.8] order-1 md:order-2 text-left md:text-left"
+                    className="flex md:justify-end"
                 >
-                    GOOD BUSINESSES FREQUENTLY LOOK AND SOUND WORSE THAN THE ACTUAL VALUE THEY CREATE.
+                    <p className="max-w-[280px] md:max-w-[320px] font-mono text-[10px] md:text-[11px] uppercase tracking-widest font-bold opacity-90 leading-[1.8] md:text-left">
+                        GOOD BUSINESSES FREQUENTLY LOOK AND SOUND WORSE THAN THE ACTUAL VALUE THEY CREATE.
+                    </p>
                 </motion.div>
             </div>
         </section>
@@ -98,13 +106,13 @@ const BrandHero: React.FC = () => {
 
 const RealityCheck: React.FC = () => {
     return (
-        <section className="py-32 md:py-48 bg-[#8B84D7] text-white px-6 md:px-12 flex flex-col items-start justify-center min-h-[100svh] selection:bg-brand-navy selection:text-white">
-            <div className="container mx-auto">
+        <section className="py-32 md:py-48 bg-[#8B84D7] text-white px-6 md:px-12 flex flex-col items-center justify-center min-h-[80vh] text-center selection:bg-brand-navy selection:text-white">
+            <div className="container mx-auto flex flex-col items-center">
                 <motion.span 
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold mb-16 md:mb-24 block text-left"
+                    className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold mb-16 md:mb-24 block"
                 >
                     THE REALITY CHECK
                 </motion.span>
@@ -114,7 +122,7 @@ const RealityCheck: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1, duration: 0.8 }}
-                    className="text-4xl md:text-6xl lg:text-[5.5rem] uppercase tracking-tighter leading-[0.95] max-w-7xl font-light text-left"
+                    className="text-3xl md:text-5xl lg:text-[4.5rem] uppercase tracking-tighter leading-[1.05] max-w-5xl font-light"
                 >
                     WE BRIDGE THAT GAP, <strong className="font-black">TURNING YOUR BUSINESS IDEAS</strong> AND EXPERTISE INTO A CLEAR <strong className="font-black">STRATEGIC CREATIVE DIRECTION</strong> AND <strong className="font-black">BRAND EXPERIENCE</strong>.
                 </motion.h2>
@@ -124,13 +132,13 @@ const RealityCheck: React.FC = () => {
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
-                    className="mt-24 md:mt-32 font-mono text-[10px] md:text-xs uppercase tracking-widest font-bold opacity-80 text-left max-w-lg leading-loose"
+                    className="mt-24 md:mt-32 font-mono text-[9px] md:text-[10px] uppercase tracking-widest font-bold opacity-80 max-w-md leading-loose"
                 >
                     THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
                 </motion.p>
                 
-                <div className="mt-16 md:mt-24 opacity-50 flex justify-start">
-                    <div className="w-8 h-8 rounded-full border border-white flex items-center justify-center">
+                <div className="mt-16 md:mt-24 opacity-50">
+                    <div className="w-8 h-8 rounded-full border border-white flex items-center justify-center mx-auto">
                         <ArrowDown size={14} />
                     </div>
                 </div>
@@ -143,14 +151,14 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { margin: "-50% 0px -50% 0px" });
     
-    // Smooth fade in and out as the section enters and leaves the center of the viewport
+    // Smooth fade in and out mapping strictly to the center viewport intersection
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ["start 65%", "end 35%"]
+        offset: ["start 75%", "end 25%"]
     });
 
-    const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
-    const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [60, 0, 0, -60]);
+    const opacity = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.05, 1, 1, 0.05]);
+    const y = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [60, 0, 0, -60]);
 
     useEffect(() => {
         if (isInView) {
@@ -263,7 +271,7 @@ const ProcessSteps: React.FC = () => {
 
 const ShowcaseIntro: React.FC = () => {
     return (
-        <section className="bg-white text-brand-navy py-32 md:py-48 text-left md:text-center selection:bg-brand-purple selection:text-white border-t border-brand-navy/10">
+        <section className="bg-white text-brand-navy py-32 md:py-48 text-center selection:bg-brand-purple selection:text-white border-t border-brand-navy/10">
             <div className="container mx-auto px-6 md:px-12">
                 <motion.h2 
                     initial={{ opacity: 0, y: 30 }}
@@ -284,12 +292,12 @@ const FeatureSpotlight: React.FC = () => {
 
     return (
         <section className="relative bg-brand-navy pt-24 md:pt-32 selection:bg-[#8B84D7] selection:text-white">
-            <div className="container mx-auto px-6 md:px-12 text-left md:text-center text-white mb-16 md:mb-24">
+            <div className="container mx-auto px-6 md:px-12 text-center text-white mb-16 md:mb-24">
                 <motion.h3 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="font-display text-3xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter max-w-6xl mx-auto leading-[1.05] md:leading-[0.9]"
+                    className="font-display text-2xl md:text-3xl lg:text-[2.5rem] font-black uppercase tracking-tighter max-w-5xl mx-auto leading-[1.1] md:leading-[1.05]"
                 >
                     BRAND VOICE, LOGOTYPE & MARK SYSTEM, ART DIRECTION, CONTENT CREATION.
                 </motion.h3>
@@ -334,18 +342,15 @@ const ShowcaseGrid: React.FC = () => {
         <section className="bg-white px-6 md:px-12 py-32 md:py-48 relative z-40 border-b border-brand-navy/10 overflow-hidden selection:bg-brand-purple selection:text-white">
              <div className="container mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 md:mb-32 gap-8">
-                     <h2 className="text-6xl md:text-8xl lg:text-[8rem] font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">
-                        Selected<br/>Works
+                     <h2 className="text-5xl md:text-7xl lg:text-[7rem] font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">
+                        WHAT WE'VE<br/>DONE.
                      </h2>
-                     <Link to="/work" className="font-mono text-xs uppercase tracking-widest font-bold border border-brand-navy/20 text-brand-navy px-8 py-4 hover:bg-brand-navy hover:text-white transition-colors duration-300">
-                        View Full Archive
-                     </Link>
                 </div>
 
-                {/* White background, staggered vertical misalignment */}
+                {/* White background, highly staggered vertical misalignment */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24">
                     {PROJECTS.slice(1, 8).map((project, index) => (
-                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-32' : 'md:-mt-12'}`}>
+                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-48' : 'md:-mt-12'}`}>
                              <ProjectCard project={project} className="aspect-[4/5] md:aspect-[3/4] w-full shadow-xl hover:shadow-2xl transition-shadow duration-500" />
                              <div className="mt-8 flex justify-between items-start border-t border-brand-navy/10 pt-6">
                                 <div className="text-left">
@@ -357,6 +362,12 @@ const ShowcaseGrid: React.FC = () => {
                         </div>
                     ))}
                 </div>
+                
+                <div className="mt-32 md:mt-48 flex justify-center md:justify-end w-full">
+                    <Link to="/work" className="font-mono text-xs uppercase tracking-widest font-bold border border-brand-navy/20 text-brand-navy px-12 py-5 hover:bg-brand-navy hover:text-white transition-colors duration-300">
+                        View Full Archive &rarr;
+                    </Link>
+                </div>
             </div>
         </section>
     )
@@ -367,15 +378,17 @@ const FAQSection: React.FC = () => {
     return (
         <section className="py-32 bg-brand-navy border-b border-white/5 relative z-40 selection:bg-[#8B84D7] selection:text-white text-left">
             <div className="container mx-auto px-6 md:px-12">
-                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85] mb-24">Frequently<br/>Asked<br/>Questions</h2>
+                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85] mb-24">WHAT<br/>THEY'VE<br/>SAID.</h2>
                 <div className="max-w-4xl" itemScope itemType="https://schema.org/FAQPage">
                     {faqs.map((faq, i) => (
-                        <div key={i} className="mb-12 border-b border-white/10 pb-12" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-                            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white mb-6" itemProp="name">
-                                {faq.q}
-                            </h3>
-                            <div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-                                <p className="font-body text-lg md:text-xl text-white/60 leading-relaxed max-w-3xl" itemProp="text">
+                        <div key={i} className="mb-12 border-b border-white/10 pb-12 flex flex-col md:flex-row gap-8 md:gap-16" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+                            <div className="md:w-1/3">
+                                <h3 className="font-mono text-xs md:text-sm uppercase tracking-widest text-[#8B84D7] font-bold" itemProp="name">
+                                    {faq.q}
+                                </h3>
+                            </div>
+                            <div className="md:w-2/3" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                                <p className="font-body text-lg md:text-xl text-white/80 leading-relaxed" itemProp="text">
                                     {faq.a}
                                 </p>
                             </div>
@@ -389,19 +402,21 @@ const FAQSection: React.FC = () => {
 
 const LatestIntel: React.FC = () => {
     return (
-        <section className="py-32 relative z-40 bg-brand-navy overflow-hidden text-left selection:bg-[#8B84D7] selection:text-white">
+        <section className="py-32 relative z-40 bg-brand-yellow overflow-hidden text-left selection:bg-brand-navy selection:text-white">
              <div className="container mx-auto px-6 md:px-12">
                  <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
-                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">Studio<br/>Thoughts</h2>
-                    <Link to="/journal" className="font-mono text-xs uppercase tracking-widest font-bold text-[#8B84D7] hover:text-white transition-colors">View All Entries &rarr;</Link>
+                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-brand-navy leading-[0.85] max-w-2xl">THINK WE SHOULD LOOK AT YOUR BUSINESS?</h2>
+                    <Link to="/contact" className="font-mono text-xs uppercase tracking-widest font-bold bg-white text-brand-navy px-12 py-5 hover:bg-brand-navy hover:text-white transition-colors duration-300">
+                        INQUIRE NOW
+                    </Link>
                  </div>
                  
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-white/10">
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-brand-navy/10 mt-24 md:mt-32">
                     {JOURNAL_POSTS.slice(0, 3).map((post, i) => (
-                        <Link key={i} to={`/journal/${post.slug}`} className="group block border-r border-b border-t border-white/10 p-8 md:p-12 hover:bg-white/[0.02] transition-colors duration-300 text-white">
-                             <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-6 group-hover:text-[#8B84D7] text-white transition-colors">{post.date}</span>
-                             <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-white group-hover:text-[#8B84D7] transition-colors min-h-[3em]">{post.title}</h3>
-                             <p className="font-body text-lg md:text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-white transition-opacity">
+                        <Link key={i} to={`/journal/${post.slug}`} className="group block border-r border-b border-t border-brand-navy/10 p-8 md:p-12 hover:bg-white/20 transition-colors duration-300 text-brand-navy">
+                             <span className="font-mono text-[10px] uppercase tracking-widest opacity-60 block mb-6 text-brand-navy transition-colors">{post.date}</span>
+                             <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-brand-navy transition-colors min-h-[3em]">{post.title}</h3>
+                             <p className="font-body text-lg md:text-xl font-medium opacity-80 leading-relaxed line-clamp-3 text-brand-navy transition-opacity">
                                  {post.excerpt}
                              </p>
                         </Link>
