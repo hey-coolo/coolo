@@ -1,404 +1,287 @@
-import React, { useRef, useState, useMemo, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS, QA_DATA } from '../constants';
-import AnimatedSection from '../components/AnimatedSection';
+import { PROJECTS, JOURNAL_POSTS, QA_DATA } from '../constants';
 import ProjectCard from '../components/ProjectCard';
-import { ArrowUpRight, Layers, Terminal } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 
-interface TrailItem {
-    id: number;
-    x: number;
-    y: number;
-    rotation: number;
-    scale: number;
-    img: string;
-}
-
-const ImageTrail: React.FC<{ containerRef: React.RefObject<HTMLElement> }> = ({ containerRef }) => {
-    const [trail, setTrail] = useState<TrailItem[]>([]);
-    const lastPos = useRef({ x: 0, y: 0 });
-    const trailCount = useRef(0);
-
-    const allImages = useMemo(() => {
-        const all = PROJECTS.flatMap(p => [p.imageUrl, ...(p.detailImages || [])]).filter(Boolean);
-        for (let i = all.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [all[i], all[j]] = [all[j], all[i]];
-        }
-        return all;
-    }, []);
-
-    useEffect(() => {
-        const handleMove = (clientX: number, clientY: number) => {
-            if (!containerRef.current) return;
-
-            const rect = containerRef.current.getBoundingClientRect();
-
-            if (
-                clientX < rect.left || 
-                clientX > rect.right || 
-                clientY < rect.top || 
-                clientY > rect.bottom
-            ) {
-                return;
-            }
-
-            const dist = Math.hypot(clientX - lastPos.current.x, clientY - lastPos.current.y);
-
-            if (dist > 95) {
-                const nextImage = allImages[trailCount.current % allImages.length];
-                const id = trailCount.current++;
-                
-                const relativeX = clientX - rect.left;
-                const relativeY = clientY - rect.top;
-
-                const newItem: TrailItem = {
-                    id,
-                    x: relativeX,
-                    y: relativeY,
-                    rotation: Math.random() * 20 - 10,
-                    scale: 0.6 + Math.random() * 0.4,
-                    img: nextImage
-                };
-
-                setTrail(prev => [...prev, newItem]);
-                lastPos.current = { x: clientX, y: clientY };
-
-                setTimeout(() => {
-                    setTrail(prev => prev.filter(i => i.id !== id));
-                }, 1000);
-            }
-        };
-
-        const handleMouseMove = (e: MouseEvent) => {
-            handleMove(e.clientX, e.clientY);
-        };
-
-        const handleTouchMove = (e: TouchEvent) => {
-            const touch = e.touches[0];
-            handleMove(touch.clientX, touch.clientY);
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('touchmove', handleTouchMove, { passive: true });
-
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('touchmove', handleTouchMove);
-        };
-    }, [allImages, containerRef]);
-
+const BrandHero: React.FC = () => {
     return (
-        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-            <AnimatePresence>
-                {trail.map((item) => (
-                    <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0, scale: 0.5, rotate: item.rotation }}
-                        animate={{ opacity: 1, scale: item.scale, rotate: item.rotation }}
-                        exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        className="absolute w-[140px] md:w-[260px] aspect-[4/5] shadow-2xl origin-center"
-                        style={{
-                            left: item.x,
-                            top: item.y,
-                            x: "-50%",
-                            y: "-50%" 
-                        }}
-                    >
-                        <img 
-                            src={item.img} 
-                            alt="" 
-                            className="w-full h-full object-cover" 
-                        />
-                    </motion.div>
-                ))}
-            </AnimatePresence>
-        </div>
+        <section className="relative min-h-screen pt-40 pb-12 bg-[#F8F8F9] text-brand-navy flex flex-col justify-between overflow-hidden selection:bg-brand-purple selection:text-white">
+            <div className="container mx-auto px-6 md:px-12 relative z-10">
+                <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+                    className="text-[12.5vw] md:text-[9vw] font-black uppercase leading-[0.82] tracking-tighter max-w-[98%]"
+                >
+                    YOUR BUSINESS IS BETTER THAN IT CURRENTLY LOOKS, AND YOU <span className="text-[#8B84D7]">JUST FOUND THE STUDIO</span> TO FIX THAT.
+                </motion.h1>
+                
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 1 }}
+                    className="mt-12 md:mt-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-12 font-mono text-[10px] md:text-xs uppercase tracking-widest font-bold"
+                >
+                    <div className="md:ml-[15vw] opacity-40 hover:opacity-100 transition-opacity">
+                        <a href="https://instagram.com/coolo.co" target="_blank" rel="noopener noreferrer">
+                            [0] FOLLOW US
+                        </a>
+                    </div>
+                    
+                    <div className="max-w-[280px] md:max-w-sm md:text-right opacity-80 leading-[1.8]">
+                        GOOD BUSINESSES FREQUENTLY LOOK AND SOUND WORSE THAN THE ACTUAL VALUE THEY CREATE.
+                    </div>
+                </motion.div>
+            </div>
+
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 1 }}
+                className="container mx-auto px-6 md:px-12 mt-24 flex flex-col items-center justify-end pb-4 opacity-40 font-mono text-[10px] uppercase tracking-widest font-bold"
+            >
+                <span className="mb-4">SCROLL TO DISCOVER</span>
+                <motion.div
+                    animate={{ y: [0, 5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                    <ArrowDown size={16} />
+                </motion.div>
+            </motion.div>
+        </section>
     );
 };
 
-const BrandHero: React.FC = () => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+const RealityCheck: React.FC = () => {
+    return (
+        <section className="py-32 md:py-48 bg-[#8B84D7] text-white text-center px-6 md:px-12 flex flex-col items-center justify-center min-h-[80vh] selection:bg-brand-navy selection:text-white">
+            <motion.span 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold mb-16 md:mb-24 block"
+            >
+                THE REALITY CHECK
+            </motion.span>
+            
+            <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1, duration: 0.8 }}
+                className="text-2xl md:text-4xl lg:text-[2.75rem] uppercase tracking-tight leading-[1.3] max-w-5xl mx-auto font-light"
+            >
+                WE BRIDGE THAT GAP, <strong className="font-black">TURNING YOUR BUSINESS IDEAS</strong> AND EXPERTISE INTO A CLEAR <strong className="font-black">STRATEGIC CREATIVE DIRECTION</strong> AND <strong className="font-black">BRAND EXPERIENCE</strong>.
+            </motion.h2>
+            
+            <motion.p 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="mt-24 md:mt-32 font-mono text-[9px] md:text-[10px] uppercase tracking-widest font-bold opacity-70"
+            >
+                THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
+            </motion.p>
+            
+            <div className="mt-16 md:mt-24 opacity-50">
+                <ArrowDown size={16} />
+            </div>
+        </section>
+    );
+};
 
-    const springX = useSpring(mouseX, { stiffness: 45, damping: 22 });
-    const springY = useSpring(mouseY, { stiffness: 45, damping: 22 });
+const ProcessSteps: React.FC = () => {
+    const steps = [
+        {
+            id: 1,
+            title: "PULLING THE IDEAS OUT OF YOUR HEAD.",
+            sub1: "FIND THE ACTUAL VALUE.",
+            sub2: "A BLUEPRINT OF EXACTLY WHAT YOU NEED TO DO, AND HOW TO ACTUALLY SELL IT.",
+            p: "MOST FOUNDERS ARE SITTING ON A GOLDMINE OF EXPERTISE, BUT THEY'RE TOO BURIED IN THE DAILY GRIND TO EXPLAIN IT CLEARLY. WE SIT IN THE MESS WITH YOU, ASK THE UNCOMFORTABLE QUESTIONS, AND DRAG YOUR REAL VALUE OUT OF YOUR HEAD SO WE CAN BUILD A CLEAR, HONEST BLUEPRINT OF WHERE TO GO NEXT."
+        },
+        {
+            id: 2,
+            title: "BUILDING THE ASSETS THAT MAKE IT REAL.",
+            sub1: "TURN STRATEGY INTO AN ENGINE.",
+            sub2: "YOU GET THE TACTICAL TOOLS YOU NEED TO ACTUALLY SELL YOUR VISION.",
+            p: "A GREAT STRATEGY IS COMPLETELY USELESS IF YOU DON'T HAVE THE TOOLS TO SELL IT. ONCE WE HAVE CLARITY, WE DESIGN THE ACTUAL SYSTEM. YOUR BRAND IDENTITY, VISUAL LANGUAGE, CUSTOM WEBSITE, AND SALES ASSETS. SO YOUR BUSINESS LOOKS, SOUNDS, AND FEELS AS PROFESSIONAL AS THE WORK YOU DO."
+        },
+        {
+            id: 3,
+            title: "PROTECTING YOUR TIME AND SANITY.",
+            sub1: "KEEP THE MOMENTUM GOING.",
+            sub2: "WE RUN THE MACHINE SO YOU CAN STEP BACK INTO BEING THE HUMAN DRIVING IT.",
+            p: "YOU NEED TO STAY FOCUSED ON RUNNING YOUR BUSINESS, NOT MICROMANAGING FREELANCERS. ONCE THE SYSTEM IS BUILT, WE ACT AS YOUR CREATIVE DIRECTION PARTNER AND FIREWALL MANAGING EXECUTION, KEEPING EVERYTHING CONSISTENT, AND MAKING SURE YOUR BRAND SCALES AS YOU GROW."
+        }
+    ];
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const { innerWidth, innerHeight } = window;
-        mouseX.set((e.clientX / innerWidth) - 0.5);
-        mouseY.set((e.clientY / innerHeight) - 0.5);
+    const NumberGraphic = ({ step }: { step: number }) => {
+        if (step === 1) {
+            return (
+                <div className="flex items-end gap-4 md:gap-8 font-black tracking-tighter leading-[0.8] select-none">
+                    <span className="text-[35vw] md:text-[20vw] text-white">1</span>
+                    <div className="flex gap-4 md:gap-8 pb-4 md:pb-8 text-[8vw] md:text-[4vw] text-white/30">
+                        <span>2</span>
+                        <span>3</span>
+                    </div>
+                </div>
+            );
+        }
+        if (step === 2) {
+            return (
+                <div className="flex items-end gap-4 md:gap-8 font-black tracking-tighter leading-[0.8] select-none">
+                    <span className="text-[8vw] md:text-[4vw] text-white/30 pb-4 md:pb-8">1</span>
+                    <span className="text-[35vw] md:text-[20vw] text-white">2</span>
+                    <span className="text-[8vw] md:text-[4vw] text-white/30 pb-4 md:pb-8">3</span>
+                </div>
+            );
+        }
+        if (step === 3) {
+            return (
+                <div className="flex items-end gap-4 md:gap-8 font-black tracking-tighter leading-[0.8] select-none">
+                    <div className="flex gap-4 md:gap-8 pb-4 md:pb-8 text-[8vw] md:text-[4vw] text-white/30">
+                        <span>1</span>
+                        <span>2</span>
+                    </div>
+                    <span className="text-[35vw] md:text-[20vw] text-white">3</span>
+                </div>
+            );
+        }
+        return null;
     };
 
+    const Dots = ({ active }: { active: number }) => (
+        <div className="flex gap-2 mt-4 ml-2">
+            {[1, 2, 3].map((num) => (
+                <div 
+                    key={num} 
+                    className={`w-2.5 h-2.5 rounded-full border border-white transition-colors duration-300 ${active === num ? 'bg-white' : 'bg-transparent'}`} 
+                />
+            ))}
+        </div>
+    );
+
     return (
-        <section 
-            ref={sectionRef}
-            onMouseMove={handleMouseMove}
-            className="relative min-h-screen flex flex-col pt-40 pb-20 bg-brand-navy text-white overflow-hidden border-b border-white/5"
-        >
-            <ImageTrail containerRef={sectionRef} />
-
-            <div className="absolute inset-0 studio-grid pointer-events-none z-0"></div>
-            
-            <motion.div 
-                style={{ 
-                    x: useTransform(springX, [-0.5, 0.5], [80, -80]), 
-                    y: useTransform(springY, [-0.5, 0.5], [80, -80]) 
-                }}
-                className="absolute inset-0 z-10 pointer-events-none opacity-20"
-            >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-brand-purple/5 blur-[120px] rounded-full" />
-            </motion.div>
-
-            <div className="container mx-auto px-6 md:px-8 relative z-30 flex-grow flex flex-col justify-center pointer-events-none">
-                <div className="relative mb-16 md:mb-28">
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                        className="flex flex-col text-[14vw] md:text-[12.5vw] font-black uppercase leading-[0.85] tracking-tighter text-white break-words select-all pointer-events-auto"
+        <section className="bg-brand-navy text-white py-24 md:py-40 selection:bg-[#8B84D7] selection:text-white">
+            <div className="container mx-auto px-6 md:px-12 flex flex-col space-y-32 md:space-y-48">
+                {steps.map((step) => (
+                    <motion.div 
+                        key={step.id}
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-10%" }}
+                        transition={{ duration: 0.8 }}
+                        className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start"
                     >
-                        <span>SHAPING BRANDS</span>
-                        <span className="flex items-baseline mt-2 md:mt-4 ml-[12vw] md:ml-[24vw] relative">
-                            <span className="pointer-events-auto">WITH CHARACTER</span>
-                        </span>
-                    </motion.h1>
-                </div>
+                        {/* Left Column: Number Graphic */}
+                        <div className="lg:col-span-6 flex flex-col">
+                            <NumberGraphic step={step.id} />
+                            <Dots active={step.id} />
+                        </div>
 
-                <div className="mt-auto pointer-events-auto">
-                    <div className="text-center mb-6">
-                        <span className="font-mono text-[9px] uppercase tracking-[0.5em] opacity-40 font-bold text-white">
-                            [ MOVE CURSOR TO REVEAL ]
-                        </span>
-                    </div>
-
-                    <div className="w-full h-[1px] bg-white/10 mb-8 md:mb-10"></div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start text-white/80 font-mono">
-                        <div className="bg-platform-dark/40 border border-white/5 p-6 rounded-sm backdrop-blur-md">
-                            <span className="text-brand-yellow uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Est. 2024</span>
-                            <div className="text-[10px] uppercase tracking-widest leading-loose font-bold opacity-70">
-                                MOUNT MAUNGANUI<br/>NEW ZEALAND
+                        {/* Right Column: Content */}
+                        <div className="lg:col-span-6 flex flex-col justify-center pt-4 md:pt-12">
+                            <h3 className="text-4xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter leading-[0.85] mb-16 md:mb-24">
+                                {step.title}
+                            </h3>
+                            
+                            <div className="font-mono space-y-8">
+                                <div className="space-y-4">
+                                    <h4 className="text-xs md:text-sm uppercase font-bold tracking-widest leading-relaxed">
+                                        {step.sub1}
+                                    </h4>
+                                    <p className="text-[10px] md:text-xs uppercase font-bold tracking-widest leading-relaxed text-white/90">
+                                        {step.sub2}
+                                    </p>
+                                </div>
+                                
+                                <p className="text-[9px] md:text-[10px] uppercase font-bold tracking-widest text-white/50 leading-[2] max-w-lg">
+                                    {step.p}
+                                </p>
                             </div>
                         </div>
-
-                        <div className="bg-platform-dark/40 border border-white/5 p-6 rounded-sm backdrop-blur-md md:text-center">
-                             <span className="text-brand-purple uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">The Senior Unit</span>
-                             <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed opacity-70 max-w-xs mx-auto">
-                                A boutique creative and brand studio helping businesses transition from improvised to intentional.
-                             </p>
-                        </div>
-
-                        <div className="bg-platform-dark/40 border border-white/5 p-6 rounded-sm backdrop-blur-md md:text-right">
-                            <span className="text-brand-lavender uppercase tracking-[0.2em] text-[10px] font-bold block mb-3 md:mb-4">Status:</span>
-                             <div className="flex items-center md:justify-end gap-3">
-                                 <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse shadow-[0_0_8px_rgba(252,200,3,0.6)]"></span>
-                                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70">Currently Booking Q2/Q3 Projects</span>
-                             </div>
-                        </div>
-                    </div>
-                </div>
+                    </motion.div>
+                ))}
             </div>
         </section>
     );
-}
+};
 
-const NarrativeScroll: React.FC = () => {
-    const containerRef = useRef<HTMLElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end end"]
-    });
-    
-    const opacity1 = useTransform(scrollYProgress, [0, 0.15, 0.22], [1, 1, 0]);
-    const y1 = useTransform(scrollYProgress, [0, 0.22], [0, -50]);
-    const scale1 = useTransform(scrollYProgress, [0, 0.22], [1, 0.95]);
-
-    const opacity2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0, 1, 0]);
-    const y2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [50, 0, -50]);
-    const scale2 = useTransform(scrollYProgress, [0.2, 0.35, 0.45], [0.95, 1, 0.95]);
-
-    const opacity3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0, 1, 0]);
-    const y3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [50, 0, -50]);
-    const scale3 = useTransform(scrollYProgress, [0.45, 0.6, 0.70], [0.95, 1, 0.95]);
-
-    const opacity4 = useTransform(scrollYProgress, [0.68, 0.85, 1], [0, 1, 1]);
-    const y4 = useTransform(scrollYProgress, [0.68, 0.85], [50, 0]);
-    const scale4 = useTransform(scrollYProgress, [0.68, 0.85], [0.95, 1]);
-
+const ShowcaseIntro: React.FC = () => {
     return (
-        <section ref={containerRef} className="relative h-[400vh] bg-brand-navy">
-            <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-8">
-                
-                <div className="absolute top-12 md:top-24 left-6 md:left-12 font-mono text-brand-purple uppercase tracking-[0.3em] text-xs font-bold z-20 flex items-center gap-2">
-                    <Terminal size={12} className="text-brand-yellow" />
-                    <span>01 // NARRATIVE LOG TRACK</span>
-                </div>
-
-                <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center h-full">
-                    
-                    <motion.div style={{ opacity: opacity1, y: y1, scale: scale1 }} className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-white flex flex-col items-center">
-                            <span>EVERY FOUNDER</span>
-                            <span className="kinetic-text">HAS A VISION.</span>
-                        </h2>
-                    </motion.div>
-
-                    <motion.div style={{ opacity: opacity2, y: y2, scale: scale2 }} className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-white flex flex-col items-center">
-                            <span>NOT EVERY VISION</span>
-                            <span className="kinetic-text">BECOMES A BRAND.</span>
-                        </h2>
-                    </motion.div>
-
-                    <motion.div style={{ opacity: opacity3, y: y3, scale: scale3 }} className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <h2 className="text-[12vw] md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] text-white flex flex-col items-center">
-                            <span>THAT'S WHERE WE</span>
-                            <span className="kinetic-text">COME IN.</span>
-                        </h2>
-                    </motion.div>
-
-                    <motion.div style={{ opacity: opacity4, y: y4, scale: scale4 }} className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-auto mt-16 md:mt-0">
-                        <h2 className="text-[10vw] md:text-[5rem] lg:text-[6.5rem] font-black uppercase tracking-tighter leading-[0.85] text-white flex flex-col items-center">
-                            <span>STRATEGY. DESIGN.</span>
-                            <span className="text-brand-yellow">DIRECTION. CONTENT.</span>
-                        </h2>
-                        
-                        <p className="mt-8 font-body text-xl md:text-2xl font-light text-white/70 max-w-4xl leading-relaxed mx-auto">
-                            We work alongside founders to shape brands from the inside out—clarifying what they stand for, designing how they're seen, and crafting the creative that helps people understand, remember and choose them.
-                        </p>
-                        
-                        <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6">
-                            <Link to="/contact" className="inline-block border border-white bg-white text-brand-navy px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-transparent hover:text-white transition-all duration-300">
-                                Inquire Now
-                            </Link>
-                            <Link to="/about" className="inline-block border border-white/20 px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-white/10 transition-all duration-300 text-white">
-                                More About Us
-                            </Link>
-                        </div>
-                    </motion.div>
-
-                </div>
+        <section className="bg-white text-brand-navy py-32 md:py-48 text-center selection:bg-brand-purple selection:text-white">
+            <div className="container mx-auto px-6 md:px-12">
+                <motion.h2 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="text-[14vw] md:text-[9.5vw] font-black uppercase tracking-tighter leading-[0.85]"
+                >
+                    WHAT IT ACTUALLY<br />LOOKS LIKE.
+                </motion.h2>
             </div>
         </section>
     );
-}
-
-const ServiceRouter: React.FC = () => {
-    return (
-        <section className="bg-brand-navy border-t border-b border-white/5 relative z-40 overflow-hidden">
-             <div className="grid grid-cols-1 lg:grid-cols-3">
-                {SERVICE_LEGS.map((leg, index) => {
-                    const titleParts = leg.title.match(/^(We help you)\s+(.*)$/i);
-                    const prefix = titleParts ? titleParts[1] : 'We help you';
-                    const mainTitle = titleParts ? titleParts[2] : leg.title;
-
-                    return (
-                        <div 
-                            key={leg.id}
-                            className="group relative flex flex-col justify-between min-h-[60vh] md:min-h-[70vh] border-b lg:border-b-0 lg:border-r border-white/5 p-8 md:p-12 overflow-hidden hover:bg-platform-dark/40 transition-colors duration-500 neon-glow-border"
-                        >
-                            <Link to={leg.path} className="absolute inset-0 z-0" aria-label={`View ${leg.title}`} />
-
-                            <div className="relative z-10 pointer-events-none">
-                                <div className="flex justify-between items-start mb-12">
-                                    <span className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors">
-                                        0{index + 1}
-                                    </span>
-                                    <span className="font-mono text-[10px] uppercase tracking-widest font-bold opacity-50 group-hover:opacity-100 transition-opacity text-white">
-                                        {leg.visual}
-                                    </span>
-                                </div>
-                                
-                                <div className="mb-8 relative">
-                                    <span className="font-mono text-xs uppercase tracking-[0.3em] font-bold text-brand-purple group-hover:text-brand-yellow transition-colors block mb-2">
-                                        {prefix}
-                                    </span>
-                                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] text-white break-words">
-                                        {mainTitle}
-                                        <span className="text-brand-purple group-hover:text-brand-yellow transition-colors">.</span>
-                                    </h2>
-                                </div>
-                                
-                                <p className="font-body text-xl md:text-2xl text-white/60 group-hover:text-white transition-colors max-w-sm leading-relaxed">
-                                    {leg.subtitle}
-                                </p>
-                            </div>
-
-                            <div className="relative z-10 pt-12 border-t border-white/5 mt-auto flex flex-col items-start gap-8">
-                                <p className="font-mono text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0 text-white pointer-events-none">
-                                    {leg.hoverText}
-                                </p>
-                                
-                                <Link to="/contact" className="pointer-events-auto bg-white text-brand-navy px-8 py-4 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-purple hover:text-white border border-white transition-all duration-300">
-                                    Inquire Now
-                                </Link>
-
-                                <Link to={leg.path} className="pointer-events-auto inline-block font-mono text-sm uppercase font-bold tracking-widest border-b-2 border-brand-purple group-hover:border-brand-yellow pb-1 group-hover:text-brand-yellow transition-colors text-brand-purple mt-2">
-                                    More Info
-                                </Link>
-                            </div>
-                        </div>
-                    );
-                })}
-             </div>
-        </section>
-    )
-}
+};
 
 const FeatureSpotlight: React.FC = () => {
     const featuredProject = PROJECTS[0]; 
 
     return (
-        <section className="relative bg-brand-navy overflow-hidden group">
-            <Link to={`/work/${featuredProject.slug}`} className="block relative min-h-screen md:min-h-[120vh]">
+        <section className="relative bg-brand-navy pt-24 md:pt-32 border-b border-white/5 selection:bg-[#8B84D7] selection:text-white">
+            <div className="container mx-auto px-6 md:px-12 text-center text-white mb-16 md:mb-24">
+                <motion.h3 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="font-display text-2xl md:text-4xl lg:text-[2.75rem] font-black uppercase tracking-tighter max-w-5xl mx-auto leading-[0.9]"
+                >
+                    BRAND VOICE, LOGOTYPE & MARK SYSTEM, ART DIRECTION, CONTENT CREATION.
+                </motion.h3>
+            </div>
+
+            <Link to={`/work/${featuredProject.slug}`} className="block relative h-[70vh] md:h-[110vh] w-full group overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img 
                         src={featuredProject.imageUrl} 
                         alt={featuredProject.title} 
-                        className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-700 grayscale group-hover:grayscale-0"
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 group-hover:scale-105 transform ease-out"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent opacity-90" />
+                    <div className="absolute inset-0 bg-brand-navy/30 group-hover:bg-transparent transition-colors duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/20 to-transparent opacity-90" />
                 </div>
 
-                <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-16">
-                    <div className="container mx-auto">
-                        <motion.div 
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            <span className="font-mono text-brand-yellow uppercase tracking-[0.4em] text-xs font-bold mb-6 block">
-                                Featured Case Study
-                            </span>
-                            <h2 className="text-[15vw] leading-[0.85] font-black uppercase tracking-tighter text-white mb-8 group-hover:text-brand-yellow transition-colors duration-500">
-                                {featuredProject.title}
-                            </h2>
-                            
-                            <div className="flex flex-col md:flex-row gap-12 border-t border-white/10 pt-8 text-white/80">
-                                <div className="max-w-xl">
-                                    <p className="font-body text-xl font-light opacity-80 line-clamp-3 md:line-clamp-4 leading-relaxed">
-                                        {featuredProject.description}
-                                    </p>
-                                </div>
-                                <div className="mt-auto ml-auto">
-                                    <span className="font-mono text-sm uppercase tracking-widest border-b-2 border-brand-yellow pb-2 text-brand-yellow font-bold">
-                                        Open Case File &rarr;
-                                    </span>
-                                </div>
-                            </div>
-                        </motion.div>
+                <div className="absolute inset-0 z-10 flex flex-col justify-between p-6 md:p-12 items-center text-center">
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        className="mt-8 md:mt-12"
+                    >
+                        <span className="font-mono text-white uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold px-6 py-2 backdrop-blur-md">
+                            [ {featuredProject.category} ]
+                        </span>
+                    </motion.div>
+                    
+                    <div className="w-full flex justify-center mb-4 md:mb-8">
+                        <h2 className="text-[16vw] md:text-[18vw] leading-[0.75] font-black uppercase tracking-tighter text-white transition-transform duration-700">
+                            {featuredProject.title}
+                        </h2>
                     </div>
                 </div>
             </Link>
         </section>
     );
 };
+
+// ============================================================================
+// REMAINING SECTIONS - PRESERVED EXACTLY AS THEY WERE
+// ============================================================================
 
 const CapabilityList: React.FC = () => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -600,7 +483,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-brand-navy">
+    <div className="w-full">
       <Helmet>
         <title>COOLO | Shaping Brands With Character</title>
         <script type="application/ld+json">
@@ -609,8 +492,9 @@ const HomePage: React.FC = () => {
       </Helmet>
       
       <BrandHero />
-      <NarrativeScroll />
-      <ServiceRouter />
+      <RealityCheck />
+      <ProcessSteps />
+      <ShowcaseIntro />
       <FeatureSpotlight />
       <CapabilityList />
       <ShowcaseGrid />
