@@ -375,15 +375,13 @@ export const NAV_LINKS = [
     path: '/about',
     subLinks: [
       { name: 'The Humans', path: '/team' },
-      { name: 'Join Us', path: '/join' },
-      { name: 'Support An Artist', path: '/support-an-artist' }
+      { name: 'Join Us', path: '/join' }
     ]
   }, 
   { 
     name: 'Clarity', 
     path: '/clarity',
     subLinks: [
-        { name: 'Brand Reality Check', path: '/clarity/reality-check'},
         { name: 'Brand Diagnosis', path: '/clarity/brand-diagnosis'},
         { name: 'Strategy Sessions', path: '/clarity/strategy-sessions'},
         { name: 'The Full Creative Direction', path: '/clarity/creative-direction'},        
@@ -412,7 +410,7 @@ export const NAV_LINKS = [
       { name: 'Equity', path: '/partnership/equity' }
     ]
   },
-  { name: 'Journal', path: '/journal' }
+  { name: 'Studio Thoughts ', path: '/thoughts' }
 ];
 
 export const SERVICE_LEGS: ServiceLeg[] = [
