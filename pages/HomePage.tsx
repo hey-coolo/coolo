@@ -94,10 +94,27 @@ const RealityCheck: React.FC = () => {
     );
 };
 
-// Process Steps Sub-Component to handle Intersection Observation cleanly
 const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: number) => void }) => {
     const ref = useRef<HTMLDivElement>(null);
-    const isInView = useInView(ref, { margin: "-45% 0px -45% 0px" });
+    const isInView = useInView(ref, { margin: "-50% 0px -50% 0px" });
+    
+    // Staggered scroll mappings for progressive reveal
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start 80%", "end 20%"]
+    });
+
+    // Title animates first
+    const titleOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+    const titleY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [40, 0, 0, -40]);
+
+    // Subtitles animate slightly after
+    const subOpacity = useTransform(scrollYProgress, [0.1, 0.3, 0.8, 1], [0, 1, 1, 0]);
+    const subY = useTransform(scrollYProgress, [0.1, 0.3, 0.8, 1], [40, 0, 0, -40]);
+
+    // Paragraph animates last
+    const pOpacity = useTransform(scrollYProgress, [0.2, 0.4, 0.8, 1], [0, 1, 1, 0]);
+    const pY = useTransform(scrollYProgress, [0.2, 0.4, 0.8, 1], [40, 0, 0, -40]);
 
     useEffect(() => {
         if (isInView) {
@@ -106,24 +123,30 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
     }, [isInView, step.id, setActiveStep]);
 
     return (
-        <div ref={ref} className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-12 lg:py-24">
-            <h3 className="text-4xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16">
+        <div ref={ref} className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-20 lg:py-24">
+            <motion.h3 
+                style={{ opacity: titleOpacity, y: titleY }}
+                className="text-4xl md:text-5xl lg:text-[4.5rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16"
+            >
                 {step.title}
-            </h3>
+            </motion.h3>
             
             <div className="font-mono space-y-8">
-                <div className="space-y-4">
-                    <h4 className="text-xs md:text-sm uppercase font-bold tracking-widest leading-relaxed">
+                <motion.div style={{ opacity: subOpacity, y: subY }} className="space-y-4">
+                    <h4 className="text-xs md:text-sm uppercase font-bold tracking-widest leading-relaxed text-white">
                         {step.sub1}
                     </h4>
-                    <p className="text-[10px] md:text-xs uppercase font-bold tracking-widest leading-relaxed text-white/90">
+                    <p className="text-[10px] md:text-xs uppercase font-bold tracking-widest leading-relaxed text-[#8B84D7]">
                         {step.sub2}
                     </p>
-                </div>
+                </motion.div>
                 
-                <p className="text-[9px] md:text-[10px] uppercase font-bold tracking-widest text-white/50 leading-[2] max-w-lg">
+                <motion.p 
+                    style={{ opacity: pOpacity, y: pY }}
+                    className="text-[10px] md:text-xs uppercase font-bold tracking-widest text-white/50 leading-[2] max-w-xl"
+                >
                     {step.p}
-                </p>
+                </motion.p>
             </div>
         </div>
     );
@@ -157,36 +180,35 @@ const ProcessSteps: React.FC = () => {
     ];
 
     return (
-        <section className="bg-brand-navy text-white relative selection:bg-[#8B84D7] selection:text-white pb-24 lg:pb-0">
+        <section className="bg-[#0A0A0A] text-white relative selection:bg-[#8B84D7] selection:text-white pb-24 lg:pb-0">
             <div className="container mx-auto px-6 md:px-12 flex flex-col lg:flex-row relative items-start">
                 
-                {/* Sticky Left Column: Numbers */}
-                <div className="sticky top-[10vh] lg:top-0 h-[25vh] lg:h-screen w-full lg:w-1/2 flex flex-col justify-end lg:justify-center z-20 bg-brand-navy/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none pb-8 lg:pb-0">
+                {/* Sticky Left Column: Animated Numbers */}
+                <div className="sticky top-[10vh] lg:top-0 h-[20vh] lg:h-screen w-full lg:w-1/2 flex flex-col justify-end lg:justify-center z-20 bg-[#0A0A0A]/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none pb-8 lg:pb-0 border-b border-white/5 lg:border-none">
                     <div className="flex flex-col items-start">
-                        <div className="flex items-baseline gap-4 md:gap-8 font-black uppercase tracking-tighter leading-[0.75] select-none">
+                        <div className="flex items-baseline gap-4 md:gap-8 font-black uppercase tracking-tighter leading-none select-none">
                             {[1, 2, 3].map((num) => (
                                 <motion.span 
                                     key={num}
                                     layout
                                     animate={{ 
-                                        fontSize: activeStep === num ? 'clamp(8rem, 25vw, 18rem)' : 'clamp(2rem, 5vw, 4rem)',
-                                        opacity: activeStep === num ? 1 : 0.3,
-                                        color: activeStep === num ? '#ffffff' : '#ffffff'
+                                        fontSize: activeStep === num ? 'clamp(6rem, 22vw, 18rem)' : 'clamp(2rem, 5vw, 4rem)',
+                                        opacity: activeStep === num ? 1 : 0.2,
                                     }}
-                                    transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-                                    className="origin-bottom"
+                                    transition={{ type: "spring", bounce: 0.15, duration: 0.7 }}
+                                    className="origin-bottom text-white"
                                 >
                                     {num}
                                 </motion.span>
                             ))}
                         </div>
                         
-                        <div className="flex gap-2 mt-6 lg:mt-8 ml-2">
+                        <div className="flex gap-3 mt-6 lg:mt-8 ml-2">
                             {[1, 2, 3].map((num) => (
                                 <motion.div 
                                     key={num}
                                     layout
-                                    className={`rounded-full border border-white transition-colors duration-500 ${activeStep === num ? 'bg-white w-2.5 h-2.5' : 'bg-transparent w-2 h-2 opacity-50'}`} 
+                                    className={`rounded-full border border-white transition-colors duration-500 ${activeStep === num ? 'bg-white w-2.5 h-2.5' : 'bg-transparent w-2 h-2 opacity-30'}`} 
                                 />
                             ))}
                         </div>
@@ -194,7 +216,7 @@ const ProcessSteps: React.FC = () => {
                 </div>
 
                 {/* Scrollable Right Column: Content */}
-                <div className="w-full lg:w-1/2 flex flex-col relative z-10">
+                <div className="w-full lg:w-1/2 flex flex-col relative z-10 lg:pl-12">
                     {steps.map((step) => (
                         <StepContent key={step.id} step={step} setActiveStep={setActiveStep} />
                     ))}
@@ -261,109 +283,6 @@ const FeatureSpotlight: React.FC = () => {
                     </div>
                 </div>
             </Link>
-        </section>
-    );
-};
-
-// ============================================================================
-// REMAINING SECTIONS - PRESERVED EXACTLY AS THEY WERE
-// ============================================================================
-
-const CapabilityList: React.FC = () => {
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    const capabilities = [
-        { 
-            id: '01', 
-            title: 'Strategy', 
-            desc: 'Positioning, Messaging, Brand Playbook, & Roadmaps', 
-            link: '/clarity'
-        },
-        { 
-            id: '02', 
-            title: 'Identity', 
-            desc: 'Visual Systems, Logos, Brand Guidelines, Colour, & Typography,', 
-            link: '/design-power'
-        },
-        { 
-            id: '03', 
-            title: 'Digital', 
-            desc: 'Web Design, Webflow Dev, Content Strategy, & Campaign Creative', 
-            link: '/design-power'
-        },
-        { 
-            id: '04', 
-            title: 'Visuals', 
-            desc: 'Motion Design, 3D Product Vis, GFX & Kinetic Type', 
-            link: '/design-power'
-        }
-    ];
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        mouseX.set(e.clientX);
-        mouseY.set(e.clientY);
-    };
-
-    return (
-        <section 
-            className="bg-brand-navy text-white py-32 relative z-40 overflow-hidden border-b border-white/5" 
-            onMouseMove={handleMouseMove}
-        >
-            <div className="container mx-auto px-8 relative z-10">
-                <div className="mb-24 flex items-end justify-between border-b border-white/10 pb-8">
-                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">
-                        Output.
-                     </h2>
-                     <div className="hidden md:block font-mono text-xs uppercase tracking-widest text-right opacity-80">
-                        Select a capability<br/>to explore
-                     </div>
-                </div>
-
-                <div className="flex flex-col">
-                    {capabilities.map((cap, index) => (
-                        <Link 
-                            key={index}
-                            to={cap.link}
-                            onMouseEnter={() => setHoveredIndex(index)}
-                            onMouseLeave={() => setHoveredIndex(null)}
-                            className="group relative border-b border-white/5 py-12 md:py-16 flex flex-col md:flex-row justify-between md:items-center transition-colors hover:bg-white/[0.01]"
-                        >
-                            <div className="flex items-baseline gap-8 md:gap-16">
-                                <span className="font-mono text-sm md:text-base text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
-                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-white leading-[0.85]">
-                                    {cap.title}
-                                </h3>
-                            </div>
-                            <div className="mt-4 md:mt-0 pl-[calc(2rem+14px)] md:pl-0">
-                                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-white">
-                                    {cap.desc}
-                                </span>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-                
-                
-            </div>
-
-            <motion.div
-                className="pointer-events-none fixed top-0 left-0 w-[300px] h-[400px] z-50 hidden md:block overflow-hidden bg-brand-yellow mix-blend-normal"
-                style={{
-                    x: mouseX,
-                    y: mouseY,
-                    translateX: "-50%",
-                    translateY: "-50%"
-                }}
-                animate={{
-                    opacity: hoveredIndex !== null ? 1 : 0,
-                    scale: hoveredIndex !== null ? 1 : 0.5,
-                    rotate: hoveredIndex !== null ? -5 : 0
-                }}
-                transition={{ duration: 0.2, ease: "linear" }}
-            >                
-            </motion.div>
         </section>
     );
 }
