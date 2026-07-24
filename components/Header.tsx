@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, ShoppingBag } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 import BrandLogo from './BrandLogo';
-import { useCart } from '../context/CartContext';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -85,19 +84,6 @@ const Header: React.FC = () => {
             </div>
           ))}
           <div className="flex items-center space-x-6 ml-6">
-              {/* Shopping Cart Indicator Deck */}
-              <Link 
-                to="/checkout" 
-                className="relative p-2 text-white/80 hover:text-brand-yellow transition-colors"
-                title="View Checkout Basket"
-              >
-                  <ShoppingBag size={18} />
-                  {cartCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-brand-yellow text-brand-navy font-mono text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-brand-navy">
-                          {cartCount}
-                      </span>
-                  )}
-              </Link>
 
               <Link to="/contact" className="font-mono text-[10px] uppercase tracking-[0.2em] px-6 py-2.5 transition-all duration-300 font-bold bg-white text-brand-navy hover:bg-brand-purple hover:text-white border border-white">
                 Inquire Now

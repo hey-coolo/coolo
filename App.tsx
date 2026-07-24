@@ -9,7 +9,6 @@ import AboutPage from './pages/AboutPage';
 import PlaybookPage from './pages/PlaybookPage';
 import ClarityPage from './pages/ClarityPage';
 import FreeResourcesPage from './pages/clarity/FreeResourcesPage';
-import RealityCheckApp from './pages/clarity/RealityCheckApp';
 import ClarityTierPage from './pages/ClarityTierPage';
 import DesignPowerPage from './pages/DesignPowerPage';
 import TierDetailPage from './pages/TierDetailPage';
@@ -20,9 +19,7 @@ import ProjectPage from './pages/ProjectPage';
 import TeamPage from './pages/TeamPage';
 import TeamMemberPage from './pages/TeamMemberPage';
 import JournalPage from './pages/JournalPage';
-import DropsPage from './pages/SupportAnArtist';
 import SupportAnArtistDetailPage from './pages/SupportAnArtistDetailPage';
-import CheckoutPage from './pages/CheckoutPage'; 
 import ContactPage from './pages/ContactPage';
 import JoinPage from './pages/JoinPage';
 import UnsubscribePage from './pages/Unsubscribe';
@@ -102,8 +99,6 @@ const App: React.FC = () => {
                         
                         <Route path="/clarity" element={<ClarityPage />} />
                         <Route path="/clarity/free-resources" element={<FreeResourcesPage />} />
-                        <Route path="/audit" element={<RealityCheckApp />} />
-                        <Route path="/clarity/reality-check" element={<RealityCheckApp />} />
                         <Route path="/clarity/:slug" element={<ClarityTierPage />} />
                         
                         <Route path="/design-power/:slug" element={<TierDetailPage />} />
@@ -120,11 +115,7 @@ const App: React.FC = () => {
                         
                         <Route path="/journal/:slug" element={<JournalPage />} />
                         <Route path="/journal" element={<JournalPage />} />
-                        
-                        <Route path="/support-an-artist/:slug" element={<SupportAnArtistDetailPage />} />
-                        <Route path="/support-an-artist" element={<DropsPage />} />
-                        <Route path="/checkout" element={<CheckoutPage />} />
-                        
+                                               
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/join" element={<JoinPage />} />
                         <Route path="/unsubscribe" element={<UnsubscribePage />} />
