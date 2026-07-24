@@ -687,13 +687,6 @@ Stop adding decoration. Start calibrating your signal.`
 
 export const FREE_RESOURCES: Resource[] = [
     { 
-        id: '01', 
-        title: 'Brand Reality Check', 
-        format: 'APP', 
-        desc: 'Is your brand a mess? Use this free tool to find out.', 
-        link: '/clarity/reality-check' 
-    },
-    { 
         id: '02', 
         title: 'The Hard Questions', 
         format: 'PDF', 
