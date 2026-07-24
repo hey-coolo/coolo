@@ -111,7 +111,11 @@ const AboutPage: React.FC = () => {
             </div>
         </section>
 
-    <div className="container mx-auto px-8">
+      </div>
+
+
+
+      <div className="container mx-auto px-8">
         {/* The Crew / Team CMS Integration */}
         <section className="py-48 relative">
             <AnimatedSection>
