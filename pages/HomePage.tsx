@@ -150,7 +150,7 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
             </div>
         </div>
     );
-};
+}
 
 const ProcessSteps: React.FC = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -225,7 +225,7 @@ const ProcessSteps: React.FC = () => {
             </div>
         </section>
     );
-};
+}
 
 const ShowcaseIntro: React.FC = () => {
     return (
