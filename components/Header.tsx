@@ -85,6 +85,7 @@ const Header: React.FC = () => {
           ))}
           <div className="flex items-center space-x-6 ml-6">
 
+
               <Link to="/contact" className="font-mono text-[10px] uppercase tracking-[0.2em] px-6 py-2.5 transition-all duration-300 font-bold bg-white text-brand-navy hover:bg-brand-purple hover:text-white border border-white">
                 Inquire Now
               </Link>

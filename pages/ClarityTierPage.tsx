@@ -7,6 +7,13 @@ import Accordion from '../components/Accordion';
 const ClarityTierPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
 
+  // --- SAFETY CATCH ---
+  // If the router sends "reality-check" or "RealityCheckApp" here,
+  // we render the tool instead of showing an error.
+  if (slug && (slug.toLowerCase() === 'reality-check' || slug === 'RealityCheckApp')) {
+    return <RealityCheckApp />;
+  }
+
   const tier = BRAND_CLARITY_TIERS.find(t => t.slug === slug);
 
   if (!tier) {
