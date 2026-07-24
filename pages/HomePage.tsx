@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { PROJECTS, JOURNAL_POSTS, QA_DATA } from '../constants';
 import ProjectCard from '../components/ProjectCard';
@@ -10,39 +10,42 @@ const BrandHero: React.FC = () => {
     const [isStudioHovered, setIsStudioHovered] = useState(false);
 
     return (
-        <section className="relative min-h-[100svh] pt-32 md:pt-48 pb-12 bg-[#F8F8F9] text-brand-navy flex flex-col justify-between overflow-hidden selection:bg-brand-purple selection:text-white">
-            <div className="container mx-auto px-6 md:px-12 relative z-10 flex-grow flex flex-col justify-center">
+        <section className="relative min-h-[100svh] pt-40 md:pt-48 pb-12 bg-[#F8F8F9] text-brand-navy flex flex-col justify-between overflow-hidden selection:bg-brand-purple selection:text-white">
+            <div className="container mx-auto px-6 md:px-12 relative z-10 flex-grow flex flex-col justify-center items-start">
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="text-[13vw] md:text-[9.5vw] font-black uppercase leading-[0.82] tracking-tighter max-w-[98%] text-left"
+                    className="text-[14vw] md:text-[10vw] font-black uppercase leading-[0.82] tracking-tighter max-w-[98%] text-left"
                 >
                     YOUR BUSINESS IS BETTER THAN IT CURRENTLY LOOKS, AND YOU JUST FOUND{' '}
                     <a 
                         href="https://instagram.com/coolo.co"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#8B84D7] relative cursor-pointer transition-all duration-300 hover:underline underline-offset-[8px] md:underline-offset-[12px] decoration-4"
+                        className="text-[#8B84D7] relative cursor-crosshair transition-all duration-300 hover:text-brand-navy"
                         onMouseEnter={() => setIsStudioHovered(true)}
                         onMouseLeave={() => setIsStudioHovered(false)}
                     >
-                        THE STUDIO
+                        <span className="relative inline-block">
+                            THE STUDIO
+                            <span className="absolute left-0 bottom-0 md:bottom-2 w-full h-[3px] md:h-[6px] bg-current transition-all duration-300 transform origin-left scale-x-100"></span>
+                        </span>
                     </a> 
                     {' '}TO FIX THAT.
                 </motion.h1>
                 
-                <div className="mt-16 md:mt-24 flex flex-col md:flex-row items-start gap-8 font-mono text-[10px] md:text-xs uppercase tracking-widest font-bold w-full">
+                <div className="mt-16 md:mt-24 flex flex-col items-start gap-12 font-mono uppercase tracking-widest font-bold w-full">
                     <motion.div 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5, duration: 1 }}
-                        className="max-w-[280px] md:max-w-sm text-left opacity-80 leading-[1.8]"
+                        className="max-w-[320px] md:max-w-lg text-left opacity-80 leading-[1.8] text-xs md:text-sm"
                     >
                         GOOD BUSINESSES FREQUENTLY LOOK AND SOUND WORSE THAN THE ACTUAL VALUE THEY CREATE.
                     </motion.div>
 
-                    <div className="h-[20px] flex items-center md:ml-auto">
+                    <div className="h-[20px] flex items-center md:ml-[15vw]">
                         <AnimatePresence>
                             {isStudioHovered && (
                                 <motion.a 
@@ -53,7 +56,7 @@ const BrandHero: React.FC = () => {
                                     href="https://instagram.com/coolo.co" 
                                     target="_blank" 
                                     rel="noopener noreferrer"
-                                    className="text-[#8B84D7] hover:text-brand-navy transition-colors block"
+                                    className="text-[#8B84D7] hover:text-brand-navy transition-colors block text-[10px] md:text-xs"
                                 >
                                     [0] FOLLOW US
                                 </motion.a>
@@ -99,7 +102,7 @@ const RealityCheck: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1, duration: 0.8 }}
-                    className="text-3xl md:text-5xl lg:text-[4rem] uppercase tracking-tight leading-[1.1] max-w-6xl font-light text-left"
+                    className="text-4xl md:text-6xl lg:text-[4.5rem] uppercase tracking-tighter leading-[1.05] max-w-6xl font-light text-left"
                 >
                     WE BRIDGE THAT GAP, <strong className="font-black">TURNING YOUR BUSINESS IDEAS</strong> AND EXPERTISE INTO A CLEAR <strong className="font-black">STRATEGIC CREATIVE DIRECTION</strong> AND <strong className="font-black">BRAND EXPERIENCE</strong>.
                 </motion.h2>
@@ -109,7 +112,7 @@ const RealityCheck: React.FC = () => {
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
-                    className="mt-24 md:mt-32 font-mono text-[9px] md:text-[10px] uppercase tracking-widest font-bold opacity-70 text-left max-w-md"
+                    className="mt-24 md:mt-32 font-mono text-[10px] md:text-xs uppercase tracking-widest font-bold opacity-80 text-left max-w-lg leading-loose"
                 >
                     THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
                 </motion.p>
@@ -126,14 +129,14 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { margin: "-50% 0px -50% 0px" });
     
-    // Map the scroll progress of this specific block to its opacity and vertical shift
+    // Tightened scroll offsets so text blocks fade in and out precisely as they cross the center of the viewport
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ["start 85%", "end 25%"]
+        offset: ["start 75%", "end 25%"]
     });
 
-    const opacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0.1, 1, 1, 0.1]);
-    const y = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [40, 0, 0, -40]);
+    const opacity = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.05, 1, 1, 0.05]);
+    const y = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [60, 0, 0, -60]);
 
     useEffect(() => {
         if (isInView) {
@@ -147,13 +150,13 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
             style={{ opacity, y }}
             className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-20 lg:py-24"
         >
-            <h3 className="text-4xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16">
+            <h3 className="text-4xl md:text-6xl lg:text-[4.5rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16">
                 {step.title}
             </h3>
             
             <div className="font-mono space-y-8">
                 <div className="space-y-4">
-                    <h4 className="text-xs md:text-sm uppercase font-bold tracking-widest leading-relaxed">
+                    <h4 className="text-xs md:text-sm uppercase font-bold tracking-widest leading-relaxed text-brand-yellow">
                         {step.sub1}
                     </h4>
                     <p className="text-[10px] md:text-xs uppercase font-bold tracking-widest leading-relaxed text-white/90">
@@ -161,7 +164,7 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
                     </p>
                 </div>
                 
-                <p className="text-[9px] md:text-[10px] uppercase font-bold tracking-widest text-white/50 leading-[2] max-w-lg">
+                <p className="text-[10px] md:text-xs uppercase font-bold tracking-widest text-white/60 leading-[2] max-w-xl">
                     {step.p}
                 </p>
             </div>
@@ -197,11 +200,11 @@ const ProcessSteps: React.FC = () => {
     ];
 
     return (
-        <section className="bg-brand-navy text-white relative selection:bg-[#8B84D7] selection:text-white">
+        <section className="bg-brand-navy text-white relative selection:bg-[#8B84D7] selection:text-white pb-24 lg:pb-0">
             <div className="container mx-auto px-6 md:px-12 flex flex-col lg:flex-row relative items-start">
                 
                 {/* Sticky Left Column: Animated Numbers */}
-                <div className="sticky top-[10vh] lg:top-0 h-[25vh] lg:h-screen w-full lg:w-1/2 flex flex-col justify-end lg:justify-center z-20 bg-brand-navy/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none pb-8 lg:pb-0 border-b border-white/5 lg:border-none">
+                <div className="sticky top-[10vh] lg:top-0 h-[20vh] lg:h-screen w-full lg:w-1/2 flex flex-col justify-end lg:justify-center z-20 bg-brand-navy/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none pb-8 lg:pb-0 border-b border-white/5 lg:border-none">
                     <div className="flex flex-col items-start">
                         <div className="flex items-baseline gap-4 md:gap-8 font-black uppercase tracking-tighter leading-none select-none">
                             {[1, 2, 3].map((num) => (
@@ -209,12 +212,11 @@ const ProcessSteps: React.FC = () => {
                                     key={num}
                                     layout
                                     animate={{ 
-                                        fontSize: activeStep === num ? 'clamp(8rem, 25vw, 18rem)' : 'clamp(2rem, 5vw, 4rem)',
-                                        opacity: activeStep === num ? 1 : 0.3,
-                                        color: activeStep === num ? '#ffffff' : '#ffffff'
+                                        fontSize: activeStep === num ? 'clamp(6rem, 22vw, 18rem)' : 'clamp(2rem, 5vw, 4rem)',
+                                        opacity: activeStep === num ? 1 : 0.2,
                                     }}
                                     transition={{ type: "spring", bounce: 0.15, duration: 0.7 }}
-                                    className="origin-bottom"
+                                    className="origin-bottom text-white"
                                 >
                                     {num}
                                 </motion.span>
@@ -226,7 +228,7 @@ const ProcessSteps: React.FC = () => {
                                 <motion.div 
                                     key={num}
                                     layout
-                                    className={`rounded-full border border-white transition-colors duration-500 ${activeStep === num ? 'bg-white w-2.5 h-2.5' : 'bg-transparent w-2 h-2 opacity-50'}`} 
+                                    className={`rounded-full border border-white transition-colors duration-500 ${activeStep === num ? 'bg-white w-2.5 h-2.5' : 'bg-transparent w-2 h-2 opacity-30'}`} 
                                 />
                             ))}
                         </div>
@@ -247,7 +249,7 @@ const ProcessSteps: React.FC = () => {
 
 const ShowcaseIntro: React.FC = () => {
     return (
-        <section className="bg-white text-brand-navy py-32 md:py-48 text-left md:text-center selection:bg-brand-purple selection:text-white border-t border-brand-navy/10">
+        <section className="bg-white text-brand-navy py-32 md:py-48 text-left selection:bg-brand-purple selection:text-white border-t border-brand-navy/10">
             <div className="container mx-auto px-6 md:px-12">
                 <motion.h2 
                     initial={{ opacity: 0, y: 30 }}
@@ -267,13 +269,13 @@ const FeatureSpotlight: React.FC = () => {
     const featuredProject = PROJECTS[0]; 
 
     return (
-        <section className="relative bg-brand-navy pt-24 md:pt-32 border-b border-white/5 selection:bg-[#8B84D7] selection:text-white">
-            <div className="container mx-auto px-6 md:px-12 text-left md:text-center text-white mb-16 md:mb-24">
+        <section className="relative bg-brand-navy pt-24 md:pt-32 selection:bg-[#8B84D7] selection:text-white">
+            <div className="container mx-auto px-6 md:px-12 text-left text-white mb-16 md:mb-24">
                 <motion.h3 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="font-display text-2xl md:text-4xl lg:text-[2.75rem] font-black uppercase tracking-tighter max-w-5xl mx-auto leading-[1.1] md:leading-[0.9]"
+                    className="font-display text-3xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter max-w-6xl leading-[1.05] md:leading-[0.9]"
                 >
                     BRAND VOICE, LOGOTYPE & MARK SYSTEM, ART DIRECTION, CONTENT CREATION.
                 </motion.h3>
@@ -284,25 +286,25 @@ const FeatureSpotlight: React.FC = () => {
                     <img 
                         src={featuredProject.imageUrl} 
                         alt={featuredProject.title} 
-                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-1000 group-hover:scale-105 transform ease-out"
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 group-hover:scale-105 transform ease-out"
                     />
-                    <div className="absolute inset-0 bg-brand-navy/40 group-hover:bg-brand-navy/10 transition-colors duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/40 to-transparent opacity-100" />
+                    <div className="absolute inset-0 bg-brand-navy/20 group-hover:bg-transparent transition-colors duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/30 to-transparent opacity-100" />
                 </div>
 
-                <div className="absolute inset-0 z-10 flex flex-col p-6 md:p-12 items-center justify-between text-center pt-24 md:pt-32">
+                <div className="absolute inset-0 z-10 flex flex-col p-6 md:p-12 items-center justify-between text-center pt-24 md:pt-32 pointer-events-none">
                     <motion.div 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        className="mt-auto mb-8 md:mb-12"
+                        className="mt-auto mb-8 md:mb-12 pointer-events-auto"
                     >
                         <span className="font-mono text-white uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold px-6 py-2 backdrop-blur-md border border-white/20">
                             [ {featuredProject.category} ]
                         </span>
                     </motion.div>
                     
-                    <div className="w-full flex justify-center pb-8 md:pb-16">
+                    <div className="w-full flex justify-center pb-8 md:pb-16 pointer-events-auto">
                         <h2 className="text-[16vw] md:text-[18vw] leading-[0.75] font-black uppercase tracking-tighter text-white transition-transform duration-700 group-hover:text-brand-yellow">
                             {featuredProject.title}
                         </h2>
@@ -313,128 +315,30 @@ const FeatureSpotlight: React.FC = () => {
     );
 };
 
-const CapabilityList: React.FC = () => {
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    const capabilities = [
-        { 
-            id: '01', 
-            title: 'Strategy', 
-            desc: 'Positioning, Messaging, Brand Playbook, & Roadmaps', 
-            link: '/clarity'
-        },
-        { 
-            id: '02', 
-            title: 'Identity', 
-            desc: 'Visual Systems, Logos, Brand Guidelines, Colour, & Typography,', 
-            link: '/design-power'
-        },
-        { 
-            id: '03', 
-            title: 'Digital', 
-            desc: 'Web Design, Webflow Dev, Content Strategy, & Campaign Creative', 
-            link: '/design-power'
-        },
-        { 
-            id: '04', 
-            title: 'Visuals', 
-            desc: 'Motion Design, 3D Product Vis, GFX & Kinetic Type', 
-            link: '/design-power'
-        }
-    ];
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        mouseX.set(e.clientX);
-        mouseY.set(e.clientY);
-    };
-
-    return (
-        <section 
-            className="bg-brand-navy text-white py-32 relative z-40 overflow-hidden border-b border-white/5" 
-            onMouseMove={handleMouseMove}
-        >
-            <div className="container mx-auto px-8 relative z-10">
-                <div className="mb-24 flex items-end justify-between border-b border-white/10 pb-8">
-                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">
-                        Output.
-                     </h2>
-                     <div className="hidden md:block font-mono text-xs uppercase tracking-widest text-right opacity-80">
-                        Select a capability<br/>to explore
-                     </div>
-                </div>
-
-                <div className="flex flex-col">
-                    {capabilities.map((cap, index) => (
-                        <Link 
-                            key={index}
-                            to={cap.link}
-                            onMouseEnter={() => setHoveredIndex(index)}
-                            onMouseLeave={() => setHoveredIndex(null)}
-                            className="group relative border-b border-white/5 py-12 md:py-16 flex flex-col md:flex-row justify-between md:items-center transition-colors hover:bg-white/[0.01]"
-                        >
-                            <div className="flex items-baseline gap-8 md:gap-16">
-                                <span className="font-mono text-sm md:text-base text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
-                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-white leading-[0.85]">
-                                    {cap.title}
-                                </h3>
-                            </div>
-                            <div className="mt-4 md:mt-0 pl-[calc(2rem+14px)] md:pl-0">
-                                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-white">
-                                    {cap.desc}
-                                </span>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-                
-                
-            </div>
-
-            <motion.div
-                className="pointer-events-none fixed top-0 left-0 w-[300px] h-[400px] z-50 hidden md:block overflow-hidden bg-brand-yellow mix-blend-normal"
-                style={{
-                    x: mouseX,
-                    y: mouseY,
-                    translateX: "-50%",
-                    translateY: "-50%"
-                }}
-                animate={{
-                    opacity: hoveredIndex !== null ? 1 : 0,
-                    scale: hoveredIndex !== null ? 1 : 0.5,
-                    rotate: hoveredIndex !== null ? -5 : 0
-                }}
-                transition={{ duration: 0.2, ease: "linear" }}
-            >                
-            </motion.div>
-        </section>
-    );
-}
-
 const ShowcaseGrid: React.FC = () => {
     return (
-        <section className="bg-brand-navy px-6 md:px-8 py-32 relative z-40 border-b border-white/5 overflow-hidden">
+        <section className="bg-white px-6 md:px-12 py-32 relative z-40 border-b border-brand-navy/10 overflow-hidden selection:bg-brand-purple selection:text-white">
              <div className="container mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 md:mb-32 gap-8">
+                     <h2 className="text-6xl md:text-8xl lg:text-[8rem] font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">
                         Selected<br/>Works
                      </h2>
-                     <Link to="/work" className="font-mono text-sm uppercase tracking-widest font-bold border-2 border-white/10 px-8 py-3 hover:bg-white hover:text-brand-navy transition-all text-white">
+                     <Link to="/work" className="font-mono text-xs uppercase tracking-widest font-bold border border-brand-navy/20 text-brand-navy px-8 py-4 hover:bg-brand-navy hover:text-white transition-colors duration-300">
                         View Full Archive
                      </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-y-24">
+                {/* High stagger offset grid for editorial pacing */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24">
                     {PROJECTS.slice(1, 8).map((project, index) => (
-                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-24' : ''}`}>
-                             <ProjectCard project={project} className="aspect-[4/3] w-full" />
-                             <div className="mt-6 flex justify-between items-start border-t border-white/5 pt-4">
-                                <div>
-                                    <h3 className="text-3xl font-black uppercase tracking-tighter leading-none text-white">{project.title}</h3>
-                                    <span className="font-mono text-[10px] uppercase tracking-widest text-brand-purple font-bold mt-2 block">{project.category}</span>
+                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-48' : 'md:-mt-12'}`}>
+                             <ProjectCard project={project} className="aspect-[4/5] md:aspect-[3/4] w-full shadow-xl hover:shadow-2xl transition-shadow duration-500" />
+                             <div className="mt-8 flex justify-between items-start border-t border-brand-navy/10 pt-6">
+                                <div className="text-left">
+                                    <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter leading-none text-brand-navy">{project.title}</h3>
+                                    <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-[#8B84D7] font-bold mt-3 block">{project.category}</span>
                                 </div>
-                                <span className="font-mono text-[10px] uppercase font-bold opacity-40 text-white">{project.year}</span>
+                                <span className="font-mono text-[10px] md:text-xs uppercase font-bold opacity-40 text-brand-navy">{project.year}</span>
                              </div>
                         </div>
                     ))}
@@ -447,17 +351,17 @@ const ShowcaseGrid: React.FC = () => {
 const FAQSection: React.FC = () => {
     const faqs = QA_DATA[0].questions; 
     return (
-        <section className="py-24 bg-brand-navy border-b border-white/5 relative z-40">
-            <div className="container mx-auto px-6 md:px-8">
-                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85] mb-16">Frequently Asked Questions</h2>
+        <section className="py-32 bg-brand-navy border-b border-white/5 relative z-40 selection:bg-[#8B84D7] selection:text-white text-left">
+            <div className="container mx-auto px-6 md:px-12">
+                <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85] mb-24">Frequently<br/>Asked<br/>Questions</h2>
                 <div className="max-w-4xl" itemScope itemType="https://schema.org/FAQPage">
                     {faqs.map((faq, i) => (
-                        <div key={i} className="mb-10 border-b border-white/5 pb-10" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-                            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white mb-4" itemProp="name">
+                        <div key={i} className="mb-12 border-b border-white/10 pb-12" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+                            <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white mb-6" itemProp="name">
                                 {faq.q}
                             </h3>
                             <div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-                                <p className="font-body text-lg md:text-xl text-white/60 leading-relaxed" itemProp="text">
+                                <p className="font-body text-lg md:text-xl text-white/60 leading-relaxed max-w-3xl" itemProp="text">
                                     {faq.a}
                                 </p>
                             </div>
@@ -471,19 +375,19 @@ const FAQSection: React.FC = () => {
 
 const LatestIntel: React.FC = () => {
     return (
-        <section className="py-24 relative z-40 bg-brand-navy overflow-hidden">
-             <div className="container mx-auto px-8">
-                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">Studio Thoughts</h2>
-                    <Link to="/journal" className="font-mono text-xs uppercase tracking-widest font-bold text-brand-purple hover:text-white">View All Entries &rarr;</Link>
+        <section className="py-32 relative z-40 bg-brand-navy overflow-hidden text-left selection:bg-[#8B84D7] selection:text-white">
+             <div className="container mx-auto px-6 md:px-12">
+                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
+                    <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">Studio<br/>Thoughts</h2>
+                    <Link to="/journal" className="font-mono text-xs uppercase tracking-widest font-bold text-[#8B84D7] hover:text-white transition-colors">View All Entries &rarr;</Link>
                  </div>
                  
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-white/5">
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-white/10">
                     {JOURNAL_POSTS.slice(0, 3).map((post, i) => (
-                        <Link key={i} to={`/journal/${post.slug}`} className="group block border-r border-b border-t border-white/5 p-8 hover:bg-white/[0.01] transition-all duration-300 text-white">
-                             <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-4 group-hover:text-brand-yellow text-white">{post.date}</span>
-                             <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-6 text-white group-hover:text-brand-yellow transition-colors min-h-[3em]">{post.title}</h3>
-                             <p className="font-body text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-white">
+                        <Link key={i} to={`/journal/${post.slug}`} className="group block border-r border-b border-t border-white/10 p-8 md:p-12 hover:bg-white/[0.02] transition-colors duration-300 text-white">
+                             <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-6 group-hover:text-brand-yellow text-white transition-colors">{post.date}</span>
+                             <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-white group-hover:text-brand-yellow transition-colors min-h-[3em]">{post.title}</h3>
+                             <p className="font-body text-lg md:text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-white transition-opacity">
                                  {post.excerpt}
                              </p>
                         </Link>
@@ -509,7 +413,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-brand-navy">
+    <div className="w-full bg-[#F8F8F9]">
       <Helmet>
         <title>COOLO | Shaping Brands With Character</title>
         <script type="application/ld+json">
@@ -522,7 +426,6 @@ const HomePage: React.FC = () => {
       <ProcessSteps />
       <ShowcaseIntro />
       <FeatureSpotlight />
-      <CapabilityList />
       <ShowcaseGrid />
       <FAQSection />
       <LatestIntel />
