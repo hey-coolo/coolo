@@ -145,7 +145,7 @@ const RealityCheck: React.FC = () => {
             </div>
         </section>
     );
-};
+}
 
 const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: number) => void }) => {
     const ref = useRef<HTMLDivElement>(null);
