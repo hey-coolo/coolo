@@ -10,15 +10,22 @@ const BrandHero: React.FC = () => {
     const [isStudioHovered, setIsStudioHovered] = useState(false);
 
     return (
-        <section className="relative min-h-[100svh] pt-40 md:pt-48 pb-12 bg-[#F8F8F9] text-brand-navy flex flex-col justify-between overflow-hidden selection:bg-brand-purple selection:text-white">
-            <div className="container mx-auto px-6 md:px-12 relative z-10 flex-grow flex flex-col justify-center items-start">
+        <section className="relative h-[100svh] pt-32 pb-8 bg-[#F8F8F9] text-brand-navy flex flex-col justify-between overflow-hidden selection:bg-brand-purple selection:text-white">
+            {/* Top Metadata */}
+            <div className="absolute top-28 md:top-32 w-full px-6 md:px-12 flex justify-between items-start font-mono text-[9px] md:text-[10px] uppercase tracking-widest opacity-30 pointer-events-none">
+                <span className="max-w-[150px] md:max-w-none">© 2026 COOLO. HUMANS IN THE MACHINE.</span>
+                <span className="hidden md:block">ARTWORK: CONCEPT PLAYGROUND</span>
+            </div>
+
+            <div className="container mx-auto px-6 md:px-12 relative z-10 flex-grow flex flex-col justify-center mt-12 md:mt-16">
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="text-[14vw] md:text-[10vw] font-black uppercase leading-[0.82] tracking-tighter max-w-[98%] text-left"
+                    className="text-[13.5vw] md:text-[10.5vw] font-black uppercase leading-[0.8] tracking-tighter w-full text-left"
                 >
-                    YOUR BUSINESS IS BETTER THAN IT CURRENTLY LOOKS, AND YOU JUST FOUND{' '}
+                    YOUR BUSINESS IS BETTER THAN IT CURRENTLY LOOKS, AND YOU{' '}
+                    <span className="text-[#8B84D7]">JUST FOUND </span>
                     <a 
                         href="https://instagram.com/coolo.co"
                         target="_blank"
@@ -35,58 +42,63 @@ const BrandHero: React.FC = () => {
                     {' '}TO FIX THAT.
                 </motion.h1>
                 
-                <div className="mt-16 md:mt-24 flex flex-col items-start gap-12 font-mono uppercase tracking-widest font-bold w-full">
-                    <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5, duration: 1 }}
-                        className="max-w-[320px] md:max-w-lg text-left opacity-80 leading-[1.8] text-xs md:text-sm"
-                    >
-                        GOOD BUSINESSES FREQUENTLY LOOK AND SOUND WORSE THAN THE ACTUAL VALUE THEY CREATE.
-                    </motion.div>
-
-                    <div className="h-[20px] flex items-center md:ml-[15vw]">
-                        <AnimatePresence>
-                            {isStudioHovered && (
-                                <motion.a 
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: 10 }}
-                                    transition={{ duration: 0.3, ease: "easeOut" }}
-                                    href="https://instagram.com/coolo.co" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-[#8B84D7] hover:text-brand-navy transition-colors block text-[10px] md:text-xs"
-                                >
-                                    [0] FOLLOW US
-                                </motion.a>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                {/* Follow Us Interaction */}
+                <div className="h-[20px] mt-4 md:mt-6 ml-[45vw] md:ml-[55vw]">
+                    <AnimatePresence>
+                        {isStudioHovered && (
+                            <motion.a 
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3, ease: "easeOut" }}
+                                href="https://instagram.com/coolo.co" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-[#8B84D7] hover:text-brand-navy transition-colors font-mono text-[10px] md:text-xs font-bold tracking-widest uppercase block"
+                            >
+                                [@] FOLLOW US
+                            </motion.a>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
 
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
-                className="container mx-auto px-6 md:px-12 mt-12 flex flex-col items-start pb-4 opacity-40 font-mono text-[10px] uppercase tracking-widest font-bold"
-            >
-                <span className="mb-4">SCROLL TO DISCOVER</span>
-                <motion.div
-                    animate={{ y: [0, 5, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            {/* Bottom Section */}
+            <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-end relative z-10 w-full">
+                {/* Scroll Indicator */}
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1, duration: 1 }}
+                    className="flex flex-col items-center opacity-40 font-mono text-[9px] uppercase tracking-widest font-bold order-2 md:order-1 mx-auto md:mx-0 w-full md:w-auto mt-12 md:mt-0"
                 >
-                    <ArrowDown size={16} />
+                    <span className="mb-3">SCROLL TO DISCOVER</span>
+                    <motion.div
+                        animate={{ y: [0, 5, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-8 h-8 rounded-full border border-brand-navy flex items-center justify-center"
+                    >
+                        <ArrowDown size={14} />
+                    </motion.div>
                 </motion.div>
-            </motion.div>
+
+                {/* Body Copy */}
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 1 }}
+                    className="max-w-[280px] md:max-w-sm font-mono text-[10px] md:text-[11px] uppercase tracking-widest font-bold opacity-90 leading-[1.8] order-1 md:order-2 text-left md:text-left"
+                >
+                    GOOD BUSINESSES FREQUENTLY LOOK AND SOUND WORSE THAN THE ACTUAL VALUE THEY CREATE.
+                </motion.div>
+            </div>
         </section>
     );
 };
 
 const RealityCheck: React.FC = () => {
     return (
-        <section className="py-32 md:py-48 bg-[#8B84D7] text-white px-6 md:px-12 flex flex-col items-start justify-center min-h-[80vh] selection:bg-brand-navy selection:text-white">
+        <section className="py-32 md:py-48 bg-[#8B84D7] text-white px-6 md:px-12 flex flex-col items-start justify-center min-h-[100svh] selection:bg-brand-navy selection:text-white">
             <div className="container mx-auto">
                 <motion.span 
                     initial={{ opacity: 0, y: 10 }}
@@ -98,11 +110,11 @@ const RealityCheck: React.FC = () => {
                 </motion.span>
                 
                 <motion.h2 
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1, duration: 0.8 }}
-                    className="text-4xl md:text-6xl lg:text-[4.5rem] uppercase tracking-tighter leading-[1.05] max-w-6xl font-light text-left"
+                    className="text-4xl md:text-6xl lg:text-[5.5rem] uppercase tracking-tighter leading-[0.95] max-w-7xl font-light text-left"
                 >
                     WE BRIDGE THAT GAP, <strong className="font-black">TURNING YOUR BUSINESS IDEAS</strong> AND EXPERTISE INTO A CLEAR <strong className="font-black">STRATEGIC CREATIVE DIRECTION</strong> AND <strong className="font-black">BRAND EXPERIENCE</strong>.
                 </motion.h2>
@@ -118,7 +130,9 @@ const RealityCheck: React.FC = () => {
                 </motion.p>
                 
                 <div className="mt-16 md:mt-24 opacity-50 flex justify-start">
-                    <ArrowDown size={16} />
+                    <div className="w-8 h-8 rounded-full border border-white flex items-center justify-center">
+                        <ArrowDown size={14} />
+                    </div>
                 </div>
             </div>
         </section>
@@ -129,14 +143,14 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { margin: "-50% 0px -50% 0px" });
     
-    // Tightened scroll offsets so text blocks fade in and out precisely as they cross the center of the viewport
+    // Smooth fade in and out as the section enters and leaves the center of the viewport
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ["start 75%", "end 25%"]
+        offset: ["start 65%", "end 35%"]
     });
 
-    const opacity = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.05, 1, 1, 0.05]);
-    const y = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [60, 0, 0, -60]);
+    const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+    const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [60, 0, 0, -60]);
 
     useEffect(() => {
         if (isInView) {
@@ -150,13 +164,13 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
             style={{ opacity, y }}
             className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-20 lg:py-24"
         >
-            <h3 className="text-4xl md:text-6xl lg:text-[4.5rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16">
+            <h3 className="text-4xl md:text-5xl lg:text-[4.5rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16">
                 {step.title}
             </h3>
             
             <div className="font-mono space-y-8">
                 <div className="space-y-4">
-                    <h4 className="text-xs md:text-sm uppercase font-bold tracking-widest leading-relaxed text-brand-yellow">
+                    <h4 className="text-xs md:text-sm uppercase font-bold tracking-widest leading-relaxed text-[#8B84D7] lg:text-white">
                         {step.sub1}
                     </h4>
                     <p className="text-[10px] md:text-xs uppercase font-bold tracking-widest leading-relaxed text-white/90">
@@ -249,7 +263,7 @@ const ProcessSteps: React.FC = () => {
 
 const ShowcaseIntro: React.FC = () => {
     return (
-        <section className="bg-white text-brand-navy py-32 md:py-48 text-left selection:bg-brand-purple selection:text-white border-t border-brand-navy/10">
+        <section className="bg-white text-brand-navy py-32 md:py-48 text-left md:text-center selection:bg-brand-purple selection:text-white border-t border-brand-navy/10">
             <div className="container mx-auto px-6 md:px-12">
                 <motion.h2 
                     initial={{ opacity: 0, y: 30 }}
@@ -270,12 +284,12 @@ const FeatureSpotlight: React.FC = () => {
 
     return (
         <section className="relative bg-brand-navy pt-24 md:pt-32 selection:bg-[#8B84D7] selection:text-white">
-            <div className="container mx-auto px-6 md:px-12 text-left text-white mb-16 md:mb-24">
+            <div className="container mx-auto px-6 md:px-12 text-left md:text-center text-white mb-16 md:mb-24">
                 <motion.h3 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="font-display text-3xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter max-w-6xl leading-[1.05] md:leading-[0.9]"
+                    className="font-display text-3xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter max-w-6xl mx-auto leading-[1.05] md:leading-[0.9]"
                 >
                     BRAND VOICE, LOGOTYPE & MARK SYSTEM, ART DIRECTION, CONTENT CREATION.
                 </motion.h3>
@@ -299,7 +313,7 @@ const FeatureSpotlight: React.FC = () => {
                         viewport={{ once: true }}
                         className="mt-auto mb-8 md:mb-12 pointer-events-auto"
                     >
-                        <span className="font-mono text-white uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold px-6 py-2 backdrop-blur-md border border-white/20">
+                        <span className="font-mono text-white uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold px-6 py-2 backdrop-blur-md border border-white/20 bg-brand-navy/20">
                             [ {featuredProject.category} ]
                         </span>
                     </motion.div>
@@ -317,7 +331,7 @@ const FeatureSpotlight: React.FC = () => {
 
 const ShowcaseGrid: React.FC = () => {
     return (
-        <section className="bg-white px-6 md:px-12 py-32 relative z-40 border-b border-brand-navy/10 overflow-hidden selection:bg-brand-purple selection:text-white">
+        <section className="bg-white px-6 md:px-12 py-32 md:py-48 relative z-40 border-b border-brand-navy/10 overflow-hidden selection:bg-brand-purple selection:text-white">
              <div className="container mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 md:mb-32 gap-8">
                      <h2 className="text-6xl md:text-8xl lg:text-[8rem] font-black uppercase tracking-tighter text-brand-navy leading-[0.85]">
@@ -328,10 +342,10 @@ const ShowcaseGrid: React.FC = () => {
                      </Link>
                 </div>
 
-                {/* High stagger offset grid for editorial pacing */}
+                {/* White background, staggered vertical misalignment */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24">
                     {PROJECTS.slice(1, 8).map((project, index) => (
-                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-48' : 'md:-mt-12'}`}>
+                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-32' : 'md:-mt-12'}`}>
                              <ProjectCard project={project} className="aspect-[4/5] md:aspect-[3/4] w-full shadow-xl hover:shadow-2xl transition-shadow duration-500" />
                              <div className="mt-8 flex justify-between items-start border-t border-brand-navy/10 pt-6">
                                 <div className="text-left">
@@ -385,8 +399,8 @@ const LatestIntel: React.FC = () => {
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-white/10">
                     {JOURNAL_POSTS.slice(0, 3).map((post, i) => (
                         <Link key={i} to={`/journal/${post.slug}`} className="group block border-r border-b border-t border-white/10 p-8 md:p-12 hover:bg-white/[0.02] transition-colors duration-300 text-white">
-                             <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-6 group-hover:text-brand-yellow text-white transition-colors">{post.date}</span>
-                             <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-white group-hover:text-brand-yellow transition-colors min-h-[3em]">{post.title}</h3>
+                             <span className="font-mono text-[10px] uppercase tracking-widest opacity-50 block mb-6 group-hover:text-[#8B84D7] text-white transition-colors">{post.date}</span>
+                             <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-white group-hover:text-[#8B84D7] transition-colors min-h-[3em]">{post.title}</h3>
                              <p className="font-body text-lg md:text-xl font-light opacity-60 leading-relaxed line-clamp-3 group-hover:opacity-80 text-white transition-opacity">
                                  {post.excerpt}
                              </p>
