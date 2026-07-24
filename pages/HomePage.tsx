@@ -14,7 +14,7 @@ const BrandHero: React.FC = () => {
             {/* Top Metadata */}
             <div className="absolute top-28 md:top-32 w-full px-6 md:px-12 flex justify-between items-start font-mono text-[9px] md:text-[10px] uppercase tracking-widest opacity-40 font-bold pointer-events-none">
                 <span className="max-w-[150px] md:max-w-none">© 2026 COOLO. HUMANS IN THE MACHINE.</span>
-                <span className="hidden md:block">ARTWORK: CONCEPT PLAYGROUND</span>
+                <span className="hidden md:block">STATUS: BOOKINGS OPEN</span>
             </div>
 
             {/* Core Typography Statement */}
@@ -23,7 +23,7 @@ const BrandHero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="text-[12.5vw] lg:text-[10.5vw] font-black uppercase leading-[0.85] tracking-tighter w-full text-left flex flex-col items-start"
+                    className="text-[clamp(4rem,8.5vw,9.5rem)] font-black uppercase leading-[0.85] tracking-tighter w-full text-left flex flex-col items-start"
                 >
                     <span className="block">YOUR BUSINESS IS BETTER THAN IT</span>
                     <span className="block">CURRENTLY LOOKS, AND YOU <span className="text-[#8B84D7]">JUST</span></span>
