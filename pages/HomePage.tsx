@@ -263,6 +263,113 @@ const FeatureSpotlight: React.FC = () => {
             </Link>
         </section>
     );
+};
+
+// ============================================================================
+// REMAINING SECTIONS - PRESERVED EXACTLY AS THEY WERE
+// ============================================================================
+
+const CapabilityList: React.FC = () => {
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    const capabilities = [
+        { 
+            id: '01', 
+            title: 'Strategy', 
+            desc: 'Positioning, Messaging, Brand Playbook, & Roadmaps', 
+            link: '/clarity'
+        },
+        { 
+            id: '02', 
+            title: 'Identity', 
+            desc: 'Visual Systems, Logos, Brand Guidelines, Colour, & Typography,', 
+            link: '/design-power'
+        },
+        { 
+            id: '03', 
+            title: 'Digital', 
+            desc: 'Web Design, Webflow Dev, Content Strategy, & Campaign Creative', 
+            link: '/design-power'
+        },
+        { 
+            id: '04', 
+            title: 'Visuals', 
+            desc: 'Motion Design, 3D Product Vis, GFX & Kinetic Type', 
+            link: '/design-power'
+        }
+    ];
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
+    };
+
+    return (
+        <section 
+            className="bg-brand-navy text-white py-32 relative z-40 overflow-hidden border-b border-white/5" 
+            onMouseMove={handleMouseMove}
+        >
+            <div className="container mx-auto px-8 relative z-10">
+                <div className="mb-24 flex items-end justify-between border-b border-white/10 pb-8">
+                     <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85]">
+                        Output.
+                     </h2>
+                     <div className="hidden md:block font-mono text-xs uppercase tracking-widest text-right opacity-80">
+                        Select a capability<br/>to explore
+                     </div>
+                </div>
+
+                <div className="flex flex-col">
+                    {capabilities.map((cap, index) => (
+                        <Link 
+                            key={index}
+                            to={cap.link}
+                            onMouseEnter={() => setHoveredIndex(index)}
+                            onMouseLeave={() => setHoveredIndex(null)}
+                            className="group relative border-b border-white/5 py-12 md:py-16 flex flex-col md:flex-row justify-between md:items-center transition-colors hover:bg-white/[0.01]"
+                        >
+                            <div className="flex items-baseline gap-8 md:gap-16">
+                                <span className="font-mono text-sm md:text-base text-brand-purple group-hover:text-brand-yellow font-bold transition-colors">/{cap.id}</span>
+                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-out text-white leading-[0.85]">
+                                    {cap.title}
+                                </h3>
+                            </div>
+                            <div className="mt-4 md:mt-0 pl-[calc(2rem+14px)] md:pl-0">
+                                <span className="font-mono text-xs md:text-sm uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity text-white">
+                                    {cap.desc}
+                                </span>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+                
+                <div className="mt-16 md:mt-24 max-w-2xl border-t border-white/10 pt-8">
+                    <p className="font-body text-lg opacity-80">
+                        We build custom visual systems using industry-standard platforms like <a href="https://webflow.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Webflow</a> and <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Stripe</a>, ensuring your brand performs securely and as well as it looks.
+                    </p>
+                </div>
+            </div>
+
+            <motion.div
+                className="pointer-events-none fixed top-0 left-0 w-[300px] h-[400px] z-50 hidden md:block overflow-hidden bg-brand-yellow mix-blend-normal"
+                style={{
+                    x: mouseX,
+                    y: mouseY,
+                    translateX: "-50%",
+                    translateY: "-50%"
+                }}
+                animate={{
+                    opacity: hoveredIndex !== null ? 1 : 0,
+                    scale: hoveredIndex !== null ? 1 : 0.5,
+                    rotate: hoveredIndex !== null ? -5 : 0
+                }}
+                transition={{ duration: 0.2, ease: "linear" }}
+            >                
+            </motion.div>
+        </section>
+    );
 }
 
 const ShowcaseGrid: React.FC = () => {
