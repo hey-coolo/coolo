@@ -410,7 +410,7 @@ export const NAV_LINKS = [
       { name: 'Equity', path: '/partnership/equity' }
     ]
   },
-  { name: 'Studio Thoughts ', path: '/thoughts' }
+  { name: 'Studio Thoughts', path: '/journal' }
 ];
 
 export const SERVICE_LEGS: ServiceLeg[] = [
