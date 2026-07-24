@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useInView, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { PROJECTS, JOURNAL_POSTS, QA_DATA } from '../constants';
+import { PROJECTS, JOURNAL_POSTS, SERVICE_LEGS, QA_DATA } from '../constants';
 import ProjectCard from '../components/ProjectCard';
 import { ArrowDown } from 'lucide-react';
 
 const BrandHero: React.FC = () => {
+    const [isStudioHovered, setIsStudioHovered] = useState(false);
+
     return (
         <section className="relative min-h-screen pt-40 pb-12 bg-[#F8F8F9] text-brand-navy flex flex-col justify-between overflow-hidden selection:bg-brand-purple selection:text-white">
             <div className="container mx-auto px-6 md:px-12 relative z-10">
@@ -14,27 +16,48 @@ const BrandHero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="text-[13vw] md:text-[9.5vw] font-black uppercase leading-[0.82] tracking-tighter max-w-[98%]"
+                    className="text-[12.5vw] md:text-[9.5vw] font-black uppercase leading-[0.82] tracking-tighter max-w-[98%]"
                 >
-                    YOUR BUSINESS IS BETTER THAN IT CURRENTLY LOOKS, AND YOU <span className="text-[#8B84D7]">JUST FOUND THE STUDIO</span> TO FIX THAT.
+                    YOUR BUSINESS IS BETTER THAN IT CURRENTLY LOOKS, AND YOU JUST FOUND{' '}
+                    <span 
+                        className="text-[#8B84D7] relative cursor-crosshair transition-all duration-300 hover:underline underline-offset-[12px] decoration-4"
+                        onMouseEnter={() => setIsStudioHovered(true)}
+                        onMouseLeave={() => setIsStudioHovered(false)}
+                    >
+                        THE STUDIO
+                    </span> 
+                    {' '}TO FIX THAT.
                 </motion.h1>
                 
-                <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5, duration: 1 }}
-                    className="mt-16 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-12 font-mono text-[10px] md:text-xs uppercase tracking-widest font-bold"
-                >
-                    <div className="md:ml-[15vw] opacity-40 hover:opacity-100 transition-opacity">
-                        <a href="https://instagram.com/coolo.co" target="_blank" rel="noopener noreferrer">
-                            [0] FOLLOW US
-                        </a>
+                <div className="mt-16 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-12 font-mono text-[10px] md:text-xs uppercase tracking-widest font-bold">
+                    <div className="md:ml-[15vw] h-[20px] flex items-center">
+                        <AnimatePresence>
+                            {isStudioHovered && (
+                                <motion.a 
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.3 }}
+                                    href="https://instagram.com/coolo.co" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-[#8B84D7] hover:text-brand-navy transition-colors block"
+                                >
+                                    [0] FOLLOW US
+                                </motion.a>
+                            )}
+                        </AnimatePresence>
                     </div>
                     
-                    <div className="max-w-[280px] md:max-w-sm md:text-right opacity-80 leading-[1.8]">
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5, duration: 1 }}
+                        className="max-w-[280px] md:max-w-sm md:text-right opacity-80 leading-[1.8]"
+                    >
                         GOOD BUSINESSES FREQUENTLY LOOK AND SOUND WORSE THAN THE ACTUAL VALUE THEY CREATE.
-                    </div>
-                </motion.div>
+                    </motion.div>
+                </div>
             </div>
 
             <motion.div 
@@ -72,7 +95,7 @@ const RealityCheck: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1, duration: 0.8 }}
-                className="text-3xl md:text-4xl lg:text-[2.75rem] uppercase tracking-tight leading-[1.3] max-w-5xl mx-auto font-light"
+                className="text-2xl md:text-4xl lg:text-[2.75rem] uppercase tracking-tight leading-[1.3] max-w-5xl mx-auto font-light"
             >
                 WE BRIDGE THAT GAP, <strong className="font-black">TURNING YOUR BUSINESS IDEAS</strong> AND EXPERTISE INTO A CLEAR <strong className="font-black">STRATEGIC CREATIVE DIRECTION</strong> AND <strong className="font-black">BRAND EXPERIENCE</strong>.
             </motion.h2>
@@ -94,7 +117,6 @@ const RealityCheck: React.FC = () => {
     );
 };
 
-// Process Steps Sub-Component to handle Intersection Observation cleanly
 const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: number) => void }) => {
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { margin: "-45% 0px -45% 0px" });
@@ -106,7 +128,7 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
     }, [isInView, step.id, setActiveStep]);
 
     return (
-        <div ref={ref} className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-12 lg:py-24">
+        <div ref={ref} className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-20 lg:py-24">
             <h3 className="text-4xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16">
                 {step.title}
             </h3>
@@ -157,13 +179,14 @@ const ProcessSteps: React.FC = () => {
     ];
 
     return (
-        <section className="bg-brand-navy text-white relative selection:bg-[#8B84D7] selection:text-white pb-24 lg:pb-0">
+        <section className="bg-brand-navy text-white relative selection:bg-[#8B84D7] selection:text-white">
             <div className="container mx-auto px-6 md:px-12 flex flex-col lg:flex-row relative items-start">
                 
-                {/* Sticky Left Column: Numbers */}
-                <div className="sticky top-[10vh] lg:top-0 h-[25vh] lg:h-screen w-full lg:w-1/2 flex flex-col justify-end lg:justify-center z-20 bg-brand-navy/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none pb-8 lg:pb-0">
+                {/* Sticky Left Column: Animated Numbers */}
+                <div className="sticky top-[10vh] lg:top-0 h-[25vh] lg:h-screen w-full lg:w-1/2 flex flex-col justify-end lg:justify-center z-20 bg-brand-navy/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none pb-8 lg:pb-0 border-b border-white/5 lg:border-none">
                     <div className="flex flex-col items-start">
-                        <div className="flex items-baseline gap-4 md:gap-8 font-black uppercase tracking-tighter leading-[0.75] select-none">
+                        {/* Dynamic Flex Container aligns items to baseline so numbers "sit" on the same line */}
+                        <div className="flex items-baseline gap-4 md:gap-8 font-black uppercase tracking-tighter leading-none select-none">
                             {[1, 2, 3].map((num) => (
                                 <motion.span 
                                     key={num}
@@ -173,7 +196,7 @@ const ProcessSteps: React.FC = () => {
                                         opacity: activeStep === num ? 1 : 0.3,
                                         color: activeStep === num ? '#ffffff' : '#ffffff'
                                     }}
-                                    transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+                                    transition={{ type: "spring", bounce: 0.15, duration: 0.7 }}
                                     className="origin-bottom"
                                 >
                                     {num}
@@ -181,7 +204,7 @@ const ProcessSteps: React.FC = () => {
                             ))}
                         </div>
                         
-                        <div className="flex gap-2 mt-6 lg:mt-8 ml-2">
+                        <div className="flex gap-3 mt-6 lg:mt-8 ml-2">
                             {[1, 2, 3].map((num) => (
                                 <motion.div 
                                     key={num}
@@ -194,7 +217,7 @@ const ProcessSteps: React.FC = () => {
                 </div>
 
                 {/* Scrollable Right Column: Content */}
-                <div className="w-full lg:w-1/2 flex flex-col relative z-10">
+                <div className="w-full lg:w-1/2 flex flex-col relative z-10 lg:pl-12">
                     {steps.map((step) => (
                         <StepContent key={step.id} step={step} setActiveStep={setActiveStep} />
                     ))}
@@ -227,35 +250,43 @@ const FeatureSpotlight: React.FC = () => {
     const featuredProject = PROJECTS[0]; 
 
     return (
-        <section className="relative bg-brand-navy border-b border-white/5 selection:bg-[#8B84D7] selection:text-white">
-            <Link to={`/work/${featuredProject.slug}`} className="block relative min-h-[90vh] md:min-h-[120vh] w-full group overflow-hidden">
+        <section className="relative bg-brand-navy pt-24 md:pt-32 border-b border-white/5 selection:bg-[#8B84D7] selection:text-white">
+            <div className="container mx-auto px-6 md:px-12 text-center text-white mb-16 md:mb-24">
+                <motion.h3 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="font-display text-2xl md:text-4xl lg:text-[2.75rem] font-black uppercase tracking-tighter max-w-5xl mx-auto leading-[0.9]"
+                >
+                    BRAND VOICE, LOGOTYPE & MARK SYSTEM, ART DIRECTION, CONTENT CREATION.
+                </motion.h3>
+            </div>
+
+            <Link to={`/work/${featuredProject.slug}`} className="block relative h-[70vh] md:h-[110vh] w-full group overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img 
                         src={featuredProject.imageUrl} 
                         alt={featuredProject.title} 
-                        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-1000 group-hover:scale-105 transform ease-out"
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 group-hover:scale-105 transform ease-out"
                     />
-                    <div className="absolute inset-0 bg-brand-navy/40 group-hover:bg-brand-navy/10 transition-colors duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/40 to-transparent opacity-100" />
+                    <div className="absolute inset-0 bg-brand-navy/30 group-hover:bg-transparent transition-colors duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/20 to-transparent opacity-100" />
                 </div>
 
-                <div className="absolute inset-0 z-10 flex flex-col p-6 md:p-12 items-center justify-between text-center pt-24 md:pt-32">
+                <div className="absolute inset-0 z-10 flex flex-col justify-between p-6 md:p-12 items-center text-center pt-24 md:pt-32">
                     <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        className="w-full max-w-5xl mx-auto"
+                        className="mt-auto mb-8 md:mb-12"
                     >
-                        <h3 className="font-display text-2xl md:text-3xl lg:text-[2.5rem] font-black uppercase tracking-tighter text-white leading-[1.1] md:leading-[0.9]">
-                            BRAND VOICE, LOGOTYPE & MARK SYSTEM, ART DIRECTION, CONTENT CREATION.
-                        </h3>
-                    </motion.div>
-                    
-                    <div className="w-full flex flex-col items-center justify-end mt-auto mb-8 md:mb-16">
-                        <span className="font-mono text-white uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold px-6 py-2 mb-8 md:mb-12 border border-white/20 backdrop-blur-md">
+                        <span className="font-mono text-white uppercase tracking-[0.2em] text-[10px] md:text-xs font-bold px-6 py-2 backdrop-blur-md">
                             [ {featuredProject.category} ]
                         </span>
-                        <h2 className="text-[15vw] md:text-[16vw] leading-[0.75] font-black uppercase tracking-tighter text-white transition-transform duration-700 group-hover:text-brand-yellow">
+                    </motion.div>
+                    
+                    <div className="w-full flex justify-center pb-8 md:pb-16">
+                        <h2 className="text-[16vw] md:text-[18vw] leading-[0.75] font-black uppercase tracking-tighter text-white transition-transform duration-700 group-hover:text-brand-yellow">
                             {featuredProject.title}
                         </h2>
                     </div>
@@ -264,10 +295,6 @@ const FeatureSpotlight: React.FC = () => {
         </section>
     );
 };
-
-// ============================================================================
-// REMAINING SECTIONS - PRESERVED EXACTLY AS THEY WERE
-// ============================================================================
 
 const CapabilityList: React.FC = () => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -345,7 +372,11 @@ const CapabilityList: React.FC = () => {
                     ))}
                 </div>
                 
-                
+                <div className="mt-16 md:mt-24 max-w-2xl border-t border-white/10 pt-8">
+                    <p className="font-body text-lg opacity-80">
+                        We build custom visual systems using industry-standard platforms like <a href="https://webflow.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Webflow</a> and <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-yellow transition-colors">Stripe</a>, ensuring your brand performs securely and as well as it looks.
+                    </p>
+                </div>
             </div>
 
             <motion.div
