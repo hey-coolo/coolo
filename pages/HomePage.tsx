@@ -94,27 +94,10 @@ const RealityCheck: React.FC = () => {
     );
 };
 
+// Process Steps Sub-Component to handle Intersection Observation cleanly
 const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: number) => void }) => {
     const ref = useRef<HTMLDivElement>(null);
-    const isInView = useInView(ref, { margin: "-50% 0px -50% 0px" });
-    
-    // Staggered scroll mappings for progressive reveal
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start 80%", "end 20%"]
-    });
-
-    // Title animates first
-    const titleOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-    const titleY = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [40, 0, 0, -40]);
-
-    // Subtitles animate slightly after
-    const subOpacity = useTransform(scrollYProgress, [0.1, 0.3, 0.8, 1], [0, 1, 1, 0]);
-    const subY = useTransform(scrollYProgress, [0.1, 0.3, 0.8, 1], [40, 0, 0, -40]);
-
-    // Paragraph animates last
-    const pOpacity = useTransform(scrollYProgress, [0.2, 0.4, 0.8, 1], [0, 1, 1, 0]);
-    const pY = useTransform(scrollYProgress, [0.2, 0.4, 0.8, 1], [40, 0, 0, -40]);
+    const isInView = useInView(ref, { margin: "-45% 0px -45% 0px" });
 
     useEffect(() => {
         if (isInView) {
@@ -123,34 +106,28 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
     }, [isInView, step.id, setActiveStep]);
 
     return (
-        <div ref={ref} className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-20 lg:py-24">
-            <motion.h3 
-                style={{ opacity: titleOpacity, y: titleY }}
-                className="text-4xl md:text-5xl lg:text-[4.5rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16"
-            >
+        <div ref={ref} className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-12 lg:py-24">
+            <h3 className="text-4xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16">
                 {step.title}
-            </motion.h3>
+            </h3>
             
             <div className="font-mono space-y-8">
-                <motion.div style={{ opacity: subOpacity, y: subY }} className="space-y-4">
-                    <h4 className="text-xs md:text-sm uppercase font-bold tracking-widest leading-relaxed text-white">
+                <div className="space-y-4">
+                    <h4 className="text-xs md:text-sm uppercase font-bold tracking-widest leading-relaxed">
                         {step.sub1}
                     </h4>
-                    <p className="text-[10px] md:text-xs uppercase font-bold tracking-widest leading-relaxed text-[#8B84D7]">
+                    <p className="text-[10px] md:text-xs uppercase font-bold tracking-widest leading-relaxed text-white/90">
                         {step.sub2}
                     </p>
-                </motion.div>
+                </div>
                 
-                <motion.p 
-                    style={{ opacity: pOpacity, y: pY }}
-                    className="text-[10px] md:text-xs uppercase font-bold tracking-widest text-white/50 leading-[2] max-w-xl"
-                >
+                <p className="text-[9px] md:text-[10px] uppercase font-bold tracking-widest text-white/50 leading-[2] max-w-lg">
                     {step.p}
-                </motion.p>
+                </p>
             </div>
         </div>
     );
-}
+};
 
 const ProcessSteps: React.FC = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -180,35 +157,36 @@ const ProcessSteps: React.FC = () => {
     ];
 
     return (
-        <section className="bg-[#0A0A0A] text-white relative selection:bg-[#8B84D7] selection:text-white pb-24 lg:pb-0">
+        <section className="bg-brand-navy text-white relative selection:bg-[#8B84D7] selection:text-white pb-24 lg:pb-0">
             <div className="container mx-auto px-6 md:px-12 flex flex-col lg:flex-row relative items-start">
                 
-                {/* Sticky Left Column: Animated Numbers */}
-                <div className="sticky top-[10vh] lg:top-0 h-[20vh] lg:h-screen w-full lg:w-1/2 flex flex-col justify-end lg:justify-center z-20 bg-[#0A0A0A]/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none pb-8 lg:pb-0 border-b border-white/5 lg:border-none">
+                {/* Sticky Left Column: Numbers */}
+                <div className="sticky top-[10vh] lg:top-0 h-[25vh] lg:h-screen w-full lg:w-1/2 flex flex-col justify-end lg:justify-center z-20 bg-brand-navy/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none pb-8 lg:pb-0">
                     <div className="flex flex-col items-start">
-                        <div className="flex items-baseline gap-4 md:gap-8 font-black uppercase tracking-tighter leading-none select-none">
+                        <div className="flex items-baseline gap-4 md:gap-8 font-black uppercase tracking-tighter leading-[0.75] select-none">
                             {[1, 2, 3].map((num) => (
                                 <motion.span 
                                     key={num}
                                     layout
                                     animate={{ 
-                                        fontSize: activeStep === num ? 'clamp(6rem, 22vw, 18rem)' : 'clamp(2rem, 5vw, 4rem)',
-                                        opacity: activeStep === num ? 1 : 0.2,
+                                        fontSize: activeStep === num ? 'clamp(8rem, 25vw, 18rem)' : 'clamp(2rem, 5vw, 4rem)',
+                                        opacity: activeStep === num ? 1 : 0.3,
+                                        color: activeStep === num ? '#ffffff' : '#ffffff'
                                     }}
-                                    transition={{ type: "spring", bounce: 0.15, duration: 0.7 }}
-                                    className="origin-bottom text-white"
+                                    transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+                                    className="origin-bottom"
                                 >
                                     {num}
                                 </motion.span>
                             ))}
                         </div>
                         
-                        <div className="flex gap-3 mt-6 lg:mt-8 ml-2">
+                        <div className="flex gap-2 mt-6 lg:mt-8 ml-2">
                             {[1, 2, 3].map((num) => (
                                 <motion.div 
                                     key={num}
                                     layout
-                                    className={`rounded-full border border-white transition-colors duration-500 ${activeStep === num ? 'bg-white w-2.5 h-2.5' : 'bg-transparent w-2 h-2 opacity-30'}`} 
+                                    className={`rounded-full border border-white transition-colors duration-500 ${activeStep === num ? 'bg-white w-2.5 h-2.5' : 'bg-transparent w-2 h-2 opacity-50'}`} 
                                 />
                             ))}
                         </div>
@@ -216,7 +194,7 @@ const ProcessSteps: React.FC = () => {
                 </div>
 
                 {/* Scrollable Right Column: Content */}
-                <div className="w-full lg:w-1/2 flex flex-col relative z-10 lg:pl-12">
+                <div className="w-full lg:w-1/2 flex flex-col relative z-10">
                     {steps.map((step) => (
                         <StepContent key={step.id} step={step} setActiveStep={setActiveStep} />
                     ))}
@@ -225,7 +203,7 @@ const ProcessSteps: React.FC = () => {
             </div>
         </section>
     );
-}
+};
 
 const ShowcaseIntro: React.FC = () => {
     return (
