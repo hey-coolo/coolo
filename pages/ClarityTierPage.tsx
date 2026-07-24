@@ -3,8 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import { BRAND_CLARITY_TIERS } from '../constants';
 import AnimatedSection from '../components/AnimatedSection';
 import Accordion from '../components/Accordion';
-// Import the App as a fallback
-import RealityCheckApp from './clarity/RealityCheckApp'; 
 
 const ClarityTierPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
