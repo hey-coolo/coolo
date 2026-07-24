@@ -23,7 +23,7 @@ const BrandHero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="text-[clamp(4rem,8.5vw,9.5rem)] font-black uppercase leading-[0.85] tracking-tighter w-full text-left flex flex-col items-start"
+                    className="text-[12.5vw] lg:text-[8.5vw] font-black uppercase leading-[0.85] tracking-tighter w-full text-left flex flex-col items-start"
                 >
                     <span className="block">YOUR BUSINESS IS BETTER THAN IT</span>
                     <span className="block">CURRENTLY LOOKS, AND YOU <span className="text-[#8B84D7]">JUST</span></span>
@@ -145,7 +145,7 @@ const RealityCheck: React.FC = () => {
             </div>
         </section>
     );
-}
+};
 
 const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: number) => void }) => {
     const ref = useRef<HTMLDivElement>(null);
@@ -359,6 +359,36 @@ const ShowcaseGrid: React.FC = () => {
             </div>
         </section>
     )
+}
+
+const FAQSection: React.FC = () => {
+    const faqs = QA_DATA[0].questions; 
+    return (
+        <section className="py-32 md:py-48 bg-[#F8F8F9] relative z-40 selection:bg-[#8B84D7] selection:text-white text-left">
+            <div className="container mx-auto px-6 md:px-12">
+                <h2 className="text-[11vw] md:text-[8.5vw] font-black uppercase tracking-tighter text-[#0A0A0A] leading-[0.85] mb-32">WHAT YOU MAY WONDER</h2>
+                <div className="max-w-5xl" itemScope itemType="https://schema.org/FAQPage">
+                    {faqs.map((faq, i) => (
+                        <div key={i} className="mb-24 flex flex-col md:flex-row gap-8 md:gap-24" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+                            <div className="md:w-1/4">
+                                <div className="mb-6">
+                                    <ArrowDown size={48} strokeWidth={1.5} className="text-[#0A0A0A]" />
+                                </div>
+                            </div>
+                            <div className="md:w-3/4" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                                <p className="font-mono text-xs md:text-sm text-[#0A0A0A] leading-[2] font-bold uppercase tracking-widest mb-8" itemProp="text">
+                                    "{faq.a}"
+                                </p>
+                                <h3 className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-[#0A0A0A] font-black" itemProp="name">
+                                    {faq.q}
+                                </h3>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
 };
 
 const BriefUsCTA: React.FC = () => {
@@ -367,7 +397,7 @@ const BriefUsCTA: React.FC = () => {
             <div className="container mx-auto flex-grow flex flex-col justify-center">
                 <h2 className="text-[10vw] md:text-[11vw] font-black uppercase tracking-tighter leading-[0.82] w-full">
                     <span className="block">THINK WE SHOULD</span>
-                    <span className="block">LOOK AT YOUR</span>
+                    <span className="block ml-[10%] md:ml-[20%]">LOOK AT YOUR</span>
                     <span className="block">BUSINESS?</span>
                 </h2>
             </div>
