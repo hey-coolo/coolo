@@ -359,45 +359,15 @@ const ShowcaseGrid: React.FC = () => {
             </div>
         </section>
     )
-}
-
-const FAQSection: React.FC = () => {
-    const faqs = QA_DATA[0].questions; 
-    return (
-        <section className="py-32 md:py-48 bg-[#F8F8F9] relative z-40 selection:bg-[#8B84D7] selection:text-white text-left">
-            <div className="container mx-auto px-6 md:px-12">
-                <h2 className="text-[11vw] md:text-[8.5vw] font-black uppercase tracking-tighter text-[#0A0A0A] leading-[0.85] mb-32">WHAT THEY'VE SAID</h2>
-                <div className="max-w-5xl" itemScope itemType="https://schema.org/FAQPage">
-                    {faqs.map((faq, i) => (
-                        <div key={i} className="mb-24 flex flex-col md:flex-row gap-8 md:gap-24" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-                            <div className="md:w-1/4">
-                                <div className="mb-6">
-                                    <ArrowDown size={48} strokeWidth={1.5} className="text-[#0A0A0A]" />
-                                </div>
-                            </div>
-                            <div className="md:w-3/4" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-                                <p className="font-mono text-xs md:text-sm text-[#0A0A0A] leading-[2] font-bold uppercase tracking-widest mb-8" itemProp="text">
-                                    "{faq.a}"
-                                </p>
-                                <h3 className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-[#0A0A0A] font-black" itemProp="name">
-                                    {faq.q}
-                                </h3>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
 };
 
 const BriefUsCTA: React.FC = () => {
     return (
         <section className="bg-[#FFD100] text-[#0A0A0A] flex flex-col justify-between min-h-[100svh] pt-32 pb-16 px-6 md:px-12 selection:bg-[#0A0A0A] selection:text-white relative z-40">
             <div className="container mx-auto flex-grow flex flex-col justify-center">
-                <h2 className="text-[14vw] md:text-[11vw] font-black uppercase tracking-tighter leading-[0.82] w-full">
+                <h2 className="text-[10vw] md:text-[11vw] font-black uppercase tracking-tighter leading-[0.82] w-full">
                     <span className="block">THINK WE SHOULD</span>
-                    <span className="block ml-[10%] md:ml-[20%]">LOOK AT YOUR</span>
+                    <span className="block">LOOK AT YOUR</span>
                     <span className="block">BUSINESS?</span>
                 </h2>
             </div>
