@@ -120,6 +120,8 @@ const App: React.FC = () => {
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/join" element={<JoinPage />} />
                         <Route path="/unsubscribe" element={<UnsubscribePage />} />
+
+                        <Route path="/styleguide" element={<StyleguidePage />} />
                         
                         <Route path="*" element={<NotFoundPage />} />
                       </Routes>
