@@ -27,7 +27,6 @@ import NotFoundPage from './pages/NotFoundPage';
 import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
-import StickerSystem from './components/StickerSystem';
 import SmoothScroll from './components/SmoothScroll';
 
 const pageVariants = {
