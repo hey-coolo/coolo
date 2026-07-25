@@ -77,7 +77,6 @@ const App: React.FC = () => {
                transition={{ duration: 1, ease: "easeOut" }}
                className="flex flex-col min-h-screen"
             >
-                <StickerSystem />
                 <Header />
                 <Analytics />
                 <main className="flex-grow">
