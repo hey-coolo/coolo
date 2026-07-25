@@ -28,8 +28,7 @@ import CustomCursor from './components/CustomCursor';
 import Loader from './components/Loader';
 import { Analytics } from './components/Analytics';
 import StickerSystem from './components/StickerSystem';
-import SmoothScroll from './components/SmoothScroll'; 
-import { StyleguidePage } from './pages/styleguide';
+import SmoothScroll from './components/SmoothScroll';
 
 const pageVariants = {
   initial: { opacity: 0, scale: 0.99, y: 10 },
