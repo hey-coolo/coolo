@@ -11,7 +11,7 @@ const CustomCursor: React.FC = () => {
   const cursorY = useMotionValue(-100);
 
   // Apply spring physics for heavy follow latency effect
-  const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
+  const springConfig = { damping: 15, stiffness: 200, mass: 0.3 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
@@ -99,13 +99,13 @@ const CustomCursor: React.FC = () => {
       }}
       variants={variants}
       animate={cursorVariant}
-      transition={{ type: 'tween', ease: 'backOut', duration: 0.2 }}
+      transition={{ type: 'tween', ease: 'backOut', duration: 0.3 }}
     >
       {cursorVariant === 'text' && (
         <motion.span
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.05 }}
+          transition={{ delay: 0.02 }}
           className="pointer-events-none select-none text-brand-navy px-2 block"
         >
           {cursorText}

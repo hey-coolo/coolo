@@ -23,7 +23,7 @@ const BrandHero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="text-[10vw] lg:text-[7vw] font-black uppercase leading-[0.85] tracking-tighter w-full text-left flex flex-col items-start"
+                    className="text-[10.5vw] lg:text-[7vw] font-black uppercase leading-[0.85] tracking-tighter w-full text-left flex flex-col items-start"
                 >
                     <span className="block">YOUR BUSINESS IS BETTER THAN IT</span>
                     <span className="block">CURRENTLY LOOKS, AND YOU <span className="text-[#8B84D7]">JUST</span></span>
