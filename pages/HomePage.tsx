@@ -23,7 +23,7 @@ const BrandHero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="text-[13vw] lg:text-[9.5vw] font-black uppercase leading-[0.8] tracking-[-0.03em] w-full text-left flex flex-col items-start"
+                    className="text-[12.5vw] lg:text-[8.5vw] font-black uppercase leading-[0.85] tracking-tighter w-full text-left flex flex-col items-start"
                 >
                     <span className="block">YOUR BUSINESS IS BETTER THAN IT</span>
                     <span className="block">CURRENTLY LOOKS, AND YOU <span className="text-[#8B84D7]">JUST</span></span>
@@ -122,7 +122,7 @@ const RealityCheck: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1, duration: 0.8 }}
-                    className="text-4xl md:text-6xl lg:text-[4.8rem] uppercase tracking-[-0.02em] leading-[0.9] max-w-4xl font-light"
+                    className="text-3xl md:text-5xl lg:text-[4.5rem] uppercase tracking-tighter leading-[1.05] max-w-5xl font-light"
                 >
                     WE BRIDGE THAT GAP, <strong className="font-black">TURNING YOUR BUSINESS IDEAS</strong> AND EXPERTISE INTO A CLEAR <strong className="font-black">STRATEGIC CREATIVE DIRECTION</strong> AND <strong className="font-black">BRAND EXPERIENCE</strong>.
                 </motion.h2>
@@ -171,7 +171,7 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
             style={{ opacity, y }}
             className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-20 lg:py-24"
         >
-            <h3 className="text-4xl md:text-5xl lg:text-[5.5rem] font-black uppercase tracking-[-0.03em] leading-[0.85] mb-12 lg:mb-16">
+            <h3 className="text-4xl md:text-5xl lg:text-[4.5rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 lg:mb-16">
                 {step.title}
             </h3>
             
@@ -185,7 +185,7 @@ const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: n
                     </p>
                 </div>
                 
-                <p className="text-[9px] md:text-[10px] uppercase font-bold tracking-widest text-white/50 leading-[2.2] max-w-xl">
+                <p className="text-[9px] md:text-[10px] uppercase font-bold tracking-widest text-white/50 leading-[2] max-w-xl">
                     {step.p}
                 </p>
             </div>
@@ -227,13 +227,13 @@ const ProcessSteps: React.FC = () => {
                 {/* Sticky Left Column: Animated Numbers */}
                 <div className="sticky top-[10vh] lg:top-0 h-[20vh] lg:h-screen w-full lg:w-5/12 flex flex-col justify-end lg:justify-center z-20 bg-[#0A0A0A]/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none pb-8 lg:pb-0 border-b border-white/5 lg:border-none">
                     <div className="flex flex-col items-start lg:pl-4">
-                        <div className="flex items-baseline gap-6 md:gap-10 font-black uppercase tracking-[-0.04em] leading-[0.75] select-none py-4 overflow-hidden">
+                        <div className="flex items-baseline gap-6 md:gap-10 font-black uppercase tracking-tighter leading-none select-none py-4 overflow-hidden">
                             {[1, 2, 3].map((num) => (
                                 <motion.span 
                                     key={num}
                                     layout
                                     animate={{ 
-                                        fontSize: activeStep === num ? 'clamp(8rem, 24vw, 18rem)' : 'clamp(3rem, 6vw, 5rem)',
+                                        fontSize: activeStep === num ? 'clamp(6rem, 22vw, 15rem)' : 'clamp(2.5rem, 5vw, 4rem)',
                                         opacity: activeStep === num ? 1 : 0.3,
                                     }}
                                     transition={{ type: "spring", stiffness: 200, damping: 25, mass: 1 }}
@@ -270,14 +270,14 @@ const ProcessSteps: React.FC = () => {
 
 const ShowcaseIntro: React.FC = () => {
     return (
-        <section className="bg-white text-[#0A0A0A] py-32 md:py-48 text-left selection:bg-[#8B84D7] selection:text-white">
+        <section className="bg-white text-[#0A0A0A] py-24 md:py-32 text-left selection:bg-[#8B84D7] selection:text-white">
             <div className="container mx-auto px-6 md:px-12">
                 <motion.h2 
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-20%" }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="text-[14vw] md:text-[12vw] font-black uppercase tracking-[-0.04em] leading-[0.8]"
+                    className="text-[13vw] md:text-[11vw] font-black uppercase tracking-tighter leading-[0.85]"
                 >
                     WHAT IT ACTUALLY<br />LOOKS LIKE.
                 </motion.h2>
@@ -318,7 +318,7 @@ const FeatureSpotlight: React.FC = () => {
                     </motion.div>
                     
                     <div className="w-full flex justify-center pb-8 md:pb-16 pointer-events-auto">
-                        <h2 className="text-[16vw] md:text-[18vw] leading-[0.75] font-black uppercase tracking-[-0.04em] text-white transition-transform duration-700 group-hover:text-[#8B84D7]">
+                        <h2 className="text-[16vw] md:text-[18vw] leading-[0.75] font-black uppercase tracking-tighter text-white transition-transform duration-700 group-hover:text-[#8B84D7]">
                             {featuredProject.title}
                         </h2>
                     </div>
@@ -332,8 +332,8 @@ const ShowcaseGrid: React.FC = () => {
     return (
         <section className="bg-white px-6 md:px-12 py-32 md:py-48 relative z-40 overflow-hidden selection:bg-[#8B84D7] selection:text-white">
              <div className="container mx-auto">
-                <div className="flex flex-col items-center mb-32 md:mb-40 text-center">
-                     <h2 className="text-[12vw] md:text-[8vw] font-black uppercase tracking-[-0.03em] text-[#0A0A0A] leading-[0.85]">
+                <div className="flex flex-col items-center mb-24 md:mb-32 text-center">
+                     <h2 className="text-4xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter text-[#0A0A0A] leading-[0.85]">
                         WHAT WE'VE DONE
                      </h2>
                 </div>
@@ -341,11 +341,11 @@ const ShowcaseGrid: React.FC = () => {
                 {/* White background, highly staggered vertical misalignment */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24">
                     {PROJECTS.slice(1, 5).map((project, index) => (
-                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-64' : 'md:mt-0'}`}>
+                        <div key={project.id} className={`${index % 2 === 1 ? 'md:mt-48' : 'md:-mt-12'}`}>
                              <ProjectCard project={project} className="aspect-[4/5] md:aspect-[4/3] w-full shadow-md hover:shadow-2xl transition-shadow duration-500" />
                              <div className="mt-8 flex flex-col items-start pt-6">
-                                <h3 className="text-3xl md:text-4xl font-black uppercase tracking-[-0.02em] leading-none text-[#0A0A0A]">{project.title}</h3>
-                                <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-[#8B84D7] font-bold mt-3 block">{project.category}</span>
+                                <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter leading-none text-[#0A0A0A]">{project.title}</h3>
+                                <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-[#8B84D7] font-bold mt-2 block">{project.category}</span>
                              </div>
                         </div>
                     ))}
@@ -366,7 +366,7 @@ const FAQSection: React.FC = () => {
     return (
         <section className="py-32 md:py-48 bg-[#F8F8F9] relative z-40 selection:bg-[#8B84D7] selection:text-white text-left">
             <div className="container mx-auto px-6 md:px-12">
-                <h2 className="text-[12vw] md:text-[9vw] font-black uppercase tracking-[-0.03em] text-[#0A0A0A] leading-[0.85] mb-32 md:mb-48">WHAT YOU MAY WONDER</h2>
+                <h2 className="text-[11vw] md:text-[8.5vw] font-black uppercase tracking-tighter text-[#0A0A0A] leading-[0.85] mb-32">WHAT YOU MAY WONDER</h2>
                 <div className="max-w-5xl" itemScope itemType="https://schema.org/FAQPage">
                     {faqs.map((faq, i) => (
                         <div key={i} className="mb-24 flex flex-col md:flex-row gap-8 md:gap-24" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
@@ -395,7 +395,7 @@ const BriefUsCTA: React.FC = () => {
     return (
         <section className="bg-[#FFD100] text-[#0A0A0A] flex flex-col justify-between min-h-[100svh] pt-32 pb-16 px-6 md:px-12 selection:bg-[#0A0A0A] selection:text-white relative z-40">
             <div className="container mx-auto flex-grow flex flex-col justify-center">
-                <h2 className="text-[12vw] md:text-[11vw] font-black uppercase tracking-[-0.03em] leading-[0.8] w-full">
+                <h2 className="text-[10vw] md:text-[11vw] font-black uppercase tracking-tighter leading-[0.82] w-full">
                     <span className="block">THINK WE SHOULD</span>
                     <span className="block ml-[10%] md:ml-[20%]">LOOK AT YOUR</span>
                     <span className="block">BUSINESS?</span>
@@ -494,7 +494,7 @@ const StudioTools: React.FC = () => {
             
             {/* Giant Bleeding Footer Typography */}
             <div className="w-full flex flex-col items-center justify-end mt-auto pt-16 relative z-0 pointer-events-none">
-                <h2 className="text-[20vw] md:text-[18vw] font-black uppercase tracking-[-0.04em] leading-[0.75] text-white/90 whitespace-nowrap translate-y-[22%]">
+                <h2 className="text-[18vw] md:text-[18vw] font-black uppercase tracking-tighter leading-[0.75] text-white/90 whitespace-nowrap translate-y-[22%]">
                     <span className="block text-left ml-[10vw]">THE TOOLS WE USE</span>
                     <span className="block text-left">TO BUILD IT.</span>
                 </h2>
