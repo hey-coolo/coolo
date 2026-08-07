@@ -1,3 +1,4 @@
+// pages/HomePage.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
@@ -101,7 +102,7 @@ const RealityCheck: React.FC = () => {
                         viewport={{ once: true }}
                         className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 block sticky top-32"
                     >
-                        01 / THE REALITY CHECK
+                        01 / THE CENTRAL THESIS
                     </motion.span>
                 </div>
                 <div className="lg:col-span-8">
@@ -112,7 +113,7 @@ const RealityCheck: React.FC = () => {
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
                         className="font-display text-[9vw] lg:text-[6.5vw] uppercase tracking-tighter leading-[0.85] font-black"
                     >
-                        WE BRIDGE THAT GAP, TURNING YOUR BUSINESS IDEAS AND EXPERTISE INTO A CLEAR STRATEGIC CREATIVE DIRECTION AND BRAND EXPERIENCE.
+                        IF A BRAND STRATEGY CANNOT BE EXPLAINED IN THE EVERYDAY LANGUAGE OF A BUSINESS OWNER, IT ISN'T A STRATEGY. IT IS AN INVOICE.
                     </motion.h2>
                     <motion.p 
                         initial={{ opacity: 0 }}
@@ -121,7 +122,7 @@ const RealityCheck: React.FC = () => {
                         transition={{ delay: 0.2 }}
                         className="mt-16 md:mt-24 font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] max-w-sm leading-[2]"
                     >
-                        THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
+                        REAL CREATIVE DIRECTION SOLVES PHYSICAL AND DIGITAL PROBLEMS. IT DOESN'T JUST SOUND SMART IN A KEYNOTE.
                     </motion.p>
                 </div>
             </div>
@@ -183,23 +184,23 @@ const ProcessSteps: React.FC = () => {
         {
             id: 1,
             title: "PULLING THE IDEAS OUT OF YOUR HEAD.",
-            sub1: "FIND THE ACTUAL VALUE.",
-            sub2: "A BLUEPRINT OF EXACTLY WHAT YOU NEED TO DO, AND HOW TO ACTUALLY SELL IT.",
-            p: "MOST FOUNDERS ARE SITTING ON A GOLDMINE OF EXPERTISE, BUT THEY'RE TOO BURIED IN THE DAILY GRIND TO EXPLAIN IT CLEARLY. WE SIT IN THE MESS WITH YOU, ASK THE UNCOMFORTABLE QUESTIONS, AND DRAG YOUR REAL VALUE OUT OF YOUR HEAD SO WE CAN BUILD A CLEAR, HONEST BLUEPRINT OF WHERE TO GO NEXT."
+            sub1: "STRIPPING THE JARGON.",
+            sub2: "WE FIND THE BARE BONES OF YOUR BRAND.",
+            p: "BUSINESS OWNERS FEEL A QUIET RESENTMENT. THEY PAY PREMIUM RETAINERS FOR 'STRATEGY' AND RECEIVE A PDF OF BUZZWORDS THAT FIXES NOTHING. WE DON'T DO THAT. WE SIT IN THE MESS WITH YOU, ASK THE HARD QUESTIONS, AND DRAG YOUR REAL VALUE OUT OF YOUR HEAD. NO BLOATED INTELLECTUAL FRAMEWORKS. JUST HONEST CLARITY."
         },
         {
             id: 2,
-            title: "BUILDING THE ASSETS THAT MAKE IT REAL.",
-            sub1: "TURN STRATEGY INTO AN ENGINE.",
-            sub2: "YOU GET THE TACTICAL TOOLS YOU NEED TO ACTUALLY SELL YOUR VISION.",
-            p: "A GREAT STRATEGY IS COMPLETELY USELESS IF YOU DON'T HAVE THE TOOLS TO SELL IT. ONCE WE HAVE CLARITY, WE DESIGN THE ACTUAL SYSTEM. YOUR BRAND IDENTITY, VISUAL LANGUAGE, CUSTOM WEBSITE, AND SALES ASSETS. SO YOUR BUSINESS LOOKS, SOUNDS, AND FEELS AS PROFESSIONAL AS THE WORK YOU DO."
+            title: "SOLVING PHYSICAL AND DIGITAL PROBLEMS.",
+            sub1: "THE BRAND OPERATING SYSTEM.",
+            sub2: "ASSETS THAT ACTUALLY TRANSLATE INTO THE REAL WORLD.",
+            p: "COMPLEX AGENCY LANGUAGE IS A SHIELD FOR GENERIC WORK. ONCE WE HAVE CLARITY, WE DESIGN THE ACTUAL SYSTEM: YOUR BRAND IDENTITY, VISUAL LANGUAGE, CUSTOM WEBSITE, AND SALES ASSETS. SO YOU AREN'T LEFT WITH THE SAME FUNCTIONAL DESIGN PROBLEMS YOU HAD BEFORE YOU SPENT THE MONEY."
         },
         {
             id: 3,
-            title: "PROTECTING YOUR TIME AND SANITY.",
-            sub1: "KEEP THE MOMENTUM GOING.",
-            sub2: "WE RUN THE MACHINE SO YOU CAN STEP BACK INTO BEING THE HUMAN DRIVING IT.",
-            p: "YOU NEED TO STAY FOCUSED ON RUNNING YOUR BUSINESS, NOT MICROMANAGING FREELANCERS. ONCE THE SYSTEM IS BUILT, WE ACT AS YOUR CREATIVE DIRECTION PARTNER AND FIREWALL MANAGING EXECUTION, KEEPING EVERYTHING CONSISTENT, AND MAKING SURE YOUR BRAND SCALES AS YOU GROW."
+            title: "PROTECTING THE WORK FROM THE GENERIC.",
+            sub1: "THE FIREWALL.",
+            sub2: "COMPLEXITY IS USUALLY HIDING A LACK OF TASTE.",
+            p: "YOU NEED TO STAY FOCUSED ON RUNNING YOUR BUSINESS. WE ACT AS YOUR CREATIVE DIRECTION PARTNER AND FIREWALL, MANAGING THE EXECUTION AND KEEPING EVERYTHING CONSISTENT. WE ENSURE THE MOST VALUABLE CREATIVE SOLUTIONS REMAIN THE ONES THAT FEEL OBVIOUS ONCE YOU SEE THEM."
         }
     ];
 
@@ -334,7 +335,7 @@ const FAQSection: React.FC = () => {
                         03 / INFORMATION
                     </span>
                     <h2 className="font-display text-[12vw] lg:text-[7vw] font-black uppercase tracking-tighter text-[#0A0A0A] leading-[0.85] lg:sticky lg:top-32 mt-8 lg:mt-32">
-                        WHAT YOU<br/>MAY WONDER.
+                        THE HARD<br/>QUESTIONS.
                     </h2>
                 </div>
                 <div className="lg:col-span-8 flex flex-col lg:border-t border-[#0A0A0A]" itemScope itemType="https://schema.org/FAQPage">
@@ -368,7 +369,7 @@ const BriefUsCTA: React.FC = () => {
 
                 <div className="lg:col-span-4 flex flex-col items-start lg:items-end font-mono text-[10px] uppercase tracking-widest font-bold leading-[2] space-y-12">
                     <p className="max-w-[320px] lg:text-right opacity-80">
-                        TELL US WHAT YOU'RE BUILDING AND WHERE THINGS CURRENTLY FEEL DISCONNECTED. IF IT SOUNDS LIKE SOMETHING WE CAN ACTUALLY SOLVE, WE'LL LET YOU KNOW. IF NOT, WE WON'T WASTE YOUR TIME. WE'LL GIVE YOU HONEST FEEDBACK AND POINT YOU IN THE RIGHT DIRECTION.
+                        TELL US WHAT YOU'RE BUILDING AND WHERE IT FEELS DISCONNECTED. IF IT'S A PROBLEM WE CAN FIX, WE'LL TELL YOU. IF IT'S NOT, WE WON'T WASTE YOUR TIME WITH A PDF OF BUZZWORDS. WE'LL POINT YOU IN THE RIGHT DIRECTION.
                     </p>
                     <Link to="/contact" className="inline-flex items-center justify-center border-2 border-[#0A0A0A] text-[#0A0A0A] px-12 py-5 font-black hover:bg-[#0A0A0A] hover:text-[#FFD100] transition-colors duration-300 w-full lg:w-auto">
                         BRIEF US
