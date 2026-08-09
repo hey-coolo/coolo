@@ -7,71 +7,6 @@ import ProjectCard from '../components/ProjectCard';
 import { ArrowDown, ArrowRight } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 
-// --- EDITORIAL SCRIBBLE ENGINE ---
-const CSSHighlight = ({ delay = 0, color = "#8B84D7" }) => (
-    <motion.div 
-        className="absolute top-[5%] left-[-2%] w-[104%] h-[90%] z-0"
-        style={{ backgroundColor: color, originX: 0, borderRadius: '3px', transform: 'rotate(-2deg)' }}
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true, margin: "-20%" }}
-        transition={{ duration: 0.6, delay, ease: [0.19, 1, 0.22, 1] }}
-    />
-);
-
-const ScribbleUnderline = ({ delay = 0, color = "#FF4500" }) => (
-    <svg className="absolute w-[110%] h-[0.5em] -left-[5%] -bottom-[0.1em] pointer-events-none z-20" viewBox="0 0 100 20" preserveAspectRatio="none">
-        <motion.path
-            d="M 0 10 Q 30 15 50 8 T 100 12"
-            fill="none"
-            stroke={color}
-            strokeWidth="10"
-            vectorEffect="non-scaling-stroke"
-            strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            whileInView={{ pathLength: 1, opacity: 1 }}
-            viewport={{ once: true, margin: "-20%" }}
-            transition={{ duration: 0.6, delay, ease: "easeOut" }}
-        />
-    </svg>
-);
-
-const ScribbleMultiCircle = ({ delay = 0, color = "#FF4500" }) => (
-    <svg className="absolute w-[130%] h-[160%] -left-[15%] -top-[30%] pointer-events-none z-20" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <motion.path
-            d="M 50 15 C 85 10, 95 40, 80 75 C 60 100, 10 90, 10 50 C 10 15, 50 5, 75 25 C 95 40, 85 85, 40 90"
-            fill="none"
-            stroke={color}
-            strokeWidth="8"
-            vectorEffect="non-scaling-stroke"
-            strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            whileInView={{ pathLength: 1, opacity: 1 }}
-            viewport={{ once: true, margin: "-20%" }}
-            transition={{ duration: 1.5, delay, ease: "easeInOut" }}
-        />
-    </svg>
-);
-
-const ScribbleArrow = ({ delay = 0, color = "#0A0A0A" }) => (
-    <svg className="w-[40px] h-[60px] md:w-[70px] md:h-[100px] pointer-events-none overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <motion.path
-            d="M 10 10 Q 30 60 70 90 M 35 90 L 75 92 L 65 55"
-            fill="none"
-            stroke={color}
-            strokeWidth="8"
-            vectorEffect="non-scaling-stroke"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            whileInView={{ pathLength: 1, opacity: 1 }}
-            viewport={{ once: true, margin: "-20%" }}
-            transition={{ duration: 0.5, delay, ease: "easeOut" }}
-        />
-    </svg>
-);
-// ------------------------------------
-
 const BrandHero: React.FC = () => {
     const [isStudioHovered, setIsStudioHovered] = useState(false);
 
@@ -158,90 +93,37 @@ const BrandHero: React.FC = () => {
 
 const RealityCheck: React.FC = () => {
     return (
-        <section className="py-32 md:py-48 bg-[#F8F8F9] text-[#0A0A0A] px-6 md:px-12 overflow-hidden selection:bg-[#8B84D7] selection:text-white border-t border-[#0A0A0A]/10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 lg:gap-0">
+        <section className="py-32 md:py-48 bg-white text-[#0A0A0A] px-6 md:px-12 border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0">
                 <div className="lg:col-span-4">
                     <motion.span 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 block sticky top-32 text-[#8B84D7]"
+                        className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 block sticky top-32"
                     >
                         01 / THE REALITY CHECK
                     </motion.span>
                 </div>
-                <div className="lg:col-span-8 flex flex-col items-start pt-12 lg:pt-0">
-                    
-                    {/* GIANT EDITORIAL MARKUP BLOCK */}
+                <div className="lg:col-span-8">
                     <motion.h2 
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="font-display text-[13vw] lg:text-[9.5vw] uppercase tracking-tighter leading-[0.85] font-black w-full"
+                        className="font-display text-[9vw] lg:text-[6.5vw] uppercase tracking-tighter leading-[0.85] font-black"
                     >
-                        <span className="block mb-2 md:mb-4">
-                            <span className="relative inline-block">
-                                <CSSHighlight color="#8B84D7" delay={0.2} />
-                                <span className="relative z-10 text-[#F8F8F9] px-2 md:px-4">YOU DON'T NEED</span>
-                            </span>
-                        </span>
-                        
-                        <span className="block mb-8 md:mb-12">
-                            <span className="relative inline-block">
-                                <CSSHighlight color="#8B84D7" delay={0.4} />
-                                <span className="relative z-10 text-[#F8F8F9] px-2 md:px-4">MORE CONTENT.</span>
-                            </span>
-                        </span>
-                        
-                        <span className="block mb-2 md:mb-4">YOU NEED A PLAN</span>
-                        
-                        <span className="block mb-2 md:mb-4">
-                            THAT <span className="relative inline-block">ACTUALLY<ScribbleUnderline color="#FF4500" delay={0.8} /></span>
-                        </span>
-                        
-                        <span className="block mt-4 md:mt-8">
-                            <span className="relative inline-block">
-                                <ScribbleMultiCircle color="#FF4500" delay={1.2} />
-                                <span className="relative z-10 px-2 md:px-4">WORKS.</span>
-                                
-                                {/* OVERSIZED HANDWRITTEN MARGINALIA */}
-                                <div className="absolute right-[-10%] md:right-[-45%] bottom-[-50%] md:bottom-[-60%] z-30 flex flex-col items-center rotate-[-6deg] pointer-events-none">
-                                    <ScribbleArrow color="#0A0A0A" delay={1.8} />
-                                    <motion.span 
-                                        initial={{ opacity: 0 }}
-                                        whileInView={{ opacity: 1 }}
-                                        transition={{ delay: 2.2 }}
-                                        className="font-mono italic lowercase text-4xl md:text-6xl font-bold tracking-tighter text-[#0A0A0A] mt-2 md:mt-4 whitespace-nowrap"
-                                    >
-                                        we build these.
-                                    </motion.span>
-                                </div>
-                            </span>
-                        </span>
+                        WE BRIDGE THAT GAP, TURNING YOUR BUSINESS IDEAS AND EXPERTISE INTO A CLEAR STRATEGIC CREATIVE DIRECTION AND BRAND EXPERIENCE.
                     </motion.h2>
-                    
-                    <div className="mt-32 md:mt-48 grid grid-cols-1 md:grid-cols-2 gap-12 w-full border-t border-[#0A0A0A]/10 pt-12">
-                         <motion.p 
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.2 }}
-                            className="font-mono text-[10px] uppercase tracking-widest font-bold text-[#0A0A0A] leading-[2]"
-                        >
-                            WE BRIDGE THAT GAP, TURNING YOUR BUSINESS IDEAS AND EXPERTISE INTO A CLEAR STRATEGIC CREATIVE DIRECTION AND BRAND EXPERIENCE.
-                        </motion.p>
-                        <motion.p 
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.4 }}
-                            className="font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] leading-[2]"
-                        >
-                            THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
-                        </motion.p>
-                    </div>
-
+                    <motion.p 
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="mt-16 md:mt-24 font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] max-w-sm leading-[2]"
+                    >
+                        THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
+                    </motion.p>
                 </div>
             </div>
         </section>
