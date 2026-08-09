@@ -5,6 +5,7 @@ import { BRAND_CLARITY_TIERS, FREE_RESOURCES } from '../constants';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Resource } from '../types';
 import PageTransition from '../components/PageTransition';
+import { ArrowRight } from 'lucide-react';
 
 const ClarityPage: React.FC = () => {
   const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
