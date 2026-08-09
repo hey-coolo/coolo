@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
-import { TEAM_MEMBERS } from '../constants';
+import { TEAM_MEMBERS, PROJECTS } from '../constants';
 import { motion } from 'framer-motion';
 import { Drop } from '../types';
 import { Helmet } from 'react-helmet-async';
@@ -36,7 +36,7 @@ const AboutPage: React.FC = () => {
 
   return (
     <PageTransition>
-        <div className="bg-brand-offwhite pt-32 pb-32">
+        <div className="bg-[#F8F8F9] pt-32 pb-32 text-[#0A0A0A] selection:bg-[#8B84D7] selection:text-white">
         <Helmet>
             <title>About Us | COOLO Studio</title>
             <meta name="description" content="Learn about COOLO Studio, our design philosophy, and how we help businesses transition from improvised to intentional brand strategies." />
@@ -48,53 +48,141 @@ const AboutPage: React.FC = () => {
 
         <div className="container mx-auto px-6 md:px-12">
             
-            {/* Header / Origin Story */}
+            {/* EDITORIAL MASTHEAD HERO */}
             <AnimatedSection>
-                <header className="py-24 md:py-32 max-w-6xl relative border-b border-brand-navy/10 pb-24">
+                <header className="py-16 md:py-24 w-full border-b-[3px] border-[#0A0A0A] mb-16 md:mb-24">
                     <div className="flex items-center gap-4 mb-8">
-                        <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] font-black block">Identity & Essence</span>
+                        <span className="font-mono text-[#8B84D7] uppercase tracking-[0.3em] text-[10px] font-black block">Identity & Essence</span>
                     </div>
-                    <h1 className="text-brand-navy text-[15vw] md:text-[12vw] lg:text-[10vw] font-black uppercase tracking-tighter leading-[0.85] mt-0">
-                        Humans in<br/><span className="text-brand-purple italic">the Machine.</span>
-                    </h1>
+                    
+                    <div className="flex flex-col w-full font-display font-black uppercase tracking-tighter leading-[0.8] text-[#0A0A0A]">
+                        {/* Row 1 */}
+                        <div className="flex items-center gap-6 w-full">
+                            <h1 className="text-[17vw] md:text-[14vw]">HUMANS</h1>
+                            <div className="hidden md:block flex-grow h-[3px] bg-[#0A0A0A]"></div>
+                        </div>
+                        {/* Row 2 with interleaved image */}
+                        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 w-full mt-4 md:mt-0">
+                            <motion.div 
+                                initial={{ scale: 0.95, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1], delay: 0.5 }}
+                                className="w-full md:w-[35vw] h-[30vh] md:h-[12vw] overflow-hidden"
+                            >
+                                <img 
+                                    src={PROJECTS[0].imageUrl} 
+                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
+                                    alt="Studio Essence" 
+                                />
+                            </motion.div>
+                            <h1 className="text-[17vw] md:text-[14vw]">IN THE</h1>
+                        </div>
+                        {/* Row 3 */}
+                        <div className="flex items-center md:justify-end w-full mt-4 md:mt-0">
+                            <h1 className="text-[17vw] md:text-[14vw] text-[#8B84D7]">MACHINE.</h1>
+                        </div>
+                    </div>
                 </header>
             </AnimatedSection>
 
-            {/* Narrative / History */}
-            <section className="py-24 md:py-32 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
-                <div className="lg:col-span-4">
-                    <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] font-black mb-6 block">The Signal</span>
-                    <h2 className="text-5xl md:text-6xl font-black uppercase tracking-tighter text-brand-navy leading-[0.9] sticky top-32">
-                        Calibrating<br/>The Signal.
+            {/* EDITORIAL NARRATIVE GRID */}
+            <section className="pb-32">
+                
+                {/* Pull Quote 1 */}
+                <AnimatedSection className="mb-24 md:mb-32">
+                    <h2 className="font-display text-[10vw] md:text-[7vw] font-black uppercase tracking-tighter leading-[0.85] text-center md:text-left max-w-6xl mx-auto">
+                        Most brands don't have a design problem.<br/>
+                        <span className="text-[#8B84D7]">They have a clarity problem.</span>
                     </h2>
+                </AnimatedSection>
+
+                {/* Grid Section 1 */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-24 md:mb-32">
+                    <AnimatedSection className="md:col-span-3 flex flex-col">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold border-b-[2px] border-[#0A0A0A] pb-4 mb-6 block">
+                            The Signal
+                        </span>
+                        <p className="font-body text-lg md:text-xl text-[#0A0A0A]/80 leading-relaxed">
+                            COOLO is a boutique creative and brand studio operating out of the coastal hub of Mount Maunganui, New Zealand. We partner with founders, marketing teams, and visionary entrepreneurs to help their businesses transition from improvised growth into an intentional, undeniable market presence.
+                        </p>
+                    </AnimatedSection>
+
+                    <AnimatedSection className="md:col-span-6" delay={100}>
+                        <div className="w-full aspect-[4/3] md:aspect-[4/5] overflow-hidden bg-[#0A0A0A]/5">
+                            <img 
+                                src={PROJECTS[0].gallery[0]} 
+                                alt="Studio work" 
+                                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
+                            />
+                        </div>
+                    </AnimatedSection>
+
+                    <AnimatedSection className="md:col-span-3 flex flex-col justify-end pt-8 md:pt-0" delay={200}>
+                        <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold border-b-[2px] border-[#0A0A0A] pb-4 mb-6 block">
+                            The Philosophy
+                        </span>
+                        <p className="font-body text-lg md:text-xl text-[#0A0A0A]/80 leading-relaxed">
+                            In a digital landscape cluttered with fleeting trends and templated aesthetics, we believe in building systems that endure. Our philosophy is pretty simple: keep it functional, keep it intentional, and cut out the noise. We build brands that feel like a breath of fresh air. Ultimately understandable and completely authentic to who you are.
+                        </p>
+                    </AnimatedSection>
                 </div>
-                <div className="lg:col-span-8 lg:pl-12 space-y-12 text-xl md:text-3xl font-body text-brand-navy/80 leading-tight">
-                    <AnimatedSection delay={100}>
-                        <p>
-                            Most brands don't have a design problem. <strong className="font-bold text-brand-navy">They have a clarity problem.</strong> That's where we start. We are here to help clarify what you do and how you say it. COOLO is a boutique creative and brand studio operating out of the coastal hub of <a href="https://www.bayofplentynz.com/places/mount-maunganui/" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-purple transition-colors">Mount Maunganui, New Zealand</a>. We partner with founders, marketing teams, and visionary entrepreneurs to help their businesses transition from improvised growth into an intentional, undeniable market presence.
-                        </p>
+
+                {/* Pull Quote 2 & Image Split */}
+                <AnimatedSection className="mb-24 md:mb-32 border-y-[2px] border-[#0A0A0A] py-16 md:py-24">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                        <div className="md:col-span-7">
+                            <h2 className="font-display text-[9vw] md:text-[6.5vw] font-black uppercase tracking-tighter leading-[0.85]">
+                                We don't just decorate businesses;<br/>
+                                <span className="text-[#8B84D7]">we clarify their purpose.</span>
+                            </h2>
+                        </div>
+                        <div className="md:col-span-5">
+                            <div className="aspect-video md:aspect-square overflow-hidden bg-[#0A0A0A]/5">
+                                <img 
+                                    src={PROJECTS[1].imageUrl} 
+                                    alt="Creative process" 
+                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 object-center" 
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </AnimatedSection>
+
+                {/* Grid Section 2 */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16">
+                    <AnimatedSection className="md:col-span-5 flex flex-col md:justify-center">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="aspect-square overflow-hidden bg-[#0A0A0A]/5">
+                                <img src={PROJECTS[0].gallery[1]} alt="Detail 1" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+                            </div>
+                            <div className="aspect-square overflow-hidden bg-[#0A0A0A]/5 mt-8 md:mt-16">
+                                <img src={PROJECTS[0].gallery[2]} alt="Detail 2" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+                            </div>
+                        </div>
                     </AnimatedSection>
-                    <AnimatedSection delay={200}>
-                        <p>
-                            In a digital landscape cluttered with fleeting trends and templated aesthetics, we believe in building systems that endure. Our philosophy is pretty simple: keep it functional, keep it intentional, and cut out the noise. We build brands that feel like a breath of fresh air. Ultimately understandable and completely authentic to who you are. We bring this exact rigor to how we structure brands today. We don't use templates. Our mission is to help you fix what's not fully landing: your message, your positioning, and how your brand actually shows up in the wild.
+
+                    <AnimatedSection className="md:col-span-6 md:col-start-7 flex flex-col justify-center pt-12 md:pt-0">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold border-b-[2px] border-[#0A0A0A] pb-4 mb-6 block">
+                            The Execution
+                        </span>
+                        <p className="font-body text-xl md:text-2xl text-[#0A0A0A]/80 leading-relaxed mb-16">
+                            This process begins with our foundational <Link to="/clarity" className="font-bold underline decoration-2 underline-offset-4 hover:text-[#8B84D7] transition-colors">Brand Strategy & Clarity</Link> sprints, where we align your internal vision with your external messaging. Once the strategy is locked, we execute through our <Link to="/design-power" className="font-bold underline decoration-2 underline-offset-4 hover:text-[#8B84D7] transition-colors">Design Power</Link> services—translating strategy into high-fidelity visual identities, scalable websites, and motion graphics that demand attention.
                         </p>
-                    </AnimatedSection>
-                    <AnimatedSection delay={300}>
-                        <p>
-                            We don't just decorate businesses; we clarify their purpose. This process begins with our foundational <Link to="/clarity" className="underline hover:text-brand-purple transition-colors font-bold">Brand Strategy & Clarity</Link> sprints, where we align your internal vision with your external messaging. Once the strategy is locked, we execute through our <Link to="/design-power" className="underline hover:text-brand-purple transition-colors font-bold">Design Power</Link> services—translating strategy into high-fidelity visual identities, scalable websites, and motion graphics that demand attention.
-                        </p>
-                    </AnimatedSection>
-                    <AnimatedSection delay={400}>
-                        <p>
-                            Our team deliberately remains boutique. By limiting the volume of clients we take on at any given time, we ensure that every project receives senior-level strategic oversight and uncompromising creative dedication. We are fully invested in the commercial success and cultural resonance of the brands we partner with. Whether you are looking to undergo a complete brand overhaul, launch a new digital product, or simply refine your current market positioning, we have the tools and the taste to get you there.
+                        
+                        <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold border-b-[2px] border-[#0A0A0A] pb-4 mb-6 block">
+                            The Boutique
+                        </span>
+                        <p className="font-body text-xl md:text-2xl text-[#0A0A0A]/80 leading-relaxed">
+                            Our team deliberately remains boutique. By limiting the volume of clients we take on at any given time, we ensure that every project receives senior-level strategic oversight and uncompromising creative dedication. We are fully invested in the commercial success and cultural resonance of the brands we partner with.
                         </p>
                     </AnimatedSection>
                 </div>
+
             </section>
 
             {/* Values / The Principles */}
-            <section className="py-32 border-t border-brand-navy/20">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <section className="py-32 border-t-[3px] border-[#0A0A0A]">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
                     {[
                         { t: "Deep Clarity", d: "If people don't understand you quickly, they move on. We fix that." },
                         { t: "Design Power", d: "Your visuals should carry weight, not decoration." },
@@ -102,8 +190,8 @@ const AboutPage: React.FC = () => {
                         { t: "The Slow Burn", d: "We build brands that still make sense in 3 years, not just today." }
                     ].map((val, i) => (
                         <AnimatedSection key={val.t} delay={i * 100} className="h-full">
-                            <div className="border border-brand-navy/20 p-10 h-full bg-white hover:bg-brand-navy hover:text-brand-offwhite transition-colors duration-500 group flex flex-col">
-                                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-brand-purple group-hover:text-brand-yellow font-bold mb-8 block transition-colors">Principle 0{i + 1}</span>
+                            <div className="border border-[#0A0A0A]/20 p-10 h-full bg-white hover:bg-[#0A0A0A] hover:text-[#F8F8F9] transition-colors duration-500 group flex flex-col">
+                                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#8B84D7] group-hover:text-[#FFD100] font-bold mb-8 block transition-colors">Principle 0{i + 1}</span>
                                 <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none mb-6">{val.t}</h3>
                                 <p className="font-body text-lg md:text-xl opacity-70 group-hover:opacity-100 transition-opacity leading-relaxed mt-auto">{val.d}</p>
                             </div>
@@ -113,16 +201,16 @@ const AboutPage: React.FC = () => {
             </section>
 
             {/* The Crew / Team CMS Integration */}
-            <section className="py-32 border-t border-brand-navy/20">
+            <section className="py-32 border-t border-[#0A0A0A]/20">
                 <AnimatedSection>
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
                         <div>
-                            <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] font-black mb-6 block">The Crew</span>
-                            <h2 className="text-[12vw] md:text-[8vw] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy">
+                            <span className="font-mono text-[#8B84D7] uppercase tracking-[0.3em] text-[10px] font-black mb-6 block">The Crew</span>
+                            <h2 className="text-[12vw] md:text-[8vw] font-black uppercase tracking-tighter leading-[0.85] text-[#0A0A0A]">
                                 The Humans.
                             </h2>
                         </div>
-                        <p className="max-w-sm font-mono text-[10px] uppercase tracking-widest text-brand-navy/70 leading-[2] md:text-right font-bold">
+                        <p className="max-w-sm font-mono text-[10px] uppercase tracking-widest text-[#0A0A0A]/70 leading-[2] md:text-right font-bold">
                             YOU'LL WORK DIRECTLY WITH US. NO HANDOFFS. CLEAR THINKING AND HONEST FEEDBACK.
                         </p>
                     </div>
@@ -132,7 +220,7 @@ const AboutPage: React.FC = () => {
                     {/* 1. Existing Team Members */}
                     {Object.entries(TEAM_MEMBERS).map(([slug, member], index) => (
                         <AnimatedSection key={slug} delay={index * 150}>
-                            <Link to={`/team/${slug}`} className="group relative block aspect-[4/5] overflow-hidden bg-brand-navy border border-brand-navy/20">
+                            <Link to={`/team/${slug}`} className="group relative block aspect-[4/5] overflow-hidden bg-[#0A0A0A] border border-[#0A0A0A]/20">
                                 <motion.img 
                                     initial={{ scale: 1.1 }}
                                     whileHover={{ scale: 1.05 }}
@@ -143,19 +231,19 @@ const AboutPage: React.FC = () => {
                                 />
                                 
                                 {/* Overlay UI */}
-                                <div className="absolute inset-0 p-8 flex flex-col justify-between bg-gradient-to-t from-brand-navy/80 via-transparent to-transparent">
+                                <div className="absolute inset-0 p-8 flex flex-col justify-between bg-gradient-to-t from-[#0A0A0A]/80 via-transparent to-transparent">
                                     <div className="flex justify-between items-start">
-                                        <div className="w-2 h-2 bg-brand-yellow opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-brand-offwhite/80 group-hover:text-brand-yellow font-bold border border-brand-offwhite/20 px-3 py-1 bg-brand-navy/40 backdrop-blur-md transition-colors">
+                                        <div className="w-2 h-2 bg-[#FFD100] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#F8F8F9]/80 group-hover:text-[#FFD100] font-bold border border-[#F8F8F9]/20 px-3 py-1 bg-[#0A0A0A]/40 backdrop-blur-md transition-colors">
                                             VIEW PROFILE
                                         </span>
                                     </div>
                                     
                                     <div>
-                                        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-brand-purple group-hover:text-brand-yellow mb-3 block font-bold transition-colors">
+                                        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#8B84D7] group-hover:text-[#FFD100] mb-3 block font-bold transition-colors">
                                             {member.title}
                                         </span>
-                                        <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none text-brand-offwhite">
+                                        <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none text-[#F8F8F9]">
                                             {member.name}
                                         </h3>
                                     </div>
@@ -166,31 +254,31 @@ const AboutPage: React.FC = () => {
 
                     {/* 2. RECRUITMENT SLOT */}
                     <AnimatedSection delay={300}>
-                        <Link to="/join" className="group relative block aspect-[4/5] overflow-hidden bg-white border border-brand-navy/20 hover:bg-brand-navy transition-colors duration-500 flex flex-col justify-center items-center text-center p-12">
+                        <Link to="/join" className="group relative block aspect-[4/5] overflow-hidden bg-white border border-[#0A0A0A]/20 hover:bg-[#0A0A0A] transition-colors duration-500 flex flex-col justify-center items-center text-center p-12">
             
                             {/* Technical Background Pattern */}
-                        <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#0A0A0A_1px,transparent_1px)] [background-size:16px_16px] group-hover:bg-[radial-gradient(#F8F8F9_1px,transparent_1px)] transition-colors"></div>
-            
+                            <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#0A0A0A_1px,transparent_1px)] [background-size:16px_16px] group-hover:bg-[radial-gradient(#F8F8F9_1px,transparent_1px)] transition-colors"></div>
+                
                             <div className="relative z-10 flex flex-col items-center">
-                            <div className="w-24 h-24 rounded-full border border-brand-navy/20 flex items-center justify-center mx-auto mb-8 group-hover:border-brand-purple group-hover:scale-110 transition-all duration-500 bg-[#F8F8F9] group-hover:bg-brand-navy">
-                                <svg className="w-8 h-8 text-brand-navy/40 group-hover:text-brand-purple transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-                                </svg>
-                            </div>
-                
-                            <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-brand-navy mb-4 group-hover:text-brand-offwhite transition-colors leading-none">
-                            JOIN<br/>THE TEAM
-                            </h3>
-                
-                            <p className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-brand-navy/60 group-hover:text-brand-offwhite/60 max-w-xs mx-auto leading-[2] mt-4">
-                                SEEKING SENIOR CREATIVES<br/>& TALENT
-                            </p>
+                                <div className="w-24 h-24 rounded-full border border-[#0A0A0A]/20 flex items-center justify-center mx-auto mb-8 group-hover:border-[#8B84D7] group-hover:scale-110 transition-all duration-500 bg-[#F8F8F9] group-hover:bg-[#0A0A0A]">
+                                    <svg className="w-8 h-8 text-[#0A0A0A]/40 group-hover:text-[#8B84D7] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </div>
+                    
+                                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-[#0A0A0A] mb-4 group-hover:text-[#F8F8F9] transition-colors leading-none">
+                                    JOIN<br/>THE TEAM
+                                </h3>
+                    
+                                <p className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-[#0A0A0A]/60 group-hover:text-[#F8F8F9]/60 max-w-xs mx-auto leading-[2] mt-4">
+                                    SEEKING SENIOR CREATIVES<br/>& TALENT
+                                </p>
 
-                            <span className="inline-block mt-12 border-b border-brand-purple pb-1 font-mono text-[10px] uppercase font-bold text-brand-purple tracking-widest group-hover:text-brand-yellow group-hover:border-brand-yellow transition-all">
-                            SUBMIT PORTFOLIO
-                            </span>
-                        </div>
-                    </Link>
+                                <span className="inline-block mt-12 border-b border-[#8B84D7] pb-1 font-mono text-[10px] uppercase font-bold text-[#8B84D7] tracking-widest group-hover:text-[#FFD100] group-hover:border-[#FFD100] transition-all">
+                                    SUBMIT PORTFOLIO
+                                </span>
+                            </div>
+                        </Link>
                     </AnimatedSection>
                     
                 </div>
