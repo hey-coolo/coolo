@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { PROJECTS, QA_DATA } from '../constants';
 import ProjectCard from '../components/ProjectCard';
@@ -92,26 +92,10 @@ const BrandHero: React.FC = () => {
 };
 
 const RealityCheck: React.FC = () => {
-    // GSAP-style editorial reveal for text lines
-    const lineVariants = {
-        hidden: { y: "110%", rotate: 2 },
-        visible: (i: number) => ({
-            y: "0%",
-            rotate: 0,
-            transition: {
-                delay: i * 0.08,
-                duration: 1.2,
-                ease: [0.19, 1, 0.22, 1] // Premium Expo.easeOut equivalent
-            }
-        })
-    };
-
     return (
-        <section className="bg-[#F8F8F9] text-[#0A0A0A] px-6 md:px-12 pt-32 pb-48 selection:bg-[#8B84D7] selection:text-white border-t border-[#0A0A0A]/20">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0 relative">
-                
-                {/* Metacolumn */}
-                <div className="lg:col-span-4 flex flex-col justify-between">
+        <section className="py-32 md:py-48 bg-white text-[#0A0A0A] px-6 md:px-12 border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0">
+                <div className="lg:col-span-4">
                     <motion.span 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
@@ -120,39 +104,137 @@ const RealityCheck: React.FC = () => {
                     >
                         01 / THE REALITY CHECK
                     </motion.span>
-
+                </div>
+                <div className="lg:col-span-8">
+                    <motion.h2 
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+                        className="font-display text-[9vw] lg:text-[6.5vw] uppercase tracking-tighter leading-[0.85] font-black"
+                    >
+                        WE BRIDGE THAT GAP, TURNING YOUR BUSINESS IDEAS AND EXPERTISE INTO A CLEAR STRATEGIC CREATIVE DIRECTION AND BRAND EXPERIENCE.
+                    </motion.h2>
                     <motion.p 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.8 }}
-                        className="font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] leading-[2] max-w-[240px] mt-auto hidden lg:block pb-4"
+                        transition={{ delay: 0.2 }}
+                        className="mt-16 md:mt-24 font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] max-w-sm leading-[2]"
                     >
                         THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
                     </motion.p>
                 </div>
+            </div>
+        </section>
+    );
+};
 
-                {/* Editorial Typography Column */}
-                <div className="lg:col-span-8">
-                    <h2 className="font-display text-[12vw] lg:text-[8vw] uppercase tracking-tighter leading-[0.85] font-black flex flex-col">
-                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={0} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">WE TAKE THE COMPLEX</motion.span></span>
-                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={1} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">IDEAS IN YOUR HEAD,</motion.span></span>
-                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={2} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">FIGURE OUT EXACTLY</motion.span></span>
-                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={3} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left text-[#8B84D7]">WHAT MATTERS,</motion.span></span>
-                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={4} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">AND BUILD A BRAND</motion.span></span>
-                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={5} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">SYSTEM THAT MAKES IT</motion.span></span>
-                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={6} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">IMPOSSIBLE TO IGNORE.</motion.span></span>
-                    </h2>
+const StepContent = ({ step, setActiveStep }: { step: any, setActiveStep: (id: number) => void }) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { margin: "-50% 0px -50% 0px" });
+    
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start 75%", "end 25%"]
+    });
 
-                    <motion.p 
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.8 }}
-                        className="font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] leading-[2] mt-16 block lg:hidden"
-                    >
-                        THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
-                    </motion.p>
+    const opacity = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.1, 1, 1, 0.1]);
+    const y = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [60, 0, 0, -60]);
+
+    useEffect(() => {
+        if (isInView) {
+            setActiveStep(step.id);
+        }
+    }, [isInView, step.id, setActiveStep]);
+
+    return (
+        <motion.div 
+            ref={ref} 
+            style={{ opacity, y }}
+            className="min-h-[80vh] lg:min-h-screen flex flex-col justify-center py-20 lg:py-24"
+        >
+            <h3 className="font-display text-[12vw] lg:text-[8vw] font-black uppercase tracking-tighter leading-[0.85] mb-16">
+                {step.title}
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 font-mono border-t border-white/10 pt-12">
+                <div>
+                    <h4 className="text-[10px] uppercase font-bold tracking-widest leading-[2] text-[#8B84D7] mb-4">
+                        {step.sub1}
+                    </h4>
+                    <p className="text-[10px] uppercase font-bold tracking-widest leading-[2] text-white/90">
+                        {step.sub2}
+                    </p>
+                </div>
+                <div>
+                    <p className="text-[10px] uppercase font-bold tracking-widest text-white/50 leading-[2]">
+                        {step.p}
+                    </p>
+                </div>
+            </div>
+        </motion.div>
+    );
+};
+
+const ProcessSteps: React.FC = () => {
+    const [activeStep, setActiveStep] = useState(1);
+
+    const steps = [
+        {
+            id: 1,
+            title: "PULLING THE IDEAS OUT OF YOUR HEAD.",
+            sub1: "FIND THE ACTUAL VALUE.",
+            sub2: "A BLUEPRINT OF EXACTLY WHAT YOU NEED TO DO, AND HOW TO ACTUALLY SELL IT.",
+            p: "MOST FOUNDERS ARE SITTING ON A GOLDMINE OF EXPERTISE, BUT THEY'RE TOO BURIED IN THE DAILY GRIND TO EXPLAIN IT CLEARLY. WE SIT IN THE MESS WITH YOU, ASK THE UNCOMFORTABLE QUESTIONS, AND DRAG YOUR REAL VALUE OUT OF YOUR HEAD SO WE CAN BUILD A CLEAR, HONEST BLUEPRINT OF WHERE TO GO NEXT."
+        },
+        {
+            id: 2,
+            title: "BUILDING THE ASSETS THAT MAKE IT REAL.",
+            sub1: "TURN STRATEGY INTO AN ENGINE.",
+            sub2: "YOU GET THE TACTICAL TOOLS YOU NEED TO ACTUALLY SELL YOUR VISION.",
+            p: "A GREAT STRATEGY IS COMPLETELY USELESS IF YOU DON'T HAVE THE TOOLS TO SELL IT. ONCE WE HAVE CLARITY, WE DESIGN THE ACTUAL SYSTEM. YOUR BRAND IDENTITY, VISUAL LANGUAGE, CUSTOM WEBSITE, AND SALES ASSETS. SO YOUR BUSINESS LOOKS, SOUNDS, AND FEELS AS PROFESSIONAL AS THE WORK YOU DO."
+        },
+        {
+            id: 3,
+            title: "PROTECTING YOUR TIME AND SANITY.",
+            sub1: "KEEP THE MOMENTUM GOING.",
+            sub2: "WE RUN THE MACHINE SO YOU CAN STEP BACK INTO BEING THE HUMAN DRIVING IT.",
+            p: "YOU NEED TO STAY FOCUSED ON RUNNING YOUR BUSINESS, NOT MICROMANAGING FREELANCERS. ONCE THE SYSTEM IS BUILT, WE ACT AS YOUR CREATIVE DIRECTION PARTNER AND FIREWALL MANAGING EXECUTION, KEEPING EVERYTHING CONSISTENT, AND MAKING SURE YOUR BRAND SCALES AS YOU GROW."
+        }
+    ];
+
+    return (
+        <section className="bg-[#0A0A0A] text-white relative selection:bg-[#8B84D7] selection:text-white pb-24 lg:pb-0">
+            <div className="px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 relative items-start">
+                
+                {/* Sticky Left Column: Animated Numbers */}
+                <div className="lg:col-span-4 sticky top-[10vh] lg:top-0 h-[15vh] lg:h-screen flex flex-col justify-end lg:justify-center z-20 bg-[#0A0A0A]/90 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none border-b border-white/5 lg:border-none">
+                    <div className="flex flex-col items-start">
+                        <div className="flex items-baseline gap-6 md:gap-8 font-display font-black uppercase tracking-tighter leading-none select-none py-4 overflow-hidden">
+                            {[1, 2, 3].map((num) => (
+                                <motion.span 
+                                    key={num}
+                                    layout
+                                    animate={{ 
+                                        fontSize: activeStep === num ? 'clamp(6rem, 18vw, 15rem)' : 'clamp(2rem, 5vw, 4rem)',
+                                        opacity: activeStep === num ? 1 : 0.2,
+                                    }}
+                                    transition={{ type: "spring", stiffness: 200, damping: 25, mass: 1 }}
+                                    className="origin-bottom text-white inline-block"
+                                >
+                                    {num}
+                                </motion.span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Scrollable Right Column: Content */}
+                <div className="lg:col-span-8 flex flex-col relative z-10 lg:pl-12">
+                    {steps.map((step) => (
+                        <StepContent key={step.id} step={step} setActiveStep={setActiveStep} />
+                    ))}
                 </div>
 
             </div>
@@ -160,88 +242,9 @@ const RealityCheck: React.FC = () => {
     );
 };
 
-const ProcessSteps: React.FC = () => {
-    const steps = [
-        {
-            id: 1,
-            title: "PULLING THE IDEAS OUT OF YOUR HEAD.",
-            sub1: "FIND THE ACTUAL VALUE.",
-            sub2: "A BLUEPRINT OF EXACTLY WHAT YOU NEED TO DO.",
-            p: "Most founders are sitting on a goldmine of expertise, but they're too buried in the daily grind to explain it clearly. We sit in the mess with you, ask the uncomfortable questions, and drag your real value out of your head so we can build a clear, honest blueprint of where to go next."
-        },
-        {
-            id: 2,
-            title: "BUILDING THE ASSETS THAT MAKE IT REAL.",
-            sub1: "TURN STRATEGY INTO AN ENGINE.",
-            sub2: "YOU GET THE TACTICAL TOOLS YOU NEED.",
-            p: "A great strategy is completely useless if you don't have the tools to sell it. Once we have clarity, we design the actual system. Your brand identity, visual language, custom website, and sales assets. So your business looks, sounds, and feels as professional as the work you do."
-        },
-        {
-            id: 3,
-            title: "PROTECTING YOUR TIME AND SANITY.",
-            sub1: "KEEP THE MOMENTUM GOING.",
-            sub2: "WE RUN THE MACHINE FOR YOU.",
-            p: "You need to stay focused on running your business, not micromanaging freelancers. Once the system is built, we act as your creative direction partner and firewall—managing execution, keeping everything consistent, and making sure your brand scales as you grow."
-        }
-    ];
-
-    return (
-        <section className="bg-[#F8F8F9] text-[#0A0A0A] selection:bg-[#8B84D7] selection:text-white pb-32">
-            {steps.map((step) => (
-                <div key={step.id} className="border-t border-[#0A0A0A]/20 grid grid-cols-1 lg:grid-cols-12">
-                    
-                    {/* The Giant Graphic Number Column */}
-                    <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-[#0A0A0A]/20 flex flex-col justify-between overflow-hidden relative min-h-[35vh] lg:min-h-0 bg-white">
-                        <div className="p-6 md:p-12 absolute top-0 left-0 w-full z-10">
-                            <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-[#8B84D7]">Phase 0{step.id}</span>
-                        </div>
-                        
-                        <div className="flex-grow flex items-end justify-start pt-24 px-6 md:px-12">
-                            <motion.span
-                                initial={{ y: "80%", opacity: 0 }}
-                                whileInView={{ y: "0%", opacity: 1 }}
-                                viewport={{ once: true, margin: "-20%" }}
-                                transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-                                className="font-display text-[45vw] lg:text-[22vw] leading-[0.75] font-black tracking-tighter text-[#0A0A0A] -mb-[3vw] -ml-[1vw] block"
-                            >
-                                0{step.id}
-                            </motion.span>
-                        </div>
-                    </div>
-
-                    {/* The Content Matrix Column */}
-                    <div className="lg:col-span-8 flex flex-col bg-[#F8F8F9]">
-                        <div className="p-6 md:p-12 lg:p-16 border-b border-[#0A0A0A]/20">
-                            <h3 className="font-display text-[10vw] lg:text-[6vw] font-black uppercase tracking-tighter leading-[0.85] max-w-4xl">
-                                {step.title}
-                            </h3>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 flex-grow">
-                            <div className="p-6 md:p-12 lg:p-16 border-b md:border-b-0 md:border-r border-[#0A0A0A]/20 flex flex-col justify-between bg-white">
-                                <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-[#0A0A0A]/40 mb-12 block">The Objective</span>
-                                <div>
-                                    <strong className="block text-[#0A0A0A] font-black text-sm uppercase tracking-widest mb-3">{step.sub1}</strong>
-                                    <span className="block text-[#8B84D7] font-bold text-[10px] uppercase tracking-widest leading-[2]">{step.sub2}</span>
-                                </div>
-                            </div>
-                            <div className="p-6 md:p-12 lg:p-16 flex flex-col justify-end bg-white">
-                                 <p className="font-body text-lg lg:text-xl text-[#0A0A0A]/80 leading-relaxed">
-                                    {step.p}
-                                 </p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            ))}
-        </section>
-    );
-};
-
 const ShowcaseIntro: React.FC = () => {
     return (
-        <section className="bg-white text-[#0A0A0A] pt-32 pb-16 px-6 md:px-12 selection:bg-[#8B84D7] selection:text-white border-t border-[#0A0A0A]/20">
+        <section className="bg-white text-[#0A0A0A] pt-32 pb-16 px-6 md:px-12 selection:bg-[#8B84D7] selection:text-white">
             <div className="flex flex-col items-start">
                 <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 mb-12">
                     02 / SELECTED WORK
