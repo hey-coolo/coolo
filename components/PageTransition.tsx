@@ -29,7 +29,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
         
         const timeout = setTimeout(() => {
             document.body.style.overflow = '';
-        }, 1300); // 0.5s blink delay + 0.8s slide up duration
+        }, 2200); // 1.4s blink sequence + 0.8s slide up duration
 
         return () => {
             clearTimeout(timeout);
@@ -43,7 +43,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
             initial={{ y: "0%" }}
             animate={{ y: "-100%" }}
             transition={{ 
-                delay: 0.5, 
+                delay: 1.4, 
                 duration: 0.8, 
                 ease: [0.19, 1, 0.22, 1] 
             }}
@@ -52,16 +52,36 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
             <motion.div
                 key={`text-${trigger}`}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 0, 1, 0] }}
+                // Mechanical Blink 1 -> Blink 2 -> Hold -> Fade Out
+                animate={{ opacity: [0, 1, 1, 0, 0, 1, 1, 0] }}
                 transition={{ 
-                    duration: 0.4, 
-                    times: [0, 0.25, 0.5, 0.75, 1],
+                    duration: 1.4, 
+                    times: [0, 0.01, 0.1, 0.11, 0.2, 0.21, 0.8, 1],
                     ease: "linear" 
                 }}
-                className="font-mono text-[#F8F8F9] text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] flex flex-col items-center gap-6"
+                className="flex items-center font-mono text-[#F8F8F9] text-[10px] md:text-xs font-bold uppercase tracking-[0.3em]"
             >
-                <span className="w-2 h-2 bg-[#8B84D7]"></span>
+                {/* Left Bracket Micro-animation */}
+                <motion.span
+                    initial={{ x: 12 }}
+                    animate={{ x: 0 }}
+                    transition={{ duration: 1.4, ease: [0.19, 1, 0.22, 1] }}
+                    className="text-[#8B84D7] text-lg md:text-xl font-light mr-3"
+                >
+                    (
+                </motion.span>
+                
                 HUMANS IN THE MACHINE
+                
+                {/* Right Bracket Micro-animation (ml-0 to optically balance the tracking-widest gap) */}
+                <motion.span
+                    initial={{ x: -12 }}
+                    animate={{ x: 0 }}
+                    transition={{ duration: 1.4, ease: [0.19, 1, 0.22, 1] }}
+                    className="text-[#8B84D7] text-lg md:text-xl font-light ml-0 md:ml-1"
+                >
+                    )
+                </motion.span>
             </motion.div>
         </motion.div>
     );
