@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { PROJECTS, QA_DATA } from '../constants';
 import ProjectCard from '../components/ProjectCard';
 import { ArrowDown, ArrowRight } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 
 const BrandHero: React.FC = () => {
     const [isStudioHovered, setIsStudioHovered] = useState(false);
@@ -279,7 +280,7 @@ const FeatureSpotlight: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mt-8 items-start">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mt-8 items-start border-t border-[#0A0A0A]/10 pt-8">
                     <div className="md:col-span-8">
                         <h2 className="font-display text-[12vw] md:text-[8vw] leading-[0.85] font-black uppercase tracking-tighter text-[#0A0A0A] group-hover:text-[#8B84D7] transition-colors duration-500">
                             {featuredProject.title}
@@ -302,7 +303,7 @@ const ShowcaseGrid: React.FC = () => {
                 {PROJECTS.slice(1, 5).map((project, index) => (
                     <div key={project.id} className={`md:col-span-6 ${index % 2 === 1 ? 'md:mt-48' : ''}`}>
                          <ProjectCard project={project} className="aspect-[4/5] w-full" />
-                         <div className="mt-6 flex flex-col items-start">
+                         <div className="mt-6 flex flex-col items-start border-t border-[#0A0A0A]/10 pt-4">
                             <h3 className="font-display text-[8vw] md:text-[4vw] font-black uppercase tracking-tighter leading-none text-[#0A0A0A]">
                                 {project.title}
                             </h3>
@@ -477,24 +478,26 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-[#F8F8F9]">
-      <Helmet>
-        <title>COOLO | Shaping Brands With Character</title>
-        <script type="application/ld+json">
-          {JSON.stringify(orgSchema)}
-        </script>
-      </Helmet>
-      
-      <BrandHero />
-      <RealityCheck />
-      <ProcessSteps />
-      <ShowcaseIntro />
-      <FeatureSpotlight />
-      <ShowcaseGrid />
-      <FAQSection />
-      <BriefUsCTA />
-      <StudioTools />
-    </div>
+    <PageTransition>
+        <div className="w-full bg-[#F8F8F9]">
+            <Helmet>
+                <title>COOLO | Shaping Brands With Character</title>
+                <script type="application/ld+json">
+                {JSON.stringify(orgSchema)}
+                </script>
+            </Helmet>
+            
+            <BrandHero />
+            <RealityCheck />
+            <ProcessSteps />
+            <ShowcaseIntro />
+            <FeatureSpotlight />
+            <ShowcaseGrid />
+            <FAQSection />
+            <BriefUsCTA />
+            <StudioTools />
+        </div>
+    </PageTransition>
   );
 };
 
