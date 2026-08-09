@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { BRAND_CLARITY_TIERS, FREE_RESOURCES } from '../constants';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -11,16 +11,11 @@ const ClarityPage: React.FC = () => {
   const [selectedRes, setSelectedRes] = useState<Resource | null>(null);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'processing' | 'sent' | 'error'>('idle');
-  const navigate = useNavigate();
 
   const handleAction = (res: Resource) => {
-    if (res.id === '01') {
-        navigate('/clarity/reality-check');
-    } else {
-        setSelectedRes(res);
-        setStatus('idle');
-        setEmail('');
-    }
+    setSelectedRes(res);
+    setStatus('idle');
+    setEmail('');
   };
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -51,7 +46,7 @@ const ClarityPage: React.FC = () => {
 
   return (
     <PageTransition>
-        <div className="bg-brand-offwhite pt-32 pb-32">
+      <div className="bg-brand-offwhite pt-32 pb-32">
         <div className="container mx-auto px-6 md:px-12">
             
             {/* UNIFIED HEADER */}
@@ -75,15 +70,15 @@ const ClarityPage: React.FC = () => {
             <section className="py-32 border-t border-brand-navy/20">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
                     <div className="lg:col-span-4">
-                        <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] font-black mb-6 block">The Reality Check</span>
+                        <span className="font-mono text-brand-purple uppercase tracking-[0.3em] text-[10px] font-black mb-6 block">Starter Tools</span>
                         <h2 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-[0.9] text-brand-navy">
                             Free<br/>Game.
                         </h2>
                         <p className="mt-8 font-body text-xl text-brand-navy/70 leading-relaxed max-w-sm">
-                            You think your branding is fine. Your customers might think it's a mess. Use these free tools to check your pulse before you spend a dime.
+                            Use these free tools and frameworks to audit your current brand state before spending a dime.
                         </p>
                     </div>
-                    <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                         {FREE_RESOURCES.map((res, i) => (
                             <AnimatedSection key={res.id} delay={i * 100} className="h-full">
                                 <button 
@@ -97,7 +92,7 @@ const ClarityPage: React.FC = () => {
                                     <div className="mt-auto flex items-center justify-between pt-6 border-t border-brand-navy/10 group-hover:border-brand-offwhite/20 transition-colors w-full">
                                         <span className="font-mono text-[9px] uppercase font-bold tracking-widest text-brand-navy group-hover:text-brand-offwhite transition-colors">{res.format}</span>
                                         <span className="font-mono text-[9px] uppercase font-bold tracking-widest text-brand-purple group-hover:text-brand-yellow transition-colors flex items-center gap-2">
-                                            {res.id === '01' ? 'Launch' : 'Get it'} <ArrowRight size={12} className="stroke-[3]" />
+                                            Get it <ArrowRight size={12} className="stroke-[3]" />
                                         </span>
                                     </div>
                                 </button>
@@ -217,7 +212,7 @@ const ClarityPage: React.FC = () => {
                 </motion.div>
             )}
         </AnimatePresence>
-        </div>
+      </div>
     </PageTransition>
   );
 };

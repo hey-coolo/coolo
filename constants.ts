@@ -686,20 +686,13 @@ Stop adding decoration. Start calibrating your signal.`
 export const FREE_RESOURCES: Resource[] = [
     { 
         id: '01', 
-        title: 'Brand Reality Check', 
-        format: 'APP', 
-        desc: 'Is your brand a mess? Use this free tool to find out.', 
-        link: '/clarity/reality-check' 
-    },
-    { 
-        id: '02', 
         title: 'The Hard Questions', 
         format: 'PDF', 
         desc: 'The exact questions we ask clients. Steal our process.This is a tool to help you visualize your brand.', 
         link: '/free-resources/00_COOLO_Free Resources_Brand Clarity_The Hard Questions.pdf' 
     },
     { 
-        id: '03', 
+        id: '02', 
         title: 'Brand Soul Composer', 
         format: 'PDF', 
         desc: 'Three questions. One soul. Stop trying to sound like an overly-smart company. Find your pulse. Tell us what makes you mad about your industry, how you actually fix it, and who you’re doing it for.',

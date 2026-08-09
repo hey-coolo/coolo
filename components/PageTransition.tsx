@@ -40,7 +40,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
                     }}
                     className="font-mono text-[#F8F8F9] text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] flex flex-col items-center gap-6"
                 >
-                    <span className="w-2 h-2 bg-[#f7f7f7]"></span>
+                    <span className="w-2 h-2 bg-[#8B84D7]"></span>
                     Humans In The Machine
                 </motion.div>
             </motion.div>
