@@ -92,71 +92,69 @@ const BrandHero: React.FC = () => {
 };
 
 const RealityCheck: React.FC = () => {
-    // Editorial line-by-line reveal animation configuration
+    // GSAP-style editorial reveal for text lines
     const lineVariants = {
         hidden: { y: "110%", rotate: 2 },
         visible: (i: number) => ({
             y: "0%",
             rotate: 0,
             transition: {
-                delay: i * 0.1,
-                duration: 1,
-                ease: [0.19, 1, 0.22, 1] // GSAP-style Expo.easeOut
+                delay: i * 0.08,
+                duration: 1.2,
+                ease: [0.19, 1, 0.22, 1] // Premium Expo.easeOut equivalent
             }
         })
     };
 
     return (
-        <section className="pt-32 pb-32 md:pt-48 md:pb-48 bg-[#F8F8F9] text-[#0A0A0A] px-6 md:px-12 selection:bg-[#8B84D7] selection:text-white">
-            <div className="border-t-[3px] border-[#0A0A0A] pt-8 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0">
+        <section className="bg-[#F8F8F9] text-[#0A0A0A] px-6 md:px-12 pt-32 pb-48 selection:bg-[#8B84D7] selection:text-white border-t border-[#0A0A0A]/20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0 relative">
                 
-                {/* Metadata Column */}
-                <div className="lg:col-span-4 flex flex-col justify-between h-full">
+                {/* Metacolumn */}
+                <div className="lg:col-span-4 flex flex-col justify-between">
                     <motion.span 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold block"
+                        className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 block sticky top-32"
                     >
                         01 / THE REALITY CHECK
                     </motion.span>
-                    
-                    <motion.div 
+
+                    <motion.p 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.6 }}
-                        className="hidden lg:block mt-auto max-w-[220px]"
+                        transition={{ delay: 0.8 }}
+                        className="font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] leading-[2] max-w-[240px] mt-auto hidden lg:block pb-4"
                     >
-                        <p className="font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] leading-[2]">
-                            This isn't some overnight magic trick. It takes actual time and giving a sh*t.
-                        </p>
-                    </motion.div>
+                        THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
+                    </motion.p>
                 </div>
 
                 {/* Editorial Typography Column */}
                 <div className="lg:col-span-8">
-                    <h2 className="font-display text-[11vw] lg:text-[7.5vw] uppercase tracking-tighter leading-[0.85] font-black flex flex-col">
-                        <span className="overflow-hidden pb-2"><motion.span custom={0} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">WE BRIDGE THAT GAP,</motion.span></span>
-                        <span className="overflow-hidden pb-2"><motion.span custom={1} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">TURNING YOUR BUSINESS</motion.span></span>
-                        <span className="overflow-hidden pb-2"><motion.span custom={2} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">IDEAS AND EXPERTISE</motion.span></span>
-                        <span className="overflow-hidden pb-2"><motion.span custom={3} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left text-[#8B84D7]">INTO A CLEAR STRATEGIC</motion.span></span>
-                        <span className="overflow-hidden pb-2"><motion.span custom={4} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">CREATIVE DIRECTION</motion.span></span>
-                        <span className="overflow-hidden pb-2"><motion.span custom={5} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">AND BRAND EXPERIENCE.</motion.span></span>
+                    <h2 className="font-display text-[12vw] lg:text-[8vw] uppercase tracking-tighter leading-[0.85] font-black flex flex-col">
+                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={0} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">WE TAKE THE COMPLEX</motion.span></span>
+                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={1} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">IDEAS IN YOUR HEAD,</motion.span></span>
+                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={2} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">FIGURE OUT EXACTLY</motion.span></span>
+                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={3} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left text-[#8B84D7]">WHAT MATTERS,</motion.span></span>
+                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={4} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">AND BUILD A BRAND</motion.span></span>
+                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={5} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">SYSTEM THAT MAKES IT</motion.span></span>
+                        <span className="overflow-hidden pb-1 md:pb-3"><motion.span custom={6} variants={lineVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }} className="block origin-bottom-left">IMPOSSIBLE TO IGNORE.</motion.span></span>
                     </h2>
 
-                    <motion.div 
+                    <motion.p 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.6 }}
-                        className="block lg:hidden mt-16"
+                        transition={{ delay: 0.8 }}
+                        className="font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] leading-[2] mt-16 block lg:hidden"
                     >
-                        <p className="font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] leading-[2]">
-                            This isn't some overnight magic trick. It takes actual time and giving a sh*t.
-                        </p>
-                    </motion.div>
+                        THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
+                    </motion.p>
                 </div>
+
             </div>
         </section>
     );
@@ -188,67 +186,62 @@ const ProcessSteps: React.FC = () => {
     ];
 
     return (
-        <section className="bg-white text-[#0A0A0A] selection:bg-[#8B84D7] selection:text-white pb-32">
-            {steps.map((step, index) => {
-                const isEven = index % 2 !== 0;
-                
-                return (
-                    <div key={step.id} className="border-t-[3px] border-[#0A0A0A] grid grid-cols-1 lg:grid-cols-12 min-h-[75vh]">
+        <section className="bg-[#F8F8F9] text-[#0A0A0A] selection:bg-[#8B84D7] selection:text-white pb-32">
+            {steps.map((step) => (
+                <div key={step.id} className="border-t border-[#0A0A0A]/20 grid grid-cols-1 lg:grid-cols-12">
+                    
+                    {/* The Giant Graphic Number Column */}
+                    <div className="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-[#0A0A0A]/20 flex flex-col justify-between overflow-hidden relative min-h-[35vh] lg:min-h-0 bg-white">
+                        <div className="p-6 md:p-12 absolute top-0 left-0 w-full z-10">
+                            <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-[#8B84D7]">Phase 0{step.id}</span>
+                        </div>
                         
-                        {/* GIANT NUMBER COLUMN - Alternates Left/Right on Desktop */}
-                        <div className={`lg:col-span-6 flex items-center justify-center bg-[#F8F8F9] overflow-hidden border-b-[3px] lg:border-b-0 border-[#0A0A0A] py-24 lg:py-0 ${isEven ? 'lg:order-2 lg:border-l-[3px]' : 'lg:order-1 lg:border-r-[3px]'}`}>
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.8, y: 50 }}
-                                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                        <div className="flex-grow flex items-end justify-start pt-24 px-6 md:px-12">
+                            <motion.span
+                                initial={{ y: "80%", opacity: 0 }}
+                                whileInView={{ y: "0%", opacity: 1 }}
                                 viewport={{ once: true, margin: "-20%" }}
                                 transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+                                className="font-display text-[45vw] lg:text-[22vw] leading-[0.75] font-black tracking-tighter text-[#0A0A0A] -mb-[3vw] -ml-[1vw] block"
                             >
-                                <span className="font-display text-[45vw] lg:text-[30vw] leading-[0.75] font-black tracking-tighter text-[#0A0A0A] block">
-                                    0{step.id}
-                                </span>
-                            </motion.div>
+                                0{step.id}
+                            </motion.span>
                         </div>
-
-                        {/* STRUCTURED DATA COLUMN */}
-                        <div className={`lg:col-span-6 p-8 lg:p-16 flex flex-col justify-center bg-white ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-20%" }}
-                                transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                            >
-                                <span className="font-mono text-[10px] uppercase tracking-[0.3em] font-black text-[#8B84D7] mb-8 block">
-                                    Phase 0{step.id}
-                                </span>
-                                
-                                <h3 className="font-display text-5xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.85] mb-16">
-                                    {step.title}
-                                </h3>
-                                
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 border-t border-[#0A0A0A]/20 pt-8">
-                                    <div className="md:col-span-5 font-mono text-[10px] uppercase tracking-widest leading-[2]">
-                                        <strong className="block text-[#0A0A0A] font-black mb-2">{step.sub1}</strong>
-                                        <span className="text-[#8B84D7] font-bold">{step.sub2}</span>
-                                    </div>
-                                    <div className="md:col-span-7">
-                                        <p className="font-body text-lg lg:text-xl text-[#0A0A0A]/80 leading-relaxed">
-                                            {step.p}
-                                        </p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        </div>
-
                     </div>
-                );
-            })}
+
+                    {/* The Content Matrix Column */}
+                    <div className="lg:col-span-8 flex flex-col bg-[#F8F8F9]">
+                        <div className="p-6 md:p-12 lg:p-16 border-b border-[#0A0A0A]/20">
+                            <h3 className="font-display text-[10vw] lg:text-[6vw] font-black uppercase tracking-tighter leading-[0.85] max-w-4xl">
+                                {step.title}
+                            </h3>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 flex-grow">
+                            <div className="p-6 md:p-12 lg:p-16 border-b md:border-b-0 md:border-r border-[#0A0A0A]/20 flex flex-col justify-between bg-white">
+                                <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-[#0A0A0A]/40 mb-12 block">The Objective</span>
+                                <div>
+                                    <strong className="block text-[#0A0A0A] font-black text-sm uppercase tracking-widest mb-3">{step.sub1}</strong>
+                                    <span className="block text-[#8B84D7] font-bold text-[10px] uppercase tracking-widest leading-[2]">{step.sub2}</span>
+                                </div>
+                            </div>
+                            <div className="p-6 md:p-12 lg:p-16 flex flex-col justify-end bg-white">
+                                 <p className="font-body text-lg lg:text-xl text-[#0A0A0A]/80 leading-relaxed">
+                                    {step.p}
+                                 </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            ))}
         </section>
     );
 };
 
 const ShowcaseIntro: React.FC = () => {
     return (
-        <section className="bg-white text-[#0A0A0A] pt-32 pb-16 px-6 md:px-12 selection:bg-[#8B84D7] selection:text-white border-t-[3px] border-[#0A0A0A]">
+        <section className="bg-white text-[#0A0A0A] pt-32 pb-16 px-6 md:px-12 selection:bg-[#8B84D7] selection:text-white border-t border-[#0A0A0A]/20">
             <div className="flex flex-col items-start">
                 <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 mb-12">
                     02 / SELECTED WORK
@@ -302,7 +295,7 @@ const FeatureSpotlight: React.FC = () => {
 
 const ShowcaseGrid: React.FC = () => {
     return (
-        <section className="bg-[#F8F8F9] px-6 md:px-12 py-32 border-t-[3px] border-[#0A0A0A] selection:bg-[#8B84D7] selection:text-white">
+        <section className="bg-[#F8F8F9] px-6 md:px-12 py-32 border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white">
              <div className="grid grid-cols-1 md:grid-cols-12 gap-y-24 md:gap-x-12 lg:gap-x-24">
                 {PROJECTS.slice(1, 5).map((project, index) => (
                     <div key={project.id} className={`md:col-span-6 ${index % 2 === 1 ? 'md:mt-48' : ''}`}>
@@ -332,7 +325,7 @@ const ShowcaseGrid: React.FC = () => {
 const FAQSection: React.FC = () => {
     const faqs = QA_DATA[0].questions; 
     return (
-        <section className="py-32 md:py-48 bg-white border-t-[3px] border-[#0A0A0A] selection:bg-[#8B84D7] selection:text-white">
+        <section className="py-32 md:py-48 bg-white border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white">
             <div className="px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
                 <div className="lg:col-span-4">
                     <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 block mb-12 lg:mb-0">
