@@ -373,7 +373,7 @@ const ProjectCTA: React.FC = () => (
             <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-brand-navy mb-12">
                 Start Your Project
             </h2>
-            <Link to="/contact" className="inline-block bg-brand-navy text-brand-offwhite px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-purple transition-all duration-300 shadow-[6px_6px_0px_#FCC803] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
+            <Link to="/contact" className="inline-block bg-brand-navy text-brand-offwhite px-12 py-5 font-mono text-sm uppercase tracking-widest font-bold hover:bg-brand-purple transition-all duration-300 shadow-[6px_6px_0px_#E7FF0E] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_#FCC803] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none">
                 Inquire Now
             </Link>
         </div>
