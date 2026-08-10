@@ -41,7 +41,7 @@ const AboutPage: React.FC = () => {
                 </h1>
                 <div className="w-full aspect-[21/9] md:aspect-[2.5/1] overflow-hidden bg-brand-navy/10 relative">
                   <img 
-                    src="/assets/team/gallery-hero.webp" 
+                    src="/assets/images/wearethehumans.jpg" 
                     alt="COOLO Studio Team" 
                     className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-1000" 
                     onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'; }}
@@ -86,7 +86,7 @@ const AboutPage: React.FC = () => {
                   {/* Collage Row 1: Large Image */}
                   <AnimatedSection delay={200}>
                     <div className="w-full md:w-5/6 ml-auto aspect-video bg-white/5 overflow-hidden border border-white/10">
-                      <img src="/assets/team/gallery-1.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2564&auto=format&fit=crop'; }} />
+                      <img src="/assets/team/gallery/ariana01.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2564&auto=format&fit=crop'; }} />
                     </div>
                   </AnimatedSection>
                   
@@ -104,12 +104,12 @@ const AboutPage: React.FC = () => {
                     <div className="w-full md:w-1/2 flex flex-col gap-8 md:gap-12">
                       <AnimatedSection delay={200}>
                         <div className="w-4/5 aspect-square bg-white/5 overflow-hidden border border-white/10">
-                          <img src="/assets/team/gallery-2.webp" alt="Creative Process" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2564&auto=format&fit=crop'; }} />
+                          <img src="/assets/team/gallery/franco03.webp" alt="Creative Process" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2564&auto=format&fit=crop'; }} />
                         </div>
                       </AnimatedSection>
                       <AnimatedSection delay={300}>
                         <div className="w-full aspect-[4/3] bg-white/5 overflow-hidden border border-white/10 ml-0 md:ml-12">
-                          <img src="/assets/team/gallery-3.webp" alt="Studio Work" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2564&auto=format&fit=crop'; }} />
+                          <img src="/assets/team/gallery/ariana03.webp" alt="Studio Work" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2564&auto=format&fit=crop'; }} />
                         </div>
                       </AnimatedSection>
                     </div>
@@ -138,18 +138,18 @@ const AboutPage: React.FC = () => {
                     <div className="w-full md:w-2/3 flex flex-col gap-6 md:gap-8">
                       <AnimatedSection delay={300}>
                         <div className="w-full aspect-[4/3] bg-white/5 overflow-hidden border border-white/10">
-                          <img src="/assets/team/gallery-4.webp" alt="Team Brainstorming" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2564&auto=format&fit=crop'; }} />
+                          <img src="/assets/team/gallery/ariana02.webp" alt="Team Brainstorming" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2564&auto=format&fit=crop'; }} />
                         </div>
                       </AnimatedSection>
                       <div className="flex justify-start md:justify-end gap-6 md:gap-8">
                         <AnimatedSection delay={400} className="w-1/2 md:w-1/3">
                           <div className="w-full aspect-square bg-white/5 overflow-hidden border border-white/10">
-                            <img src="/assets/team/gallery-5.webp" alt="Office Detail" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2564&auto=format&fit=crop'; }} />
+                            <img src="/assets/team/gallery/franco01.webp" alt="Office Detail" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2564&auto=format&fit=crop'; }} />
                           </div>
                         </AnimatedSection>
                         <AnimatedSection delay={500} className="w-1/2 md:w-1/3">
                           <div className="w-full aspect-[3/4] bg-white/5 overflow-hidden border border-white/10">
-                            <img src="/assets/team/gallery-6.webp" alt="Studio Inspiration" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2564&auto=format&fit=crop'; }} />
+                            <img src="/assets/team/gallery/franco04.webp" alt="Studio Inspiration" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2564&auto=format&fit=crop'; }} />
                           </div>
                         </AnimatedSection>
                       </div>
@@ -315,7 +315,7 @@ const AboutPage: React.FC = () => {
             <AnimatedSection delay={200}>
               <div className="w-full max-w-5xl mx-auto aspect-video md:aspect-[21/9] bg-brand-navy/50 mb-16 relative overflow-hidden">
                 <img 
-                  src="/assets/team/gallery-filter.webp" 
+                  src="/assets/images/drops-hero.jpg" 
                   alt="The Filter" 
                   className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-1000" 
                   onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2564&auto=format&fit=crop'; }}
