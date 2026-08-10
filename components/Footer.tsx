@@ -1,6 +1,8 @@
+components/Footer.tsx
+FULL FILE
 import React, { useRef, useState, useMemo, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 // --- STUDIO RADIO PLAYLIST ---
 const TRACKS = [
@@ -56,96 +58,96 @@ const Footer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden border-t-2 border-brand-offwhite/10">
+    <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden border-t border-brand-offwhite/10">
       
-      {/* --- ENTER THE STUDIO SECTION (Now showing globally) --- */}
-      <div className="bg-brand-offwhite text-brand-navy">
-        <div className="container mx-auto px-8 py-24 md:py-32">
+      {/* --- TOP GRID SECTION --- */}
+      <div className="container mx-auto px-6 md:px-12 pt-24 md:pt-32 pb-24">
+        <div className="flex flex-col lg:flex-row justify-between gap-20 lg:gap-12">
             
-            {/* Main CTA */}
-            <div className="flex flex-col items-center text-center">
-                <span className="font-mono text-sm uppercase text-brand-purple tracking-widest mb-8">
+            {/* Left: CTA */}
+            <div className="flex-1 lg:max-w-md">
+                <span className="font-mono text-[10px] uppercase text-brand-yellow tracking-widest mb-6 block font-bold">
                     Ready to evolve?
                 </span>
-                <h2 className="text-6xl md:text-[14vw] font-black uppercase tracking-tight text-brand-navy leading-[0.85] flex flex-col md:block items-center">
-                    <span>ENTER THE</span>
-                    <br className="hidden md:block"/>
-                    <span 
-                        className="text-brand-purple inline-block origin-left md:ml-8" 
-                        style={{ transform: 'skewX(-20deg)' }}
-                    >
-                        STUDIO.
-                    </span>
-                </h2>
-                
+                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85] mb-10">
+                    ENTER THE<br/>STUDIO.
+                </h3>
                 <Link 
                     to="/contact" 
-                    className="inline-block mt-16 text-3xl md:text-5xl font-sans font-black hover:text-brand-purple transition-colors duration-300 underline decoration-brand-yellow decoration-4 underline-offset-8"
+                    className="inline-flex items-center gap-4 font-mono text-sm md:text-base uppercase tracking-widest font-bold text-brand-offwhite hover:text-brand-yellow transition-colors group"
                 >
                     hey@coolo.co.nz
+                    <span className="transform group-hover:translate-x-2 transition-transform text-xl leading-none font-light">→</span>
                 </Link>
             </div>
 
+            {/* Right: Metadata Grid */}
+            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 md:gap-8">
+                
+                {/* Directory */}
+                <div className="flex flex-col gap-6">
+                    <h4 className="font-mono text-[10px] uppercase text-brand-offwhite/40 tracking-widest font-bold">Directory</h4>
+                    <ul className="flex flex-col gap-4 font-mono text-xs uppercase tracking-widest">
+                        <li><Link to="/work" className="hover:text-brand-yellow transition-colors">Work</Link></li>
+                        <li><Link to="/clarity" className="hover:text-brand-yellow transition-colors">Creative Strategy</Link></li>
+                        <li><Link to="/design-power" className="hover:text-brand-yellow transition-colors">Visual Design</Link></li>
+                        <li><Link to="/about" className="hover:text-brand-yellow transition-colors">The Studio</Link></li>
+                    </ul>
+                </div>
+
+                {/* Social */}
+                <div className="flex flex-col gap-6">
+                    <h4 className="font-mono text-[10px] uppercase text-brand-offwhite/40 tracking-widest font-bold">Social</h4>
+                    <ul className="flex flex-col gap-4 font-mono text-xs uppercase tracking-widest">
+                        <li><a href="https://instagram.com/coolo.co" target="_blank" rel="noopener noreferrer" className="hover:text-brand-yellow transition-colors">Instagram ↗</a></li>
+                        <li><a href="https://linkedin.com/company/coolo" target="_blank" rel="noopener noreferrer" className="hover:text-brand-yellow transition-colors">LinkedIn ↗</a></li>
+                    </ul>
+                </div>
+
+                {/* Status & Coordinates */}
+                <div className="flex flex-col gap-12">
+                    <div className="flex flex-col gap-6">
+                        <h4 className="font-mono text-[10px] uppercase text-brand-offwhite/40 tracking-widest font-bold">Live Status</h4>
+                        <div className="flex flex-col gap-4">
+                            <TimeDisplay />
+                            <MusicTicker />
+                            <div className="flex items-center gap-2 mt-1">
+                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-offwhite/60">Accepting Projects</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-6">
+                        <h4 className="font-mono text-[10px] uppercase text-brand-offwhite/40 tracking-widest font-bold">Coordinates</h4>
+                        <p className="font-mono text-xs uppercase tracking-widest leading-relaxed text-brand-offwhite/80">
+                            Mount Maunganui,<br/>
+                            New Zealand.<br/>
+                            Earthlings.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
         </div>
       </div>
 
-      {/* --- STANDARD FOOTER GRID --- */}
-      <div className="container mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 border-t border-brand-offwhite/10">
-          {/* DIRECTORY */}
-          <div className="border-r border-brand-offwhite/10 py-12 pr-8">
-              <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Directory</h4>
-              <ul className="space-y-3 font-mono text-xs uppercase tracking-widest">
-                  <li><Link to="/work" className="hover:text-brand-yellow transition-colors">Work</Link></li>
-                  <li><Link to="/clarity" className="hover:text-brand-yellow transition-colors">Creative Strategy</Link></li>
-                  <li><Link to="/design-power" className="hover:text-brand-yellow transition-colors">Visual Design</Link></li>
-                  <li><Link to="/about" className="hover:text-brand-yellow transition-colors">The Studio</Link></li>
-              </ul>
-          </div>
-
-          {/* SOCIALS */}
-          <div className="md:border-r border-brand-offwhite/10 py-12 px-0 md:px-8">
-              <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Social</h4>
-              <ul className="space-y-3 font-mono text-xs uppercase tracking-widest">
-                  <li><a href="https://instagram.com/coolo.co" target="_blank" rel="noopener noreferrer" className="hover:text-brand-yellow transition-colors">Instagram ↗</a></li>
-                  <li><a href="https://linkedin.com/company/coolo" target="_blank" rel="noopener noreferrer" className="hover:text-brand-yellow transition-colors">LinkedIn ↗</a></li>
-              </ul>
-          </div>
-
-          {/* LIVE STATUS */}
-          <div className="border-r border-brand-offwhite/10 py-12 px-8 col-span-2 md:col-span-1 border-t md:border-t-0 border-r-0 md:border-r">
-              <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Live Status</h4>
-              <div className="space-y-4">
-                  <TimeDisplay />
-                  <MusicTicker />
-                  <div className="flex items-center gap-2 mt-4">
-                      <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-brand-offwhite/60">Accepting Projects</span>
-                  </div>
-              </div>
-          </div>
-
-          {/* LOCATION */}
-          <div className="py-12 px-0 md:px-8 col-span-2 md:col-span-1 border-t md:border-t-0">
-              <h4 className="font-mono text-[9px] uppercase text-brand-offwhite/40 tracking-widest font-bold mb-6">Coordinates</h4>
-              <p className="font-mono text-xs uppercase tracking-widest leading-relaxed text-brand-offwhite/80">
-                  Mount Maunganui,<br/>
-                  New Zealand.<br/>
-                  Earthlings.
-              </p>
-          </div>
+      {/* --- COPYRIGHT BAR --- */}
+      <div className="container mx-auto px-6 md:px-12 border-t border-brand-offwhite/10 pt-8 pb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-brand-offwhite/40 font-bold">
+              © {new Date().getFullYear()} COOLO Studio.
+          </p>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-brand-offwhite/40 font-bold">
+              Built by Humans in the Machine.
+          </p>
       </div>
 
-      {/* COPYRIGHT BAR */}
-      <div className="bg-brand-dark border-t border-brand-offwhite/10 py-4 relative z-10">
-          <div className="container mx-auto px-6 md:px-8 flex justify-between items-center">
-              <p className="font-mono text-[12px] uppercase tracking-widest text-brand-offwhite/30">
-                  © 2026 {new Date().getFullYear()} COOLO Studio'.
-              </p>
-              <p className="font-mono text-[12px] uppercase tracking-widest text-brand-offwhite/30">
-                  Built by Humans in the Machine.
-              </p>
-          </div>
+      {/* --- MASSIVE TYPOGRAPHY BLOCK --- */}
+      <div className="w-full bg-brand-yellow text-brand-navy pt-6 pb-2 md:pt-10 md:pb-4 overflow-hidden flex flex-col items-center justify-center selection:bg-brand-navy selection:text-brand-yellow">
+          <span className="text-[26vw] md:text-[27vw] font-black uppercase tracking-tighter leading-[0.75] whitespace-nowrap">
+              COOLO
+          </span>
       </div>
+
     </footer>
   );
 };
