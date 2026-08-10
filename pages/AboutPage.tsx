@@ -274,14 +274,14 @@ const AboutPage: React.FC = () => {
           <div className="container mx-auto px-6 md:px-12 text-center">
             <AnimatedSection>
               <h2 className="text-[12vw] md:text-[9vw] font-black uppercase tracking-tighter leading-[0.85] mb-16">
-                THE BULLSH*T FILTER
+                WE KEEP IT REAL
               </h2>
             </AnimatedSection>
 
             <AnimatedSection delay={200}>
               <div className="w-full max-w-5xl mx-auto aspect-video md:aspect-[21/9] bg-brand-navy/50 mb-16 relative overflow-hidden">
                 <img 
-                  src="/assets/team/gallery/franco02.webp" 
+                  src="/assets/team/gallery/ariana02.webp" 
                   alt="The Filter" 
                   className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-1000" 
                   onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2564&auto=format&fit=crop'; }}
