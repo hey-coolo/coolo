@@ -44,7 +44,7 @@ const AboutPage: React.FC = () => {
                     src="/assets/cases/franca-austral/Hero.webp" 
                     alt="COOLO Studio" 
                     className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-1000" 
-                    onError={(e) => { e.currentTarget.src = '/assets/images/about_wearethehumans_hero image.jpg'; }}
+                    onError={(e) => { e.currentTarget.src = '/assets/images/wearethehumans.jpg'; }}
                   />
                 </div>
               </header>
@@ -86,7 +86,7 @@ const AboutPage: React.FC = () => {
                   <div className="flex flex-col gap-12 pt-0 md:pt-24">
                     <AnimatedSection delay={200}>
                       <div className="aspect-[4/5] w-full bg-white/5 overflow-hidden">
-                        <img src="public/assets/team/gallery/ariana01.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                        <img src="/assets/team/gallery/ariana01.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                       </div>
                     </AnimatedSection>
                     
