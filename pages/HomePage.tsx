@@ -282,7 +282,7 @@ const FeatureSpotlight: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mt-8 items-start border-t border-[#0A0A0A]/10 pt-8">
                     <div className="md:col-span-8">
-                        <h2 className="font-display text-[12vw] md:text-[8vw] leading-[0.85] font-black uppercase tracking-tighter text-[#0A0A0A] group-hover:text-[#8B84D7] transition-colors duration-500">
+                        <h2 className="font-display text-[12vw] md:text-[8vw] leading-[0.85] font-black uppercase tracking-tighter text-[#0A0A0A] group-hover:text-[#E7FF0E] transition-colors duration-500">
                             {featuredProject.title}
                         </h2>
                     </div>
@@ -357,7 +357,7 @@ const FAQSection: React.FC = () => {
 
 const BriefUsCTA: React.FC = () => {
     return (
-        <section className="bg-[#FFD100] text-[#0A0A0A] py-32 md:py-48 px-6 md:px-12 selection:bg-[#0A0A0A] selection:text-[#FFD100]">
+        <section className="bg-[#E7FF0E] text-[#0A0A0A] py-32 md:py-48 px-6 md:px-12 selection:bg-[#0A0A0A] selection:text-[#E7FF0E]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-end">
                 <div className="lg:col-span-8">
                     <h2 className="font-display text-[15vw] lg:text-[10vw] font-black uppercase tracking-tighter leading-[0.8]">
@@ -371,7 +371,7 @@ const BriefUsCTA: React.FC = () => {
                     <p className="max-w-[320px] lg:text-right opacity-80">
                         TELL US WHAT YOU'RE BUILDING AND WHERE THINGS CURRENTLY FEEL DISCONNECTED. IF IT SOUNDS LIKE SOMETHING WE CAN ACTUALLY SOLVE, WE'LL LET YOU KNOW. IF NOT, WE WON'T WASTE YOUR TIME. WE'LL GIVE YOU HONEST FEEDBACK AND POINT YOU IN THE RIGHT DIRECTION.
                     </p>
-                    <Link to="/contact" className="inline-flex items-center justify-center border-2 border-[#0A0A0A] text-[#0A0A0A] px-12 py-5 font-black hover:bg-[#0A0A0A] hover:text-[#FFD100] transition-colors duration-300 w-full lg:w-auto">
+                    <Link to="/contact" className="inline-flex items-center justify-center border-2 border-[#0A0A0A] text-[#0A0A0A] px-12 py-5 font-black hover:bg-[#0A0A0A] hover:text-[#E7FF0E] transition-colors duration-300 w-full lg:w-auto">
                         BRIEF US
                     </Link>
                 </div>

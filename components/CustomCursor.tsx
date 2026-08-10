@@ -82,7 +82,7 @@ const CustomCursor: React.FC = () => {
     text: {
       width: 100,
       height: 100,
-      backgroundColor: '#FCC803',
+      backgroundColor: '#E7FF0E',
       border: '0px solid transparent',
       mixBlendMode: 'normal' as any,
     }
