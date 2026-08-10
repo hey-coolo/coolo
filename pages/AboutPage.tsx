@@ -1,3 +1,5 @@
+pages/AboutPage.tsx
+FULL FILE
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
@@ -41,10 +43,10 @@ const AboutPage: React.FC = () => {
                 </h1>
                 <div className="w-full aspect-[21/9] md:aspect-[2.5/1] overflow-hidden bg-brand-navy/10 relative">
                   <img 
-                    src="/assets/cases/franca-austral/Hero.webp" 
-                    alt="COOLO Studio" 
+                    src="/assets/team/gallery-hero.webp" 
+                    alt="COOLO Studio Team" 
                     className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-1000" 
-                    onError={(e) => { e.currentTarget.src = '/assets/images/wearethehumans.jpg'; }}
+                    onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'; }}
                   />
                 </div>
               </header>
@@ -57,6 +59,7 @@ const AboutPage: React.FC = () => {
           <div className="container mx-auto px-6 md:px-12">
             <section className="grid grid-cols-1 lg:grid-cols-12 gap-16">
               
+              {/* Sticky Heading */}
               <div className="lg:col-span-4">
                 <AnimatedSection>
                   <h2 className="text-6xl md:text-8xl lg:text-[7vw] font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85] sticky top-32">
@@ -65,69 +68,94 @@ const AboutPage: React.FC = () => {
                 </AnimatedSection>
               </div>
 
+              {/* Bespoke Editorial Collage */}
               <div className="lg:col-span-8 lg:pl-12">
                 
                 {/* Yellow highlight text box */}
-                <AnimatedSection delay={100}>
-                  <div className="max-w-xl mb-16 text-brand-yellow font-mono text-sm md:text-base uppercase tracking-widest font-bold leading-relaxed">
+                <div className="flex justify-end mb-24 md:mb-32">
+                  <AnimatedSection delay={100} className="max-w-xl text-brand-yellow font-mono text-sm md:text-base uppercase tracking-widest font-bold leading-relaxed text-right md:text-left">
                     <p className="mb-8">
                       COOLO IS A BOUTIQUE CREATIVE AND BRAND STUDIO OPERATING OUT OF MOUNT MAUNGANUI, NZ.
                     </p>
                     <p>
                       WE PARTNER WITH FOUNDERS, MARKETING TEAMS, AND VISIONARY ENTREPRENEURS TO HELP THEIR BUSINESSES TRANSITION FROM IMPROVISED GROWTH INTO AN INTENTIONAL, UNDENIABLE MARKET PRESENCE.
                     </p>
-                  </div>
-                </AnimatedSection>
+                  </AnimatedSection>
+                </div>
 
-                {/* Editorial text & collage */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                <div className="flex flex-col gap-24 md:gap-32">
                   
-                  {/* Collage Column 1 */}
-                  <div className="flex flex-col gap-12 pt-0 md:pt-24">
-                    <AnimatedSection delay={200}>
-                      <div className="aspect-[4/5] w-full bg-white/5 overflow-hidden">
-                        <img src="/assets/team/gallery/ariana01.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                      </div>
-                    </AnimatedSection>
-                    
-                    <AnimatedSection delay={300}>
-                      <div className="font-body text-xl md:text-2xl text-brand-offwhite/80 leading-tight">
-                        <p>
-                          Most brands don't have a design problem. <strong className="font-bold text-brand-offwhite">They have a clarity problem.</strong> That's where we start. We are here to help clarify what you do and how you say it.
-                        </p>
-                      </div>
-                    </AnimatedSection>
+                  {/* Collage Row 1: Large Image */}
+                  <AnimatedSection delay={200}>
+                    <div className="w-full md:w-5/6 ml-auto aspect-video bg-white/5 overflow-hidden border border-white/10">
+                      <img src="/assets/team/gallery-1.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2564&auto=format&fit=crop'; }} />
+                    </div>
+                  </AnimatedSection>
+                  
+                  {/* Collage Row 2: Text */}
+                  <AnimatedSection delay={300}>
+                    <div className="w-full md:w-2/3 ml-auto font-body text-xl md:text-2xl text-brand-offwhite/80 leading-tight">
+                      <p>
+                        Most brands don't have a design problem. <strong className="font-bold text-brand-offwhite">They have a clarity problem.</strong> That's where we start. We are here to help clarify what you do and how you say it.
+                      </p>
+                    </div>
+                  </AnimatedSection>
 
-                    <AnimatedSection delay={400}>
-                      <div className="aspect-square w-3/4 ml-auto bg-white/5 overflow-hidden">
-                        <img src="/assets/team/gallery/franco01.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                      </div>
-                    </AnimatedSection>
+                  {/* Collage Row 3: Left Images, Right Text */}
+                  <div className="flex flex-col md:flex-row gap-12 md:gap-24 items-start">
+                    <div className="w-full md:w-1/2 flex flex-col gap-8 md:gap-12">
+                      <AnimatedSection delay={200}>
+                        <div className="w-4/5 aspect-square bg-white/5 overflow-hidden border border-white/10">
+                          <img src="/assets/team/gallery-2.webp" alt="Creative Process" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2564&auto=format&fit=crop'; }} />
+                        </div>
+                      </AnimatedSection>
+                      <AnimatedSection delay={300}>
+                        <div className="w-full aspect-[4/3] bg-white/5 overflow-hidden border border-white/10 ml-0 md:ml-12">
+                          <img src="/assets/team/gallery-3.webp" alt="Studio Work" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2564&auto=format&fit=crop'; }} />
+                        </div>
+                      </AnimatedSection>
+                    </div>
+                    <div className="w-full md:w-1/2 md:pt-24">
+                      <AnimatedSection delay={400}>
+                        <div className="font-body text-xl md:text-2xl text-brand-offwhite/80 leading-tight">
+                          <p>
+                            In a digital landscape cluttered with fleeting trends and templated aesthetics, we believe in building systems that endure. Our philosophy is pretty simple: keep it functional, keep it intentional, and cut out the noise.
+                          </p>
+                        </div>
+                      </AnimatedSection>
+                    </div>
                   </div>
 
-                  {/* Collage Column 2 */}
-                  <div className="flex flex-col gap-12">
-                    <AnimatedSection delay={200}>
-                      <div className="font-body text-xl md:text-2xl text-brand-offwhite/80 leading-tight">
-                        <p>
-                          In a digital landscape cluttered with fleeting trends and templated aesthetics, we believe in building systems that endure. Our philosophy is pretty simple: keep it functional, keep it intentional, and cut out the noise.
-                        </p>
+                  {/* Collage Row 4: Left Text, Right Images */}
+                  <div className="flex flex-col md:flex-row gap-12 md:gap-24 items-start">
+                    <div className="w-full md:w-1/3">
+                      <AnimatedSection delay={200}>
+                        <div className="font-body text-xl md:text-2xl text-brand-offwhite/80 leading-tight sticky top-32">
+                          <p>
+                            We build brands that feel like a breath of fresh air. Ultimately understandable and completely authentic to who you are. We don't use templates.
+                          </p>
+                        </div>
+                      </AnimatedSection>
+                    </div>
+                    <div className="w-full md:w-2/3 flex flex-col gap-6 md:gap-8">
+                      <AnimatedSection delay={300}>
+                        <div className="w-full aspect-[4/3] bg-white/5 overflow-hidden border border-white/10">
+                          <img src="/assets/team/gallery-4.webp" alt="Team Brainstorming" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2564&auto=format&fit=crop'; }} />
+                        </div>
+                      </AnimatedSection>
+                      <div className="flex justify-start md:justify-end gap-6 md:gap-8">
+                        <AnimatedSection delay={400} className="w-1/2 md:w-1/3">
+                          <div className="w-full aspect-square bg-white/5 overflow-hidden border border-white/10">
+                            <img src="/assets/team/gallery-5.webp" alt="Office Detail" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2564&auto=format&fit=crop'; }} />
+                          </div>
+                        </AnimatedSection>
+                        <AnimatedSection delay={500} className="w-1/2 md:w-1/3">
+                          <div className="w-full aspect-[3/4] bg-white/5 overflow-hidden border border-white/10">
+                            <img src="/assets/team/gallery-6.webp" alt="Studio Inspiration" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2564&auto=format&fit=crop'; }} />
+                          </div>
+                        </AnimatedSection>
                       </div>
-                    </AnimatedSection>
-
-                    <AnimatedSection delay={300}>
-                      <div className="aspect-[4/3] w-full bg-white/5 overflow-hidden">
-                        <img src="/assets/team/gallery/ariana03.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                      </div>
-                    </AnimatedSection>
-
-                    <AnimatedSection delay={400}>
-                      <div className="font-body text-xl md:text-2xl text-brand-offwhite/80 leading-tight">
-                        <p>
-                          We build brands that feel like a breath of fresh air. Ultimately understandable and completely authentic to who you are. We don't use templates.
-                        </p>
-                      </div>
-                    </AnimatedSection>
+                    </div>
                   </div>
 
                 </div>
@@ -148,25 +176,42 @@ const AboutPage: React.FC = () => {
         {/* TEAM MEMBERS (Light Section) */}
         <div className="bg-brand-offwhite py-24 md:py-32">
           <div className="container mx-auto px-6 md:px-12">
-            <div className="flex flex-col gap-32 md:gap-48 max-w-6xl mx-auto">
+            <div className="flex flex-col max-w-6xl mx-auto">
+              
               {Object.entries(TEAM_MEMBERS).map(([slug, member], index) => {
                 const isEven = index % 2 === 0;
+                
                 return (
                   <AnimatedSection key={slug} delay={index * 150}>
-                    <div className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-end gap-6 md:gap-12`}>
+                    <div className={`flex flex-col ${isEven ? 'items-end' : 'items-start'} mb-32 md:mb-48`}>
                       
-                      {/* Editorial Rotated Title */}
-                      <div className="hidden md:flex flex-col justify-end pb-4">
-                        <span 
-                          className="font-black text-3xl md:text-5xl uppercase tracking-tighter text-brand-navy/80 whitespace-nowrap"
-                          style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-                        >
-                          {member.title}
-                        </span>
+                      {/* Typography Block */}
+                      <div className={`flex ${isEven ? 'flex-row' : 'flex-row-reverse'} items-end gap-4 md:gap-8 mb-6 md:mb-12`}>
+                        {isEven && (
+                          <span 
+                            className="font-black text-2xl md:text-5xl uppercase tracking-tighter text-brand-navy/60 pb-2 md:pb-4 hidden md:block"
+                            style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+                          >
+                            {member.title}
+                          </span>
+                        )}
+                        <Link to={`/team/${slug}`} className="hover:text-brand-purple transition-colors">
+                          <h3 className="text-[18vw] md:text-[12vw] font-black uppercase tracking-tighter text-brand-navy leading-none m-0">
+                            {member.name}
+                          </h3>
+                        </Link>
+                        {!isEven && (
+                          <span 
+                            className="font-black text-2xl md:text-5xl uppercase tracking-tighter text-brand-navy/60 pb-2 md:pb-4 hidden md:block"
+                            style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+                          >
+                            {member.title}
+                          </span>
+                        )}
                       </div>
 
-                      {/* Image */}
-                      <Link to={`/team/${slug}`} className="w-full md:w-1/2 aspect-[4/5] bg-brand-navy/5 overflow-hidden group relative block">
+                      {/* Image Block */}
+                      <Link to={`/team/${slug}`} className={`w-full md:w-3/5 aspect-[4/3] bg-brand-navy/5 overflow-hidden group relative block border border-brand-navy/10 ${isEven ? 'mr-0 md:mr-32' : 'ml-0 md:ml-32'}`}>
                         <motion.img 
                             initial={{ scale: 1.1 }}
                             whileHover={{ scale: 1.05 }}
@@ -181,15 +226,6 @@ const AboutPage: React.FC = () => {
                            </span>
                         </div>
                       </Link>
-
-                      {/* Name */}
-                      <div className={`w-full md:w-auto ${isEven ? 'text-left' : 'text-right md:text-left'} pt-6 md:pt-0`}>
-                        <Link to={`/team/${slug}`} className="hover:text-brand-purple transition-colors">
-                          <h3 className="text-7xl md:text-[8vw] font-black uppercase tracking-tighter text-brand-navy leading-none">
-                            {member.name}
-                          </h3>
-                        </Link>
-                      </div>
 
                     </div>
                   </AnimatedSection>
@@ -274,14 +310,14 @@ const AboutPage: React.FC = () => {
           <div className="container mx-auto px-6 md:px-12 text-center">
             <AnimatedSection>
               <h2 className="text-[12vw] md:text-[9vw] font-black uppercase tracking-tighter leading-[0.85] mb-16">
-                WE KEEP IT REAL
+                THE BULLSH*T FILTER
               </h2>
             </AnimatedSection>
 
             <AnimatedSection delay={200}>
               <div className="w-full max-w-5xl mx-auto aspect-video md:aspect-[21/9] bg-brand-navy/50 mb-16 relative overflow-hidden">
                 <img 
-                  src="/assets/team/gallery/ariana02.webp" 
+                  src="/assets/team/gallery-filter.webp" 
                   alt="The Filter" 
                   className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-1000" 
                   onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2564&auto=format&fit=crop'; }}
