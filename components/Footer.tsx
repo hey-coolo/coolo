@@ -1,3 +1,5 @@
+components/Footer.tsx
+FULL FILE
 import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -54,20 +56,21 @@ const TimeDisplay = () => {
 
 const Footer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [logoError, setLogoError] = useState(false);
 
   return (
     <footer ref={containerRef} className="bg-brand-navy text-brand-offwhite relative z-50 overflow-hidden border-t border-brand-offwhite/10">
       
       {/* --- TOP GRID SECTION --- */}
-      <div className="container mx-auto px-6 md:px-12 pt-24 md:pt-32 pb-24">
-        <div className="flex flex-col lg:flex-row justify-between gap-20 lg:gap-12">
+      <div className="container mx-auto px-6 md:px-12 pt-24 md:pt-32 pb-16 md:pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
             
             {/* Left: CTA */}
-            <div className="flex-1 lg:max-w-md">
+            <div className="lg:col-span-5 flex flex-col pr-0 lg:pr-12">
                 <span className="font-mono text-[10px] uppercase text-brand-yellow tracking-widest mb-6 block font-bold">
                     Ready to evolve?
                 </span>
-                <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85] mb-10">
+                <h3 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter text-brand-offwhite leading-[0.85] mb-10">
                     ENTER THE<br/>STUDIO.
                 </h3>
                 <Link 
@@ -80,7 +83,7 @@ const Footer: React.FC = () => {
             </div>
 
             {/* Right: Metadata Grid */}
-            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 md:gap-8">
+            <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-16">
                 
                 {/* Directory */}
                 <div className="flex flex-col gap-6">
@@ -102,27 +105,27 @@ const Footer: React.FC = () => {
                     </ul>
                 </div>
 
-                {/* Status & Coordinates */}
-                <div className="flex flex-col gap-12">
-                    <div className="flex flex-col gap-6">
-                        <h4 className="font-mono text-[10px] uppercase text-brand-offwhite/40 tracking-widest font-bold">Live Status</h4>
-                        <div className="flex flex-col gap-4">
-                            <TimeDisplay />
-                            <MusicTicker />
-                            <div className="flex items-center gap-2 mt-1">
-                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                <span className="font-mono text-[9px] uppercase tracking-widest text-brand-offwhite/60">Accepting Projects</span>
-                            </div>
+                {/* Status */}
+                <div className="flex flex-col gap-6">
+                    <h4 className="font-mono text-[10px] uppercase text-brand-offwhite/40 tracking-widest font-bold">Live Status</h4>
+                    <div className="flex flex-col gap-4">
+                        <TimeDisplay />
+                        <MusicTicker />
+                        <div className="flex items-center gap-2 mt-1">
+                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <span className="font-mono text-[9px] uppercase tracking-widest text-brand-offwhite/60">Accepting Projects</span>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-6">
-                        <h4 className="font-mono text-[10px] uppercase text-brand-offwhite/40 tracking-widest font-bold">Coordinates</h4>
-                        <p className="font-mono text-xs uppercase tracking-widest leading-relaxed text-brand-offwhite/80">
-                            Mount Maunganui,<br/>
-                            New Zealand.<br/>
-                            Earthlings.
-                        </p>
-                    </div>
+                </div>
+
+                {/* Coordinates */}
+                <div className="flex flex-col gap-6">
+                    <h4 className="font-mono text-[10px] uppercase text-brand-offwhite/40 tracking-widest font-bold">Coordinates</h4>
+                    <p className="font-mono text-xs uppercase tracking-widest leading-relaxed text-brand-offwhite/80">
+                        Mount Maunganui,<br/>
+                        New Zealand.<br/>
+                        Earthlings.
+                    </p>
                 </div>
 
             </div>
@@ -139,11 +142,20 @@ const Footer: React.FC = () => {
           </p>
       </div>
 
-      {/* --- MASSIVE TYPOGRAPHY BLOCK --- */}
-      <div className="w-full bg-brand-yellow text-brand-navy pt-6 pb-2 md:pt-10 md:pb-4 overflow-hidden flex flex-col items-center justify-center selection:bg-brand-navy selection:text-brand-yellow">
-          <span className="text-[26vw] md:text-[27vw] font-black uppercase tracking-tighter leading-[0.75] whitespace-nowrap">
-              COOLO
-          </span>
+      {/* --- MASSIVE LOGO BLOCK --- */}
+      <div className="w-full bg-brand-yellow text-brand-navy pt-12 pb-8 md:pt-16 md:pb-12 px-6 md:px-12 overflow-hidden flex flex-col items-center justify-center selection:bg-brand-navy selection:text-brand-yellow">
+          {!logoError ? (
+            <img 
+                src="/assets/logos/logo-dark.svg" 
+                alt="COOLO" 
+                className="w-full h-auto object-contain block"
+                onError={() => setLogoError(true)}
+            />
+          ) : (
+            <span className="text-[26vw] md:text-[27vw] font-black uppercase tracking-tighter leading-[0.75] whitespace-nowrap">
+                COOLO
+            </span>
+          )}
       </div>
 
     </footer>

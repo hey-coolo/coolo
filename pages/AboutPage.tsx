@@ -1,3 +1,5 @@
+pages/AboutPage.tsx
+FULL FILE
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -11,7 +13,7 @@ const HeroSection = () => (
     <AnimatedSection>
       <header className="pt-12 pb-16">
         <h1 className="text-brand-navy text-[clamp(3.5rem,8vw,7.5rem)] font-black uppercase tracking-tighter leading-[0.85] mt-0 mb-6 md:mb-8">
-          MAKE YOUR BRAND<br/>MAKE SENSE<span className="text-brand-yellow">.</span>
+          WE'RE THE HUMANS<span className="text-brand-yellow">.</span>
         </h1>
         <p className="font-mono text-[clamp(0.875rem,1vw,1rem)] text-brand-navy/80 font-bold tracking-widest uppercase max-w-2xl mb-10 md:mb-14 leading-relaxed">
           We help founders figure out what they actually stand for—then turn it into a brand people can understand and remember.
