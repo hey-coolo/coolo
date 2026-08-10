@@ -1,5 +1,3 @@
-components/Footer.tsx
-FULL FILE
 import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
