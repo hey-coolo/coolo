@@ -1,5 +1,3 @@
-pages/AboutPage.tsx
-FULL FILE
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
