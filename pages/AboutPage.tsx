@@ -44,7 +44,7 @@ const AboutPage: React.FC = () => {
                     src="/assets/cases/franca-austral/Hero.webp" 
                     alt="COOLO Studio" 
                     className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-1000" 
-                    onError={(e) => { e.currentTarget.src = 'hey-coolo/coolo/public/assets/images/about_wearethehumans_hero image.jpg'; }}
+                    onError={(e) => { e.currentTarget.src = '/assets/images/about_wearethehumans_hero image.jpg'; }}
                   />
                 </div>
               </header>
@@ -100,7 +100,7 @@ const AboutPage: React.FC = () => {
 
                     <AnimatedSection delay={400}>
                       <div className="aspect-square w-3/4 ml-auto bg-white/5 overflow-hidden">
-                        <img src="public/assets/team/gallery/franco01.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                        <img src="/assets/team/gallery/franco01.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                       </div>
                     </AnimatedSection>
                   </div>
@@ -117,7 +117,7 @@ const AboutPage: React.FC = () => {
 
                     <AnimatedSection delay={300}>
                       <div className="aspect-[4/3] w-full bg-white/5 overflow-hidden">
-                        <img src="public/assets/team/gallery/ariana03.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                        <img src="/assets/team/gallery/ariana03.webp" alt="Studio Culture" className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-700" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                       </div>
                     </AnimatedSection>
 
@@ -281,10 +281,10 @@ const AboutPage: React.FC = () => {
             <AnimatedSection delay={200}>
               <div className="w-full max-w-5xl mx-auto aspect-video md:aspect-[21/9] bg-brand-navy/50 mb-16 relative overflow-hidden">
                 <img 
-                  src="/assets/cases/franca-austral/process-4.webp" 
+                  src="/assets/team/gallery/franco02.webp" 
                   alt="The Filter" 
                   className="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-1000" 
-                  onError={(e) => { e.currentTarget.src = 'public/assets/team/gallery/franco02.webp'; }}
+                  onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2564&auto=format&fit=crop'; }}
                 />
               </div>
             </AnimatedSection>
