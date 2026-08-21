@@ -104,52 +104,9 @@ export const PROJECTS: Project[] = [
         ]
     }
   },
+  
   {
     id: 3,
-    title: 'Ntegrity',
-    slug: 'ntegrity',
-    description: `
-      Operational design support for Australia’s leading non-profit marketing agency. 
-      Ntegrity needed more than just a freelancer; they needed a "Design Engine" capable 
-      of handling high-volume, high-stakes campaigns for major charities like The Salvation Army. 
-      
-      We embedded directly into their workflow, executing display ads, social motion, 
-      and campaign landing pages with rapid turnaround times. This wasn't just pixel-pushing; 
-      it was about maintaining strict brand integrity while delivering the emotional punch 
-      required for non-profit fundraising.`,
-    category: 'Partnership',
-    tags: ['Agency', 'Digital Ads', 'Social Media', 'Events'],
-    year: 2022,
-    imageUrl: '/assets/cases/ntegrity/Hero.webp', 
-    featured: false,
-    client: 'Ntegrity Agency',
-    role: 'Mid-Weight Designer',
-    detailImages: [
-        '/assets/cases/ntegrity/detail-1.webp',
-        '/assets/cases/ntegrity/detail-2.webp',
-        '/assets/cases/ntegrity/detail-3.gif',
-        '/assets/cases/ntegrity/detail-4.webp',
-        '/assets/cases/ntegrity/detail-5.gif',
-        '/assets/cases/ntegrity/detail-6.gif',
-        '/assets/cases/ntegrity/detail-7.png'
-    ],
-    story: {
-        goal: "",
-        gap: "", 
-        gamble: "",
-        gain: "High-volume creative output with zero drop in brand fidelity.",
-        processImages: [
-            '/assets/cases/ntegrity/process-1.webp',
-            '/assets/cases/ntegrity/process-2.webp',
-            '/assets/cases/ntegrity/process-3.webp',
-            '/assets/cases/ntegrity/process-4.gif',
-            '/assets/cases/ntegrity/process-5.png',
-            '/assets/cases/ntegrity/process-6.png'
-        ]
-    }
-  },
-  {
-    id: 4,
     title: 'Pablo Creative',
     slug: 'pablo-creative',
     description: `
@@ -195,7 +152,7 @@ export const PROJECTS: Project[] = [
     }
   },
   {
-    id: 5,
+    id: 4,
     title: 'The Cartridges',
     slug: 'the-cartridges',
     description: `
@@ -237,7 +194,7 @@ export const PROJECTS: Project[] = [
     }
   },
   {
-    id: 6,
+    id: 5,
     title: 'Johney’s Dumpling House',
     slug: 'johneys-dumpling-house',
     description: `
@@ -270,7 +227,7 @@ export const PROJECTS: Project[] = [
     }
   },
   {
-    id: 7,
+    id: 6,
     title: 'Franca Austral',
     slug: 'franca-austral',
     description: `
@@ -309,7 +266,7 @@ export const PROJECTS: Project[] = [
     }
   },
   {
-    id: 8,
+    id: 7,
     title: 'Just Boxes',
     slug: 'just-boxes',
     description: `
