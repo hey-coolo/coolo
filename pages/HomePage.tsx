@@ -44,7 +44,7 @@ const BrandHero: React.FC = () => {
                         y: mousePosition.y - 400,
                     }}
                     transition={{ delay: 0.001, duration: 3, ease: "linear" }}
-                    className="absolute left-0 top-0 w-[800px] h-[800px] bg-[#8B84D7]/20 rounded-full blur-[120px] will-change-transform"
+                    className="absolute left-0 top-0 w-[800px] h-[800px] bg-[#8B84D7]/70 rounded-full blur-[120px] will-change-transform"
                 />
                 <motion.div
                     animate={{
@@ -52,7 +52,7 @@ const BrandHero: React.FC = () => {
                         y: windowSize.height - mousePosition.y - 300,
                     }}
                     transition={{ delay: 0.001, duration: 3.5, ease: "linear" }}
-                    className="absolute left-0 top-0 w-[600px] h-[600px] bg-[#E7FF0E]/15 rounded-full blur-[120px] will-change-transform"
+                    className="absolute left-0 top-0 w-[600px] h-[600px] bg-[#E7FF0E]/55 rounded-full blur-[120px] will-change-transform"
                 />
             </div>
 
@@ -524,7 +524,7 @@ const HomePage: React.FC = () => {
     <PageTransition>
         <div className="w-full bg-[#F8F8F9]">
             <Helmet>
-                <title>COOLO | Shaping Brands With Character</title>
+                <title>COOLO | Human Thinking. Better Making.</title>
                 <script type="application/ld+json">
                 {JSON.stringify(orgSchema)}
                 </script>
