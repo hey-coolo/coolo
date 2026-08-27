@@ -111,8 +111,8 @@ const RealityCheck: React.FC = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="font-display text-[9vw] lg:text-[6.5vw] uppercase tracking-tighter leading-[0.85] font-black"
-                    >   We help ambitious businesses figure out what they <span className="block text-[#8B84D7]">stand for</span> , how they <span className="block text-[#8B84D7]">should look</span>, and how to  <span className="block text-[#8B84D7]">show up</span>.
+                        className="font-display text-[7vw] lg:text-[4.5vw] uppercase tracking-tighter leading-[0.85] font-black"
+                    >   We help ambitious businesses figure out what they <span className="block text-[#8B84D7]">stand for</span>, how they <span className="block text-[#8B84D7]">should look</span>, and how to <span className="block text-[#8B84D7]">show up</span>.
                     </motion.h2>
                     <motion.p 
                         initial={{ opacity: 0 }}
