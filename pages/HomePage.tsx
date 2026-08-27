@@ -9,17 +9,61 @@ import PageTransition from '../components/PageTransition';
 
 const BrandHero: React.FC = () => {
     const [isStudioHovered, setIsStudioHovered] = useState(false);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [windowSize, setWindowSize] = useState({ width: 1000, height: 1000 });
+
+    useEffect(() => {
+        // Ensure we safely grab the window size on mount
+        setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+
+        const handleMouseMove = (e: MouseEvent) => {
+            setMousePosition({ x: e.clientX, y: e.clientY });
+        };
+
+        const handleResize = () => {
+            setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     return (
-        <section className="relative min-h-[100svh] pt-32 pb-12 bg-[#F8F8F9] text-[#0A0A0A] flex flex-col justify-between selection:bg-[#8B84D7] selection:text-white">
+        <section className="relative min-h-[100svh] pt-32 pb-12 bg-[#F8F8F9] text-[#0A0A0A] flex flex-col justify-between selection:bg-[#8B84D7] selection:text-white overflow-hidden">
+            
+            {/* Cursor-Reactive Mesh Gradient Wave */}
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+                <motion.div
+                    animate={{
+                        x: mousePosition.x - 400, // Offset to center the blob on the cursor
+                        y: mousePosition.y - 400,
+                    }}
+                    transition={{ delay: 0.001, duration: 3, ease: "linear" }}
+                    className="absolute left-0 top-0 w-[800px] h-[800px] bg-[#8B84D7]/20 rounded-full blur-[120px] will-change-transform"
+                />
+                <motion.div
+                    animate={{
+                        x: windowSize.width - mousePosition.x - 300, // Inverse follow
+                        y: windowSize.height - mousePosition.y - 300,
+                    }}
+                    transition={{ delay: 0.001, duration: 3.5, ease: "linear" }}
+                    className="absolute left-0 top-0 w-[600px] h-[600px] bg-[#E7FF0E]/15 rounded-full blur-[120px] will-change-transform"
+                />
+            </div>
+
             {/* Top Metadata */}
-            <div className="px-6 md:px-12 flex justify-between items-start font-mono text-[9px] md:text-[10px] uppercase tracking-widest font-bold pointer-events-none">
+            <div className="relative z-10 px-6 md:px-12 flex justify-between items-start font-mono text-[9px] md:text-[10px] uppercase tracking-widest font-bold pointer-events-none">
                 <span className="block leading-[2] opacity-60">© 2026 COOLO.<br/>HUMANS IN THE MACHINE.</span>
                 <span className="hidden md:block opacity-60">STATUS: <span className="text-[#8B84D7] opacity-100">BOOKINGS OPEN</span></span>
             </div>
 
             {/* Core Typography Statement */}
-            <div className="px-6 md:px-12 flex-grow flex flex-col justify-center w-full mt-24 md:mt-16">
+            <div className="relative z-10 px-6 md:px-12 flex-grow flex flex-col justify-center w-full mt-24 md:mt-16">
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -71,7 +115,7 @@ const BrandHero: React.FC = () => {
             </div>
 
             {/* Bottom Grid Row */}
-            <div className="px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 items-end gap-12 md:gap-0 pb-4 relative z-10 mt-16 md:mt-0">
+            <div className="relative z-10 px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 items-end gap-12 md:gap-0 pb-4 mt-16 md:mt-0">
                 <div className="md:col-span-1 hidden md:block">
                     <motion.div
                         animate={{ y: [0, 5, 0] }}
