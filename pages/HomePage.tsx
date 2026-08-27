@@ -24,7 +24,7 @@ const BrandHero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                    className="font-display text-[12vw] lg:text-[9.5vw] font-black uppercase leading-[0.8] tracking-tighter w-full text-left flex flex-col items-start"
+                    className="font-display text-[12vw] lg:text-[11.5vw] font-black uppercase leading-[0.8] tracking-tighter w-full text-left flex flex-col items-start"
                 >
                     <span className="block">YOUR BUSINESS IS</span>
                     <span className="block md:indent-[10vw]">BETTER THAN IT</span>
@@ -111,7 +111,7 @@ const RealityCheck: React.FC = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="font-display text-[7vw] lg:text-[4.5vw] uppercase tracking-tighter leading-[0.85] font-black"
+                        className="font-display text-[8vw] lg:text-[5vw] uppercase tracking-tighter leading-[0.85] font-black"
                     >   We help ambitious businesses figure out what they stand for, how they should look, and how to show up.
                     </motion.h2>
                     <motion.p 
