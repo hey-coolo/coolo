@@ -82,7 +82,7 @@ const BrandHero: React.FC = () => {
                     </motion.div>
                 </div>
                 <div className="md:col-span-3 flex md:justify-end">
-                    <p className="max-w-[320px] font-mono text-[10px] uppercase tracking-widest font-bold opacity-70 leading-[2] md:text-right">
+                    <p className="max-w-[320px] font-mono text-[16px] uppercase tracking-widest font-bold opacity-70 leading-[2] md:text-right">
                         GOOD BUSINESSES FREQUENTLY LOOK AND SOUND WORSE THAN THE ACTUAL VALUE THEY CREATE.
                     </p>
                 </div>
@@ -113,14 +113,14 @@ const RealityCheck: React.FC = () => {
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
                         className="font-display text-[9vw] lg:text-[6.5vw] uppercase tracking-tighter leading-[0.85] font-black"
                     >
-                        WE BRIDGE THAT GAP, TURNING YOUR BUSINESS IDEAS AND EXPERTISE INTO A CLEAR STRATEGIC CREATIVE DIRECTION AND BRAND EXPERIENCE.
+                        We help ambitious businesses figure out what they stand for, how they should look, and how to show up.
                     </motion.h2>
                     <motion.p 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="mt-16 md:mt-24 font-mono text-[10px] uppercase tracking-widest font-bold text-[#8B84D7] max-w-sm leading-[2]"
+                        className="mt-16 md:mt-24 font-mono text-[16px] uppercase tracking-widest font-bold text-[#8B84D7] max-w-sm leading-[2]"
                     >
                         THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
                     </motion.p>
