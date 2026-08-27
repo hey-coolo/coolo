@@ -78,7 +78,7 @@ const BrandHero: React.FC = () => {
                         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                         className="w-8 h-8 rounded-full border border-[#0A0A0A] flex items-center justify-center opacity-40"
                     >
-                        <ArrowDown size={14} />
+                        <ArrowDown size={16} />
                     </motion.div>
                 </div>
                 <div className="md:col-span-3 flex md:justify-end">
@@ -112,8 +112,7 @@ const RealityCheck: React.FC = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
                         className="font-display text-[9vw] lg:text-[6.5vw] uppercase tracking-tighter leading-[0.85] font-black"
-                    >
-                        We help ambitious businesses figure out what they stand for, how they should look, and how to show up.
+                    >   We help ambitious businesses figure out what they <span className="block text-[#8B84D7]">stand for</span> , how they <span className="block text-[#8B84D7]">should look</span>, and how to  <span className="block text-[#8B84D7]">show up</span>.
                     </motion.h2>
                     <motion.p 
                         initial={{ opacity: 0 }}
