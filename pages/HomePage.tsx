@@ -43,7 +43,7 @@ const BrandHero: React.FC = () => {
                         x: mousePosition.x - 400, // Offset to center the blob on the cursor
                         y: mousePosition.y - 400,
                     }}
-                    transition={{ delay: 0.001, duration: 3, ease: "linear" }}
+                    transition={{ delay: 0.001, duration: 1, ease: "ease-in-out" }}
                     className="absolute left-0 top-0 w-[500px] h-[500px] bg-[#8B84D7]/70 rounded-full blur-[90px] will-change-transform"
                 />
                 <motion.div
@@ -51,7 +51,7 @@ const BrandHero: React.FC = () => {
                         x: windowSize.width - mousePosition.x - 300, // Inverse follow
                         y: windowSize.height - mousePosition.y - 300,
                     }}
-                    transition={{ delay: 0.001, duration: 1.5, ease: "ease-in" }}
+                    transition={{ delay: 0.001, duration: 1.5, ease: "ease-in-out" }}
                     className="absolute left-0 top-0 w-[400px] h-[400px] bg-[#E7FF0E]/55 rounded-full blur-[80px] will-change-transform"
                 />
             </div>
