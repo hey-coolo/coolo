@@ -40,18 +40,18 @@ const BrandHero: React.FC = () => {
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
                 <motion.div
                     animate={{
-                        x: mousePosition.x - 300, // Offset to center the blob on the cursor
-                        y: mousePosition.y - 300,
+                        x: mousePosition.x - 400, // Offset to center the blob on the cursor
+                        y: mousePosition.y - 400,
                     }}
                     transition={{ delay: 0.001, duration: 3, ease: "linear" }}
                     className="absolute left-0 top-0 w-[500px] h-[500px] bg-[#8B84D7]/70 rounded-full blur-[90px] will-change-transform"
                 />
                 <motion.div
                     animate={{
-                        x: windowSize.width - mousePosition.x - 200, // Inverse follow
-                        y: windowSize.height - mousePosition.y - 200,
+                        x: windowSize.width - mousePosition.x - 300, // Inverse follow
+                        y: windowSize.height - mousePosition.y - 300,
                     }}
-                    transition={{ delay: 0.001, duration: 3.5, ease: "linear" }}
+                    transition={{ delay: 0.001, duration: 1.5, ease: "ease-in" }}
                     className="absolute left-0 top-0 w-[400px] h-[400px] bg-[#E7FF0E]/55 rounded-full blur-[80px] will-change-transform"
                 />
             </div>
