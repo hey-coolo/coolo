@@ -102,7 +102,7 @@ const RealityCheck: React.FC = () => {
                         viewport={{ once: true }}
                         className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 block sticky top-32"
                     >
-                        01 / THE REALITY CHECK
+                        01 / THIS STUDIO IS RUN BY HUMANS
                     </motion.span>
                 </div>
                 <div className="lg:col-span-8">
