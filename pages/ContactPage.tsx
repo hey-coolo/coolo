@@ -347,6 +347,9 @@ const ContactPage: React.FC = () => {
                     </div>
 
                     
+
+                </div>
+            </div>
         </AnimatedSection>
         
         {/* --- FAQ SECTION (Plain English, Clear Editorial) --- */}
