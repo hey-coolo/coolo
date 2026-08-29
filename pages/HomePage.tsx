@@ -165,7 +165,7 @@ const RealityCheck: React.FC = () => {
                         transition={{ delay: 0.2 }}
                         className="mt-16 md:mt-24 font-mono text-[16px] uppercase tracking-widest font-bold text-[#8B84D7] max-w-sm leading-[2]"
                     >
-                        THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING A SH*T.
+                        THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING AN ACTUAL SH*T.
                     </motion.p>
                 </div>
             </div>
