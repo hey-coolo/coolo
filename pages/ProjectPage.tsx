@@ -278,7 +278,7 @@ const QuoteBreak: React.FC = () => {
 
                     {/* TRUTH 3 */}
                     <motion.div style={{ opacity: opacity3, y: y3 }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-auto">
-                        <h2 className="text-[9vw] md:text-[5rem] lg:text-[6rem] font-black uppercase tracking-tighter leading-[0.85] text-brand-navy flex flex-col items-center">
+                        <h2 className="text-[9vw] md:text-[5rem] lg:text-[6rem] font-black uppercase tracking-tighter leading-[0.95] text-brand-navy flex flex-col items-center">
                             <span>HUMAN THINKING.</span>
                             <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #0F0328' }}>BETTER MAKING.</span>
                         </h2>
