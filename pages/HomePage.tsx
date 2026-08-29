@@ -1,3 +1,4 @@
+// pages/HomePage.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
@@ -135,38 +136,58 @@ const BrandHero: React.FC = () => {
     );
 };
 
-const RealityCheck: React.FC = () => {
+const OurThinking: React.FC = () => {
     return (
-        <section className="py-32 md:py-48 bg-white text-[#0A0A0A] px-6 md:px-12 border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0">
-                <div className="lg:col-span-4">
+        <section className="py-32 md:py-48 bg-white text-[#0A0A0A] px-6 md:px-12 border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0 relative">
+                <div className="lg:col-span-3 flex flex-col">
                     <motion.span 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 block sticky top-32"
                     >
-                        01 / THIS STUDIO IS RUN BY HUMANS
+                        01 / OUR THINKING
                     </motion.span>
                 </div>
-                <div className="lg:col-span-8">
+                
+                <div className="lg:col-span-9">
                     <motion.h2 
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-                        className="font-display text-[9vw] lg:text-[6.5vw] uppercase tracking-tighter leading-[0.85] font-black"
-                    >   We help ambitious businesses figure out what they stand for, how they should look, and how to show up.
-                    </motion.h2>
-                    <motion.p 
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-16 md:mt-24 font-mono text-[16px] uppercase tracking-widest font-bold text-[#8B84D7] max-w-sm leading-[2]"
+                        className="font-display text-[10vw] lg:text-[7.5vw] uppercase tracking-tighter leading-[0.8] font-black"
                     >
-                        THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING AN ACTUAL SH*T.
-                    </motion.p>
+                        We combine <span className="text-[#8B84D7]">strategy</span>, 3D, and graphic design to build <span className="inline-block w-[20vw] h-[8vw] lg:w-[12vw] lg:h-[4.5vw] align-middle bg-[#F8F8F9] overflow-hidden mx-2 translate-y-[-0.5vw]">
+                            <img src="https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=800&auto=format&fit=crop" alt="Studio Human Vibe" className="w-full h-full object-cover grayscale contrast-125" />
+                        </span> visual systems that communicate with actual soul.
+                    </motion.h2>
+
+                    <div className="mt-20 md:mt-32 grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-24 items-start">
+                        <div className="md:col-span-5 w-full aspect-[3/4] bg-[#F8F8F9] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop" alt="Raw Studio Process" className="w-full h-full object-cover grayscale contrast-125" />
+                        </div>
+                        
+                        <div className="md:col-span-7 flex flex-col gap-16 md:pl-4 lg:pl-0">
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.2 }}
+                                className="font-mono text-[10px] md:text-[11px] uppercase tracking-widest font-bold text-[#0A0A0A] leading-[2] opacity-80 space-y-8"
+                            >
+                                <p>Our point of view is simple: good design is a business advantage, not an art project. We engineer communication by marrying high-end 3D visualization, rigorous brand strategy, and raw human storytelling.</p>
+                                <p>From creative direction and content ideas to complete digital experiences, we strip away the corporate fluff to find the human truth underneath. We sit in the mess with you, ask the uncomfortable questions, and build systems that make people actually pay attention.</p>
+                            </motion.div>
+                            
+                            <div className="border-l-2 border-[#8B84D7] pl-6 py-2">
+                                <p className="font-mono text-[11px] uppercase tracking-widest font-bold text-[#8B84D7] leading-[1.8]">
+                                    REALITY CHECK: THIS ISN'T SOME OVERNIGHT MAGIC TRICK. IT TAKES ACTUAL TIME AND GIVING AN ACTUAL SH*T.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -285,9 +306,35 @@ const ProcessSteps: React.FC = () => {
     );
 };
 
+const StudioBreather: React.FC = () => {
+    return (
+        <section className="w-full bg-white py-16 md:py-32 overflow-hidden border-t border-[#0A0A0A]/10">
+            <div className="px-6 md:px-12">
+                <span className="font-mono text-[9px] uppercase tracking-widest font-bold opacity-40 mb-12 md:mb-16 block text-center md:text-left">
+                    [ IN THE STUDIO / THE DAY TO DAY ]
+                </span>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                    <div className="col-span-1 aspect-square bg-[#F8F8F9] overflow-hidden mt-8 md:mt-24">
+                        <img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?q=80&w=600&auto=format&fit=crop" alt="Studio Details" className="w-full h-full object-cover grayscale contrast-125" />
+                    </div>
+                    <div className="col-span-1 aspect-[3/4] bg-[#F8F8F9] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551244072-5d12893278ab?q=80&w=600&auto=format&fit=crop" alt="Workspace" className="w-full h-full object-cover grayscale contrast-125" />
+                    </div>
+                    <div className="col-span-1 aspect-square bg-[#F8F8F9] overflow-hidden mt-16 md:mt-32">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop" alt="Collaboration" className="w-full h-full object-cover grayscale contrast-125" />
+                    </div>
+                    <div className="col-span-1 aspect-[4/5] bg-[#F8F8F9] overflow-hidden mt-0 md:mt-12">
+                        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=600&auto=format&fit=crop" alt="Process" className="w-full h-full object-cover grayscale contrast-125" />
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
 const ShowcaseIntro: React.FC = () => {
     return (
-        <section className="bg-white text-[#0A0A0A] pt-32 pb-16 px-6 md:px-12 selection:bg-[#8B84D7] selection:text-white">
+        <section className="bg-[#F8F8F9] text-[#0A0A0A] pt-32 pb-16 px-6 md:px-12 selection:bg-[#8B84D7] selection:text-white border-t border-[#0A0A0A]/10">
             <div className="flex flex-col items-start">
                 <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 mb-12">
                     02 / SELECTED WORK
@@ -310,9 +357,9 @@ const FeatureSpotlight: React.FC = () => {
     const featuredProject = PROJECTS[0]; 
 
     return (
-        <section className="bg-white px-6 md:px-12 pb-24 selection:bg-[#8B84D7] selection:text-white">
+        <section className="bg-[#F8F8F9] px-6 md:px-12 pb-24 selection:bg-[#8B84D7] selection:text-white">
             <Link to={`/work/${featuredProject.slug}`} className="block group">
-                <div className="relative w-full h-[60vh] md:h-[100vh] overflow-hidden bg-[#F8F8F9]">
+                <div className="relative w-full h-[60vh] md:h-[100vh] overflow-hidden bg-white">
                     <img 
                         src={featuredProject.imageUrl} 
                         alt={featuredProject.title} 
@@ -325,7 +372,7 @@ const FeatureSpotlight: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mt-8 items-start border-t border-[#0A0A0A]/10 pt-8">
                     <div className="md:col-span-8">
-                        <h2 className="font-display text-[12vw] md:text-[8vw] leading-[0.85] font-black uppercase tracking-tighter text-[#0A0A0A] group-hover:text-[#E7FF0E] transition-colors duration-500">
+                        <h2 className="font-display text-[12vw] md:text-[8vw] leading-[0.85] font-black uppercase tracking-tighter text-[#0A0A0A] group-hover:text-[#8B84D7] transition-colors duration-500">
                             {featuredProject.title}
                         </h2>
                     </div>
@@ -341,7 +388,7 @@ const FeatureSpotlight: React.FC = () => {
 
 const ShowcaseGrid: React.FC = () => {
     return (
-        <section className="bg-[#F8F8F9] px-6 md:px-12 py-32 border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white">
+        <section className="bg-white px-6 md:px-12 py-32 border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white">
              <div className="grid grid-cols-1 md:grid-cols-12 gap-y-24 md:gap-x-12 lg:gap-x-24">
                 {PROJECTS.slice(1, 5).map((project, index) => (
                     <div key={project.id} className={`md:col-span-6 ${index % 2 === 1 ? 'md:mt-48' : ''}`}>
@@ -371,7 +418,7 @@ const ShowcaseGrid: React.FC = () => {
 const FAQSection: React.FC = () => {
     const faqs = QA_DATA[0].questions; 
     return (
-        <section className="py-32 md:py-48 bg-white border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white">
+        <section className="py-32 md:py-48 bg-[#F8F8F9] border-t border-[#0A0A0A]/10 selection:bg-[#8B84D7] selection:text-white">
             <div className="px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
                 <div className="lg:col-span-4">
                     <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold opacity-60 block mb-12 lg:mb-0">
@@ -531,8 +578,9 @@ const HomePage: React.FC = () => {
             </Helmet>
             
             <BrandHero />
-            <RealityCheck />
+            <OurThinking />
             <ProcessSteps />
+            <StudioBreather />
             <ShowcaseIntro />
             <FeatureSpotlight />
             <ShowcaseGrid />
